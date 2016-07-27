@@ -1,0 +1,1064 @@
+#! C:/Program Files/Nuke8.0v6/nuke-8.0.v6.dll -nx
+version 8.0 v6
+Gizmo {
+ onCreate "this = nuke.thisNode()\nfor n in this.nodes():\n\tif n.Class() == 'Camera':\n\t\tn\['rotate'].setExpression('\[exists ' + str(this.name())+'.renderCam ] ? '+ str(this.name())+'.input1.rotate : '+ str(this.name()) + '.rotation')\nthis\['update'].execute()\n"
+ knobChanged "self = nuke.thisNode()\nif self\['randomScale'].value() == True:\n    self\['minimumScale'].setEnabled(True)\nelse:\n    self\['minimumScale'].setEnabled(False)\nif self\['randomRot'].value() == True:\n    self\['minimumRot'].setEnabled(True)\nelse:\n    self\['minimumRot'].setEnabled(False)\nif self\['frontFacing'].value() == True:\n    if nuke.exists(str(self.name())+'.renderCam') == False:\n        self.begin()\n        nuke.nodes.Input(name = 'renderCam')\n        self.end()\nelse:\n    self.begin()\n    renderCam = nuke.toNode(str(self.name())+'.renderCam')\n    self.setInput(1,None)\n    nuke.delete(renderCam)\n    self.end()\nif self\['distortion'].value() == True:\n    self\['distortionAmt'].setEnabled(True)\n    self\['turbulenceRate'].setEnabled(True)\n    self\['turbulenceLacunarity'].setEnabled(True)\n    self\['lacunarityJitter'].setEnabled(True)\n    self\['lacunarityJitterFreq'].setEnabled(True)\nelse:\n    self\['distortionAmt'].setEnabled(False)\n    self\['turbulenceRate'].setEnabled(False)\n    self\['turbulenceLacunarity'].setEnabled(False)\n    self\['lacunarityJitter'].setEnabled(False)\n    self\['lacunarityJitterFreq'].setEnabled(False)\nif self.input(0) <> None:\n\tthisFormat = self.input(0).format()\n\treadNode = self.input(0)\n\treadNode\['knobChanged'].setValue('inputNode = nuke.thisNode()\\nfor n in inputNode.dependent():\\n\tfor f in nuke.formats():\\n\t\tif f.name() == str(n.name())+\"_Input_Format\":\\n\t\t\tf.setWidth(inputNode.format().width())\\n\t\t\tf.setHeight(inputNode.format().height())\\n\t\t\tfor node in n.nodes():\\n\t\t\t\tif node.name() == \"inputReformat\":\\n\t\t\t\t\tnode\[\"format\"].setValue(f)\\n')\nelse:\n\tthisFormat = nuke.formats()\[0]\nformatExists = False\nformatName = str(self.name())+'_Input_Format'\nfor f in nuke.formats():\n\tif f.name() == formatName:\n\t\tf.setWidth(thisFormat.width())\n\t\tf.setHeight(thisFormat.height())\n\t\tfor n in self.nodes():\n\t\t\tif n.name() == 'inputReformat':\n\t\t\t\tn\['format'].setValue(f)\n\t\tformatExists = True\nif self.input(0) <> None:\n\tif formatExists == False:\n\t\tnuke.addFormat(str(thisFormat.width()) + ' ' + str(thisFormat.height()) + ' '+ str(self.name())+'_Input_Format')\nelse:\n\tif formatExists == False:\n\t\tnuke.addFormat('10 10 '+ str(self.name())+'_Input_Format')\n"
+ addUserKnob {20 Settings}
+ addUserKnob {26 ""}
+ addUserKnob {26 title l "" +STARTLINE T "<p><font size = \"6\">S_Volume</font></p>\n<p><font size = \"2\">V1.0 - Scott Coates </font></p>"}
+ addUserKnob {26 cardSettings l "<b>Card Settings</b>"}
+ addUserKnob {3 cardAmt l "Card Amount" t "The amount of cards S_Volume_ will use"}
+ cardAmt 10
+ addUserKnob {6 randomRot l "Random Rotation" t "Enable random rotation" +STARTLINE}
+ addUserKnob {7 minimumRot l "Maximum Rotation" t "The maximum random rotation amount" +DISABLED R 0 360}
+ addUserKnob {6 randomScale l "Random Scale" t "Enable random scaling" +STARTLINE}
+ addUserKnob {7 minimumScale l "Minimum Scale" t "The minimum random scaling amount" +DISABLED}
+ addUserKnob {22 update l Update t "Update cards" T "import random\n\ndef init():\n    this = nuke.thisNode()  \n    inputImage = nuke.nodes.Input(name = \"inputImage\")\n    return inputImage\n\ndef createProjectors(projCamAmt):\n    #Create cameras\n    projCams = \[]\n    for i in range (0,projCamAmt):\n        projCams.append(nuke.nodes.Camera(name = \"projCam\" + str(i)))\n        projCams\[i]\[\"display\"].setValue(\"off\")\n        projCams\[i]\[\"projection_mode\"].setValue(1)\n    return projCams\n\ndef createCards(sVolume,amount,input,projCams,randomRot,randomScale):\n    \n    formatName = str(sVolume.name())+\"_Input_Format\"\n\n    format = nuke.formats()\[0]\n\n    for f in nuke.formats():\n        if f.name() == formatName:\n            format = f\n            break\n   \n    incr = 1.5/ amount\n    Keyers = \[]\n    Cards = \[]\n    Premults = \[]\n    RectangleBlends = \[]\n    Projectors = \[] \n    AlphaBlurs = \[]\n    InputBlurs = \[]\n    Noise = \[]\n    NoiseBlends = \[]\n    SecondaryNoise = \[]\n    BlendNoise = \[]\n    NoiseMasks = \[]\n    Transforms = \[]\n    Rectangles = \[]\n    OpacityMerges = \[]\n    DistortNoise = \[]\n    AlphaCopy = \[]\n    Distorts = \[]\n\n    inputReformat = nuke.nodes.Reformat(name = \"inputReformat\")\n    inputReformat\[\"format\"].setValue(format)\n    inputRectangle = nuke.nodes.Rectangle(name = \"Input Rectangle\", inputs = \[inputReformat])\n    inputRectangle\[\"area\"].setExpression(\"inputReformat.format.width\",2)\n    inputRectangle\[\"area\"].setExpression(\"inputReformat.format.height\",3)\n    inputRectangle\[\"softness\"].setExpression(\"inputReformat.format.width/2 * \"+str(sVolume.name())+\".edgeSoftness\")\n    inputRectangleMask = nuke.nodes.Merge(name = \"Input Rectangle Mask\",inputs = \[input,inputRectangle])\n    inputRectangleMask\[\"operation\"].setValue(\"mask\")\n    for i in range (0,amount):\n     \n        #Random Noise Variables\n        rN = random.uniform(0.0,5.0)\n        rN2 = random.uniform(0.0,0.1)\n        rN3 = random.uniform(0.0,1.0)\n        rDistortNoise = random.uniform(0.0,5.0)\n        rBool = random.randint(0,1)\n    \n        #Random transforms\n        rRot = random.uniform(0.0,360.0)\n        rRot2 = random.uniform(-sVolume\[\"minimumRot\"].getValue(),sVolume\[\"minimumRot\"].getValue())\n        rRot3 = random.uniform(-10.0,10.0)\n        rScale = random.uniform(sVolume\[\"minimumScale\"].getValue(),1.0)\n        rCentX = random.uniform(-0.1,0.1)\n        rCentY = random.uniform(-0.1,0.1)\n        \n        #Set up transforms\n        Transforms.append(nuke.nodes.Transform(name = \"transform \" + str(i), inputs = \[inputRectangleMask]))\n        Transforms\[i]\[\"center\"].setExpression(\"inputReformat.format.width/2+\"+ str(rCentX) +\"*inputReformat.format.width\",0)\n        Transforms\[i]\[\"center\"].setExpression(\"inputReformat.format.height/2+\"+ str(rCentY) +\"*inputReformat.format.height\",1)\n\n        if randomScale == True:\n           Transforms\[i]\[\"scale\"].setValue(rScale)\n\n        if randomRot == True:\n           Transforms\[i]\[\"rotate\"].setValue(rRot2)\n\n        #Set up keyers\n        keyAmt = incr*(i+1)/4\n        Keyers.append(nuke.nodes.Keyer(name = \"keyer \" + str(i), inputs = \[Transforms\[i]]))\n        Keyers\[i]\[\"operation\"].setValue(\"luminance key\")\n        Keyers\[i]\[\"range\"].setValue(\[keyAmt,keyAmt*2,keyAmt*3,keyAmt*4])\n        \n        #Set up noise    \n        Noise.append(nuke.nodes.Noise(name = \"noise \" + str(i), inputs = \[inputReformat]))\n        Noise\[i]\[\"gain\"].setValue(0.3)\n        Noise\[i]\[\"lacunarity\"].setValue(5)\n        Noise\[i]\[\"size\"].setValue(400)\n        Noise\[i]\[\"output\"].setValue(\"alpha\")\n        BlendNoise.append(nuke.nodes.Noise(name = \"blend noise \" + str(i), inputs = \[inputReformat]))\n        NoiseMasks.append(nuke.nodes.Merge(name = \"noisemask \" + str(i), inputs = \[Keyers\[i],Noise\[i]]))\n        NoiseMasks\[i]\[\"operation\"].setValue(\"mask\")\n\n        #Blur keyed alpha\n        AlphaBlurs.append(nuke.nodes.Blur(name = \"alpha blur \" + str(i), inputs = \[NoiseMasks\[i]]))\n        AlphaBlurs\[i]\[\"channels\"].setValue(\"alpha\")\n        AlphaBlurs\[i]\[\"size\"].setValue(20)\n        \n        #Blur input\n        InputBlurs.append(nuke.nodes.Blur(name = \"input blur \" + str(i), inputs = \[Transforms\[i]]))\n        InputBlurs\[i]\[\"size\"].setValue(0)\n\n        #Premultiply Result          \n        Premults.append(nuke.nodes.Premult(name = \"premult \" + str(i), inputs = \[AlphaBlurs\[i]]))\n\n        #Blend premultiplied result with noise\n        NoiseBlends.append(nuke.nodes.Merge(name = \"noise blends \" + str(i), mix = incr, inputs = \[Premults\[i],InputBlurs\[i],BlendNoise\[i]]))\n        \n        #soften edges of rectangle\n        RectangleBlends.append(nuke.nodes.Merge(name = \"rectangle blends \" + str(i), mix = 1.0))\n        RectangleBlends\[i]\[\"operation\"].setValue(\"mask\")\n        RectangleBlends\[i].setInput(0,NoiseBlends\[i]) \n        Rectangles.append(nuke.nodes.Rectangle(name = \"rectangle \" + str(i),inputs = \[inputReformat]))\n        Rectangles\[i]\[\"output\"].setValue(\"alpha\")\n        Rectangles\[i]\[\"area\"].setExpression(\"inputReformat.format.width\",2)\n        Rectangles\[i]\[\"area\"].setExpression(\"inputReformat.format.height\",3)\n        Rectangles\[i]\[\"softness\"].setValue(100)\n        RectangleBlends\[i].setInput(1,Rectangles\[i])\n        \n        #Create opacity controls after network\n        OpacityMerges.append(nuke.nodes.Merge(name = \"opacity\" + str(i)))\n        OpacityMerges\[i].setInput(1,RectangleBlends\[i])\n        OpacityMerges\[i].setInput(0,inputReformat)\n        \n        #Create Distort Noise\n        DistortNoise.append(nuke.nodes.Noise(name = \"DistortNoise\" + str(i), inputs = \[inputReformat]))\n        DistortNoise\[i]\[\"zoffset\"].setExpression(str(rDistortNoise)+ \" + frame* ((\" + str(sVolume.name()) + \".turbulenceRate )/5)\")\n        DistortNoise\[i]\[\"lacunarity\"].setExpression(str(sVolume.name()) + \".turbulenceLacunarity + random(0,frame * \" + str(sVolume.name()) + \".lacunarityJitterFreq, \" + str(rBool) + \"*( \" + str(sVolume.name()) + \".lacunarityJitter ))\") \n\n        #Create Alpha Copy\n        AlphaCopy.append(nuke.nodes.Copy(name = \"copy\" + str(i), inputs = \[OpacityMerges\[i],DistortNoise\[i]] ))\n        AlphaCopy\[i]\[\"to0\"].setValue(\"mask.a\")\n        AlphaCopy\[i]\[\"from0\"].setValue(\"alpha\")\n\n        #Create Distorts\n        Distorts.append(nuke.nodes.IDistort(name = \"Distort\" + str(i), inputs = \[AlphaCopy\[i]] ))\n        Distorts\[i]\[\"uv\"].setValue(\"mask\")\n        Distorts\[i]\[\"uv_scale\"].setExpression(str(sVolume.name()) + \".distortion == 1 ? \" + str(sVolume.name()) + \".distortionAmt : 0\")\n        \n        #Create Projectors\n        Projectors.append(nuke.nodes.Project3D(name = \"projector \" + str(i), inputs = \[Distorts\[i],projCams\[i]] ))\n        projCamName = Projectors\[i].input(1).name()\n        \n        expressionStr = str(1.0)         \n        OpacityMerges\[i]\[\"mix\"].setValue(1.0)\n\n        if i % 2 <> 1:\n            position = +(amount-i)/2\n        else:\n            position = -(amount-(i+1))/2\n        \n        #Create Cards \n        Cards.append(nuke.nodes.Card(name = \"card \" + str(i), inputs = \[Projectors\[i]]))\n\n        #Card transformation expressions\n        Cards\[i]\[\"scaling\"].setExpression(str(sVolume.name()) + \".scale\")     \n        Cards\[i]\[\"rotate\"].setExpression(str(projCamName)+\".rotate\")\n        Cards\[i]\[\"translate\"].setExpression(str(sVolume.name()) + \".translate.x\" ,0)\n        Cards\[i]\[\"translate\"].setExpression(str(sVolume.name()) + \".translate.y\" ,1)\n        Cards\[i]\[\"translate\"].setExpression(str(position)+\"*(\"+str(sVolume.name()) + \".boxSize / \"+ str(amount) + \" ) + \" +  str(sVolume.name()) + \".translate.z\" ,2)\n        Cards\[i]\[\"pivot\"].setExpression(\"-\"+str(position)+\"*(\"+str(sVolume.name()) + \".boxSize / \"+ str(amount) + \")\",2)\n\n        #Projection camera transformation expressions\n        projCams\[i]\[\"pivot\"].setExpression(str(sVolume.name())+ \".translate - translate\")\n        projCams\[i]\[\"win_scale\"].setExpression(str(sVolume.name()) + \".scale\")\n        projCams\[i]\[\"rotate\"].setExpression(\"\[exists \" + str(sVolume.name())+\".renderCam ] ? \"+ str(sVolume.name())+\".input1.rotate : \"+ str(sVolume.name()) + \".rotation\")\n        projCams\[i]\[\"translate\"].setExpression(str(sVolume.name()) + \".translate.x\" ,0)\n        projCams\[i]\[\"translate\"].setExpression(str(sVolume.name()) + \".translate.y\" ,1)\n        projCams\[i]\[\"translate\"].setExpression(str(sVolume.name()) + \".translate.z + \" + str(sVolume.name()) + \".boxSize / \"+ str(amount) + \"*\" + str(amount)  ,2)\n\n           \n    return Cards\n\ndef onChange():\n\n    onInputChangeStr = \"'inputNode = nuke.thisNode()\\\\n\"\n    onInputChangeStr += \"for n in inputNode.dependent():\\\\n\"\n    onInputChangeStr += \"\tfor f in nuke.formats():\\\\n\"\n    onInputChangeStr += \"\t\tif f.name() == str(n.name())+\\\"_Input_Format\\\":\\\\n\"\n    onInputChangeStr += \"\t\t\tf.setWidth(inputNode.format().width())\\\\n\"\n    onInputChangeStr += \"\t\t\tf.setHeight(inputNode.format().height())\\\\n\"\n    onInputChangeStr += \"\t\t\tfor node in n.nodes():\\\\n\"\n    onInputChangeStr += \"\t\t\t\tif node.name() == \\\"inputReformat\\\":\\\\n\"\n    onInputChangeStr += \"\t\t\t\t\tnode\[\\\"format\\\"].setValue(f)\\\\n'\"\n\n    onChangeStr = \"self = nuke.thisNode()\\n\"\n    onChangeStr += \"if self\['randomScale'].value() == True:\\n\"\n    onChangeStr += \"    self\['minimumScale'].setEnabled(True)\\n\"\n    onChangeStr += \"else:\\n\"\n    onChangeStr += \"    self\['minimumScale'].setEnabled(False)\\n\"\n\n    onChangeStr += \"if self\['randomRot'].value() == True:\\n\"\n    onChangeStr += \"    self\['minimumRot'].setEnabled(True)\\n\"\n    onChangeStr += \"else:\\n\"\n    onChangeStr += \"    self\['minimumRot'].setEnabled(False)\\n\"\n\n    onChangeStr += \"if self\['frontFacing'].value() == True:\\n\"\n    onChangeStr += \"    if nuke.exists(str(self.name())+'.renderCam') == False:\\n\"\n    onChangeStr += \"        self.begin()\\n\"\n    onChangeStr += \"        nuke.nodes.Input(name = 'renderCam')\\n\"\n    onChangeStr += \"        self.end()\\n\"\n    onChangeStr += \"else:\\n\"\n    onChangeStr += \"    self.begin()\\n\"\n    onChangeStr += \"    renderCam = nuke.toNode(str(self.name())+'.renderCam')\\n\"\n    onChangeStr += \"    self.setInput(1,None)\\n\"\n    onChangeStr += \"    nuke.delete(renderCam)\\n\"\n    onChangeStr += \"    self.end()\\n\"\n\n    onChangeStr += \"if self\['distortion'].value() == True:\\n\"\n    onChangeStr += \"    self\['distortionAmt'].setEnabled(True)\\n\"\n    onChangeStr += \"    self\['turbulenceRate'].setEnabled(True)\\n\"\n    onChangeStr += \"    self\['turbulenceLacunarity'].setEnabled(True)\\n\"\n    onChangeStr += \"    self\['lacunarityJitter'].setEnabled(True)\\n\"\n    onChangeStr += \"    self\['lacunarityJitterFreq'].setEnabled(True)\\n\"\n    onChangeStr += \"else:\\n\"\n    onChangeStr += \"    self\['distortionAmt'].setEnabled(False)\\n\"\n    onChangeStr += \"    self\['turbulenceRate'].setEnabled(False)\\n\"\n    onChangeStr += \"    self\['turbulenceLacunarity'].setEnabled(False)\\n\"\n    onChangeStr += \"    self\['lacunarityJitter'].setEnabled(False)\\n\"\n    onChangeStr += \"    self\['lacunarityJitterFreq'].setEnabled(False)\\n\"\n\n    onChangeStr += \"if self.input(0) <> None:\\n\"\n    onChangeStr += \"\tthisFormat = self.input(0).format()\\n\"\n    onChangeStr += \"\treadNode = self.input(0)\\n\"\n    onChangeStr += \"\treadNode\['knobChanged'].setValue(\"+onInputChangeStr+\")\\n\"\n    onChangeStr += \"else:\\n\"\n    onChangeStr += \"\tthisFormat = nuke.formats()\[0]\\n\"\n\n    onChangeStr += \"formatExists = False\\n\"\n    onChangeStr += \"formatName = str(self.name())+'_Input_Format'\\n\"\n\n    onChangeStr += \"for f in nuke.formats():\\n\"\n    onChangeStr += \"\tif f.name() == formatName:\\n\"\n    onChangeStr += \"\t\tf.setWidth(thisFormat.width())\\n\"\n    onChangeStr += \"\t\tf.setHeight(thisFormat.height())\\n\"\n    onChangeStr += \"\t\tfor n in self.nodes():\\n\"\n    onChangeStr += \"\t\t\tif n.name() == 'inputReformat':\\n\"\n    onChangeStr += \"\t\t\t\tn\['format'].setValue(f)\\n\"\n    onChangeStr += \"\t\tformatExists = True\\n\"\n\n    onChangeStr += \"if self.input(0) <> None:\\n\"\n    onChangeStr += \"\tif formatExists == False:\\n\"\n    onChangeStr += \"\t\tnuke.addFormat(str(thisFormat.width()) + ' ' + str(thisFormat.height()) + ' '+ str(self.name())+'_Input_Format')\\n\"\n    onChangeStr += \"else:\\n\"\n    onChangeStr += \"\tif formatExists == False:\\n\"\t\n    onChangeStr += \"\t\tnuke.addFormat('10 10 '+ str(self.name())+'_Input_Format')\\n\"  \n\n    return onChangeStr\n\ndef onCreate():\n\n    onCreateStr = \"this = nuke.thisNode()\\n\"\n\n    onCreateStr += \"for n in this.nodes():\\n\"\n    onCreateStr += \"\tif n.Class() == 'Camera':\\n\"\n    onCreateStr += \"\t\tn\['rotate'].setExpression('\[exists ' + str(this.name())+'.renderCam ] ? '+ str(this.name())+'.input1.rotate : '+ str(this.name()) + '.rotation')\\n\"\n    onCreateStr +=\"this\['update'].execute()\\n\"\n\n    return onCreateStr\n\ndef generate():\n    nuke.selectAll()\n    \n    for n in nuke.thisNode().nodes():\n        nuke.delete(n)\n    \n    sVolume = nuke.thisNode()\n    amount = int(sVolume\[\"cardAmt\"].value())\n    randomRot = sVolume\[\"randomRot\"].value()\n    randomScale = sVolume\[\"randomScale\"].value()\n\n    sVolume.begin()\n    inputImage = init()\n    projCams = createProjectors(amount)\n    Cards = createCards(sVolume,amount,inputImage,projCams,randomRot,randomScale)\n    Scene = nuke.nodes.Scene(name = \"luminance layers\", inputs = Cards)\n    Output = nuke.nodes.Output(inputs = \[Scene])\n    sVolume.end()\n    \n    onChangeStr = onChange()\n    sVolume.knob(\"knobChanged\").setValue(onChangeStr)\n\n    #onCreateStr = onCreate()\n    #sVolume.knob(\"onCreate\").setValue(onCreateStr)\n\n\ngenerate()" +STARTLINE}
+ addUserKnob {26 translationSettings l <b>Position</b>}
+ addUserKnob {7 boxSize l "Card Box Size" t "Size of the card box" R 0.1 5}
+ boxSize 0.2
+ addUserKnob {13 translate l Translate}
+ addUserKnob {13 rotation l Rotation}
+ addUserKnob {13 scale l Scale}
+ scale {1 1 1}
+ addUserKnob {6 frontFacing l "Facing camera" t "Makes cards face toward the input camera" +STARTLINE}
+ addUserKnob {26 imageSettings l "<b>Image Settings</b>"}
+ addUserKnob {7 edgeSoftness l "Edge Softness" t "Edge softness of the images per card"}
+ edgeSoftness 0.5
+ addUserKnob {6 distortion l "Distortion Enabled" t "Enable distortion per card" +STARTLINE}
+ addUserKnob {7 distortionAmt l "Distortion Amount" t "Amount of UV distortion per card" +DISABLED R 0 500}
+ distortionAmt 100
+ addUserKnob {7 turbulenceRate l "Turbulence Rate" t "Rate of turbulence to animate distortion" +DISABLED}
+ addUserKnob {7 turbulenceLacunarity l Lacunarity t "Lacunarity of turbulence noise" +DISABLED R 0 10}
+ addUserKnob {7 lacunarityJitter l "Lacunarity Jitter" t "Jitter in the turbulence noise lacunarity" +DISABLED R 0 10}
+ addUserKnob {7 lacunarityJitterFreq l "Jitter Freq" t "Frequency of lacunarity jitter" +DISABLED}
+ addUserKnob {26 ""}
+}
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam9
+ }
+ Reformat {
+  inputs 0
+  format "640 480 0 0 640 480 1 S_Volume_Input_Format"
+  name inputReformat
+ }
+set Nfe47de0 [stack 0]
+ Noise {
+  zoffset {{"3.7136840888 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 1*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise9
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 9"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 9"
+ }
+push $Nfe47de0
+ Rectangle {
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness {{"inputReformat.format.width/2 * S_Volume.edgeSoftness"}}
+  name "Input Rectangle"
+ }
+ Input {
+  inputs 0
+  name inputImage
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "Input Rectangle Mask"
+ }
+set Nfe484c0 [stack 0]
+ Transform {
+  center {{inputReformat.format.width/2+-0.0950555320185*inputReformat.format.width} {inputReformat.format.height/2+0.0884721439404*inputReformat.format.height}}
+  name "transform 9"
+ }
+set N2a9ca0f0 [stack 0]
+ Blur {
+  name "input blur 9"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 9"
+ }
+push $N2a9ca0f0
+ Keyer {
+  operation "luminance key"
+  range {0.375 0.75 1.125 1.5}
+  name "keyer 9"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 9"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 9"
+ }
+ Premult {
+  name "premult 9"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 9"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 9"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity9
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy9
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort9
+ }
+ Project3D {
+  inputs 2
+  name "projector 9"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"0.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam9.rotate} {projCam9.rotate} {projCam9.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"-0.0*(S_Volume.boxSize / 10)"}}
+  name "card 9"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam8
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"2.08003461061 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 0*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise8
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 8"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 8"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+-0.0704060738031*inputReformat.format.width} {inputReformat.format.height/2+0.0602443742881*inputReformat.format.height}}
+  name "transform 8"
+ }
+set N2a9c5c30 [stack 0]
+ Blur {
+  name "input blur 8"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 8"
+ }
+push $N2a9c5c30
+ Keyer {
+  operation "luminance key"
+  range {0.3375 0.675 1.0125 1.35}
+  name "keyer 8"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 8"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 8"
+ }
+ Premult {
+  name "premult 8"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 8"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 8"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity8
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy8
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort8
+ }
+ Project3D {
+  inputs 2
+  name "projector 8"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"1.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam8.rotate} {projCam8.rotate} {projCam8.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"-1.0*(S_Volume.boxSize / 10)"}}
+  name "card 8"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam7
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"4.93576109088 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 1*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise7
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 7"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 7"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+-0.0166404115879*inputReformat.format.width} {inputReformat.format.height/2+0.00475508482268*inputReformat.format.height}}
+  name "transform 7"
+ }
+set N2a7ab6a0 [stack 0]
+ Blur {
+  name "input blur 7"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 7"
+ }
+push $N2a7ab6a0
+ Keyer {
+  operation "luminance key"
+  range {0.3 0.6 0.9 1.2}
+  name "keyer 7"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 7"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 7"
+ }
+ Premult {
+  name "premult 7"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 7"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 7"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity7
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy7
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort7
+ }
+ Project3D {
+  inputs 2
+  name "projector 7"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"-1.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam7.rotate} {projCam7.rotate} {projCam7.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"--1.0*(S_Volume.boxSize / 10)"}}
+  name "card 7"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam6
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"4.37554059847 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 1*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise6
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 6"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 6"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+0.0687087639037*inputReformat.format.width} {inputReformat.format.height/2+-0.0265593660985*inputReformat.format.height}}
+  name "transform 6"
+ }
+set N2a7a71e0 [stack 0]
+ Blur {
+  name "input blur 6"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 6"
+ }
+push $N2a7a71e0
+ Keyer {
+  operation "luminance key"
+  range {0.2625 0.525 0.7875 1.05}
+  name "keyer 6"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 6"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 6"
+ }
+ Premult {
+  name "premult 6"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 6"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 6"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity6
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy6
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort6
+ }
+ Project3D {
+  inputs 2
+  name "projector 6"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"2.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam6.rotate} {projCam6.rotate} {projCam6.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"-2.0*(S_Volume.boxSize / 10)"}}
+  name "card 6"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam5
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"2.57218181977 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 0*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise5
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 5"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 5"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+-0.0365085699636*inputReformat.format.width} {inputReformat.format.height/2+-0.00647802794193*inputReformat.format.height}}
+  name "transform 5"
+ }
+set N2a583110 [stack 0]
+ Blur {
+  name "input blur 5"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 5"
+ }
+push $N2a583110
+ Keyer {
+  operation "luminance key"
+  range {0.225 0.45 0.675 0.9}
+  name "keyer 5"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 5"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 5"
+ }
+ Premult {
+  name "premult 5"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 5"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 5"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity5
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy5
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort5
+ }
+ Project3D {
+  inputs 2
+  name "projector 5"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"-2.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam5.rotate} {projCam5.rotate} {projCam5.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"--2.0*(S_Volume.boxSize / 10)"}}
+  name "card 5"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam4
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"4.5091122378 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 1*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise4
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 4"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 4"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+0.0166063451963*inputReformat.format.width} {inputReformat.format.height/2+0.0584322895206*inputReformat.format.height}}
+  name "transform 4"
+ }
+set N2a57ec50 [stack 0]
+ Blur {
+  name "input blur 4"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 4"
+ }
+push $N2a57ec50
+ Keyer {
+  operation "luminance key"
+  range {0.1875 0.375 0.5625 0.75}
+  name "keyer 4"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 4"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 4"
+ }
+ Premult {
+  name "premult 4"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 4"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 4"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity4
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy4
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort4
+ }
+ Project3D {
+  inputs 2
+  name "projector 4"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"3.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam4.rotate} {projCam4.rotate} {projCam4.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"-3.0*(S_Volume.boxSize / 10)"}}
+  name "card 4"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam3
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"1.94726094121 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 0*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise3
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 3"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 3"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+0.0246953418199*inputReformat.format.width} {inputReformat.format.height/2+-0.0652197868316*inputReformat.format.height}}
+  name "transform 3"
+ }
+set N2a4c6570 [stack 0]
+ Blur {
+  name "input blur 3"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 3"
+ }
+push $N2a4c6570
+ Keyer {
+  operation "luminance key"
+  range {0.15 0.3 0.45 0.6}
+  name "keyer 3"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 3"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 3"
+ }
+ Premult {
+  name "premult 3"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 3"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 3"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity3
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy3
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort3
+ }
+ Project3D {
+  inputs 2
+  name "projector 3"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"-3.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam3.rotate} {projCam3.rotate} {projCam3.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"--3.0*(S_Volume.boxSize / 10)"}}
+  name "card 3"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam2
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"1.36340107419 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 0*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise2
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 2"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 2"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+0.0305279686154*inputReformat.format.width} {inputReformat.format.height/2+-0.0969010139183*inputReformat.format.height}}
+  name "transform 2"
+ }
+set N2a2b3c70 [stack 0]
+ Blur {
+  name "input blur 2"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 2"
+ }
+push $N2a2b3c70
+ Keyer {
+  operation "luminance key"
+  range {0.1125 0.225 0.3375 0.45}
+  name "keyer 2"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 2"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 2"
+ }
+ Premult {
+  name "premult 2"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 2"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 2"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity2
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy2
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort2
+ }
+ Project3D {
+  inputs 2
+  name "projector 2"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"4.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam2.rotate} {projCam2.rotate} {projCam2.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"-4.0*(S_Volume.boxSize / 10)"}}
+  name "card 2"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam1
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"4.07879337643 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 0*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise1
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 1"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 1"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+0.0555018481675*inputReformat.format.width} {inputReformat.format.height/2+0.0309879600495*inputReformat.format.height}}
+  name "transform 1"
+ }
+set N2a1c3590 [stack 0]
+ Blur {
+  name "input blur 1"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 1"
+ }
+push $N2a1c3590
+ Keyer {
+  operation "luminance key"
+  range {0.075 0.15 0.225 0.3}
+  name "keyer 1"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 1"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 1"
+ }
+ Premult {
+  name "premult 1"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 1"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 1"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity1
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy1
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort1
+ }
+ Project3D {
+  inputs 2
+  name "projector 1"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"-4.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam1.rotate} {projCam1.rotate} {projCam1.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"--4.0*(S_Volume.boxSize / 10)"}}
+  name "card 1"
+ }
+ Camera {
+  inputs 0
+  display off
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"S_Volume.translate.z + S_Volume.boxSize / 10*10"}}
+  rotate {{"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"} {"\[exists S_Volume_.renderCam ] ? S_Volume_.input1.rotate : S_Volume_.rotation"}}
+  pivot {{"S_Volume.translate - translate"} {"S_Volume.translate - translate"} {"S_Volume.translate - translate"}}
+  projection_mode orthographic
+  win_scale {{S_Volume.scale} {S_Volume.scale}}
+  name projCam0
+ }
+push $Nfe47de0
+ Noise {
+  zoffset {{"4.94296724038 + frame* ((S_Volume.turbulenceRate )/5)"}}
+  lacunarity {{"S_Volume.turbulenceLacunarity + random(0,frame * S_Volume.lacunarityJitterFreq, 1*( S_Volume.lacunarityJitter ))"}}
+  name DistortNoise0
+ }
+push $Nfe47de0
+ Rectangle {
+  output alpha
+  area {0 0 {inputReformat.format.width} {inputReformat.format.height}}
+  softness 100
+  name "rectangle 0"
+ }
+push $Nfe47de0
+ Noise {
+  name "blend noise 0"
+ }
+push $Nfe484c0
+ Transform {
+  center {{inputReformat.format.width/2+0.0136371273261*inputReformat.format.width} {inputReformat.format.height/2+0.0199017505492*inputReformat.format.height}}
+  name "transform 0"
+ }
+set Nfe48830 [stack 0]
+ Blur {
+  name "input blur 0"
+ }
+push $Nfe47de0
+ Noise {
+  output alpha
+  size 400
+  lacunarity 5
+  gain 0.3
+  name "noise 0"
+ }
+push $Nfe48830
+ Keyer {
+  operation "luminance key"
+  range {0.0375 0.075 0.1125 0.15}
+  name "keyer 0"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "noisemask 0"
+ }
+ Blur {
+  channels alpha
+  size 20
+  name "alpha blur 0"
+ }
+ Premult {
+  name "premult 0"
+ }
+ Merge {
+  inputs 2+1
+  mix 0.15
+  name "noise blends 0"
+ }
+ Merge {
+  inputs 2
+  operation mask
+  name "rectangle blends 0"
+ }
+push $Nfe47de0
+ Merge {
+  inputs 2
+  name opacity0
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name copy0
+ }
+ IDistort {
+  uv mask
+  uv_scale {{"S_Volume.distortion == 1 ? S_Volume.distortionAmt : 0"}}
+  name Distort0
+ }
+ Project3D {
+  inputs 2
+  name "projector 0"
+ }
+ Card {
+  translate {{S_Volume.translate.x} {S_Volume.translate.y} {"5.0*(S_Volume.boxSize / 10 ) + S_Volume.translate.z"}}
+  rotate {{projCam0.rotate} {projCam0.rotate} {projCam0.rotate}}
+  scaling {{S_Volume.scale} {S_Volume.scale} {S_Volume.scale}}
+  pivot {0 0 {"-5.0*(S_Volume.boxSize / 10)"}}
+  name "card 0"
+ }
+ Scene {
+  inputs 10
+  name "luminance layers"
+ }
+ Output {
+  name Output1
+ }
+end_group

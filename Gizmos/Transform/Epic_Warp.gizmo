@@ -1,0 +1,149 @@
+#! C:/Program Files/Nuke9.0v3/nuke-9.0.3.dll -nx
+version 9.0 v3
+Group {
+name Position_Expression1
+tile_color 0xffff0000
+
+ inputs 0
+ help "Expresion que asigna los valores de posicion 'x' e 'y', a los canales 'r' y 'g'\n\n-Dario S."
+ tile_color 0xffff0000
+ addUserKnob {20 User}
+ addUserKnob {41 format l "output format" T Reformat1.format}
+ addUserKnob {6 customboolean l "custom format" +STARTLINE}
+ customboolean false
+ addUserKnob {41 box T Crop1.box}
+ addUserKnob {26 ""}
+ addUserKnob {26 sign l "" +STARTLINE T "-Dario Siero"}
+}
+ Reformat {
+  inputs 0
+  name Reformat1
+  xpos 462
+  ypos -135
+ }
+ Crop {
+  box {0 0 1920 1080}
+  name Crop1
+  selected true
+  xpos 462
+  ypos -97
+  disable {{!(parent.customboolean)}}
+  
+ }
+ Expression {
+  expr0 x
+  expr1 y
+  name Expression1
+  xpos 462
+  ypos -36
+ }
+ Output {
+  name Output1
+  xpos 462
+  ypos 63
+ }
+end_group
+push 0
+push 0
+push 0
+Group {
+name Epic_Warp1
+tile_color 0x00196500
+
+ inputs 4
+ tile_color 0x196500
+ addUserKnob {20 Controles}
+ addUserKnob {41 uv_scale l "UV scale" t "Ajusta la escala de la distorsion del warp" T IDistort1.uv_scale}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix l "mask mix" t "Influencia de la mascara en la distorsion" T Merge3.mix}
+ addUserKnob {26 ""}
+ addUserKnob {41 disable_1 l "forward channel" t "Conservar el canal de distorsion tras el proceso\n\[  ] NO\n\[X] SI" T Shuffle3.disable}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 sign l "" +STARTLINE T "-Dario Siero"}
+ addUserKnob {20 Instrucciones}
+ addUserKnob {26 Guia l "" +STARTLINE T "pos_expr: Gizmo Position_Expression con las coordenadas de X e Y, en R y G\n\nIMG: Imagen original\n\nWARP: Transformación o distorsión que vamos a aplicar a la imagen, distorsionando el pos_expr (es decir, las transformaciones tienen que estar conectadas a Position_Expression y el resultado a la entrada de WARP)\n\nMASK: Se utilizará el canal alfa de ésta entrada para distorsionar la imagen"}
+}
+ Input {
+  inputs 0
+  name MASK
+  xpos 740
+  ypos 211
+  number 1
+ }
+ Shuffle {
+  in alpha
+  name Shuffle1
+  xpos 740
+  ypos 245
+ }
+ Input {
+  inputs 0
+  name WARP
+  xpos 656
+  ypos 191
+  number 2
+ }
+ Input {
+  inputs 0
+  name pos_expr
+  xpos 462
+  ypos 39
+  number 3
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos 462
+  ypos 191
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  selected true
+  xpos 462
+  ypos 245
+ }
+ Input {
+  inputs 0
+  name IMG
+  xpos 341
+  ypos -18
+ }
+ Dot {
+  name Dot2
+  xpos 375
+  ypos 75
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.u
+  from1 rgba.green
+  to1 forward.v
+  name Copy1
+  xpos 341
+  ypos 232
+ }
+ IDistort {
+  uv forward
+  name IDistort1
+  xpos 341
+  ypos 284
+ }
+ Shuffle {
+  in forward
+  red black
+  green black
+  out forward
+  name Shuffle3
+  xpos 341
+  ypos 322
+ }
+ Output {
+  name Output1
+  xpos 341
+  ypos 422
+ }
+end_group

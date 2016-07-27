@@ -1,0 +1,358 @@
+#! C:/Program Files/Nuke7.0v8/Nuke7.0.exe -nx
+version 8.0 v5
+Group {
+ name EdgeScatter
+ help "edge scatter is meant for integrating layers of a comp in a more photographic way - this one doesn't have grain so ADD IT"
+ tile_color 0xabc5e000
+ selected true
+ xpos -223
+ ypos 49
+ addUserKnob {20 "" l User}
+ addUserKnob {26 inner l "" +STARTLINE T "Inner Scatter"}
+ addUserKnob {7 AMT l "Blur Amount" R 0 250}
+ AMT 5
+ addUserKnob {18 COLOR l "Scatter Color"}
+ COLOR {1 1 1}
+ addUserKnob {6 COLOR_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 MIX l Mix}
+ MIX 1
+ addUserKnob {26 outer l "" +STARTLINE T "Outer Scatter"}
+ addUserKnob {7 AMT2 l "Blur Amount" t "this is the blur amount for the outer blur\t\t" R 0 250}
+ AMT2 3
+ addUserKnob {18 COLOR2 l "Scatter Color" t "The outer scatter color"}
+ COLOR2 {1 1 1}
+ addUserKnob {6 COLOR2_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 MIX2 l Mix t "mix for outer scatter"}
+ MIX2 1
+ addUserKnob {26 grain l "" +STARTLINE}
+ addUserKnob {6 regrain_toggle l "Enabled (add footage to Grain input)" t "typically on by default, because edgescatter is pretty much meant to be the last thing in your chain - but you can toggle it off if you're doing regraining after the fact." +STARTLINE}
+ addUserKnob {41 grainType l "Grain Type" T F_ReGrain1.grainType}
+ addUserKnob {41 presetStock l "Preset Stock" T F_ReGrain1.presetStock}
+ addUserKnob {41 amount l "Grain Amount" T F_ReGrain1.amount}
+ addUserKnob {41 size l "Grain Size" T F_ReGrain1.size}
+ addUserKnob {41 output l Output T F_ReGrain1.output}
+ addUserKnob {41 analyse l Analyse T F_ReGrain1.analyse}
+ addUserKnob {20 "Analysis Region" n 2}
+ addUserKnob {41 regionBL l "Analysis Region BL" T F_ReGrain1.regionBL}
+ addUserKnob {41 regionTR l "Analysis Region TR" T F_ReGrain1.regionTR}
+ addUserKnob {41 frame l "Analysis Frame" T F_ReGrain1.frame}
+ addUserKnob {41 grainColourSpace l "Grain Colour Space" T F_ReGrain1.grainColourSpace}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 Advanced n 2}
+ addUserKnob {41 processRed l "Process Red" T F_ReGrain1.processRed}
+ addUserKnob {41 redAmount l "Red Amount" T F_ReGrain1.redAmount}
+ addUserKnob {41 redSize l "Red Size" T F_ReGrain1.redSize}
+ addUserKnob {41 processGreen l "Process Green" T F_ReGrain1.processGreen}
+ addUserKnob {41 greenAmount l "Green Amount" T F_ReGrain1.greenAmount}
+ addUserKnob {41 greenSize l "Green Size" T F_ReGrain1.greenSize}
+ addUserKnob {41 processBlue l "Process Blue" T F_ReGrain1.processBlue}
+ addUserKnob {41 blueAmount l "Blue Amount" T F_ReGrain1.blueAmount}
+ addUserKnob {41 blueSize l "Blue Size" T F_ReGrain1.blueSize}
+ addUserKnob {20 "Grain Response" n 2}
+ addUserKnob {41 srcColourSpace l "Apply Grain In" T F_ReGrain1.srcColourSpace}
+ addUserKnob {41 lowGain l "Low Gain" T F_ReGrain1.lowGain}
+ addUserKnob {41 midGain l "Mid Gain" T F_ReGrain1.midGain}
+ addUserKnob {41 highGain l "High Gain" T F_ReGrain1.highGain}
+ addUserKnob {41 useResponse l "Use Sampled Response" T F_ReGrain1.useResponse}
+ addUserKnob {41 responseMix l "Sampled Response Mix" T F_ReGrain1.responseMix}
+ addUserKnob {41 sample l "Sample Grain Response" T F_ReGrain1.sample}
+ addUserKnob {41 reset l "Reset Grain Response" T F_ReGrain1.reset}
+ addUserKnob {41 drawResponse l "Draw Response" T F_ReGrain1.drawResponse}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 "" n -1}
+ addUserKnob {26 ""}
+ addUserKnob {6 alpha_reset l "Set alpha to 1" t "sets the outgoing alpha to 1 instead of the resulting edge matte of the scatter op" +STARTLINE}
+ addUserKnob {6 crop_toggle l "Toggle On Crop For Edge of Frame" t "Sometimes your Edgescatter will affect edge of frame, alpha dependent." +STARTLINE}
+}
+ Input {
+  inputs 0
+  name ImageIn
+  xpos -390
+  ypos -107
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop1
+  selected true
+  xpos -390
+  ypos -72
+  disable {{!crop_toggle}}
+ }
+ AddChannels {
+  channels alpha
+  name AddChannels2
+  xpos -390
+  ypos -30
+ }
+set Nf99d7b0 [stack 0]
+ Input {
+  inputs 0
+  name Grain
+  xpos 192
+  ypos -91
+  number 2
+ }
+ Dot {
+  name Dot1
+  xpos 226
+  ypos -67
+ }
+ Dot {
+  name Dot3
+  xpos 211
+  ypos 193
+ }
+set N1357f8b0 [stack 0]
+ Input {
+  inputs 0
+  name ScatterMatte
+  xpos -179
+  ypos -93
+  number 1
+ }
+ AddChannels {
+  channels alpha
+  name AddChannels1
+  xpos -179
+  ypos -61
+ }
+push $Nf99d7b0
+ Copy {
+  inputs 2
+  from0 -rgba.alpha
+  to0 -rgba.alpha
+  channels alpha
+  name ChannelCopy1
+  tile_color 0x9e3c6300
+  xpos -179
+  ypos -13
+ }
+set Nf99e200 [stack 0]
+ Dot {
+  name Dot2
+  xpos -2
+  ypos 30
+ }
+set N1357f1d0 [stack 0]
+ Invert {
+  channels alpha
+  name Invert2
+  xpos -36
+  ypos 199
+ }
+push $N1357f1d0
+ Blur {
+  channels rgba
+  size {{parent.AMT2 i}}
+  name Blur3
+  xpos 46
+  ypos 106
+ }
+ Grade {
+  multiply {{parent.COLOR2.r i} {parent.COLOR2.g i} {parent.COLOR2.b i} 1}
+  maskChannelInput -rgba.alpha
+  unpremult -rgba.alpha
+  name Grade2
+  tile_color 0x7aa9ff00
+  xpos 46
+  ypos 141
+ }
+ ChannelMerge {
+  inputs 2
+  operation in
+  name ChannelMerge2
+  tile_color 0x4b5ec600
+  xpos 0
+  ypos 273
+ }
+ OFXuk.co.thefoundry.furnace.f_regrain_v403 {
+  inputs 2
+  grainType "From Grain Clip"
+  presetStock "FUJIF250Under 2K"
+  amount 1
+  size 1
+  output Result
+  "Analysis Region" 0
+  regionBL {863.9999771 485.9999871}
+  regionTR {1056.000023 594.0000129}
+  frame 1
+  grainColourSpace Cineon
+  Advanced 0
+  processRed true
+  redAmount 1
+  redSize 1
+  processGreen true
+  greenAmount 1
+  greenSize 1
+  processBlue true
+  blueAmount 1
+  blueSize 1
+  "Grain Response" 0
+  srcColourSpace "Grain Colour Space"
+  lowGain 1
+  midGain 1
+  highGain 1
+  useResponse true
+  responseMix 1
+  drawResponse false
+  needsGrainSample true
+  notBeenAnalysed true
+  grainClipNeeded true
+  inputHasChanged false
+  responseR0Counts 0
+  responseR0Samples 0
+  responseG0Counts 0
+  responseG0Samples 0
+  responseB0Counts 0
+  responseB0Samples 0
+  responseR1Counts 0
+  responseR1Samples 0
+  responseG1Counts 0
+  responseG1Samples 0
+  responseB1Counts 0
+  responseB1Samples 0
+  responseR2Counts 0
+  responseR2Samples 0
+  responseG2Counts 0
+  responseG2Samples 0
+  responseB2Counts 0
+  responseB2Samples 0
+  responseR3Counts 0
+  responseR3Samples 0
+  responseG3Counts 0
+  responseG3Samples 0
+  responseB3Counts 0
+  responseB3Samples 0
+  responseR4Counts 0
+  responseR4Samples 0
+  responseG4Counts 0
+  responseG4Samples 0
+  responseB4Counts 0
+  responseB4Samples 0
+  responseR5Counts 0
+  responseR5Samples 0
+  responseG5Counts 0
+  responseG5Samples 0
+  responseB5Counts 0
+  responseB5Samples 0
+  responseR6Counts 0
+  responseR6Samples 0
+  responseG6Counts 0
+  responseG6Samples 0
+  responseB6Counts 0
+  responseB6Samples 0
+  responseR7Counts 0
+  responseR7Samples 0
+  responseG7Counts 0
+  responseG7Samples 0
+  responseB7Counts 0
+  responseB7Samples 0
+  responseR8Counts 0
+  responseR8Samples 0
+  responseG8Counts 0
+  responseG8Samples 0
+  responseB8Counts 0
+  responseB8Samples 0
+  responseR9Counts 0
+  responseR9Samples 0
+  responseG9Counts 0
+  responseG9Samples 0
+  responseB9Counts 0
+  responseB9Samples 0
+  grainSample ""
+  cacheBreaker true
+  name F_ReGrain1
+  xpos 0
+  ypos 340
+ }
+ set C1357f540 [stack 0]
+push $N1357f8b0
+push $Nf99e200
+push $Nf99e200
+ Invert {
+  channels alpha
+  name Invert1
+  tile_color 0x7aa9ff00
+  xpos -92
+  ypos 57
+ }
+ Blur {
+  channels rgba
+  size {{AMT i}}
+  name Blur1
+  tile_color 0xcc804e00
+  xpos -92
+  ypos 105
+ }
+ Grade {
+  multiply {{COLOR.r i} {COLOR.g i} {COLOR.b i} 1}
+  maskChannelInput -rgba.alpha
+  unpremult -rgba.alpha
+  name Grade1
+  tile_color 0x7aa9ff00
+  xpos -92
+  ypos 142
+ }
+ ChannelMerge {
+  inputs 2
+  operation in
+  name ChannelMerge1
+  tile_color 0x4b5ec600
+  xpos -179
+  ypos 216
+ }
+clone $C1357f540 {
+  inputs 2
+  xpos -179
+  ypos 287
+  selected false
+ }
+push $Nf99d7b0
+ AddMix {
+  inputs 2
+  mix {{MIX i}}
+  name AddMix1
+  tile_color 0x4b5ec600
+  label inner
+  xpos -271
+  ypos 293
+ }
+ AddMix {
+  inputs 2
+  mix {{parent.MIX2 i}}
+  name AddMix2
+  label outer
+  xpos -271
+  ypos 334
+ }
+ Copy {
+  inputs 2
+  from0 -rgba.alpha
+  to0 -rgba.alpha
+  channels alpha
+  name ChannelCopy2
+  tile_color 0x9e3c6300
+  xpos -390
+  ypos 449
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  label "reset alpha"
+  xpos -390
+  ypos 524
+  disable {{!alpha_reset i}}
+ }
+ Output {
+  name Output1
+  xpos -390
+  ypos 936
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label "be sure to regrain!"
+  xpos -112
+  ypos 362
+ }
+end_group

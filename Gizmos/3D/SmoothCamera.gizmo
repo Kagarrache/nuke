@@ -1,0 +1,585 @@
+#! C:/Program Files/Nuke9.0v7/nuke-9.0.7.dll -nx
+version 9.0 v7
+Gizmo {
+inputs 3
+tile_color 0xa50000ff
+addUserKnob {20 SmoothCamera l "Smooth Camera"}
+addUserKnob {20 Input n 1}
+addUserKnob {4 mask l Mask M {None Alpha "Inverted alpha" "" "" ""}}
+addUserKnob {26 space l "" +STARTLINE T "\n"}
+addUserKnob {20 endGroup n -1}
+addUserKnob {26 ""}
+addUserKnob {20 SmoothParameters l "Smooth Parameters" n 1}
+addUserKnob {26 Translate}
+addUserKnob {41 TX T Sliders.TX}
+addUserKnob {41 MultCurveTX T Sliders.MultCurveTX}
+addUserKnob {41 TY T Sliders.TY}
+addUserKnob {41 MultCurveTY T Sliders.MultCurveTY}
+addUserKnob {41 TZ T Sliders.TZ}
+addUserKnob {41 MultCurveTZ T Sliders.MultCurveTZ}
+addUserKnob {26 Rotate}
+addUserKnob {41 RX T Sliders.RX}
+addUserKnob {41 MultCurveRX T Sliders.MultCurveRX}
+addUserKnob {41 RY T Sliders.RY}
+addUserKnob {41 MultCurveRY T Sliders.MultCurveRY}
+addUserKnob {41 RZ T Sliders.RZ}
+addUserKnob {41 MultCurveRZ T Sliders.MultCurveRZ}
+addUserKnob {26 space_6 l "" +STARTLINE T "\n"}
+addUserKnob {20 endGroup_4 l endGroup n -1}
+addUserKnob {26 ""}
+addUserKnob {20 CameraData l "Camera Data" n 1}
+addUserKnob {26 OriginaCam l "Original Cam"}
+addUserKnob {41 translateOrig l translate T CameraOrig.translateOrig}
+addUserKnob {41 rotateOrig l rotate T CameraOrig.rotateOrig}
+addUserKnob {26 SmoothCam_1 l "Smooth Cam"}
+addUserKnob {41 translate_1 l translate T CameraSmooth.translate}
+addUserKnob {41 rotate_1 l rotate T CameraSmooth.rotate}
+addUserKnob {26 space_8 l "" +STARTLINE T "\n"}
+addUserKnob {20 endGroup_5 l endGroup n -1}
+addUserKnob {26 ""}
+addUserKnob {20 Output}
+addUserKnob {20 Output_1 l Output n 1}
+addUserKnob {4 Outputshot l "Output Shot" M {Result Wipe Original ""}}
+addUserKnob {22 CreateCamera l "Create Camera" T "### Guardar variables del nombre de este nodo y del nodo de referencia (CameraSmooth)\n\nnombre = nuke.thisNode()\[\"name\"].value()\ncamObjetivo = nuke.toNode(\"CameraSmooth\")\n\n### Crear una cámara y guardarla en la variable CamSmooth\n\nwith nuke.root(): #Crearla en el nivel principal, es decir fuera del grupo\n    CamSmooth = nuke.createNode(\"Camera\")\n\n\n### Loop para que el nombre de la cámara sea CamSmooth\n### acabado en el primer numero que no exista (y tenga nombre unico)\n\ni=1\ncreado=False\nwhile not creado==True:\n    if nuke.exists(\"CamSmooth\"+str(i)):\n        i=i+1\n    else:\n        creado=True\n        CamSmooth\[\"name\"].setValue(\"CamSmooth\"+str(i))\n\n### Copiarle a la nueva camara los valores que queramos\n\nCamSmooth\[\"translate\"].setExpression(nombre+\".CameraSmooth.translate\")\nCamSmooth\[\"rotate\"].setExpression(nombre+\".CameraSmooth.rotate\")\nCamSmooth\[\"focal\"].setExpression(nombre+\".CameraSmooth.focal\")\nCamSmooth\[\"haperture\"].setExpression(nombre+\".CameraSmooth.haperture\")\nCamSmooth\[\"vaperture\"].setExpression(nombre+\".CameraSmooth.vaperture\")\nCamSmooth\[\"near\"].setExpression(nombre+\".CameraSmooth.near\")\nCamSmooth\[\"far\"].setExpression(nombre+\".CameraSmooth.far\")\nCamSmooth\[\"win_translate\"].setExpression(nombre+\".CameraSmooth.win_translate\")\nCamSmooth\[\"win_scale\"].setExpression(nombre+\".CameraSmooth.win_scale\")\nCamSmooth\[\"winroll\"].setExpression(nombre+\".CameraSmooth.winroll\")\nCamSmooth\[\"focal_point\"].setExpression(nombre+\".CameraSmooth.focal_point\")\nCamSmooth\[\"fstop\"].setExpression(nombre+\".CameraSmooth.fstop\")\n\n#etc" +STARTLINE}
+addUserKnob {20 WipePrperties l "Wipe Properties" n 1}
+WipePrperties 0
+addUserKnob {12 p0}
+p0 {1250 450}
+addUserKnob {12 p1}
+p1 {1500 674}
+addUserKnob {41 borderopacity l "border opacity" T Merge10.mix}
+addUserKnob {18 bordercolor l "border color"}
+bordercolor {1 1 1}
+addUserKnob {6 bordercolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {20 endGroup_2 l endGroup n -1}
+addUserKnob {26 space_3 l "" +STARTLINE T "\n"}
+addUserKnob {20 endGroup_1 l endGroup n -1}
+addUserKnob {26 ""}
+addUserKnob {20 ScanlineRender l "Scanline Render" n 1}
+addUserKnob {41 projection_mode l "projection mode" T ScanlineRender1.projection_mode}
+addUserKnob {41 filter T ScanlineRender1.filter}
+addUserKnob {26 space_1 l "" +STARTLINE T "\n"}
+addUserKnob {18 bgcolor l "bg color"}
+bgcolor {0 0 0}
+addUserKnob {6 bgcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {26 space_2 l "" +STARTLINE T "\n"}
+addUserKnob {20 endGroup_6 l endGroup n -1}
+addUserKnob {26 ""}
+addUserKnob {20 TransformOutput l "Transform Output" n 1}
+TransformOutput 0
+addUserKnob {6 Active +STARTLINE}
+addUserKnob {41 translate T Transform2.translate}
+addUserKnob {41 rotate T Transform2.rotate}
+addUserKnob {41 scale T Transform2.scale}
+addUserKnob {41 center T Transform2.center}
+addUserKnob {41 filter_1 l filter T Transform2.filter}
+addUserKnob {26 space_9 l "" +STARTLINE T "\n"}
+addUserKnob {20 endGroup_7 l endGroup n -1}
+addUserKnob {6 Crop -STARTLINE}
+Crop true
+addUserKnob {26 ""}
+addUserKnob {26 space_10 l "" +STARTLINE T "\n"}
+addUserKnob {20 Data}
+addUserKnob {26 space_4 l "" +STARTLINE T "\n"}
+addUserKnob {41 projection_mode_1 l projection T CameraSmooth.projection_mode}
+addUserKnob {26 space_5 l "" +STARTLINE T "\n"}
+addUserKnob {41 focal l "focal length" T CameraSmooth.focal}
+addUserKnob {41 haperture l "horiz aperture" T CameraSmooth.haperture}
+addUserKnob {41 vaperture l "vert aperture" T CameraSmooth.vaperture}
+addUserKnob {41 near T CameraSmooth.near}
+addUserKnob {41 far T CameraSmooth.far}
+addUserKnob {26 space_7 l "" +STARTLINE T "\n"}
+addUserKnob {41 win_translate l "window translate" T CameraSmooth.win_translate}
+addUserKnob {41 win_scale l "window scale" T CameraSmooth.win_scale}
+addUserKnob {26 space_11 l "" +STARTLINE T "\n"}
+addUserKnob {41 winroll l "window roll" T CameraSmooth.winroll}
+addUserKnob {41 focal_point l "focal distance" T CameraSmooth.focal_point}
+addUserKnob {41 fstop T CameraSmooth.fstop}
+}
+Input {
+inputs 0
+name Source
+label "\[value number]"
+xpos 40
+ypos -460
+number 1
+}
+Dot {
+name Dot3
+xpos 74
+ypos -406
+}
+set Ne0981000 [stack 0]
+Dot {
+name Dot2
+xpos 835
+ypos -406
+}
+Dot {
+name Dot4
+xpos 835
+ypos 984
+}
+set Ne0980800 [stack 0]
+Dot {
+name Dot22
+xpos 1067
+ypos 984
+}
+Dot {
+name Dot23
+xpos 1067
+ypos 1849
+}
+set Ne0980000 [stack 0]
+Dot {
+name Dot24
+xpos 1067
+ypos 1927
+}
+push $Ne0980000
+push $Ne0980800
+Remove {
+name Remove2
+xpos 636
+ypos 974
+}
+Ramp {
+p0 {{parent.p0} {parent.p0}}
+p1 {{parent.p1} {parent.p1}}
+name Ramp1
+xpos 486
+ypos 980
+}
+set N908b5400 [stack 0]
+Grade {
+channels all
+blackpoint -0.1
+whitepoint 0.01
+name Grade4
+xpos 486
+ypos 1095
+}
+Clamp {
+name Clamp1
+xpos 486
+ypos 1148
+}
+Shuffle {
+red alpha
+green alpha
+blue alpha
+name Shuffle9
+xpos 486
+ypos 1223
+}
+EdgeDetectWrapper {
+name EdgeDetect2
+xpos 486
+ypos 1400
+}
+Blur {
+size 2
+name Blur3
+xpos 486
+ypos 1478
+}
+set N908b4000 [stack 0]
+Shuffle {
+red alpha
+green alpha
+blue alpha
+name Shuffle10
+xpos 486
+ypos 1651
+}
+Grade {
+multiply {{parent.bordercolor} {parent.bordercolor} {parent.bordercolor} 1}
+name Grade5
+xpos 624
+ypos 1651
+}
+push $N908b5400
+Dot {
+name Dot6
+xpos 410
+ypos 984
+}
+Grade {
+channels all
+whitepoint 0
+name Grade1
+xpos 376
+ypos 1093
+}
+Clamp {
+name Clamp2
+xpos 376
+ypos 1146
+}
+Blur {
+size 4.8
+name Blur4
+xpos 376
+ypos 1270
+}
+Dot {
+name Dot25
+xpos 328
+ypos 1280
+}
+Input {
+inputs 0
+name Mask
+xpos 462
+ypos -279
+number 2
+}
+Shuffle {
+red alpha
+green alpha
+blue alpha
+name Shuffle8
+xpos 462
+ypos -220
+}
+set N86433c00 [stack 0]
+Invert {
+channels alpha
+name Invert3
+xpos 560
+ypos -152
+}
+push $N86433c00
+Dot {
+name Dot21
+xpos 496
+ypos -150
+}
+push $Ne0981000
+Shuffle {
+alpha white
+name Shuffle1
+xpos 40
+ypos -339
+}
+set N86433000 [stack 0]
+Dot {
+name Dot1
+xpos 262
+ypos -335
+}
+set N86432c00 [stack 0]
+Multiply {
+value 0
+name Multiply1
+xpos 141
+ypos -158
+}
+set N86432800 [stack 0]
+Dot {
+name Dot5
+xpos 444
+ypos -148
+}
+Switch {
+inputs 3
+which {{parent.mask}}
+name SwitchMask
+xpos 462
+ypos -76
+}
+push $N86432c00
+Dot {
+name Dot26
+xpos 262
+ypos 580
+}
+set N8f56bc00 [stack 0]
+Shuffle {
+alpha black
+name Shuffle11
+xpos 317
+ypos 576
+}
+ShuffleCopy {
+inputs 2
+name ShuffleCopy5
+xpos 462
+ypos 576
+}
+Premult {
+name Premult3
+xpos 462
+ypos 841
+}
+Camera2 {
+inputs 0
+translate {{parent.Formula.IT} {parent.Formula.IT} {parent.Formula.IT}}
+rotate {{parent.Formula.IR} {parent.Formula.IR} {parent.Formula.IR}}
+focal {{parent.CameraOrig.focal}}
+haperture {{parent.CameraOrig.haperture}}
+vaperture {{parent.CameraOrig.vaperture}}
+near {{parent.CameraOrig.near}}
+far {{parent.CameraOrig.far}}
+win_translate {{parent.CameraOrig.win_translate} {parent.CameraOrig.win_translate}}
+win_scale {{parent.CameraOrig.win_scale} {parent.CameraOrig.win_scale}}
+winroll {{parent.CameraOrig.winroll}}
+focal_point {{parent.CameraOrig.focal_point}}
+fstop {{parent.CameraOrig.fstop}}
+name CameraSmooth
+xpos -310
+ypos -101
+}
+Input {
+inputs 0
+name Camera
+label "\[value number]"
+xpos -499
+ypos -291
+}
+Camera2 {
+focal {{parent.input0.focal}}
+haperture {{parent.input0.haperture}}
+vaperture {{parent.input0.vaperture}}
+near {{parent.input0.near}}
+far {{parent.input0.far}}
+win_translate {{parent.input0.win_translate.u} {parent.input0.win_translate.v}}
+win_scale {{parent.input0.win_scale.u} {parent.input0.win_scale.v}}
+winroll {{parent.input0.winroll}}
+focal_point {{parent.input0.focal_point}}
+fstop {{parent.input0.fstop}}
+name CameraOrig
+xpos -309
+ypos -307
+addUserKnob {20 DataOrig}
+addUserKnob {13 translateOrig l translate}
+translateOrig {{parent.input0.translate} {parent.input0.translate} {parent.input0.translate}}
+addUserKnob {13 rotateOrig l rotate}
+rotateOrig {{parent.input0.rotate} {parent.input0.rotate} {parent.input0.rotate}}
+}
+push $N86433000
+Project3D2 {
+inputs 2
+name Project3D1
+xpos 40
+ypos -287
+}
+Card2 {
+rows 0
+columns 0
+z {{parent.CameraOrig.far}}
+lens_in_focal {{parent.CameraOrig.focal}}
+lens_in_haperture {{parent.CameraOrig.haperture}}
+translate {{parent.CameraOrig.translateOrig} {parent.CameraOrig.translateOrig} {parent.CameraOrig.translateOrig}}
+rotate {{parent.CameraOrig.rotateOrig} {parent.CameraOrig.rotateOrig} {parent.CameraOrig.rotateOrig}}
+uniform_scale 0.9
+control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+name Card1
+xpos 40
+ypos -242
+}
+push $N86432800
+ScanlineRender {
+inputs 3
+shutteroffset centred
+MB_channel forward
+name ScanlineRender1
+xpos 40
+ypos -81
+}
+Remove {
+operation keep
+channels rgba
+name Remove1
+xpos 40
+ypos 422
+}
+Merge2 {
+inputs 2
+name Merge7
+xpos 40
+ypos 841
+}
+set N8ef7d000 [stack 0]
+Transform {
+center {{input.format.w/2} {input.format.h/2}}
+name Transform2
+selected true
+xpos -174
+ypos 841
+disable {{parent.Active-1 x339 0}}
+}
+Dot {
+name Dot27
+xpos -140
+ypos 963
+}
+push $N8ef7d000
+Switch {
+inputs 2
+which 1
+name Switch4
+xpos 40
+ypos 959
+}
+push $N8f56bc00
+Grade {
+multiply 0
+add {{parent.bgcolor} {parent.bgcolor} {parent.bgcolor} {curve}}
+name Grade_BGColor1
+xpos 228
+ypos 638
+}
+Dot {
+name Dot28
+xpos 262
+ypos 1043
+}
+Merge2 {
+inputs 2
+operation matte
+name Merge8
+xpos 40
+ypos 1039
+}
+Dot {
+name Dot29
+xpos 74
+ypos 1350
+}
+set N610c7400 [stack 0]
+ShuffleCopy {
+inputs 2
+name ShuffleCopy6
+xpos 294
+ypos 1346
+}
+push $Ne0980800
+Merge2 {
+inputs 2
+operation matte
+name Merge9
+xpos 801
+ypos 1346
+}
+Merge2 {
+inputs 2
+name Merge10
+xpos 801
+ypos 1651
+}
+set N610c6800 [stack 0]
+push $N610c7400
+Dot {
+name Dot30
+xpos 74
+ypos 1849
+}
+Switch {
+inputs 3
+which {{parent.Outputshot}}
+name SwitchOutput1
+xpos 801
+ypos 1845
+}
+set N610c6000 [stack 0]
+ShuffleCopy {
+inputs 2
+name ShuffleCopy7
+xpos 801
+ypos 1923
+}
+Crop {
+box {0 0 2560 1350}
+name Crop3
+xpos 801
+ypos 2000
+disable {{parent.Crop-1 x339 0}}
+}
+set Nb81f800 [stack 0]
+Output {
+name Output2
+xpos 801
+ypos 2213
+}
+NoOp {
+inputs 0
+name Sliders
+xpos -704
+ypos -186
+addUserKnob {20 Sliders}
+addUserKnob {26 Translate l "" +STARTLINE T Translate}
+addUserKnob {7 TX R 1 15}
+TX 5
+addUserKnob {7 MultCurveTX t MultCurveTX R 0 2}
+MultCurveTX 1
+addUserKnob {7 TY R 1 15}
+TY 5
+addUserKnob {7 MultCurveTY t MultCurveTY R 0 2}
+MultCurveTY 1
+addUserKnob {7 TZ R 1 15}
+TZ 5
+addUserKnob {7 MultCurveTZ t MultCurveTZ R 0 2}
+MultCurveTZ 1
+addUserKnob {26 ""}
+addUserKnob {26 Rotate l "" +STARTLINE T Rotate}
+addUserKnob {7 RX R 1 15}
+RX 5
+addUserKnob {7 MultCurveRX t MultCurveRX R 0 2}
+MultCurveRX 1
+addUserKnob {7 RY R 1 15}
+RY 5
+addUserKnob {7 MultCurveRY t MultCurveRY R 0 2}
+MultCurveRY 1
+addUserKnob {7 RZ R 1 15}
+RZ 5
+addUserKnob {7 MultCurveRZ t MultCurveRZ R 0 2}
+MultCurveRZ 1
+}
+push $N908b4000
+push $N610c6800
+push 0
+push $N610c6000
+push $Nb81f800
+push $Ne0981000
+Viewer {
+inputs 6
+frame_range 300-500
+input_number 1
+rotate 121.1658096
+name Viewer1
+xpos -650
+ypos 2237
+}
+StickyNote {
+inputs 0
+name StickyNote1
+label "en CameraOrig, en la pestaña DataOrig\nlos valores tienen que ser los de la camara\nque entra\ny los datos en projection tambien"
+note_font_size 31
+xpos -653
+ypos -582
+}
+NoOp {
+inputs 0
+name Formula
+xpos -533
+ypos -184
+addUserKnob {20 Formula}
+addUserKnob {13 IT l Translate}
+IT {{"CameraOrig.translateOrig.x.integrate(frame-Sliders.TX, frame+Sliders.TX)/(Sliders.TX*2)*Sliders.MultCurveTX"} {"CameraOrig.translateOrig.y.integrate(frame-Sliders.TY, frame+Sliders.TY)/(Sliders.TY*2)*Sliders.MultCurveTY"} {"CameraOrig.translateOrig.z.integrate(frame-Sliders.TZ, frame+Sliders.TZ)/(Sliders.TZ*2)*Sliders.MultCurveTZ"}}
+addUserKnob {13 IR l Rotate}
+IR {{"CameraOrig.rotateOrig.x.integrate(frame-Sliders.RX, frame+Sliders.RX)/(Sliders.RX*2)*Sliders.MultCurveRX"} {"CameraOrig.rotateOrig.y.integrate(frame-Sliders.RY, frame+Sliders.RY)/(Sliders.RY*2)*Sliders.MultCurveRY"} {"CameraOrig.rotateOrig.z.integrate(frame-Sliders.RZ, frame+Sliders.RZ)/(Sliders.RZ*2)*Sliders.MultCurveRZ"}}
+addUserKnob {26 ""}
+}
+end_group

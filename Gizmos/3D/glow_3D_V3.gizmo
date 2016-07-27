@@ -1,0 +1,141 @@
+#! C:/Program Files/Nuke9.0v6/nuke-9.0.6.dll -nx
+version 9.0 v6
+Gizmo {
+ inputs 2
+ addUserKnob {20 User l control}
+ addUserKnob {26 text l "" +STARTLINE T "In light Input, plug the light source position pass with it luminance in it alpha.\nIn target, plug the target object position pass with it alpha.\n\nResult is better when the light input is overscaned."}
+ addUserKnob {26 ""}
+ addUserKnob {7 ctrl_tol l tolerance}
+ ctrl_tol 0.755
+ addUserKnob {41 intensity l boost T ctrl.intensity}
+ addUserKnob {41 glow3D_Kernel_Size l Size T threeD_glow1.glow3D_Kernel_Size}
+ addUserKnob {8 threeD_glow1_glow3D_Kernel_Decay l Decay R 0 2}
+ threeD_glow1_glow3D_Kernel_Decay 3
+ addUserKnob {7 accuracy}
+ accuracy 0.5
+ addUserKnob {41 gain T ColorCorrect1.gain}
+ addUserKnob {4 output M {"3D glow mask" "light luminance"}}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 a l "" +STARTLINE T "by Simon Moreau | visualprocess.blogspot.com"}
+}
+ Input {
+  inputs 0
+  name lightInput
+  xpos 287
+  ypos -85
+ }
+ Reformat {
+  type scale
+  scale {{accuracy}}
+  resize distort
+  center false
+  filter Impulse
+  pbb true
+  name Reformat1
+  xpos 287
+  ypos -29
+ }
+ Grade {
+  channels alpha
+  blackpoint {{parent.ctrl.tol}}
+  whitepoint {{"1-ctrl.intensity < blackpoint ? blackpoint : 1-ctrl.intensity" x193 0.49}}
+  name Grade1
+  xpos 287
+  ypos 20
+ }
+set N56a41c00 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  xpos 445
+  ypos 343
+ }
+push $N56a41c00
+ Expression {
+  expr3 "a < 0 ? 0 : a"
+  name Expression1
+  xpos 287
+  ypos 93
+ }
+ BlinkScript {
+  ProgramGroup 1
+  KernelDescription "1 \"glow3D_Kernel\" iterate pixelWise a9280ef9be1d98c1d6f44488f718e2e5f8ede39ba702a914eb5b1fc3f2fde289 2 \"src\" Read Point \"dst\" Write Random 1 \"Width\" Int 1 AAUAAA=="
+  kernelSource "kernel glow3D_Kernel: ImageComputationKernel<ePixelWise>\n\{\nImage<eRead, eAccessPoint, eEdgeClamped> src; //target position\nImage<eWrite, eAccessRandom> dst;  //the output image\n\n  //In define(), parameters can be given labels and default values.\n\nparam:\n\tint width;\n\nvoid define() \{\n\tdefineParam(width, \"Width\", 1280);\n\t\}\n\nvoid process() \{\n\tif (src(3) != 0)\{\n\t\tint position = dst(0,-1,3);\n\t\tdst(0,-1,3) = (float)(position+1);\n\t\tint x = position % width;\n\t\tint y = position / width;\n\t\tdst(x,y) = src();\n\t\t\}\n\t\t\}\n\};"
+  useGPUIfAvailable false
+  rebuild ""
+  glow3D_Kernel_Width {{width}}
+  name reorganize
+  xpos 287
+  ypos 160
+ }
+set N56a40c00 [stack 0]
+ Input {
+  inputs 0
+  name Target
+  xpos -54
+  ypos 174
+  number 1
+ }
+ BlinkScript {
+  inputs 2
+  ProgramGroup 1
+  KernelDescription "1 \"glow3D_Kernel\" iterate pixelWise 4a8249598cf7ff8edc8246dc71b2743b9ea55327622374a042c39b70fb580673 3 \"posDst\" Read Point \"posRef\" Read Random \"dst\" Write Point 3 \"Size\" Float 1 AACAPw== \"Decay\" Float 1 AACAPw== \"Width\" Int 1 AAUAAA=="
+  kernelSource "kernel glow3D_Kernel: ImageComputationKernel<ePixelWise>\n\{\nImage<eRead, eAccessPoint, eEdgeClamped> posDst; //target position\nImage<eRead, eAccessRandom, eEdgeClamped> posRef;  //reference position pass\nImage<eWrite> dst;  //the output image\n\nparam:\n\tfloat size; //Size of the glow\n\tfloat decay;\n\tint width;\n\n\n  //In define(), parameters can be given labels and default values.\nvoid define() \{\n\tdefineParam(size, \"Size\", 1.0f);\n\tdefineParam(decay, \"Decay\", 1.0f);\n\tdefineParam(width, \"Width\", 1280);\n\t\}\n\nlocal:\n\tint x1;\n\tint x2;\n\tint y1;\n\tint y2;\n\n  //The init() function is run before any calls to kernel().\nvoid init() \{\n  \}\n\nfloat distance(float ref0,float targ0, float ref1, float targ1, float ref2, float targ2) \{//calculate the distance \n\tfloat dist = sqrt((targ0-ref0)*(targ0-ref0) +(targ1-ref1)*(targ1-ref1) +(targ2-ref2)*(targ2-ref2) );\n\treturn dist;\n\t\}\n\nvoid process(int2 pos) \{\n\tif (posDst(3) != 0) \{\n\t\tfloat tempDist;\n\t\tint denominateur = 0;\n\t\tfloat somme = 0;\n\t\tfloat ponderation;\n\t\tint i = 0;\n\t\tint x = i % width;\n\t\tint y = i / width;\n\t\twhile (posRef(x,y,3) != 0) \{\n\t\t\ttempDist = distance(posRef(x,y,0), posDst(0), posRef(x,y,1), posDst(1), posRef(x,y,2), posDst(2));\n\t\t\tif (tempDist<size) \{\n\t\t\t\tponderation = 1-(tempDist/size);\n\t\t\t\tponderation = pow(ponderation,decay);\n\t\t\t\tsomme += (posRef(x,y,3)*ponderation);\n\t\t\t\tdenominateur++;\n\t\t\t\t\}\n\t\t\ti += 1;\n\t\t\tx = i % width;\n\t\t\ty = i / width;\n\t\t\t\}\n\t\tif (denominateur != 0) \{\n\t\t\tdst() = somme/denominateur;\n\t\t\t\}\n\t\telse \{\n\t\t\tdst() = 0;\n\t\t\t\}\n\t\}\n\telse \{dst() = 0;\}\n\t\n   \}\n\};"
+  useGPUIfAvailable false
+  rebuild ""
+  glow3D_Kernel_Size 100
+  glow3D_Kernel_Decay {{parent.threeD_glow1_glow3D_Kernel_Decay}}
+  glow3D_Kernel_Width {{reorganize.width}}
+  name threeD_glow1
+  xpos 287
+  ypos 254
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  xpos 287
+  ypos 349
+ }
+ ColorCorrect {
+  channels rgba
+  gain 300
+  name ColorCorrect1
+  xpos 287
+  ypos 397
+ }
+ Switch {
+  inputs 2
+  which {{parent.output}}
+  name Switch1
+  xpos 287
+  ypos 473
+ }
+ Output {
+  name Output1
+  xpos 287
+  ypos 529
+ }
+push $N56a40c00
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 515
+  ypos 166
+ }
+ NoOp {
+  inputs 0
+  name ctrl
+  xpos 68
+  ypos 27
+  addUserKnob {20 User}
+  addUserKnob {7 intensity l boost}
+  addUserKnob {7 decay R 1 4}
+  decay 2
+  addUserKnob {7 tol l tolerance}
+  tol {{1-parent.ctrl_tol}}
+ }
+end_group

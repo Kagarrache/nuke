@@ -1,0 +1,101 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 driver l Driver}
+ addUserKnob {1 staticText l "Static text"}
+ addUserKnob {1 text l Text}
+ text "A sample text"
+ addUserKnob {1 cursorSymbol l "Cursor symbol"}
+ cursorSymbol _
+ addUserKnob {3 blinkingRate l "Blinking rate"}
+ blinkingRate 10
+ addUserKnob {16 completition l Completition}
+ completition 1
+ addUserKnob {26 ""}
+ addUserKnob {20 Font_1 l Font n 2}
+ addUserKnob {41 font_1 l font T Text1.font}
+ addUserKnob {41 index_1 l "" -STARTLINE T Text1.index}
+ addUserKnob {41 size_1 l size T Text1.size}
+ addUserKnob {41 kerning_1 l kerning T Text1.kerning}
+ addUserKnob {41 leading_1 l leading T Text1.leading}
+ addUserKnob {41 xjustify_1 l justify T Text1.xjustify}
+ addUserKnob {41 yjustify_1 l "" -STARTLINE T Text1.yjustify}
+ addUserKnob {20 "" n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 Transform_1 l Transform n 1}
+ Transform_1 0
+ addUserKnob {41 matrix_1 l matrix T Text1.matrix}
+ addUserKnob {41 translate_1 l translate T Text1.translate}
+ addUserKnob {41 rotate_1 l rotate T Text1.rotate}
+ addUserKnob {41 scale_1 l scale T Text1.scale}
+ addUserKnob {41 skew_1 l skew T Text1.skew}
+ addUserKnob {20 "" n -1}
+ addUserKnob {3 cursorShow l INVISIBLE +INVISIBLE}
+ cursorShow {{rint((sin(frame*6/blinkingRate)+1)/2)-1}}
+ addUserKnob {3 length l INVISIBLE +INVISIBLE}
+ length {{"\[string length \[value text] ]"}}
+ addUserKnob {3 lastChar l INVISIBLE +INVISIBLE}
+ lastChar {{"int ((length)*completition)-1"}}
+ addUserKnob {26 ""}
+ addUserKnob {41 color_2 l color T Text1.color}
+ addUserKnob {26 about l "" +STARTLINE T "\nAssembled by R. Kladko"}
+ addUserKnob {20 text_1 l Text}
+ addUserKnob {41 output T Text1.output}
+ addUserKnob {41 premult T Text1.premult}
+ addUserKnob {41 cliptype l "clip to" T Text1.cliptype}
+ addUserKnob {41 replace T Text1.replace}
+ addUserKnob {41 invert T Text1.invert}
+ addUserKnob {41 opacity T Text1.opacity}
+ addUserKnob {26 "" l mask}
+ addUserKnob {41 maskChannelMask l "" -STARTLINE T Text1.maskChannelMask}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Text1.maskChannelInput}
+ addUserKnob {41 inject T Text1.inject}
+ addUserKnob {41 invert_mask l invert T Text1.invert_mask}
+ addUserKnob {26 ""}
+ addUserKnob {41 allow_unicode l "turn \"&&#nnn;\" into Unicode" +INVISIBLE T Text1.allow_unicode}
+ addUserKnob {20 Font n 2}
+ addUserKnob {41 font T Text1.font}
+ addUserKnob {41 index l "" -STARTLINE T Text1.index}
+ addUserKnob {41 size T Text1.size}
+ addUserKnob {41 kerning T Text1.kerning}
+ addUserKnob {41 leading T Text1.leading}
+ addUserKnob {41 xjustify l justify T Text1.xjustify}
+ addUserKnob {41 yjustify l "" -STARTLINE T Text1.yjustify}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 Transform n 1}
+ addUserKnob {41 matrix T Text1.matrix}
+ addUserKnob {41 translate T Text1.translate}
+ addUserKnob {41 rotate T Text1.rotate}
+ addUserKnob {41 scale T Text1.scale}
+ addUserKnob {41 skew T Text1.skew}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 color l Color}
+ addUserKnob {41 ramp T Text1.ramp}
+ addUserKnob {41 color_1 l color T Text1.color}
+ addUserKnob {41 p1 l "point 1" T Text1.p1}
+ addUserKnob {41 color0 l "color 0" T Text1.color0}
+ addUserKnob {41 p0 l "point 0" T Text1.p0}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -187
+  ypos -80
+ }
+ Text {
+  message "\[value parent.staticText]\[string range \[value parent.text] -1 \[value parent.lastChar]]\[string range \[value parent.cursorSymbol] -1 \[value parent.cursorShow]]"
+  font C:/WINDOWS/Fonts/arial.ttf
+  translate {100 100}
+  name Text1
+  selected true
+  xpos -187
+  ypos -19
+ }
+ Output {
+  name Output1
+  xpos -187
+  ypos 81
+ }
+end_group

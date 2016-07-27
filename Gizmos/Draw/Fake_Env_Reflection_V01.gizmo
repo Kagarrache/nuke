@@ -1,0 +1,306 @@
+#! D:/Program Files/Nuke8.0v4/nuke-8.0.v4.dll -nx
+version 8.0 v4
+Gizmo {
+ inputs 3
+ tile_color 0xe9ff55ff
+ note_font_size 36
+ addUserKnob {20 parm}
+ addUserKnob {6 hideScript l INVISIBLE +INVISIBLE +STARTLINE}
+ hideScript {{"\[python -execlocal if(\\ nuke.thisNode().knob(\\\"isFresnel\\\").value()\\ ):\\ntnuke.thisNode().knob(\\\"fre_curve\\\").setEnabled(True)\\ntnuke.thisNode().knob(\\\"fres_ref_zero\\\").setEnabled(True)\\ntnuke.thisNode().knob(\\\"fres_ref_90\\\").setEnabled(True)\\nelse:\\ntnuke.thisNode().knob(\\\"fre_curve\\\").setEnabled(False)\\ntnuke.thisNode().knob(\\\"fres_ref_zero\\\").setEnabled(False)\\ntnuke.thisNode().knob(\\\"fres_ref_90\\\").setEnabled(False)\\nret\\ =\\ 0\\n]"}}
+ addUserKnob {7 offset_x l INVISIBLE +INVISIBLE R -1 1}
+ addUserKnob {7 offset_y l INVISIBLE -STARTLINE +INVISIBLE R -1 1}
+ addUserKnob {7 rot_x l "rotation x" R -1080 1080}
+ addUserKnob {7 rot_y l "rotation y" R -1080 1080}
+ addUserKnob {12 repeat}
+ repeat {1 1}
+ addUserKnob {7 res_scale l "res scale" R 0.01 1}
+ res_scale 1
+ addUserKnob {41 res_filter l "res. filter" T Reformat1.filter}
+ addUserKnob {41 blur_size l "blur size" T Blur1.size}
+ addUserKnob {26 ""}
+ addUserKnob {41 refl_filter l "refl. filter" t "switch to the \"Notch\" if tehre is a banding looking occurred " T STMap2.filter}
+ addUserKnob {26 ""}
+ addUserKnob {6 isFresnel l fresnel +STARTLINE}
+ isFresnel true
+ addUserKnob {7 fre_curve l curve R 0 10}
+ fre_curve 2.6
+ addUserKnob {7 fres_ref_zero l "0 degree ref"}
+ fres_ref_zero 0.05
+ addUserKnob {7 fres_ref_90 l "90 degree ref" -STARTLINE}
+ fres_ref_90 1
+ addUserKnob {26 ""}
+ addUserKnob {7 IOR +DISABLED R 0.01 5}
+ IOR 1.4
+ addUserKnob {26 ""}
+ addUserKnob {20 t_colorClamp l "color clamp" n 1}
+ addUserKnob {26 colorClamp l "color clamp" -STARTLINE}
+ addUserKnob {6 Clamp1_disable l disable -STARTLINE}
+ Clamp1_disable true
+}
+ Input {
+  inputs 0
+  name point_cam
+  xpos -55
+  ypos -191
+  number 1
+ }
+ Expression {
+  temp_name0 v_length
+  temp_expr0 "sqrt( r*r + g*g + b*b )"
+  expr0 "r/ v_length"
+  expr1 "g/ v_length"
+  expr2 "b/ v_length"
+  name nomailze
+  xpos -55
+  ypos 131
+ }
+ set C1a954880 [stack 0]
+set N1a954880 [stack 0]
+ Invert {
+  channels rgb
+  name Invert1
+  xpos 66
+  ypos 363
+  disable true
+ }
+ Input {
+  inputs 0
+  name normal_cam
+  xpos 113
+  ypos -177
+  number 2
+ }
+clone $C1a954880 {
+  xpos 113
+  ypos 231
+  selected false
+ }
+set N1a9552d0 [stack 0]
+ MergeExpression {
+  inputs 2
+  temp_name0 ior
+  temp_expr0 "1/ parent.IOR"
+  temp_name1 V
+  temp_expr1 "( 0.1, 0.5, 1)"
+  temp_name2 N
+  temp_expr2 B
+  temp_name3 dot_VN
+  temp_expr3 "B.r * A.r + B.g * A.g + B.b * A.b"
+  expr1 0
+  expr2 0
+  channel3 alpha
+  expr3 0
+  name MergeExpression1
+  xpos 113
+  ypos 421
+  disable true
+ }
+push $N1a9552d0
+push $N1a954880
+ Dot {
+  name Dot2
+  xpos -151
+  ypos 135
+ }
+set N1a9559b0 [stack 0]
+ MergeExpression {
+  inputs 2
+  temp_name0 dot
+  temp_expr0 "-1 * ( B.r * A.r + B.g * A.g + B.b * A.b )"
+  expr0 dot
+  expr1 dot
+  channel2 rgb
+  expr2 dot
+  name MergeExpression2
+  xpos 135
+  ypos 640
+ }
+ Grade {
+  black {{"\[python 1\\ -\\ nuke.thisGroup().knob(\\\"fres_ref_90\\\").value()]"}}
+  add {{"\[python nuke.thisGroup().knob(\\\"fres_ref_zero\\\").value()\\ *\\ -1]"}}
+  gamma {{"\[python nuke.thisGroup().knob(\\\"fre_curve\\\").value()]"}}
+  white_clamp true
+  name Grade2
+  xpos 135
+  ypos 733
+ }
+push $N1a9559b0
+ Dot {
+  name Dot1
+  xpos -151
+  ypos 324
+ }
+push $N1a9552d0
+push $N1a954880
+ MergeExpression {
+  inputs 2
+  temp_name0 dot_VN
+  temp_expr0 "B.r * A.r + B.g * A.g + B.b * A.b"
+  expr0 "2 * dot_VN * Ar"
+  expr1 "2 * dot_VN * Ag"
+  expr2 "2 * dot_VN * Ab"
+  name _2xdot_VN
+  xpos -55
+  ypos 231
+ }
+ MergeExpression {
+  inputs 2
+  expr0 "A.r - B.r"
+  expr1 "A.g - B.g"
+  expr2 "A.b - B.b"
+  expr3 0
+  name vec_Rref
+  xpos -55
+  ypos 320
+ }
+ Expression {
+  expr0 "isnan(r) ? 0 : r"
+  expr1 "isnan(g) ? 0 : g"
+  expr2 "isnan(b) ? 0 : b"
+  name remove_NaN
+  xpos -55
+  ypos 447
+ }
+ Expression {
+  temp_name0 u
+  temp_expr0 "( atan(r,b) + pi )/ (2*pi)"
+  temp_name1 v
+  temp_expr1 "( asin(g) + 0.5*pi )/ pi"
+  expr0 u
+  expr1 v
+  expr2 0
+  expr3 0
+  name Expression1
+  xpos -55
+  ypos 550
+ }
+ Expression {
+  temp_name0 rot_x
+  temp_name1 rot_y
+  temp_expr1 "parent.rot_y/ 360.0"
+  expr0 "abs( (rot_y + r) % 1.0 )"
+  expr2 0
+  name Expression3
+  tile_color 0xba3494ff
+  xpos 247
+  ypos 550
+ }
+ Reformat {
+  inputs 0
+  type scale
+  scale {{"\[python nuke.thisGroup().knob(\\\"res_scale\\\").value()]"}}
+  name Reformat1
+  xpos 249
+  ypos 58
+ }
+ set C1a9578a0 [stack 0]
+ Expression {
+  temp_name0 w
+  temp_expr0 Reformat1.width
+  temp_name1 h
+  temp_expr1 Reformat1.height
+  temp_name2 offset_x
+  temp_expr2 "-1 * ( parent.offset_x % 1.0 )"
+  temp_name3 offset_y
+  temp_expr3 "-1 * ( parent.rot_x / 360.0 )"
+  expr0 "(((2*asin(sin(2*pi*(( (x+offset_x*2*w) - 0.25*2*w )/(2*w) ))))/pi) / 2)+0.5"
+  expr1 "(((2*asin(sin(2*pi*(( (y+offset_y*2*h) - 0.25*2*h )/(2*h) ))))/pi) / 2)+0.5"
+  expr2 0
+  name Expression2
+  xpos 247
+  ypos 259
+ }
+set N1a957c10 [stack 0]
+ Input {
+  inputs 0
+  name Env_image
+  xpos 423
+  ypos -250
+ }
+ Crop {
+  box {{curve} {curve} {Env_image.width} {Env_image.height}}
+  reformat true
+  intersect true
+  crop false
+  name Crop1
+  xpos 423
+  ypos -187
+ }
+ Tile {
+  rows {{"\[python nuke.thisGroup().knob(\\\"repeat\\\").value()\\\[1\\]]"}}
+  columns {{"\[python nuke.thisGroup().knob(\\\"repeat\\\").value()\\\[0\\]]"}}
+  name Tile1
+  xpos 423
+  ypos -113
+  disable true
+ }
+clone $C1a9578a0 {
+  xpos 423
+  ypos -45
+  selected false
+ }
+ Blur {
+  size {0 0}
+  name Blur1
+  selected true
+  xpos 423
+  ypos 113
+ }
+ Clamp {
+  name Clamp1
+  xpos 423
+  ypos 171
+  disable {{parent.Clamp1_disable}}
+ }
+ STMap {
+  inputs 2
+  channels rgb
+  uv rgb
+  name STMap1
+  xpos 423
+  ypos 259
+ }
+set N1aa29130 [stack 0]
+ STMap {
+  inputs 2
+  channels rgb
+  uv rgb
+  filter Notch
+  name STMap2
+  xpos 423
+  ypos 550
+ }
+ Grade {
+  whitepoint 0.97
+  name Grade3
+  xpos 423
+  ypos 576
+ }
+ Grade {
+  inputs 1+1
+  multiply 0
+  maskChannelMask rgba.red
+  name Grade1
+  xpos 423
+  ypos 733
+  disable {{"\[python 1\\ -\\ nuke.thisGroup().knob(\\\"isFresnel\\\").value()]"}}
+ }
+set N1aa29b80 [stack 0]
+ Output {
+  name Output1
+  xpos 423
+  ypos 835
+ }
+push $N1a957c10
+push $N1aa29130
+push $N1aa29b80
+ Viewer {
+  inputs 3
+  input_number 1
+  viewerProcess rec709
+  input_process false
+  name Viewer1
+  xpos 247
+  ypos 650
+ }
+end_group

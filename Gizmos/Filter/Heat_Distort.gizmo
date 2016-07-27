@@ -1,0 +1,151 @@
+#! C:/Program Files/Nuke8.0v1/nuke-8.0.v1.dll -nx
+version 8.0 v1
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {6 noisemap l "Distortion Noise Map" +STARTLINE}
+ addUserKnob {7 speed l Speed t "This knob controlls speed of heat distortion."}
+ speed 0.5
+ addUserKnob {7 xyspacer l "X/Y Spacer" R 0 100}
+ xyspacer {12}
+ addUserKnob {41 size l "X/Y Size" t "This knob controls size of horizontal and vertical distortion" T Noise_controller.size}
+ addUserKnob {41 size_1 l Blur T Blur1.size}
+ addUserKnob {41 opacity l Opacity T Noise_controller.opacity}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 lacunarity l Lacunarity T Noise_controller.lacunarity}
+ addUserKnob {41 gamma l Gamma T Noise_controller.gamma}
+ addUserKnob {41 gain l Gain T Noise_controller.gain}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 octaves l Octaves T Noise_controller.octaves}
+ addUserKnob {41 nyquist l "clip at Nyquist limit" T Noise_controller.nyquist}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 uv_offset l "UV offset" T IDistort1.uv_offset}
+ addUserKnob {41 uv_scale l "UV scale" T IDistort1.uv_scale}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {12 xytranslate l "X/Y Translate"}
+ xytranslate {0 0}
+}
+ Noise {
+  inputs 0
+  opacity {{parent.Noise_controller.opacity}}
+  size {{parent.Noise_controller.size}}
+  zoffset {{parent.Noise_controller.zoffset}}
+  octaves {{parent.Noise_controller.octaves}}
+  nyquist {{parent.Noise_controller.nyquist}}
+  lacunarity {{parent.Noise_controller.lacunarity}}
+  gain {{parent.Noise_controller.gain}}
+  gamma {{parent.Noise_controller.gamma}}
+  translate {{parent.Noise_Y.translate.y*-1} {parent.xytranslate.y}}
+  center {1024 778}
+  color {{parent.Noise_controller.color}}
+  name Noise_X
+  tile_color 0xb50000ff
+  xpos -370
+  ypos 382
+ }
+ Noise {
+  inputs 0
+  size 100
+  zoffset {{(frame*Heat_Distort.speed)/10}}
+  center {1024 778}
+  name Noise_controller
+  xpos -260
+  ypos 327
+ }
+set N4d4ebf50 [stack 0]
+ Dot {
+  name Dot1
+  xpos -250
+  ypos 426
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos -370
+  ypos 423
+ }
+push $N4d4ebf50
+ Dot {
+  name Dot2
+  xpos -195
+  ypos 426
+ }
+ Noise {
+  inputs 0
+  opacity {{parent.Noise_controller.opacity}}
+  size {{parent.Noise_controller.size}}
+  zoffset {{parent.Noise_controller.zoffset}}
+  octaves {{parent.Noise_controller.octaves}}
+  nyquist {{parent.Noise_controller.nyquist}}
+  lacunarity {{parent.Noise_controller.lacunarity}}
+  gain {{parent.Noise_controller.gain}}
+  gamma {{parent.Noise_controller.gamma}}
+  translate {{parent.xytranslate.x} {Heat_Distort.xyspacer}}
+  center {1024 778}
+  color {{parent.Noise_controller.color}}
+  name Noise_Y
+  tile_color 0xa300ff
+  xpos -155
+  ypos 382
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos -150
+  ypos 423
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue black
+  alpha black
+  name ShuffleCopy1
+  xpos -260
+  ypos 485
+ }
+ Blur {
+  size 15
+  name Blur1
+  xpos -260
+  ypos 537
+ }
+set N3bd37da0 [stack 0]
+push $N3bd37da0
+ Input {
+  inputs 0
+  name src
+  xpos 10
+  ypos 447
+ }
+add_layer {distort distort.x distort.y}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 distort.x
+  from1 rgba.green
+  to1 distort.y
+  name Copy1
+  xpos 10
+  ypos 531
+ }
+ IDistort {
+  uv distort
+  uv_scale 50
+  name IDistort1
+  xpos 16
+  ypos 599
+ }
+ Switch {
+  inputs 2
+  which {{noisemap}}
+  name Switch1
+  xpos -112
+  ypos 670
+ }
+ Output {
+  name Output1
+  xpos -112
+  ypos 719
+ }
+end_group

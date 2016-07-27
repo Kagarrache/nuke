@@ -1,0 +1,132 @@
+#! /Applications/Nuke9.0v6/Nuke9.0v6.app/Contents/MacOS//libnuke-9.0.6.dylib -nx
+version 9.0 v6
+Gizmo {
+ label "\n"
+ lock_connections true
+ addUserKnob {20 User}
+ addUserKnob {20 Algorithims l Algorithm n 1}
+ addUserKnob {41 Algorithims_1 l Algorithims T Channel_Intensity.Algorithims_1}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 Spill_Color l "Spill Color" n 1}
+ addUserKnob {41 Blue_Channel_1 l Blue T Channel_Intensity.Blue_Channel_1}
+ addUserKnob {41 Red_Channel l Red T Channel_Intensity.Red_Channel}
+ addUserKnob {41 Green_Channel_1 l Green T Channel_Intensity.Green_Channel_1}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 Fine_Tunning l "Fine Tunning" n 1}
+ addUserKnob {41 Red_Channel_1 l Red T Channel_Intensity.Red_Channel_1}
+ addUserKnob {41 Green_Channel l Green T Channel_Intensity.Green_Channel}
+ addUserKnob {41 Blue_Channel l Blue T Channel_Intensity.Blue_Channel}
+ addUserKnob {20 SpillMap l "Spill Map" n 1}
+ addUserKnob {41 Blackpoint T Channel_Intensity.Blackpoint}
+ addUserKnob {41 Whitepoint T Channel_Intensity.Whitepoint}
+ addUserKnob {41 Export_SpillMap l "Export Spill Map on alpha" T Channel_Intensity.Export_SpillMap}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {20 endGroup n -1}
+}
+ NoOp {
+  inputs 0
+  name Channel_Intensity
+  xpos -218
+  ypos -153
+  addUserKnob {20 User}
+  addUserKnob {20 Algorithims l Algorithm n 1}
+  addUserKnob {4 Algorithims_1 l Algorithims M {Average Legacy}}
+  addUserKnob {20 endGroup_2 l endGroup n -1}
+  addUserKnob {20 Spill_Color l "Spill Color" t "Choose Spill Color" n 1}
+  addUserKnob {22 Blue_Channel_1 l Blue t "Choose Spill Color" T "Cnl_Int = nuke.toNode('Channel_Intensity')\nAlg = Cnl_Int.knob('Algorithims_1').value()\nAverage = \"Average\"\nLegacy = \"Legacy\"\n\nif Alg == Average:\n\n\tnuke.toNode('Expression_Spill').knob('expr2').setValue('b > (r+g)/2 ? (((r*(Channel_Intensity.Red_Channel_1+1))+(g*(Channel_Intensity.Green_Channel+1)))/2)+((b*(Channel_Intensity.Blue_Channel+1))-b) : b')\n\tnuke.toNode('Expression_Spill').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill').knob('expr0').setValue(None)\n\n\tnuke.toNode('Expression_Spill_nomap').knob('expr2').setValue('b > (r+g)/2 ? (((r*(Channel_Intensity.Red_Channel_1+1))+(g*(Channel_Intensity.Green_Channel+1)))/2)+((b*(Channel_Intensity.Blue_Channel+1))-b) : b')\n\tnuke.toNode('Expression_Spill_nomap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill_nomap').knob('expr0').setValue(None)\n\n\tnuke.toNode('Expression_Spillmap').knob('expr2').setValue('b-((max((r*(Channel_Intensity.Red_Channel_1+1)),(g*(Channel_Intensity.Green_Channel+1))))')\n\tnuke.toNode('Expression_Spillmap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spillmap').knob('expr0').setValue(None)\n\t\nelse:\n\tpass\n\t\nif Alg == Legacy:\n\tnuke.toNode('Expression_Spill').knob('expr2').setValue('b > r ? (r*(Channel_Intensity.Red_Channel_1+1)) : b')\n\tnuke.toNode('Expression_Spill').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill').knob('expr0').setValue(None)\n\t\n\tnuke.toNode('Expression_Spill_nomap').knob('expr2').setValue('b > r ? (r*(Channel_Intensity.Red_Channel_1+1)) : b')\n\tnuke.toNode('Expression_Spill_nomap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill_nomap').knob('expr0').setValue(None)\n\t\n\tnuke.toNode('Expression_Spillmap').knob('expr2').setValue('min((max(r,g)),b)')\n\tnuke.toNode('Expression_Spillmap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spillmap').knob('expr0').setValue(None)\nelse:\n\tpass\n\t\nn = nuke.toNode('Shuffle_Spillmap')\nn\['red'].setValue(\"blue\")\nn\['green'].setValue(\"blue\")\nn\['blue'].setValue(\"blue\")\n" +STARTLINE}
+  addUserKnob {22 Red_Channel l Red t "Red Channel Intensity" T "Cnl_Int = nuke.toNode('Channel_Intensity')\nAlg = Cnl_Int.knob('Algorithims_1').value()\nAverage = \"Average\"\nLegacy = \"Legacy\"\n\nif Alg == Average:\n\n\tnuke.toNode('Expression_Spill').knob('expr0').setValue('r > (b+g)/2 ? (((b*(Channel_Intensity.Blue_Channel+1))+(g*(Channel_Intensity.Green_Channel+1)))/2)+((r*(Channel_Intensity.Red_Channel_1+1))-r) : r')\n\tnuke.toNode('Expression_Spill').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill').knob('expr2').setValue(None)\n\n\tnuke.toNode('Expression_Spill_nomap').knob('expr0').setValue('r > (b+g)/2 ? (((b*(Channel_Intensity.Blue_Channel+1))+(g*(Channel_Intensity.Green_Channel+1)))/2)+((r*(Channel_Intensity.Red_Channel_1+1))-r) : r')\n\tnuke.toNode('Expression_Spill_nomap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill_nomap').knob('expr2').setValue(None)\n\n\tnuke.toNode('Expression_Spillmap').knob('expr0').setValue('r-((max((b*(Channel_Intensity.Blue_Channel+1)),(g*(Channel_Intensity.Green_Channel+1))))')\n\tnuke.toNode('Expression_Spillmap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spillmap').knob('expr2').setValue(None)\n\t\nelse:\n\tpass\n\t\nif Alg == Legacy:\n\tnuke.toNode('Expression_Spill').knob('expr0').setValue('r > g ? (g*(Channel_Intensity.Green_Channel+1)) : r')\n\tnuke.toNode('Expression_Spill').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill').knob('expr2').setValue(None)\n\t\n\tnuke.toNode('Expression_Spill_nomap').knob('expr0').setValue('r > g ? (g*(Channel_Intensity.Green_Channel+1)) : r')\n\tnuke.toNode('Expression_Spill_nomap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spill_nomap').knob('expr2').setValue(None)\n\t\n\tnuke.toNode('Expression_Spillmap').knob('expr0').setValue('min((max(b,g)),r)')\n\tnuke.toNode('Expression_Spillmap').knob('expr1').setValue(None)\n\tnuke.toNode('Expression_Spillmap').knob('expr2').setValue(None)\nelse:\n\tpass\n\t\nn = nuke.toNode('Shuffle_Spillmap')\nn\['red'].setValue(\"red\")\nn\['green'].setValue(\"red\")\nn\['blue'].setValue(\"red\")\n" +STARTLINE}
+  addUserKnob {22 Green_Channel_1 l Green T "Cnl_Int = nuke.toNode('Channel_Intensity')\nAlg = Cnl_Int.knob('Algorithims_1').value()\nAverage = \"Average\"\nLegacy = \"Legacy\"\n\nif Alg == Average:\n\n\tnuke.toNode('Expression_Spill').knob('expr1').setValue('g > (r+g)/2 ? (((b*(Channel_Intensity.Blue_Channel+1))+(r*(Channel_Intensity.Red_Channel_1+1)))/2)+((g*(Channel_Intensity.Green_Channel+1))-g) : g')\n\tnuke.toNode('Expression_Spill').knob('expr0').setValue(None)\n\tnuke.toNode('Expression_Spill').knob('expr2').setValue(None)\n\n\tnuke.toNode('Expression_Spill_nomap').knob('expr1').setValue('g > (r+g)/2 ? (((b*(Channel_Intensity.Blue_Channel+1))+(r*(Channel_Intensity.Red_Channel_1+1)))/2)+((g*(Channel_Intensity.Green_Channel+1))-g) : g')\n\tnuke.toNode('Expression_Spill_nomap').knob('expr0').setValue(None)\n\tnuke.toNode('Expression_Spill_nomap').knob('expr2').setValue(None)\n\n\tnuke.toNode('Expression_Spillmap').knob('expr1').setValue('g-((max((r*(Channel_Intensity.Red_Channel_1+1)),(b*(Channel_Intensity.Blue_Channel+1))))')\n\tnuke.toNode('Expression_Spillmap').knob('expr0').setValue(None)\n\tnuke.toNode('Expression_Spillmap').knob('expr2').setValue(None)\n\t\nelse:\n\tpass\n\t\nif Alg == Legacy:\n\tnuke.toNode('Expression_Spill').knob('expr1').setValue('g > b ? (b*(Channel_Intensity.Blue_Channel+1)) : g')\n\tnuke.toNode('Expression_Spill').knob('expr0').setValue(None)\n\tnuke.toNode('Expression_Spill').knob('expr2').setValue(None)\n\t\n\tnuke.toNode('Expression_Spill_nomap').knob('expr1').setValue('g > b ? (b*(Channel_Intensity.Blue_Channel+1)) : g')\n\tnuke.toNode('Expression_Spill_nomap').knob('expr0').setValue(None)\n\tnuke.toNode('Expression_Spill_nomap').knob('expr2').setValue(None)\n\t\n\tnuke.toNode('Expression_Spillmap').knob('expr1').setValue('min((max(b,r)),g)')\n\tnuke.toNode('Expression_Spillmap').knob('expr0').setValue(None)\n\tnuke.toNode('Expression_Spillmap').knob('expr2').setValue(None)\nelse:\n\tpass\n\t\nn = nuke.toNode('Shuffle_Spillmap')\nn\['red'].setValue(\"green\")\nn\['green'].setValue(\"green\")\nn\['blue'].setValue(\"green\")\n" +STARTLINE}
+  addUserKnob {20 endGroup_1 l endGroup n -1}
+  addUserKnob {20 Fine_Tunning l "Fine Tunning" t "Fine tunning of RGB Channel Intensity" n 1}
+  addUserKnob {7 Red_Channel_1 l Red}
+  addUserKnob {7 Green_Channel l Green t "Green channel Intensity"}
+  addUserKnob {7 Blue_Channel l Blue t "Blue channel intensity"}
+  addUserKnob {20 SpillMap l "Spill Map" n 1}
+  addUserKnob {7 Blackpoint R -1 1}
+  addUserKnob {7 Whitepoint R -1 4}
+  Whitepoint 1
+  addUserKnob {6 Export_SpillMap l "Export Spill Map on alpha" t "Check this box if you want the spill map exported on alpha" +STARTLINE}
+  addUserKnob {20 endGroup_3 l endGroup n -1}
+  addUserKnob {20 endGroup n -1}
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -506
+  ypos -196
+ }
+ Dot {
+  name Dot1
+  xpos -472
+  ypos -156
+ }
+set N613c1410 [stack 0]
+ Dot {
+  name Dot2
+  xpos -325
+  ypos -156
+ }
+ Expression {
+  expr1 g-((max((r*(Channel_Intensity.Red_Channel_1+1)),(b*(Channel_Intensity.Blue_Channel+1))))
+  name Expression_Spillmap
+  xpos -359
+  ypos -123
+ }
+ Shuffle {
+  red green
+  blue green
+  out alpha
+  name Shuffle_Spillmap
+  xpos -359
+  ypos -19
+ }
+push $N613c1410
+ Expression {
+  expr1 "g > (r+g)/2 ? (((b*(Channel_Intensity.Blue_Channel+1))+(r*(Channel_Intensity.Red_Channel_1+1)))/2)+((g*(Channel_Intensity.Green_Channel+1))-g) : g"
+  name Expression_Spill
+  xpos -506
+  ypos -114
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -506
+  ypos -23
+ }
+ Grade {
+  channels alpha
+  blackpoint {{parent.Channel_Intensity.Blackpoint}}
+  whitepoint {{parent.Channel_Intensity.Whitepoint}}
+  name Grade1
+  xpos -506
+  ypos 18
+  addUserKnob {20 User}
+ }
+push $N613c1410
+ Expression {
+  expr1 "g > (r+g)/2 ? (((b*(Channel_Intensity.Blue_Channel+1))+(r*(Channel_Intensity.Red_Channel_1+1)))/2)+((g*(Channel_Intensity.Green_Channel+1))-g) : g"
+  name Expression_Spill_nomap
+  xpos -635
+  ypos -159
+ }
+ Dot {
+  name Dot16
+  xpos -601
+  ypos 90
+ }
+ Switch {
+  inputs 2
+  which {{parent.Channel_Intensity.Export_SpillMap}}
+  name Switch_Spillmap
+  selected true
+  xpos -506
+  ypos 87
+ }
+ Output {
+  name Output1
+  xpos -506
+  ypos 187
+ }
+end_group

@@ -1,0 +1,99 @@
+#! /method/ext/nuke/9.0.4.r.1/Linux/x86_64/libnuke-9.0.4.so -nx
+version 9.0 v4
+Gizmo {
+ name Render 3D
+ inputs 2
+ tile_color 0xa500a5ff
+ note_font "Bitstream Vera Sans Bold"
+ note_font_size 15
+ note_font_color 0xfcfbfcff
+ addUserKnob {20 User l Scanline}
+ addUserKnob {41 transparency T ScanlineRender1.transparency}
+ addUserKnob {41 ztest_enabled l Z-buffer T ScanlineRender1.ztest_enabled}
+ addUserKnob {41 filter T ScanlineRender1.filter}
+ addUserKnob {41 antialiasing T ScanlineRender1.antialiasing}
+ addUserKnob {41 zblend_mode l "Z-blend mode" T ScanlineRender1.zblend_mode}
+ addUserKnob {41 zblend_range l "Z-blend range" T ScanlineRender1.zblend_range}
+ addUserKnob {41 projection_mode l "projection mode" T ScanlineRender1.projection_mode}
+ addUserKnob {41 max_tessellation l "tessellation max" T ScanlineRender1.max_tessellation}
+ addUserKnob {41 overscan T ScanlineRender1.overscan}
+ addUserKnob {26 ""}
+ addUserKnob {41 ambient T ScanlineRender1.ambient}
+ addUserKnob {26 ""}
+ addUserKnob {41 type T Reformat1.type}
+ addUserKnob {41 format l "output format" T Reformat1.format}
+ addUserKnob {20 Motionblur l "Motion Blur"}
+ addUserKnob {6 onoff l "Motion Blur On" +STARTLINE}
+ onoff true
+ addUserKnob {7 offset l Offset R -1 0}
+ offset -0.5
+ addUserKnob {7 multiply l Multiply R 0 10}
+ multiply 1
+ addUserKnob {7 Vectorerode l "Vector Extend" R 0 100}
+ addUserKnob {41 filter_1 l "Extend Filter" T FilterErode1.filter}
+ addUserKnob {20 Channels}
+ addUserKnob {41 operation T Remove1.operation}
+ addUserKnob {41 channels T Remove1.channels}
+ addUserKnob {41 channels2 l and T Remove1.channels2}
+ addUserKnob {41 channels3 l and T Remove1.channels3}
+ addUserKnob {41 channels4 l and T Remove1.channels4}
+}
+ Input {
+  inputs 0
+  name Cam
+  xpos -40
+  ypos -9
+  number 1
+ }
+ Input {
+  inputs 0
+  name ObjScan
+  xpos 160
+  ypos -109
+ }
+ Reformat {
+  inputs 0
+  name Reformat1
+  xpos 360
+  ypos -9
+  hide_input true
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  filter Mitchell
+  motion_vectors_type distance
+  output_shader_vectors true
+  name ScanlineRender1
+  xpos 160
+  ypos -9
+ }
+ FilterErode {
+  channels forward
+  size {{parent.Vectorerode}}
+  name FilterErode1
+  xpos 160
+  ypos 85
+ }
+ VectorBlur {
+  uv forward
+  scale {{parent.multiply}}
+  offset {{parent.offset}}
+  name VectorBlur1
+  xpos 160
+  ypos 185
+  disable {{!parent.onoff}}
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 160
+  ypos 291
+ }
+ Output {
+  name Output1
+  xpos 160
+  ypos 391
+ }
+end_group

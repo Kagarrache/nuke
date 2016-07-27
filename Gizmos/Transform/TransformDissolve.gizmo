@@ -1,0 +1,92 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {7 dissolve t "dissolve betwen two transforms"}
+ addUserKnob {26 ""}
+ addUserKnob {41 skew_order l "skew order" T Transform3.skew_order}
+ addUserKnob {41 invert_matrix l invert T Transform3.invert_matrix}
+ addUserKnob {41 filter T Transform3.filter}
+ addUserKnob {41 clamp -STARTLINE T Transform3.clamp}
+ addUserKnob {41 black_outside l "black outside" -STARTLINE T Transform3.black_outside}
+ addUserKnob {41 motionblur T Transform3.motionblur}
+ addUserKnob {41 shutter T Transform3.shutter}
+ addUserKnob {41 shutteroffset l "shutter offset" T Transform3.shutteroffset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T Transform3.shuttercustomoffset}
+ addUserKnob {20 transform0}
+ addUserKnob {41 translate T Transform1.translate}
+ addUserKnob {41 rotate T Transform1.rotate}
+ addUserKnob {41 scale T Transform1.scale}
+ addUserKnob {41 skewX l "skew X" T Transform1.skewX}
+ addUserKnob {41 skewY l "skew Y" T Transform1.skewY}
+ addUserKnob {41 center T Transform1.center}
+ addUserKnob {20 transform1}
+ addUserKnob {41 translate_1 l translate T Transform2.translate}
+ addUserKnob {41 rotate_1 l rotate T Transform2.rotate}
+ addUserKnob {41 scale_1 l scale T Transform2.scale}
+ addUserKnob {41 skewX_1 l "skew X" T Transform2.skewX}
+ addUserKnob {41 skewY_1 l "skew Y" T Transform2.skewY}
+ addUserKnob {41 center_1 l center T Transform2.center}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -34
+  ypos 45
+ }
+ Dot {
+  name Dot1
+  xpos 0
+  ypos 85
+ }
+set N6029fed0 [stack 0]
+ Transform {
+  translate {{"Transform2.translate*parent.dissolve + Transform1.translate* (1-parent.dissolve)"} {"Transform2.translate*parent.dissolve + Transform1.translate* (1-parent.dissolve)"}}
+  rotate {{"Transform2.rotate*parent.dissolve + Transform1.rotate* (1-parent.dissolve)"}}
+  scale {{"Transform2.scale*parent.dissolve + Transform1.scale* (1-parent.dissolve)"}}
+  skewX {{"Transform2.skewX*parent.dissolve + Transform1.skewX* (1-parent.dissolve)"}}
+  skewY {{"Transform2.skewY*parent.dissolve + Transform1.skewY* (1-parent.dissolve)"}}
+  center {{"Transform2.center*parent.dissolve + Transform1.center* (1-parent.dissolve)"} {"Transform2.center*parent.dissolve + Transform1.center* (1-parent.dissolve)"}}
+  name Transform3
+  xpos -34
+  ypos 196
+ }
+ Output {
+  name Output1
+  xpos -34
+  ypos 296
+ }
+push $N6029fed0
+ Transform {
+  skew_order {{parent.Transform3.skew_order}}
+  center {1024 576}
+  invert_matrix {{parent.Transform3.invert_matrix}}
+  filter {{parent.Transform3.filter}}
+  clamp {{parent.Transform3.clamp}}
+  black_outside {{parent.Transform3.black_outside}}
+  motionblur {{parent.Transform3.motionblur}}
+  shutter {{parent.Transform3.shutter}}
+  shutteroffset {{parent.Transform3.shutteroffset}}
+  shuttercustomoffset {{parent.Transform3.shuttercustomoffset}}
+  name Transform2
+  xpos 64
+  ypos 143
+ }
+push $N6029fed0
+ Transform {
+  skew_order {{parent.Transform3.skew_order}}
+  center {1024 576}
+  invert_matrix {{parent.Transform3.invert_matrix}}
+  filter {{parent.Transform3.filter}}
+  clamp {{parent.Transform3.clamp}}
+  black_outside {{parent.Transform3.black_outside}}
+  motionblur {{parent.Transform3.motionblur}}
+  shutter {{parent.Transform3.shutter}}
+  shutteroffset {{parent.Transform3.shutteroffset}}
+  shuttercustomoffset {{parent.Transform3.shuttercustomoffset}}
+  name Transform1
+  selected true
+  xpos -141
+  ypos 144
+ }
+end_group

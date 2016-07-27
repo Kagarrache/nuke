@@ -1,0 +1,4497 @@
+# BombTimer v1.2
+# By Jason Bidwell
+# Updated 05-04-2013
+
+Gizmo {
+inputs 0
+tile_color 0x202020ff
+label "LED \[value styleChoice]"
+note_font "Bitstream Vera Sans"
+note_font_color 0xff0000ff
+addUserKnob {20 settings l Settings}
+addUserKnob {26 ""}
+addUserKnob {4 counterSpeed l "Counter Length" M {"Sequence Length" "Each Frame" "" "" ""}}
+addUserKnob {41 direction l Countdown -STARTLINE T Controls.direction}
+addUserKnob {7 timeO l "Start Frame Offset" R -1000 1}
+timeO 1
+addUserKnob {26 ""}
+addUserKnob {7 noDigitsSlider l "Number of Digits" R 1 10}
+noDigitsSlider 10
+addUserKnob {7 fontSpacing l "Font Spacing" R 1 10}
+fontSpacing 10
+addUserKnob {7 fontScale l "Font Scale" R 1 10}
+fontScale 1
+addUserKnob {41 format l "Output Format" T Reformat1.format}
+addUserKnob {26 ""}
+addUserKnob {4 styleChoice l "LED Style" M {Classic Modern "" ""}}
+addUserKnob {26 ""}
+addUserKnob {7 gain l "Ghosting Amount"}
+gain 1
+addUserKnob {41 color_1 l "Modern LED BG Color" T BlankModern.color}
+addUserKnob {41 color l "Classic LED Color" T LED_Color.color}
+addUserKnob {7 glow l "Classic LED Glow" R 0 5}
+glow 1
+addUserKnob {26 ""}
+addUserKnob {41 translate l "LED Position" T Position1.translate}
+addUserKnob {26 ""}
+addUserKnob {6 premultiply l Premultiply +STARTLINE}
+addUserKnob {6 NumberPremlt l "Premultiply By Number Alpha" -STARTLINE}
+addUserKnob {26 ver l "" +STARTLINE T "\nBomb Timer by Jason Bidwell v1.2"}
+}
+Constant {
+inputs 0
+channels rgb
+color {0.1333333254 0.1333333254 0.1333333254 1}
+format "2048 2048 0 0 2048 2048 1 square_2K"
+name BlankModern
+tile_color 0x3fffff
+note_font "Bitstream Vera Sans"
+note_font_size 13
+note_font_color 0xff
+xpos -2839
+ypos -491
+}
+set N751c4af0 [stack 0]
+Constant {
+inputs 0
+channels rgb
+color {0 0 0 1}
+format "2048 2048 0 0 2048 2048 1 square_2K"
+name Blank
+tile_color 0x3fffff
+note_font "Bitstream Vera Sans"
+note_font_size 13
+note_font_color 0xff
+xpos -2706
+ypos -490
+}
+Switch {
+inputs 2
+which {{styleChoice i}}
+name styleSwitch
+xpos -2766
+ypos -369
+}
+set Nd730970 [stack 0]
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer Nine
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443233d7 x44239d3f}
+	  {}
+	  {}
+	  {x4436370a x4423a073}
+	  {}
+	  {}
+	  {x4437a70a x4424dd3f}
+	  {}
+	  {}
+	  {x443650a4 x4425ed3f}
+	  {}
+	  {}
+	  {x44322d71 x4425f073}
+	  {}
+	  {}
+	  {x4430e0a4 x4424da0c}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322d71 x441aea0c}
+	  {}
+	  {}
+	  {x4436a666 x441af333}
+	  {}
+	  {}
+	  {x4437f0a4 x441c2a0c}
+	  {}
+	  {}
+	  {x44367a3d x441d43a6}
+	  {}
+	  {}
+	  {x44322f8d x441d451f}
+	  {}
+	  {}
+	  {x4430d0a4 x441c26d9}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e51f x44261968}
+	  {}
+	  {}
+	  {x4431e7ae x442c025e}
+	  {}
+	  {}
+	  {x443098d5 x442d427f}
+	  {}
+	  {}
+	  {x442f228f x442c08c5}
+	  {}
+	  {}
+	  {x442f2148 x4425fd3f}
+	  {}
+	  {}
+	  {x44308a3d x442503a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+view {}
+motionblur_on true
+motionblur_shutter_offset_type centred
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Nine
+xpos -978
+ypos -230
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer eight
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443233d7 x44239d3f}
+	  {}
+	  {}
+	  {x4436370a x4423a073}
+	  {}
+	  {}
+	  {x4437a70a x4424dd3f}
+	  {}
+	  {}
+	  {x443650a4 x4425ed3f}
+	  {}
+	  {}
+	  {x44322d71 x4425f073}
+	  {}
+	  {}
+	  {x4430e0a4 x4424da0c}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322d71 x441aea0c}
+	  {}
+	  {}
+	  {x4436a73b x441af179}
+	  {}
+	  {}
+	  {x4437f0a4 x441c2a0c}
+	  {}
+	  {}
+	  {x44367a3d x441d43a6}
+	  {}
+	  {}
+	  {x44322f8d x441d451f}
+	  {}
+	  {}
+	  {x4430d0a4 x441c26d9}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e70a x441d7a0c}
+	  {}
+	  {}
+	  {x4431ed71 x442373a6}
+	  {}
+	  {}
+	  {x443090a4 x4424b073}
+	  {}
+	  {}
+	  {x442f1a3d x44237d3f}
+	  {}
+	  {}
+	  {x442f1958 x441d74bc}
+	  {}
+	  {}
+	  {x44308d71 x441c63a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e51f x44261968}
+	  {}
+	  {}
+	  {x4431e7ae x442c025e}
+	  {}
+	  {}
+	  {x443098d5 x442d427f}
+	  {}
+	  {}
+	  {x442f228f x442c08c5}
+	  {}
+	  {}
+	  {x442f2148 x4425fd3f}
+	  {}
+	  {}
+	  {x44308a3d x442503a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+view {}
+motionblur_on true
+motionblur_shutter_offset_type centred
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Eight
+xpos -1081
+ypos -228
+}
+set N145371c0 [stack 0]
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer Seven
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+view {}
+motionblur_on true
+motionblur_shutter_offset_type centred
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Seven
+xpos -1184
+ypos -228
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer Six
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443233d7 x44239d3f}
+	  {}
+	  {}
+	  {x4436370a x4423a073}
+	  {}
+	  {}
+	  {x4437a70a x4424dd3f}
+	  {}
+	  {}
+	  {x443650a4 x4425ed3f}
+	  {}
+	  {}
+	  {x44322d71 x4425f073}
+	  {}
+	  {}
+	  {x4430e0a4 x4424da0c}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322d71 x441aea0c}
+	  {}
+	  {}
+	  {x4436a73b x441af179}
+	  {}
+	  {}
+	  {x4437f0a4 x441c2a0c}
+	  {}
+	  {}
+	  {x44367a3d x441d43a6}
+	  {}
+	  {}
+	  {x44322f8d x441d451f}
+	  {}
+	  {}
+	  {x4430d0a4 x441c26d9}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e70a x441d7a0c}
+	  {}
+	  {}
+	  {x4431ed71 x442373a6}
+	  {}
+	  {}
+	  {x443090a4 x4424b073}
+	  {}
+	  {}
+	  {x442f1a3d x44237d3f}
+	  {}
+	  {}
+	  {x442f1958 x441d74bc}
+	  {}
+	  {}
+	  {x44308d71 x441c63a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e51f x44261968}
+	  {}
+	  {}
+	  {x4431e7ae x442c025e}
+	  {}
+	  {}
+	  {x443098d5 x442d427f}
+	  {}
+	  {}
+	  {x442f228f x442c08c5}
+	  {}
+	  {}
+	  {x442f2148 x4425fd3f}
+	  {}
+	  {}
+	  {x44308a3d x442503a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+view {}
+motionblur_on true
+motionblur_shutter_offset_type centred
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Six
+xpos -1294
+ypos -228
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer Five
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443233d7 x44239d3f}
+	  {}
+	  {}
+	  {x4436370a x4423a073}
+	  {}
+	  {}
+	  {x4437a70a x4424dd3f}
+	  {}
+	  {}
+	  {x443650a4 x4425ed3f}
+	  {}
+	  {}
+	  {x44322d71 x4425f073}
+	  {}
+	  {}
+	  {x4430e0a4 x4424da0c}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322d71 x441aea0c}
+	  {}
+	  {}
+	  {x4436a73b x441af179}
+	  {}
+	  {}
+	  {x4437f0a4 x441c2a0c}
+	  {}
+	  {}
+	  {x44367a3d x441d43a6}
+	  {}
+	  {}
+	  {x44322f8d x441d451f}
+	  {}
+	  {}
+	  {x4430d0a4 x441c26d9}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e51f x44261968}
+	  {}
+	  {}
+	  {x4431e7ae x442c025e}
+	  {}
+	  {}
+	  {x443098d5 x442d427f}
+	  {}
+	  {}
+	  {x442f228f x442c08c5}
+	  {}
+	  {}
+	  {x442f2148 x4425fd3f}
+	  {}
+	  {}
+	  {x44308a3d x442503a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+view {}
+motionblur_on true
+motionblur_shutter_offset_type centred
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Five
+xpos -1405
+ypos -229
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer four
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz3 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443233d7 x44239d3f}
+	  {}
+	  {}
+	  {x4436370a x4423a073}
+	  {}
+	  {}
+	  {x4437a70a x4424dd3f}
+	  {}
+	  {}
+	  {x443650a4 x4425ed3f}
+	  {}
+	  {}
+	  {x44322d71 x4425f073}
+	  {}
+	  {}
+	  {x4430e0a4 x4424da0c}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert3 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e51f x44261968}
+	  {}
+	  {}
+	  {x4431e7ae x442c025e}
+	  {}
+	  {}
+	  {x443098d5 x442d427f}
+	  {}
+	  {}
+	  {x442f228f x442c08c5}
+	  {}
+	  {}
+	  {x442f2148 x4425fd3f}
+	  {}
+	  {}
+	  {x44308a3d x442503a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+motionblur_shutter_offset_type centred
+source_translate_round false
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Four
+xpos -1513
+ypos -233
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer three
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz3 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443233d7 x44239d3f}
+	  {}
+	  {}
+	  {x4436370a x4423a073}
+	  {}
+	  {}
+	  {x4437a70a x4424dd3f}
+	  {}
+	  {}
+	  {x443650a4 x4425ed3f}
+	  {}
+	  {}
+	  {x44322d71 x4425f073}
+	  {}
+	  {}
+	  {x4430e0a4 x4424da0c}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz2 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322d71 x441aea0c}
+	  {}
+	  {}
+	  {x4436a73b x441af179}
+	  {}
+	  {}
+	  {x4437f0a4 x441c2a0c}
+	  {}
+	  {}
+	  {x44367a3d x441d43a6}
+	  {}
+	  {}
+	  {x44322f8d x441d451f}
+	  {}
+	  {}
+	  {x4430d0a4 x441c26d9}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+motionblur_shutter_offset_type centred
+source_translate_round false
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_three
+xpos -1627
+ypos -228
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer teo
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz3 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443233d7 x44239d3f}
+	  {}
+	  {}
+	  {x4436370a x4423a073}
+	  {}
+	  {}
+	  {x4437a70a x4424dd3f}
+	  {}
+	  {}
+	  {x443650a4 x4425ed3f}
+	  {}
+	  {}
+	  {x44322d71 x4425f073}
+	  {}
+	  {}
+	  {x4430e0a4 x4424da0c}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz2 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322d71 x441aea0c}
+	  {}
+	  {}
+	  {x4436a73b x441af179}
+	  {}
+	  {}
+	  {x4437f0a4 x441c2a0c}
+	  {}
+	  {}
+	  {x44367a3d x441d43a6}
+	  {}
+	  {}
+	  {x44322f8d x441d451f}
+	  {}
+	  {}
+	  {x4430d0a4 x441c26d9}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert2 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e70a x441d7a0c}
+	  {}
+	  {}
+	  {x4431ed71 x442373a6}
+	  {}
+	  {}
+	  {x443090a4 x4424b073}
+	  {}
+	  {}
+	  {x442f1a3d x44237d3f}
+	  {}
+	  {}
+	  {x442f1958 x441d74bc}
+	  {}
+	  {}
+	  {x44308d71 x441c63a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 576 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+motionblur_shutter_offset_type centred
+source_translate_round false
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Two
+xpos -1737
+ypos -228
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer one
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup vert1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+view {}
+motionblur_on true
+motionblur_shutter_offset_type centred
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_One
+xpos -1844
+ypos -228
+}
+push $Nd730970
+RotoPaint {
+output alpha
+cliptype none
+replace true
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x432f0000 x431b8000}
+    {a}
+    {layer LED_Display
+     {f 512}
+     {t x45200000 x44a8c000}
+     {a}
+     {layer Zero
+      {f 512}
+      {t x432f0000 x431b8000}
+      {a}
+      {curvegroup horiz1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322ccd x442c3bb6}
+	  {}
+	  {}
+	  {x4436670a x442c4a0c}
+	  {}
+	  {}
+	  {x4437e0a4 x442d8a0c}
+	  {}
+	  {}
+	  {x4436a7ae x442e9c39}
+	  {}
+	  {}
+	  {x4432228f x442e978d}
+	  {}
+	  {}
+	  {x4430da3d x442d7a4e}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup horiz2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x44322d71 x441aea0c}
+	  {}
+	  {}
+	  {x4436a73b x441af179}
+	  {}
+	  {}
+	  {x4437f0a4 x441c2a0c}
+	  {}
+	  {}
+	  {x44367a3d x441d43a6}
+	  {}
+	  {}
+	  {x44322f8d x441d451f}
+	  {}
+	  {}
+	  {x4430d0a4 x441c26d9}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert2 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e70a x441d7a0c}
+	  {}
+	  {}
+	  {x4431ed71 x442373a6}
+	  {}
+	  {}
+	  {x443090a4 x4424b073}
+	  {}
+	  {}
+	  {x442f1a3d x44237d3f}
+	  {}
+	  {}
+	  {x442f1958 x441d74bc}
+	  {}
+	  {}
+	  {x44308d71 x441c63a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert1 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4439670a x441d7a0c}
+	  {}
+	  {}
+	  {x44396d71 x442373a6}
+	  {}
+	  {}
+	  {x443810a4 x4424b073}
+	  {}
+	  {}
+	  {x443693d7 x44237a0c}
+	  {}
+	  {}
+	  {x4436a408 x441d84ac}
+	  {}
+	  {}
+	  {x44381821 x441c7396}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert3 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x4431e51f x44261968}
+	  {}
+	  {}
+	  {x4431e7ae x442c025e}
+	  {}
+	  {}
+	  {x443098d5 x442d427f}
+	  {}
+	  {}
+	  {x442f228f x442c08c5}
+	  {}
+	  {}
+	  {x442f2148 x4425fd3f}
+	  {}
+	  {}
+	  {x44308a3d x442503a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}
+      {curvegroup vert4 512 bezier
+       {{cc
+	 {f 8192}
+	 {p
+	  {}
+	  {x443960a4 x442613a6}
+	  {}
+	  {}
+	  {x443967ae x442c025e}
+	  {}
+	  {}
+	  {x443818d5 x442d427f}
+	  {}
+	  {}
+	  {x4436a3d7 x442c03a6}
+	  {}
+	  {}
+	  {x4436aa3d x4425fd3f}
+	  {}
+	  {}
+	  {x44380a3d x4424f3a6}
+	  {}}}
+        {cc
+	 {f 8192}
+	 {p
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}
+	  {}}}}
+       {t x4364d99a x4303199a}
+       {a spx x432f0000 spy x431b8000 sb 1 ltn x446a8000 ltm x446a8000 tt x40800000}}}}}}}}
+toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {320 240}
+colorOverlay 0
+lifetime_type "all frames"
+lifetime_start 938
+lifetime_end 938
+view {}
+motionblur_on true
+motionblur_shutter_offset_type centred
+source_black_outside true
+createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+name LED_Zero
+xpos -1964
+ypos -228
+}
+Switch {
+inputs 10
+which {{curve i 0 1 2 3 4 5 6 7 8 9}}
+name Switch1
+xpos -978
+ypos -100
+}
+set N757469d0 [stack 0]
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 2000000000
+speed {{parent.Retime8.speed/2 i}}
+after loop
+filter nearest
+name Retime9
+xpos 533
+ypos -92
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset09 i}}
+output.first_lock true
+output.last 99
+name Retime90
+xpos 472
+ypos 67
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType11
+xpos 533
+ypos 115
+}
+Erode {
+size {{(styleChoice*-1)+1 i}}
+name Erode5
+xpos 533
+ypos 660
+}
+set Cddc61c20 [stack 0]
+Constant {
+inputs 0
+channels rgb
+color {0.002499999944 0.002499999944 0.002499999944 1}
+format {{{parent.Blank.format}}}
+name LED_Color1
+xpos -2976
+ypos 636
+}
+Constant {
+inputs 0
+channels rgb
+color {1 0 0 1}
+format {{{parent.Blank.format}}}
+name LED_Color
+xpos -2833
+ypos 636
+}
+Switch {
+inputs 2
+which {{styleChoice i}}
+name styleSwitch1
+xpos -2874
+ypos 733
+}
+set N23feac80 [stack 0]
+ShuffleCopy {
+inputs 2
+name ShuffleCopy15
+xpos 533
+ypos 778
+}
+Premult {
+name Premult12
+xpos 533
+ypos 804
+}
+push $N145371c0
+clone $Cddc61c20 {
+xpos -2518
+ypos 645
+selected false
+}
+Grade {
+channels rgba
+white {{gain i}}
+white_clamp true
+name Grade2
+xpos -2518
+ypos 687
+}
+push $N751c4af0
+Grade {
+multiply 0.58
+black_clamp false
+name Grade1
+xpos -2678
+ypos 710
+}
+push $N23feac80
+Switch {
+inputs 2
+which {{styleChoice i}}
+name styleSwitch2
+xpos -2678
+ypos 770
+}
+Grade {
+white 0.03125
+black_clamp false
+name Grade14
+xpos -2678
+ypos 796
+disable {{styleChoice i}}
+}
+ShuffleCopy {
+inputs 2
+name ShuffleCopy10
+xpos -2518
+ypos 796
+}
+Premult {
+name Premult14
+xpos -2518
+ypos 822
+}
+set N6c15c80 [stack 0]
+Merge2 {
+inputs 2
+name Merge53
+label ghost
+xpos 533
+ypos 894
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge54
+label LED
+xpos 545
+ypos 1056
+}
+set Ndece86c0 [stack 0]
+Transform {
+translate {{(parent.move_1.translate.x)*9 i} 0}
+center {699.4000244 619}
+name move_9
+xpos 545
+ypos 1133
+}
+push $Ndece86c0
+Transform {
+translate {{(parent.move_10.translate.x)*9 i} 0}
+center {699.4000244 619}
+name move_18
+tile_color 0x7f00ffff
+xpos 427
+ypos 1134
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType20
+xpos 479
+ypos 1166
+}
+push $Ndece86c0
+Transform {
+translate {{((parent.move_1.translate.x)*9)*-1 i} 0}
+center {699.4000244 619}
+name move_27
+xpos 644
+ypos 1131
+}
+Switch {
+inputs 2
+which {{direction}}
+name dirSwitch8
+xpos 544
+ypos 1214
+}
+set N303af9e0 [stack 0]
+push $N303af9e0
+ShuffleCopy {
+inputs 2
+name ShuffleCopy21
+xpos 544
+ypos 1240
+}
+Premult {
+name Premult20
+xpos 544
+ypos 1266
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 1000000000
+speed 1e-08
+after loop
+filter nearest
+name Retime8
+xpos 285
+ypos 102
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset08 i}}
+output.first_lock true
+output.last 89
+name Retime80
+xpos 207
+ypos 235
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType10
+xpos 285
+ypos 278
+}
+clone $Cddc61c20 {
+xpos 285
+ypos 650
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy14
+xpos 285
+ypos 768
+}
+Premult {
+name Premult10
+xpos 285
+ypos 794
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge51
+label ghost
+xpos 285
+ypos 894
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge52
+label LED
+xpos 285
+ypos 1035
+}
+set N4794b390 [stack 0]
+Transform {
+translate {{(parent.move_1.translate.x)*8 i} 0}
+center {699.4000244 619}
+name move_8
+xpos 285
+ypos 1094
+}
+push $N4794b390
+Transform {
+translate {{(parent.move_10.translate.x)*8 i} 0}
+center {699.4000244 619}
+name move_17
+tile_color 0x7f00ffff
+xpos 185
+ypos 1094
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType19
+xpos 228
+ypos 1159
+}
+push $N4794b390
+Transform {
+translate {{((parent.move_1.translate.x)*8)*-1 i} 0}
+center {699.4000244 619}
+name move_26
+xpos 382
+ypos 1094
+}
+Switch {
+inputs 2
+which {{direction}}
+name dirSwitch7
+xpos 285
+ypos 1202
+}
+set Nfaf33ef0 [stack 0]
+push $Nfaf33ef0
+ShuffleCopy {
+inputs 2
+name ShuffleCopy20
+xpos 285
+ypos 1228
+}
+Premult {
+name Premult19
+xpos 285
+ypos 1254
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 100000000
+speed 1e-07
+after loop
+filter nearest
+name Retime7
+xpos 8
+ypos 327
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset07 i}}
+output.first_lock true
+output.last 79
+name Retime70
+xpos -48
+ypos 462
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType9
+xpos 16
+ypos 519
+}
+clone $Cddc61c20 {
+xpos 16
+ypos 655
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy13
+xpos 16
+ypos 782
+}
+Premult {
+name Premult9
+xpos 16
+ypos 808
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge39
+label ghost
+xpos 16
+ypos 904
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge50
+label LED
+xpos 16
+ypos 1041
+}
+set Ndec5b480 [stack 0]
+Transform {
+translate {{(parent.move_1.translate.x)*7 i} 0}
+center {699.4000244 619}
+name move_7
+xpos 16
+ypos 1135
+}
+push $Ndec5b480
+Transform {
+translate {{(parent.move_10.translate.x)*7 i} 0}
+center {699.4000244 619}
+name move_16
+tile_color 0x7f00ffff
+xpos -104
+ypos 1117
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType18
+xpos -45
+ypos 1166
+}
+push $Ndec5b480
+Transform {
+translate {{((parent.move_1.translate.x)*7)*-1 i} 0}
+center {699.4000244 619}
+name move_25
+xpos 114
+ypos 1142
+}
+Switch {
+inputs 2
+which {{direction}}
+name dirSwitch6
+xpos 16
+ypos 1205
+}
+set Ndf0c3540 [stack 0]
+push $Ndf0c3540
+ShuffleCopy {
+inputs 2
+name ShuffleCopy19
+xpos 16
+ypos 1231
+}
+Premult {
+name Premult18
+xpos 16
+ypos 1257
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 10000000
+speed 1e-06
+after loop
+filter nearest
+name Retime6
+xpos -334
+ypos 409
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset06 i}}
+output.first_lock true
+output.last 69
+name Retime60
+xpos -392
+ypos 519
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType8
+xpos -334
+ypos 575
+}
+clone $Cddc61c20 {
+xpos -334
+ypos 655
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy8
+xpos -334
+ypos 790
+}
+Premult {
+name Premult8
+xpos -334
+ypos 816
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge34
+label ghost
+xpos -334
+ypos 919
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge37
+label LED
+xpos -334
+ypos 1051
+}
+set N8a571460 [stack 0]
+Transform {
+translate {{(parent.move_1.translate.x)*6 i} 0}
+center {699.4000244 619}
+name move_6
+xpos -334
+ypos 1127
+}
+push $N8a571460
+Transform {
+translate {{(parent.move_10.translate.x)*6 i} 0}
+center {699.4000244 619}
+name move_15
+tile_color 0x7f00ffff
+xpos -444
+ypos 1130
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType17
+xpos -398
+ypos 1167
+}
+push $N8a571460
+Transform {
+translate {{((parent.move_1.translate.x)*6)*-1 i} 0}
+center {699.4000244 619}
+name move_24
+xpos -243
+ypos 1127
+}
+Switch {
+inputs 2
+which {{direction}}
+name dirSwitch5
+xpos -334
+ypos 1215
+}
+set Ncf1f6300 [stack 0]
+push $Ncf1f6300
+ShuffleCopy {
+inputs 2
+name ShuffleCopy18
+xpos -334
+ypos 1241
+}
+Premult {
+name Premult17
+xpos -334
+ypos 1267
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 1000000
+speed 1e-05
+after loop
+filter nearest
+name Retime5
+xpos -612
+ypos 456
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset05 i}}
+output.first_lock true
+output.last 59
+name Retime50
+xpos -674
+ypos 555
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType7
+xpos -612
+ypos 599
+}
+clone $Cddc61c20 {
+xpos -612
+ypos 645
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy7
+xpos -612
+ypos 775
+}
+Premult {
+name Premult7
+xpos -612
+ypos 801
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge31
+label ghost
+xpos -612
+ypos 906
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge33
+label LED
+xpos -612
+ypos 1038
+}
+set N4025a760 [stack 0]
+Transform {
+translate {{(parent.move_1.translate.x)*5 i} 0}
+center {699.4000244 619}
+name move_5
+xpos -612
+ypos 1118
+}
+push $N4025a760
+Transform {
+translate {{(parent.move_10.translate.x)*5 i} 0}
+center {699.4000244 619}
+name move_14
+tile_color 0x7f00ffff
+xpos -715
+ypos 1118
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType16
+xpos -672
+ypos 1162
+}
+push $N4025a760
+Transform {
+translate {{((parent.move_1.translate.x)*5)*-1 i} 0}
+center {699.4000244 619}
+name move_23
+xpos -519
+ypos 1118
+}
+Switch {
+inputs 2
+which {{direction}}
+name dirSwitch4
+xpos -612
+ypos 1215
+}
+set Nda84800 [stack 0]
+push $Nda84800
+ShuffleCopy {
+inputs 2
+name ShuffleCopy17
+xpos -612
+ypos 1241
+}
+Premult {
+name Premult13
+xpos -612
+ypos 1267
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 100000
+speed 0.0001
+after loop
+filter nearest
+name Retime4
+xpos -900
+ypos 435
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset04 i}}
+output.first_lock true
+output.last 49
+name Retime40
+xpos -965
+ypos 559
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType6
+xpos -900
+ypos 613
+}
+clone $Cddc61c20 {
+xpos -900
+ypos 647
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy6
+xpos -900
+ypos 777
+}
+Premult {
+name Premult6
+xpos -901
+ypos 800
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge20
+label ghost
+xpos -901
+ypos 904
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge21
+label LED
+xpos -900
+ypos 1038
+}
+set Ndf061f20 [stack 0]
+Transform {
+translate {{(parent.move_1.translate.x)*4 i} 0}
+center {699.4000244 619}
+name move_4
+xpos -900
+ypos 1118
+}
+push $Ndf061f20
+Transform {
+translate {{(parent.move_10.translate.x)*4 i} 0}
+center {699.4000244 619}
+name move_13
+tile_color 0x7f00ffff
+xpos -996
+ypos 1118
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType15
+xpos -963
+ypos 1158
+}
+push $Ndf061f20
+Transform {
+translate {{((parent.move_1.translate.x)*4)*-1 i} 0}
+center {699.4000244 619}
+name move_22
+xpos -807
+ypos 1118
+}
+Switch {
+inputs 2
+which {{direction}}
+name dirSwitch3
+xpos -900
+ypos 1209
+}
+set Nb880a3c0 [stack 0]
+push $Nb880a3c0
+ShuffleCopy {
+inputs 2
+name ShuffleCopy16
+xpos -900
+ypos 1235
+}
+Premult {
+name Premult11
+xpos -900
+ypos 1261
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 10000
+speed 0.001
+after loop
+filter nearest
+name Retime3
+xpos -1230
+ypos 398
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset03 i}}
+output.first_lock true
+output.last 39
+name Retime30
+xpos -1135
+ypos 567
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType5
+xpos -1230
+ypos 601
+}
+clone $Cddc61c20 {
+xpos -1230
+ypos 630
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy4
+xpos -1230
+ypos 768
+}
+Premult {
+name Premult5
+xpos -1230
+ypos 794
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge9
+label ghost
+xpos -1230
+ypos 894
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge18
+label LED
+xpos -1230
+ypos 1032
+}
+set N303e0ae0 [stack 0]
+Transform {
+translate {{(parent.move_1.translate.x)*3 i} 0}
+center {699.4000244 619}
+name move_3
+xpos -1225
+ypos 1128
+}
+push $N303e0ae0
+Transform {
+translate {{(parent.move_10.translate.x)*3 i} 0}
+center {699.4000244 619}
+name move_12
+tile_color 0x7f00ffff
+xpos -1337
+ypos 1118
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType14
+xpos -1291
+ypos 1174
+}
+push $N303e0ae0
+Transform {
+translate {{((parent.move_1.translate.x)*3)*-1 i} 0}
+center {699.4000244 619}
+name move_21
+xpos -1122
+ypos 1125
+}
+Switch {
+inputs 2
+which {{direction i}}
+name dirSwitch2
+xpos -1225
+ypos 1222
+}
+set Ncf485b70 [stack 0]
+push $Ncf485b70
+ShuffleCopy {
+inputs 2
+name ShuffleCopy5
+xpos -1225
+ypos 1248
+}
+Premult {
+name Premult3
+xpos -1225
+ypos 1274
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+output.last 1000
+speed 0.01
+after loop
+filter nearest
+name Retime12
+xpos -1595
+ypos 422
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset02 i}}
+output.first_lock true
+output.last 29
+name Retime20
+xpos -1503
+ypos 554
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType4
+xpos -1595
+ypos 608
+}
+clone $Cddc61c20 {
+xpos -1595
+ypos 654
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy12
+xpos -1595
+ypos 771
+}
+Premult {
+name Premult16
+xpos -1595
+ypos 797
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge48
+label ghost
+xpos -1595
+ypos 894
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge49
+label LED
+xpos -1595
+ypos 1037
+}
+set Nded13420 [stack 0]
+Transform {
+translate {{(parent.move_10.translate.x)*2 i} 0}
+center {699.4000244 619}
+name move_11
+tile_color 0x7f00ffff
+xpos -1699
+ypos 1141
+}
+set N7a9021e0 [stack 0]
+push $Nded13420
+Transform {
+translate {{(parent.move_1.translate.x)*2 i} 0}
+center {699.4000244 619}
+name move_2
+xpos -1595
+ypos 1141
+}
+push $N7a9021e0
+Switch {
+inputs 3
+which {{counterSpeed i}}
+name durationType13
+xpos -1654
+ypos 1185
+}
+push $Nded13420
+Transform {
+translate {{((parent.move_1.translate.x)*2)*-1 i} 0}
+center {699.4000244 619}
+name move_20
+xpos -1501
+ypos 1142
+}
+Switch {
+inputs 2
+which {{direction}}
+name dirSwitch1
+xpos -1595
+ypos 1226
+}
+set N54f10a0 [stack 0]
+push $N54f10a0
+ShuffleCopy {
+inputs 2
+name ShuffleCopy3
+xpos -1595
+ypos 1252
+}
+Premult {
+name Premult21
+xpos -1595
+ypos 1285
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first_lock true
+speed 0.1
+after loop
+filter nearest
+name Retime01
+xpos -1942
+ypos 428
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.offset01 i}}
+output.first_lock true
+output.last 19
+name Retime10
+xpos -1855
+ypos 555
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType3
+xpos -1942
+ypos 590
+}
+clone $Cddc61c20 {
+xpos -1942
+ypos 655
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy11
+xpos -1942
+ypos 769
+}
+Premult {
+name Premult15
+xpos -1942
+ypos 795
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge46
+label ghost
+xpos -1942
+ypos 882
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge47
+label LED
+xpos -1942
+ypos 1028
+}
+set N215ea480 [stack 0]
+Transform {
+translate {{(parent.Controls.spacing)+40 i} 0}
+center {699.4000244 619}
+name move_1
+xpos -1942
+ypos 1094
+}
+push $N215ea480
+Transform {
+translate {{((parent.Controls.spacing)+40) i} 0}
+center {699.4000244 619}
+name move_10
+tile_color 0x7f00ffff
+xpos -2043
+ypos 1094
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType12
+xpos -1995
+ypos 1150
+}
+push $N215ea480
+Transform {
+translate {{((parent.Controls.spacing)+40)*-1 i} 0}
+center {699.4000244 619}
+name move_19
+xpos -1847
+ypos 1094
+}
+Switch {
+inputs 2
+which {{direction i}}
+name dirSwitch
+xpos -1942
+ypos 1200
+}
+set Ne087000 [stack 0]
+push $Ne087000
+ShuffleCopy {
+inputs 2
+name ShuffleCopy1
+xpos -1942
+ypos 1226
+}
+Premult {
+name Premult1
+xpos -1942
+ypos 1252
+disable {{styleChoice+-1}}
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.startframe i}}
+output.first_lock true
+output.last 10
+after loop
+name Retime0
+xpos -2262
+ypos 355
+}
+push $N757469d0
+Retime {
+input.first 0
+input.first_lock true
+input.last 9
+input.last_lock true
+reverse {{parent.Controls.direction i}}
+output.first {{parent.Controls.startframe i}}
+output.first_lock true
+output.last 10
+name Retime00
+xpos -2185
+ypos 530
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType2
+xpos -2262
+ypos 588
+}
+clone $Cddc61c20 {
+xpos -2262
+ypos 655
+selected false
+}
+push $N23feac80
+ShuffleCopy {
+inputs 2
+name ShuffleCopy9
+xpos -2262
+ypos 773
+}
+Premult {
+name Premult4
+xpos -2262
+ypos 799
+}
+push $N6c15c80
+Merge2 {
+inputs 2
+name Merge4
+label ghost
+xpos -2262
+ypos 942
+}
+set N425b7150 [stack 0]
+push $N425b7150
+ShuffleCopy {
+inputs 2
+name ShuffleCopy2
+xpos -2262
+ypos 1213
+}
+Premult {
+name Premult2
+xpos -2262
+ypos 1238
+disable {{styleChoice+-1 i}}
+}
+push $Nd730970
+Merge2 {
+inputs 2
+name Merge22
+label LED
+xpos -2262
+ypos 1302
+}
+set N87ad2c00 [stack 0]
+Merge2 {
+inputs 2
+name Merge24
+xpos -1942
+ypos 1310
+}
+set N87bd3010 [stack 0]
+Merge2 {
+inputs 2
+name Merge28
+xpos -1595
+ypos 1311
+}
+set N47b5e30 [stack 0]
+Merge2 {
+inputs 2
+name Merge36
+xpos -1225
+ypos 1311
+}
+set N336cf060 [stack 0]
+Merge2 {
+inputs 2
+name Merge40
+xpos -900
+ypos 1304
+}
+set Nb7a808a0 [stack 0]
+Merge2 {
+inputs 2
+name Merge41
+xpos -612
+ypos 1304
+}
+set N7675ece0 [stack 0]
+Merge2 {
+inputs 2
+name Merge42
+xpos -334
+ypos 1304
+}
+set Nbc8cdcc0 [stack 0]
+Merge2 {
+inputs 2
+name Merge43
+xpos 16
+ypos 1304
+}
+set N3a3ba10 [stack 0]
+Merge2 {
+inputs 2
+name Merge44
+xpos 285
+ypos 1310
+}
+set Nb9cea450 [stack 0]
+Merge2 {
+inputs 2
+name Merge45
+xpos 544
+ypos 1310
+}
+push $Nb9cea450
+push $Nb9cea450
+push $N3a3ba10
+push $Nbc8cdcc0
+push $N7675ece0
+push $Nb7a808a0
+push $N336cf060
+push $N47b5e30
+push $N87bd3010
+push $N87ad2c00
+push $Nd730970
+NoOp {
+name Controls
+tile_color 0x7fff00ff
+xpos -1240
+ypos 1500
+addUserKnob {20 User}
+addUserKnob {7 startframe l "Start Frame" R 1 2000}
+startframe {{parent.parent.knob.first_frame i}}
+addUserKnob {7 usrEndFrame l "End Frame (Speed)" R -10 10}
+usrEndFrame -10
+addUserKnob {7 digits R 1 10}
+digits {{parent.digits.noDigits i}}
+addUserKnob {7 spacing l Spacing R 0 100}
+spacing {{parent.fontSpacing i}}
+addUserKnob {6 direction l Countdown +STARTLINE}
+direction true
+addUserKnob {3 fontScaler}
+fontScaler {{((parent.fontScale*10)*2)*(parent.fontSpacing) i}}
+addUserKnob {3 offset01}
+offset01 {{(startframe+10)-1 i}}
+addUserKnob {3 offset02}
+offset02 {{startframe+19 i}}
+addUserKnob {3 offset03}
+offset03 {{startframe+29 i}}
+addUserKnob {3 offset04}
+offset04 {{startframe+39 i}}
+addUserKnob {3 offset05}
+offset05 {{startframe+49 i}}
+addUserKnob {3 offset06}
+offset06 {{startframe+59 i}}
+addUserKnob {3 offset07}
+offset07 {{startframe+69 i}}
+addUserKnob {3 offset08}
+offset08 {{startframe+79 i}}
+addUserKnob {3 offset09}
+offset09 {{startframe+89 i}}
+addUserKnob {3 endFrame l endframe}
+endFrame {{startframe+100 i}}
+addUserKnob {3 userFrameEnd l "user end frame"}
+userFrameEnd {{parent.parent.knob.last_frame+(usrEndFrame*-1) i}}
+addUserKnob {3 startFrame}
+startFrame {{parent.parent.knob.first_frame i}}
+addUserKnob {3 inputFrameOffset}
+inputFrameOffset {{startFrame+spacing*(noDigitsSlider) i}}
+addUserKnob {3 sequenceLenth}
+sequenceLenth {{parent.parent.knob.last_frame i}}
+addUserKnob {3 endFrameOffset}
+endFrameOffset {{startFrame+(10*digits) i}}
+}
+set N30446720 [stack 0]
+Switch {
+inputs 12
+which {{parent.Controls.digits i}}
+name Switch2
+xpos -831
+ypos 1478
+}
+Transform {
+scale {{parent.fontScale i}}
+center {700 620}
+name fontScaleMaster
+xpos -831
+ypos 1518
+}
+set N30445e30 [stack 0]
+Transform {
+center {700 619}
+name LocatorDown
+xpos -882
+ypos 1556
+}
+Premult {
+name Premult23
+xpos -882
+ypos 1582
+}
+set Nde6b7ba0 [stack 0]
+push $Nde6b7ba0
+Rectangle {
+inputs 0
+cliptype none
+area {643 151 1083 243}
+color {{parent.BlankModern.color i} {parent.BlankModern.color i} {parent.BlankModern.color i} {parent.BlankModern.color i}}
+name Modern_BG1
+xpos -1102
+ypos 1550
+}
+Rectangle {
+inputs 0
+cliptype none
+area {643 151 1083 243}
+color {0 0 0 1}
+name Classic_BG1
+xpos -1004
+ypos 1550
+}
+Switch {
+inputs 2
+which {{styleChoice}}
+name styleSwitch3
+xpos -1040
+ypos 1574
+}
+Reformat {
+format "2048 2048 0 0 2048 2048 1 square_2K"
+name Reformat5
+xpos -1022
+ypos 1601
+}
+Merge2 {
+inputs 2
+name Merge3
+xpos -882
+ypos 1608
+}
+Reformat {
+format "2048 2048 0 0 2048 2048 1 square_2K"
+black_outside true
+name Reformat4
+xpos -882
+ypos 1638
+}
+ShuffleCopy {
+inputs 2
+name ShuffleCopy22
+xpos -882
+ypos 1680
+disable {{NumberPremlt==0 i}}
+}
+push $N30445e30
+Transform {
+translate {-40 0}
+center {700 619}
+name LocatorUp
+xpos -780
+ypos 1563
+}
+Premult {
+name Premult24
+xpos -780
+ypos 1588
+}
+set N47a85cd0 [stack 0]
+push $N47a85cd0
+Rectangle {
+inputs 0
+cliptype none
+area {232 150 672 242}
+color {{parent.BlankModern.color i} {parent.BlankModern.color i} {parent.BlankModern.color i} {parent.BlankModern.color i}}
+name Mod_BG2
+xpos -571
+ypos 1550
+}
+Rectangle {
+inputs 0
+cliptype none
+area {232 150 672 242}
+color {0 0 0 1}
+name Classic_BG3
+xpos -662
+ypos 1526
+}
+Switch {
+inputs 2
+which {{styleChoice}}
+name styleSwitch4
+xpos -662
+ypos 1580
+}
+Reformat {
+format "2048 2048 0 0 2048 2048 1 square_2K"
+name Reformat2
+xpos -662
+ypos 1606
+}
+Merge2 {
+inputs 2
+name Merge2
+xpos -780
+ypos 1614
+}
+Reformat {
+format "2048 2048 0 0 2048 2048 1 square_2K"
+black_outside true
+name Reformat3
+xpos -780
+ypos 1638
+}
+ShuffleCopy {
+inputs 2
+name ShuffleCopy23
+xpos -780
+ypos 1680
+disable {{NumberPremlt==0}}
+}
+Switch {
+inputs 2
+which {{direction i}}
+name dirSwitch9
+xpos -834
+ypos 1718
+}
+Transform {
+translate {324 404}
+center {702 617}
+name LocatorToBottomCenter
+xpos -834
+ypos 1757
+}
+Transform {
+center {1024 1024}
+name Position1
+xpos -834
+ypos 1790
+}
+set N37be1f0 [stack 0]
+TimeOffset {
+time_offset {{parent.digits.timeOffset-1}}
+name TimeOffset1
+xpos -780
+ypos 1838
+}
+set N751e26c0 [stack 0]
+push $N37be1f0
+Retime {
+input.first {{parent.Controls.startFrame i}}
+input.first_lock true
+input.last {{parent.Controls.offset09 i}}
+input.last_lock true
+output.first {{parent.Controls.startFrame i}}
+output.first_lock true
+output.last {{parent.Controls.sequenceLenth i}}
+output.last_lock true
+speed 0.09
+filter nearest
+name Retime1
+xpos -882
+ypos 1838
+}
+Switch {
+inputs 2
+which {{counterSpeed i}}
+name durationType1
+xpos -831
+ypos 1892
+}
+set N7be3da00 [stack 0]
+Reformat {
+format "1920 1080 0 0 1920 1080 1 HD"
+black_outside true
+name Reformat1
+xpos -826
+ypos 1929
+}
+Constant {
+inputs 0
+channels rgb
+color {{parent.BlankModern.color i} {parent.BlankModern.color i} {parent.BlankModern.color i} {parent.BlankModern.color i}}
+format {{{parent.Reformat1.format}}}
+name Constant2
+xpos -595
+ypos 1908
+}
+Constant {
+inputs 0
+channels rgb
+format {{{parent.Reformat1.format}}}
+name Constant1
+xpos -705
+ypos 1947
+}
+Switch {
+inputs 2
+which {{styleChoice}}
+name styleSwitch5
+xpos -654
+ypos 2054
+}
+Merge2 {
+inputs 2
+name Merge1
+xpos -826
+ypos 2054
+}
+Shuffle {
+alpha white
+name Shuffle1
+xpos -826
+ypos 2078
+disable {{premultiply i}}
+}
+Premult {
+name Premult22
+xpos -826
+ypos 2148
+disable {{premultiply==0 i}}
+}
+Glow {
+size {{parent.glow i}}
+name Glow1
+xpos -826
+ypos 2174
+disable {{styleChoice i}}
+}
+Output {
+name Output1
+xpos -826
+ypos 2213
+}
+push $N30446720
+NoOp {
+name digits
+tile_color 0xdcff00ff
+xpos -1240
+ypos 1526
+addUserKnob {20 User}
+addUserKnob {3 timeOffset}
+timeOffset {{(parent.timeO)-1 i}}
+addUserKnob {3 noDigits}
+noDigits {{parent.noDigitsSlider i}}
+}
+push $N751e26c0
+push $N7be3da00
+Viewer {
+inputs 2
+frame 1
+input_process false
+name Viewer1
+xpos -1187
+ypos 1934
+}
+end_group

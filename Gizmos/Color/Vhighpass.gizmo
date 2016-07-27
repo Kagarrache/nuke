@@ -1,0 +1,88 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ help "vHighPass STAGE1\n\nHighpass filter, similar like in Photoshop.\n\nMerge it over original image using overlay, softlight or hardlight blending modes to achieve sharpening.\n\nContrast and Sharpen sliders brings possibility to enhance results without any extra nodes. \n\n--\ndeveloped by Vit Sedlacek (c)2012\nwww.vitsedlacek.com"
+ tile_color 0xfcff00ff
+ gl_color 0xfcff00ff
+ addUserKnob {20 v_highpass l vHighPass}
+ addUserKnob {41 size_1 l size T Blur1.size}
+ addUserKnob {26 ""}
+ addUserKnob {41 contrast T RolloffContrast1.contrast}
+ addUserKnob {41 sharpen T Sharpen2.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 info l "" +STARTLINE T "developed by Vit Sedlacek (c)2012\nwww.vitsedlacek.com"}
+}
+ Input {
+  inputs 0
+  name input
+  xpos 331
+  ypos -564
+ }
+set N98a8d50 [stack 0]
+ Invert {
+  name Invert1
+  xpos 441
+  ypos -569
+ }
+ Blur {
+  size 4
+  name Blur1
+  xpos 441
+  ypos -535
+ }
+push $N98a8d50
+ Merge2 {
+  inputs 2
+  operation average
+  name Merge1
+  xpos 331
+  ypos -530
+ }
+ Expression {
+  channel0 rgb
+  expr0 (r+g)/2
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression2
+  xpos 331
+  ypos -506
+ }
+ RolloffContrast {
+  contrast 2
+  soft_clip 0.2
+  slope_mag_low1 0.6800000072
+  black_low 0.25
+  slope_mag_high2 0.6800000072
+  white_high 0.25
+  name RolloffContrast1
+  xpos 331
+  ypos -482
+ }
+set N9c99f50 [stack 0]
+ Keyer {
+  operation "luminance key"
+  range {0.06740014793 0.7488905325 1 1}
+  name Keyer1
+  xpos 441
+  ypos -488
+ }
+ Dot {
+  name Dot1
+  xpos 475
+  ypos -450
+ }
+push $N9c99f50
+ Sharpen {
+  inputs 1+1
+  size 1
+  name Sharpen2
+  xpos 331
+  ypos -459
+ }
+ Output {
+  name Output1
+  xpos 331
+  ypos -424
+ }
+end_group

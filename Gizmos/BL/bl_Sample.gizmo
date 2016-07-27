@@ -1,0 +1,26 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l Sample}
+ addUserKnob {12 pos}
+ addUserKnob {19 sampled}
+ sampled {{"\[sample this.input r (pos.x) (pos.y) (1) (1)]"} {"\[sample this.input g (pos.x) (pos.y) (1) (1)]"} {"\[sample this.input b (pos.x) (pos.y) (1) (1)]"} {"\[sample this.input a (pos.x) (pos.y) (1) (1)]"}}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 239
+  ypos -118
+ }
+ NoOp {
+  name NoOp
+  xpos 239
+  ypos -92
+ }
+ Output {
+  name Output
+  xpos 239
+  ypos -66
+ }
+end_group

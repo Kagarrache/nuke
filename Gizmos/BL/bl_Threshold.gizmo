@@ -1,0 +1,85 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Threshold}
+ addUserKnob {4 mode M {binary over under}}
+ addUserKnob {19 Threshold l threshold}
+ Threshold {0.5 0.5 0.5 0.5}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -264
+  ypos -90
+ }
+set N15d618c0 [stack 0]
+add_layer {rgba rgba.beta}
+ Expression {
+  temp_name0 rc
+  temp_expr0 parent.Threshold.r
+  temp_name1 gc
+  temp_expr1 parent.Threshold.g
+  temp_name2 bc
+  temp_expr2 parent.Threshold.b
+  temp_name3 ac
+  temp_expr3 parent.Threshold.a
+  expr0 "(r>rc)? 0: r"
+  expr1 "(g>gc)? 0: g"
+  expr2 "(b>bc)? 0: b"
+  channel3 alpha
+  expr3 "(a>ac)? 0: a"
+  name Expression1
+  xpos -63
+  ypos -62
+ }
+push $N15d618c0
+ Expression {
+  temp_name0 rc
+  temp_expr0 parent.Threshold.r
+  temp_name1 gc
+  temp_expr1 parent.Threshold.g
+  temp_name2 bc
+  temp_expr2 parent.Threshold.b
+  temp_name3 ac
+  temp_expr3 parent.Threshold.a
+  expr0 "(r>rc)? r: 0"
+  expr1 "(g>gc)? g: 0"
+  expr2 "(b>bc)? b: 0"
+  channel3 alpha
+  expr3 "(a>ac)? a: 0"
+  name Expression3
+  xpos -162
+  ypos -63
+ }
+push $N15d618c0
+ Expression {
+  temp_name0 rc
+  temp_expr0 parent.Threshold.r
+  temp_name1 gc
+  temp_expr1 parent.Threshold.g
+  temp_name2 bc
+  temp_expr2 parent.Threshold.b
+  temp_name3 ac
+  temp_expr3 parent.Threshold.a
+  expr0 "(r>rc)? 0: 1"
+  expr1 "(g>gc)? 0: 1"
+  expr2 "(b>bc)? 0: 1"
+  channel3 alpha
+  expr3 "(a>ac)? 0: 1"
+  name Expression2
+  xpos -264
+  ypos -64
+ }
+ Switch {
+  inputs 3
+  which {{parent.mode i}}
+  name Switch1
+  xpos -264
+  ypos -38
+ }
+ Output {
+  name Output
+  xpos -264
+  ypos -12
+ }
+end_group

@@ -1,0 +1,296 @@
+Gizmo {
+ name SecondaryMattes
+ note_font "Bitstream Vera Sans"
+ mapsize {0.15 0.15}
+ addUserKnob {20 User l secondaryMattes}
+ addUserKnob {6 outputChannels l "output secondary mattes" t "this outputs all the mattes as separate channels:\nsm_RGB\nsm_CMY\nsm_BW\nso can be used downstream" +STARTLINE}
+ outputChannels true
+ addUserKnob {26 ""}
+ addUserKnob {4 ViewWhat l view M {Result RGB CMY BW}}
+ addUserKnob {4 ViewCMYas l "CMY as" -STARTLINE M {CMY RGB ""}}
+ ViewCMYas RGB
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -1252
+  ypos 589
+ }
+ NoOp {
+  name Source
+  xpos -1252
+  ypos 721
+ }
+set N1323e8c0 [stack 0]
+ Expression {
+  channel0 rgb
+  expr0 1-max(r,g,b)
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  channel3 {none none none -rgba.alpha}
+  name Expression2
+  label max
+  xpos -875
+  ypos 1060
+ }
+push $N1323e8c0
+ Expression {
+  channel0 rgb
+  expr0 min(r,g,b)
+  channel1 none
+  channel2 none
+  channel3 {none none none -rgba.alpha}
+  name Expression1
+  label min
+  xpos -1027
+  ypos 1069
+ }
+set N1323cf40 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue black
+  name ShuffleCopy1
+  label "\[value in] | \[value in2]"
+  xpos -1027
+  ypos 1173
+ }
+ Dot {
+  name Dot4
+  label "BW\n"
+  xpos -996
+  ypos 1277
+ }
+ Dot {
+  name Dot9
+  label "BW\n"
+  xpos -996
+  ypos 2138
+ }
+set N205db2f0 [stack 0]
+add_layer {sm_BW sm_BW.red sm_BW.green}
+ Shuffle {
+  out sm_BW
+  name Shuffle4
+  label "\[value in] | \[value in2]"
+  xpos -1027
+  ypos 2587
+ }
+push $N1323e8c0
+ Shuffle {
+  red blue
+  green red
+  blue green
+  name BRG
+  label "120deg HueShift back"
+  xpos -1524
+  ypos 886
+ }
+push $N1323e8c0
+ Merge2 {
+  inputs 2
+  operation min
+  name Min
+  label "CMY incWhite \n"
+  xpos -1524
+  ypos 990
+ }
+set N205edf70 [stack 0]
+push $N1323cf40
+ Merge2 {
+  inputs 2
+  operation minus
+  name CMY1
+  label "CMY only"
+  xpos -1259
+  ypos 1092
+ }
+set N24000290 [stack 0]
+ Shuffle {
+  red blue
+  green red
+  blue green
+  name Shuffle1
+  xpos -1259
+  ypos 1206
+ }
+set N24030a20 [stack 0]
+ Dot {
+  name Dot2
+  label "CMY\n"
+  xpos -1228
+  ypos 1274
+ }
+add_layer {sm_CMY sm_CMY.red sm_CMY.green sm_CMY.blue}
+ Shuffle {
+  out sm_CMY
+  name Shuffle3
+  label "\[value in] | \[value in2]"
+  xpos -1259
+  ypos 2487
+ }
+push $N205db2f0
+push $N24030a20
+ Dot {
+  name Dot7
+  xpos -1339
+  ypos 1209
+ }
+ Dot {
+  name Dot11
+  label "CMY\n"
+  xpos -1339
+  ypos 1883
+ }
+push $N24000290
+ Dot {
+  name Dot6
+  xpos -1136
+  ypos 1216
+ }
+push $N1323e8c0
+ Shuffle {
+  red green
+  green blue
+  blue red
+  name GBR
+  label "120deg HueShift back"
+  xpos -1215
+  ypos 872
+ }
+push $N1323e8c0
+ Merge2 {
+  inputs 2
+  operation min
+  name Min1
+  label "CMY incWhite \nHue rotated"
+  xpos -1252
+  ypos 970
+ }
+set N24058c20 [stack 0]
+push $N1323cf40
+ Merge2 {
+  inputs 2
+  operation minus
+  name CMY
+  label "CMY only"
+  xpos -1133
+  ypos 1126
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name CMYwView
+  label "Combined both Hues\n"
+  xpos -1144
+  ypos 1901
+ }
+ Dot {
+  name Dot8
+  label "CMY_4view\n"
+  xpos -1113
+  ypos 2020
+ }
+ Switch {
+  inputs 2
+  which {{ViewCMYas i}}
+  name Switch1
+  xpos -1370
+  ypos 2032
+ }
+push $N1323e8c0
+ Dot {
+  name Dot1
+  xpos -1697
+  ypos 724
+ }
+set N2407b4e0 [stack 0]
+push $N205edf70
+push $N24058c20
+ Merge2 {
+  inputs 2
+  operation max
+  name CMYw1
+  label "Combined both Hues\n"
+  xpos -1524
+  ypos 1092
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name RGB
+  label "RGB only"
+  xpos -1728
+  ypos 1173
+ }
+ Dot {
+  name Dot3
+  label "RGB\n"
+  xpos -1697
+  ypos 1277
+ }
+ Dot {
+  name Dot10
+  label "RGB\n"
+  xpos -1697
+  ypos 1993
+ }
+set N24093390 [stack 0]
+push $N2407b4e0
+ Dot {
+  name Dot5
+  xpos -1839
+  ypos 724
+ }
+ Switch {
+  inputs 4
+  which {{ViewWhat i}}
+  name Switch2
+  xpos -1870
+  ypos 2133
+ }
+set N24098f40 [stack 0]
+push $N24093390
+add_layer {sm_RGB sm_RGB.red sm_RGB.green sm_RGB.blue}
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  out2 sm_RGB
+  name ShuffleCopy2
+  label "\[value in] | \[value in2]"
+  xpos -1728
+  ypos 2311
+ }
+ Copy {
+  inputs 2
+  channels sm_CMY
+  name Copy1
+  xpos -1728
+  ypos 2464
+ }
+ Copy {
+  inputs 2
+  channels sm_BW
+  name Copy4
+  xpos -1728
+  ypos 2574
+ }
+push $N24098f40
+ Merge2 {
+  inputs 2
+  operation copy
+  also_merge all
+  name addLayers
+  selected true
+  xpos -1870
+  ypos 2699
+  disable {{!outputChannels i}}
+ }
+ Output {
+  name Output1
+  xpos -1870
+  ypos 2955
+ }
+end_group

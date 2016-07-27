@@ -1,0 +1,668 @@
+#! /Applications/Nuke6.2v1/Nuke6.2v1.app/Contents/MacOS/Nuke6.2v1 -nx
+version 6.2 v1
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {6 distortioncheck l distortion +STARTLINE}
+ distortioncheck true
+ addUserKnob {6 scanlineenable l scanlines -STARTLINE}
+ scanlineenable true
+ addUserKnob {6 flickerenable l flicker -STARTLINE}
+ flickerenable true
+ addUserKnob {6 scrollenable l scroll -STARTLINE}
+ scrollenable true
+ addUserKnob {4 linealign l lines M {Vertical Horizontal Grid None "" "" "" "" "" "" "" "" ""}}
+ linealign Horizontal
+ addUserKnob {7 dotsize l "line width" R 0 10}
+ dotsize 2
+ addUserKnob {41 saturation l "pre saturation" T Saturation1.saturation}
+ addUserKnob {41 multiply_1 l tint T Grade1.multiply}
+ addUserKnob {7 dotexp l "dot exposure" R -1 1}
+ dotexp -0.2
+ addUserKnob {41 white l "scanline gain" T Grade_scanline.white}
+ addUserKnob {41 minimum_enable l enable -STARTLINE T Clamp1.minimum_enable}
+ addUserKnob {20 redgroup l "red tube" t "multiply red channel and shit it's axis for weakened / missaligned tube gun effect" n 1}
+ redgroup 0
+ addUserKnob {41 redvalue l "red multiply" T mult_red.value}
+ addUserKnob {41 translate l shift T Position_red.translate}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 greengroup l "green tube" t "multiply green channel and shit it's axis for weakened / missaligned tube gun effect" n 1}
+ greengroup 0
+ addUserKnob {41 greenvalue l "green multiply" T mult_green.value}
+ addUserKnob {41 translate_1 l shift T Position_green.translate}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 bluegroup l "blue tube" t "multiply blue channel and shit it's axis for weakened / missaligned tube gun effect" n 1}
+ bluegroup 0
+ addUserKnob {41 bluevalue l "blue multiply" T mult_blues.value}
+ addUserKnob {41 translate_2 l shift T Position_blue.translate}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {41 minimum l "black lift" T Clamp1.minimum}
+ addUserKnob {41 mix T final_mix.mix}
+ addUserKnob {26 info l "" +STARTLINE T "\nFizzle v2.0 | by Julian van Mil 2011\nuse fizzle to simulate physical monitor\ndisply patterns and colour corrections"}
+ addUserKnob {20 distortion}
+ addUserKnob {41 channels T PerspDistort1.channels}
+ addUserKnob {41 fov l "Field of View" T PerspDistort1.fov}
+ addUserKnob {41 reverse T PerspDistort1.reverse}
+ addUserKnob {41 resize_bbox l "resize bounding box" -STARTLINE T PerspDistort1.resize_bbox}
+ addUserKnob {41 filter T PerspDistort1.filter}
+ addUserKnob {20 scanlines}
+ addUserKnob {4 scanlinedirection l "scanline alignment" M {Horizontal Vertical ""}}
+ addUserKnob {41 multiply_2 l multiply T Grade_scanline.multiply}
+ addUserKnob {41 black l lift T Grade_scanline.black}
+ addUserKnob {7 scanlinesize l "scanline size" R 0 35}
+ scanlinesize 60
+ addUserKnob {41 size l "scanline blur" T Blur1.size}
+ addUserKnob {26 scanlineanimationlitile l "scanline animation"}
+ addUserKnob {7 scanlineamp l amplitude R 0 300}
+ scanlineamp 200
+ addUserKnob {7 scanlinefeq l frequency}
+ scanlinefeq 0.05
+ addUserKnob {41 rotation T CameraShake_sacnline.rotation}
+ addUserKnob {41 octaves T CameraShake_sacnline.octaves}
+ addUserKnob {41 shutter T CameraShake_sacnline.shutter}
+ addUserKnob {41 samples T CameraShake_sacnline.samples}
+ addUserKnob {41 filter_1 l filter T CameraShake_sacnline.filter}
+ addUserKnob {26 scanlinedistortiontext l "scanline distortion"}
+ addUserKnob {6 scanlinedistortionenable l enable +STARTLINE}
+ scanlinedistortionenable true
+ addUserKnob {41 uv_scale l amount T IDistort1.uv_scale}
+ addUserKnob {41 scale T Transform_scanlinescale.scale}
+ addUserKnob {41 uv_offset l offset T IDistort1.uv_offset}
+ addUserKnob {20 flickertab l flicker}
+ addUserKnob {41 multiply T Grade_flicker.multiply}
+ addUserKnob {41 white_1 l gain T Grade_flicker.white}
+ addUserKnob {26 flickrcontrolslable l animation}
+ addUserKnob {41 scale_1 l scale T flickr_controls.scale}
+ addUserKnob {41 speed T flickr_controls.speed}
+ addUserKnob {41 seed T flickr_controls.seed}
+ addUserKnob {41 offset T flickr_controls.offset}
+ addUserKnob {41 float l result T flickr_controls.float}
+ addUserKnob {20 scrolltab l scroll}
+ addUserKnob {41 amplitude T SCROLL.amplitude}
+ addUserKnob {41 rotation_1 l rotation T SCROLL.rotation}
+ addUserKnob {41 scaling T SCROLL.scaling}
+ addUserKnob {41 frequency T SCROLL.frequency}
+ addUserKnob {41 octaves_1 l octaves T SCROLL.octaves}
+ addUserKnob {41 shutter_1 l shutter T SCROLL.shutter}
+ addUserKnob {41 samples_1 l samples T SCROLL.samples}
+ addUserKnob {41 scale_2 l "fixed scale" T SCROLL.scale}
+ addUserKnob {41 filter_2 l filter T SCROLL.filter}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x37648eff
+  gl_color 0x80a2ccff
+  label TUBES
+  note_font_size 42
+  xpos -657
+  ypos -603
+  bdwidth 379
+  bdheight 525
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x8e8e3800
+  label "LINE & DOT\n"
+  note_font_size 42
+  xpos -145
+  ypos -813
+  bdwidth 471
+  bdheight 652
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x8e8e3800
+  label CC
+  note_font_size 42
+  xpos -650
+  ypos -10
+  bdwidth 372
+  bdheight 269
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x7171c600
+  label "SCANLINE\n"
+  note_font_size 42
+  xpos -569
+  ypos 312
+  bdwidth 626
+  bdheight 606
+ }
+ StickyNote {
+  inputs 0
+  name Distortion
+  label DISTORTION
+  note_font_size 24
+  xpos -418
+  ypos 1114
+ }
+ NoOp {
+  inputs 0
+  name flickr_controls
+  xpos -628
+  ypos 155
+  addUserKnob {20 User}
+  addUserKnob {7 scale}
+  scale 0.5
+  addUserKnob {7 speed R 0 2}
+  speed 1
+  addUserKnob {7 seed R 0 100}
+  seed 7.5
+  addUserKnob {7 offset R 0 20}
+  offset 0.8
+  addUserKnob {26 ""}
+  addUserKnob {7 float}
+  float {{"this.scale * (random(frame * this.speed + this.seed)+this.offset)" i}}
+  addUserKnob {7 percent}
+  percent {{floor(this.float*100) i}}
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -579
+  ypos -964
+ }
+set N17746240 [stack 0]
+ Dot {
+  name Dot3
+  xpos -771
+  ypos -961
+ }
+ Dot {
+  name Dot4
+  xpos -771
+  ypos 1041
+ }
+set N177f4990 [stack 0]
+ CheckerBoard2 {
+  inputs 0
+  boxsize {{parent.scanlinesize i} {Input1.height i}}
+  color0 0
+  color1 1
+  color2 1
+  color3 0
+  centerlinewidth 0
+  name CheckerBoard5
+  xpos -78
+  ypos 347
+  disable {{!parent.scanlineenable i}}
+ }
+ CheckerBoard2 {
+  inputs 0
+  boxsize {{Input1.width+200 i} {parent.scanlinesize i}}
+  color0 {1 1 1 1}
+  color1 {1 1 1 1}
+  color2 {0 0 0 0}
+  color3 {0 0 0 0}
+  centerlinewidth 0
+  name CheckerBoard3
+  xpos -184
+  ypos 347
+  disable {{!parent.scanlineenable i}}
+ }
+ Switch {
+  inputs 2
+  which {{parent.scanlinedirection i}}
+  name scanlineswitch
+  xpos -132
+  ypos 443
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input1.width i}}
+  box_height {{Input1.height i}}
+  box_fixed true
+  scale {1 1}
+  resize fill
+  filter Impulse
+  name Reformat4
+  xpos -132
+  ypos 467
+ }
+ Blur {
+  size 30
+  name Blur1
+  xpos -132
+  ypos 501
+  disable {{!parent.scanlineenable i}}
+ }
+ Gamma {
+  value 0.4
+  name Gamma1
+  xpos -132
+  ypos 530
+  disable {{!parent.scanlineenable i}}
+ }
+set N17776070 [stack 0]
+ CameraShake {
+  name CameraShake_sacnline1
+  xpos -72
+  ypos 600
+  disable {{!parent.scanlineenable i}}
+  amplitude {{parent.scanlineamp i} 0}
+  rotation 3
+  frequency {{parent.scanlinefeq i}}
+ }
+push $N17776070
+ CameraShake {
+  name CameraShake_sacnline
+  xpos -193
+  ypos 598
+  disable {{!parent.scanlineenable i}}
+  amplitude {0 {parent.scanlineamp i}}
+  rotation 3
+  frequency {{parent.scanlinefeq i}}
+ }
+set N17784ea0 [stack 0]
+ Switch {
+  inputs 2
+  which {{parent.scanlinedirection i}}
+  name scanlineswitch1
+  xpos -132
+  ypos 708
+ }
+ Transform {
+  center {300 225}
+  name Transform_scanlinescale
+  xpos -132
+  ypos 778
+  disable {{!parent.scanlinedistortionenable x416 1}}
+ }
+push $N17784ea0
+ Constant {
+  inputs 0
+  channels {rgba.red rgba.green rgba.blue rgba.alpha}
+  color {1 1 1 1}
+  name Constant1
+  xpos 236
+  ypos -717
+ }
+ CheckerBoard2 {
+  inputs 0
+  boxsize {{parent.dotsize i x14 2} {Input1.height i}}
+  color0 0
+  color1 1
+  color2 1
+  color3 0
+  linecolor 0
+  centerlinewidth 0
+  name CheckerBoard1
+  xpos -83
+  ypos -743
+ }
+set N177fb890 [stack 0]
+ CheckerBoard2 {
+  inputs 0
+  boxsize {{Input1.width i x14 2} {parent.dotsize i}}
+  color0 1
+  color1 1
+  color2 0
+  color3 0
+  linecolor 0
+  centerlinewidth 0
+  name CheckerBoard4
+  xpos 31
+  ypos -736
+ }
+set N177d9790 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  xpos 137
+  ypos -665
+ }
+push $N177d9790
+ Reformat {
+  type "to box"
+  box_width {{Input1.width i}}
+  box_height {{Input1.height i}}
+  box_fixed true
+  scale {1 1}
+  resize fill
+  filter Impulse
+  name Reformat2
+  xpos 31
+  ypos -664
+ }
+push $N177fb890
+ Reformat {
+  type "to box"
+  box_width {{Input1.width i}}
+  box_height {{Input1.height i}}
+  box_fixed true
+  scale {1 1}
+  resize fill
+  filter Impulse
+  name Reformat1
+  xpos -83
+  ypos -667
+ }
+ Switch {
+  inputs 4
+  which {{parent.linealign}}
+  name alignmentswitch
+  xpos -83
+  ypos -490
+ }
+set N1779aa10 [stack 0]
+ Dot {
+  name Dot6
+  xpos -49
+  ypos -368
+ }
+ CheckerBoard2 {
+  inputs 0
+  boxsize {{parent.dotsize i}}
+  color0 0
+  color1 1
+  color2 0
+  color3 1
+  centerlinewidth 0
+  name CheckerBoard2
+  xpos 61
+  ypos -467
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input1.width i}}
+  box_height {{Input1.height i}}
+  box_fixed true
+  scale {1 1}
+  resize fill
+  filter Impulse
+  name Reformat3
+  xpos 61
+  ypos -395
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 61
+  ypos -371
+ }
+set N17732dd0 [stack 0]
+ Transform {
+  translate {0 {-parent.dotsize/2 i}}
+  center {960 540}
+  name Transform3
+  xpos 61
+  ypos -318
+ }
+push $N17732dd0
+ Dot {
+  name Dot1
+  xpos 233
+  ypos -368
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos 199
+  ypos -318
+ }
+set N205088f0 [stack 0]
+ Transform {
+  translate {{parent.dotsize i} {parent.dotsize i}}
+  center {960 540}
+  name Transform4
+  xpos 59
+  ypos -253
+ }
+push $N205088f0
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 199
+  ypos -253
+ }
+ Dot {
+  name Dot2
+  xpos 233
+  ypos 107
+ }
+push $N1779aa10
+ Dot {
+  name Dot5
+  xpos -419
+  ypos -487
+ }
+set N205225f0 [stack 0]
+push $N17746240
+ CameraShake {
+  name SCROLL
+  xpos -579
+  ypos -757
+  disable {{!parent.scrollenable i x49 1}}
+  amplitude {0 20}
+  frequency 0.07
+ }
+set N17781170 [stack 0]
+ Transform {
+  center {960 540}
+  name Transform1
+  xpos -579
+  ypos -733
+ }
+ Dot {
+  name Dot7
+  xpos -545
+  ypos -488
+ }
+set N177ef550 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  green black
+  blue black
+  name ShuffleCopy3
+  xpos -625
+  ypos -397
+  postage_stamp true
+ }
+ Multiply {
+  channels rgb
+  name mult_red
+  xpos -625
+  ypos -325
+ }
+ Position {
+  translate {5 1}
+  name Position_red
+  xpos -625
+  ypos -301
+ }
+ Premult {
+  name Premult1
+  xpos -625
+  ypos -277
+ }
+push $N205225f0
+push $N177ef550
+ ShuffleCopy {
+  inputs 2
+  red black
+  blue black
+  name ShuffleCopy2
+  xpos -511
+  ypos -399
+  postage_stamp true
+ }
+ Multiply {
+  channels rgb
+  name mult_green
+  xpos -511
+  ypos -327
+ }
+ Position {
+  translate {-5 0}
+  name Position_green
+  xpos -511
+  ypos -303
+ }
+ Premult {
+  name Premult2
+  xpos -511
+  ypos -279
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge1
+  xpos -511
+  ypos -217
+ }
+push $N205225f0
+push $N177ef550
+ ShuffleCopy {
+  inputs 2
+  red black
+  green black
+  name ShuffleCopy1
+  xpos -402
+  ypos -398
+  postage_stamp true
+ }
+ Multiply {
+  channels rgb
+  name mult_blues
+  xpos -402
+  ypos -326
+ }
+ Position {
+  translate {3 0}
+  name Position_blue
+  xpos -402
+  ypos -302
+ }
+ Premult {
+  name Premult3
+  xpos -402
+  ypos -278
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge2
+  xpos -511
+  ypos -193
+ }
+ Saturation {
+  saturation 0.5
+  name Saturation1
+  xpos -511
+  ypos 43
+ }
+ Grade {
+  multiply {0.45 0.75 1 1}
+  name Grade1
+  xpos -511
+  ypos 67
+ }
+ EXPTool {
+  inputs 1+1
+  red {{parent.dotexp i}}
+  green {{curve i x56 0}}
+  blue {{curve i x56 0}}
+  name EXPTool1
+  xpos -511
+  ypos 104
+ }
+ Grade {
+  multiply 2
+  mix {{flickr_controls.float.main}}
+  name Grade_flicker
+  xpos -511
+  ypos 158
+  disable {{!parent.flickerenable}}
+ }
+ Grade {
+  inputs 1+1
+  multiply 2
+  name Grade_scanline
+  xpos -511
+  ypos 598
+  disable {{!parent.scanlineenable x75 1}}
+ }
+add_layer {scanlinedistort scanlinedistort.u scanlinedistort.v}
+ Remove {
+  channels scanlinedistort
+  name Remove1
+  xpos -511
+  ypos 690
+  disable {{!parent.scanlinedistortionenable i x416 1}}
+ }
+ ShuffleCopy {
+  inputs 2
+  alpha alpha2
+  black red
+  white green
+  out2 scanlinedistort
+  name ShuffleCopy5
+  xpos -511
+  ypos 778
+  disable {{!parent.scanlinedistortionenable i}}
+ }
+ IDistort {
+  uv scanlinedistort
+  uv_scale 3
+  name IDistort1
+  xpos -511
+  ypos 821
+  disable {{!parent.scanlinedistortionenable}}
+ }
+ Clamp {
+  minimum 0.01
+  maximum_enable false
+  name Clamp1
+  xpos -511
+  ypos 953
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy4
+  xpos -511
+  ypos 1022
+ }
+push $N177f4990
+ Merge2 {
+  inputs 2
+  operation plus
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name final_mix
+  xpos -511
+  ypos 1074
+ }
+ PerspDistort {
+  reverse true
+  name PerspDistort1
+  xpos -511
+  ypos 1115
+  disable {{!parent.distortioncheck x49 1}}
+ }
+ Output {
+  name Output1
+  xpos -511
+  ypos 1287
+ }
+ StickyNote {
+  inputs 0
+  name Distortion1
+  label "BLACK LIFT"
+  note_font_size 24
+  xpos -418
+  ypos 952
+ }
+push $N17781170
+ Viewer {
+  frame 1
+  input_process false
+  name Viewer1
+  xpos -1126
+  ypos -193
+ }
+end_group

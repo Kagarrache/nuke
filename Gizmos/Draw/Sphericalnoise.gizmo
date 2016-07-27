@@ -1,0 +1,86 @@
+#! C:/Program Files/Nuke8.0v6/nuke-8.0.v6.dll -nx
+version 8.0 v6
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {26 info l "" +STARTLINE T "Spherical Noise"}
+ addUserKnob {26 ""}
+ addUserKnob {13 offset l Offset}
+ addUserKnob {13 scale l Scale}
+ scale {1 1 1}
+ addUserKnob {26 NoiseSettings l "Noise Settings"}
+ addUserKnob {7 octaves R 0 10}
+ octaves 10
+ addUserKnob {7 lacunarity R 0 10}
+ lacunarity 5.1
+ addUserKnob {7 gain}
+ gain 0.555
+ addUserKnob {3 FormatX l "Resolution X"}
+ FormatX 1920
+ addUserKnob {3 Y -STARTLINE}
+ Y 1080
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 384
+  ypos -218
+ }
+ Crop {
+  box {0 0 {parent.FormatX} {parent.Y}}
+  reformat true
+  name Crop2
+  xpos 384
+  ypos -178
+ }
+ Expression {
+  temp_name0 lat
+  temp_expr0 "y / parent.Y * 180- 90"
+  temp_name1 lon
+  temp_expr1 "x / parent.FormatX * 360-180"
+  temp_name2 r
+  temp_expr2 "cos(0.017453292519943295769236907684886 *  lat)"
+  expr0 "(r * cos (0.017453292519943295769236907684886 * lon) +1)*0.5"
+  expr1 "(sin (0.017453292519943295769236907684886 * lat)+1)*.5"
+  expr2 "(r * sin(0.017453292519943295769236907684886 * lon)+1)*.5"
+  name Expression9
+  selected true
+  xpos 384
+  ypos -154
+ }
+ Grade {
+  multiply {{parent.scale} {parent.scale} {parent.scale} 1}
+  multiply_panelDropped true
+  name Grade1
+  xpos 384
+  ypos -130
+ }
+set N4c6acc90 [stack 0]
+ Expression {
+  expr0 fBm(r+parent.offset.x,g+parent.offset.y,b+parent.offset.z,parent.octaves,parent.lacunarity,parent.gain)*.5+0.5
+  expr1 fBm(r+parent.offset.x,g+parent.offset.y,b+parent.offset.z,parent.octaves,parent.lacunarity,parent.gain)*.5+0.5
+  expr2 fBm(r+parent.offset.x,g+parent.offset.y,b+parent.offset.z,parent.octaves,parent.lacunarity,parent.gain)*.5+0.5
+  name Expression10
+  xpos 384
+  ypos -106
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle1
+  xpos 384
+  ypos 22
+ }
+ Output {
+  name Output1
+  xpos 384
+  ypos 95
+ }
+push $N4c6acc90
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 690
+  ypos -185
+ }
+end_group

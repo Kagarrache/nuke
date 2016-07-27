@@ -1,0 +1,65 @@
+#! C:/Program Files/Nuke6.3v6/Nuke6.3.exe -nx
+version 6.3 v6
+Gizmo {
+ addUserKnob {20 User l Monochrome}
+ addUserKnob {41 value T Multiply2.value}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 143
+  ypos 423
+ }
+add_layer {rgba rgba.beta}
+ Multiply {
+  channels rgb
+  value {0.3 0.6 0.1 0}
+  name Multiply2
+  xpos 143
+  ypos 447
+ }
+set N105884a0 [stack 0]
+ Expression {
+  channel0 rgb
+  expr0 r+g+b
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression12
+  xpos 143
+  ypos 471
+ }
+push $N105884a0
+ Fill {
+  output rgb
+  color {{parent.Multiply2.value} {parent.Multiply2.value} {parent.Multiply2.value} {parent.Multiply2.value}}
+  name Fill2
+  xpos 33
+  ypos 447
+ }
+ Expression {
+  channel0 rgb
+  expr0 r+g+b
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression13
+  xpos 33
+  ypos 495
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  name Merge2
+  xpos 143
+  ypos 495
+ }
+ Output {
+  name Output
+  xpos 143
+  ypos 519
+ }
+end_group

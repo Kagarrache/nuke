@@ -1,0 +1,115 @@
+#! /Applications/Nuke6.1v1-32/NukeX6.1v1.app/../Nuke6.1v1.app/Contents/MacOS/Nuke6.1v1 -nx
+version 6.1 v1
+Gizmo {
+ help "Use this to quickly match-grade a foreground object to the background. \n\nIt takes the FG black level down to zero, applies your other adjustments, then brings the FG black level back up to match the BG black level. Any changes to Gain or Saturation or BG Average Colour will not change the new black level. \n\nTo sample the average colour of the background, hold Cmd-shift to drag a sample box over a large area of the background. \n\nIf black edges appear, you have double pre-multed, so either tick the Unpremultiplied box, or remove any Premults downstream."
+ addUserKnob {20 User}
+ addUserKnob {26 label1 l "" +STARTLINE T "Sample foreground and background blacks:\n "}
+ addUserKnob {18 FGBlack l "FG Black" t "Use the colour picker to grab the darkest area on your foreground"}
+ FGBlack {0 0 0}
+ addUserKnob {18 BGBlack l "BG Black" t "Use the colour picker to grab the darkest area on your background"}
+ BGBlack {0 0 0}
+ addUserKnob {26 ""}
+ addUserKnob {26 label2 l "" +STARTLINE T "Sample average colour of background\n "}
+ addUserKnob {18 BGAverage l "BG Average Colour" t "Look at your background plate and drag the colour sample box over the whole thing to get the average colour. This colour will be introduced into the foreground."}
+ BGAverage {1 1 1}
+ addUserKnob {26 ""}
+ addUserKnob {26 label3 l "" +STARTLINE T "Fine tune the new black level:\n "}
+ addUserKnob {7 offset l Offset t "If the foreground object is closer to the camera, in most cases you will need to adjust the overall black level to be slightly darker than the background black level. Fine tune it up or down here." R -1 1}
+ addUserKnob {26 ""}
+ addUserKnob {26 label4 l "" +STARTLINE T "Mid adjustments\n "}
+ addUserKnob {41 gain l Gain T Gain.white}
+ addUserKnob {41 saturation l Saturation t "Adjust the overall saturation" T HueShift1.saturation}
+ addUserKnob {26 ""}
+ addUserKnob {41 disable_1 l Unpremultiplied t "Tick this box to disable the premult" T Premult1.disable}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 436
+  ypos -736
+ }
+ Dot {
+  name Dot1
+  xpos 470
+  ypos -652
+ }
+set N16d4b7d0 [stack 0]
+ Dot {
+  name Dot2
+  xpos 289
+  ypos -652
+ }
+ AddChannels {
+  channels alpha
+  name AddChannels1
+  xpos 255
+  ypos -598
+ }
+ Clamp {
+  channels alpha
+  name Clamp1
+  xpos 255
+  ypos -276
+ }
+push $N16d4b7d0
+ Grade {
+  blackpoint {{FGBlack i} {FGBlack i} {FGBlack i} 0}
+  whitepoint {1 1 1 0}
+  name FGblack
+  xpos 436
+  ypos -536
+ }
+ HueShift {
+  name HueShift1
+  xpos 436
+  ypos -495
+ }
+ Grade {
+  white {{1/multiply i}}
+  multiply {{BGAverage i} {BGAverage i} {BGAverage i} {BGAverage i}}
+  name BGaverage
+  xpos 436
+  ypos -455
+ }
+ Grade {
+  name Gain
+  xpos 436
+  ypos -414
+ }
+ Grade {
+  blackpoint {{-BGBlack*(offset+1) i} {-BGBlack*(offset+1) i} {-BGBlack*(offset+1) i} 0}
+  name BGBlack
+  selected true
+  xpos 436
+  ypos -364
+ }
+set N16d68330 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 436
+  ypos -276
+ }
+ Premult {
+  name Premult1
+  xpos 436
+  ypos -230
+ }
+ Output {
+  name Output1
+  xpos 436
+  ypos -154
+ }
+push $N16d68330
+push 0
+ Viewer {
+  inputs 2
+  input_number 1
+  input_process false
+  name Viewer1
+  xpos 1004
+  ypos -526
+ }
+end_group

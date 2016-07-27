@@ -1,0 +1,165 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_ObjectID_v1\n\nUseful to extract an id matte from  an rgb id pass. It allows to have : red, green, blue, yellow, cyan, magenta, black and white computed alpha.  There is an option that allows you to blur the matte before or after computing and multiply to increment the values.\n\nfeel free to contact me at niccolo.barbero@gmail.com"
+ addUserKnob {20 user l DUCK_ObjectID_v1}
+ addUserKnob {41 size_1 l "pre BLUR" T Blur2.size}
+ addUserKnob {26 spac2 l "" +STARTLINE T "\n"}
+ addUserKnob {68 operation l Object_ID_color M {full_color red green blue yellow magenta cyan white black "" "" "" "" ""}}
+ addUserKnob {26 space3 l "" +STARTLINE T "\n"}
+ addUserKnob {41 size l "post BLUR" T Blur1.size}
+ addUserKnob {26 space l "" +STARTLINE T "\n"}
+ addUserKnob {41 channels l "post gain" T Multiply1.channels}
+ addUserKnob {41 value T Multiply1.value}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -518
+  ypos -266
+ }
+ Blur {
+  name Blur2
+  xpos -518
+  ypos -195
+ }
+ Dot {
+  name Dot1
+  xpos -484
+  ypos -113
+ }
+set N377ec330 [stack 0]
+ Expression {
+  expr0 r*0
+  expr1 g*0
+  expr2 b*0
+  channel3 alpha
+  expr3 (r+g+b)
+  name BLACK
+  xpos -141
+  ypos -34
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos -141
+  ypos 10
+ }
+push $N377ec330
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  expr0 r+g+b
+  expr1 r+g+b
+  expr2 r+g+b
+  name WHYTE
+  xpos -261
+  ypos -20
+ }
+push $N377ec330
+ Expression {
+  expr0 0
+  channel1 {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  expr1 (b*g)-r
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 (b*g)-r
+  name CYAN
+  xpos -373
+  ypos -23
+ }
+push $N377ec330
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  expr0 (r*b)-g
+  expr1 0
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 (r*b)-g
+  name MAGENTA
+  xpos -481
+  ypos -21
+ }
+push $N377ec330
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  expr0 (r*g)-b
+  channel1 {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  expr1 (r*g)-b
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 0
+  name YELLOW
+  xpos -603
+  ypos -16
+ }
+push $N377ec330
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue none}
+  expr0 0
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 0
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 b-r-g
+  name BLUE
+  xpos -717
+  ypos -23
+ }
+push $N377ec330
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue none}
+  expr0 0
+  channel1 {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  expr1 g-r-b
+  expr2 0
+  name GREEN
+  xpos -833
+  ypos -22
+ }
+push $N377ec330
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  expr0 r-g-b
+  expr1 0
+  expr2 0
+  name RED
+  xpos -933
+  ypos -21
+ }
+push $N377ec330
+ Expression {
+  expr0 r
+  expr1 g
+  expr2 b
+  channel3 rgba
+  expr3 r+g+b
+  name Full_color
+  xpos -1077
+  ypos -21
+ }
+ Switch {
+  inputs 9
+  which {{parent.operation}}
+  name Switch1
+  xpos -521
+  ypos 131
+ }
+ Blur {
+  name Blur1
+  xpos -521
+  ypos 193
+ }
+ Multiply {
+  channels alpha
+  name Multiply1
+  xpos -521
+  ypos 267
+ }
+ Clamp {
+  name Clamp1
+  xpos -519
+  ypos 322
+ }
+ Output {
+  name Output1
+  selected true
+  xpos -519
+  ypos 445
+ }
+end_group

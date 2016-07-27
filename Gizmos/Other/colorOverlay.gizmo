@@ -1,0 +1,456 @@
+#! /Applications/Nuke8.0v1/Nuke8.0v1.app/Contents/MacOS/libnuke-8.0.v1.dylib -nx
+version 8.0 v1
+Gizmo {
+ inputs 2
+ help "colorOverlay is a small roto helper. The alpha matte goes into mask and the source clip goes into video. \n\ncolorOverlay puts a color over your roto matte in order to better check the result of your roto. if you are fine with your roto and want to render it out as a matte then just switch the mode from draw to render.\n\ncolorOverlay_v03\nsimon jokuschies\ninfo@leafpictures.de"
+ tile_color 0xff32b5ff
+ label "Mode: \[value mode]"
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 colorOverlaySettings l "color overlay settings" t "ColorOverlay settings"}
+ addUserKnob {68 mode l Mode t "choose here which mode you need.\n\n# on None the video just gets passed through and nothing happens\n# When you are working on your matte choose draw.\n# If you want to check your matte on a different background then use the checkerboard or solid mode.\n# If you want to render out your matte as a black and white matte then choose the render mode." M {---- draw checkerboard "solid color" all render "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""}}
+ mode draw
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {18 overlayColor l "overlay color"}
+ overlayColor {0.85 0.1 0.5}
+ addUserKnob {6 overlayColor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {41 mix T Keymix2.mix}
+ addUserKnob {18 solidColor l "solid color"}
+ solidColor {0.6 0.6 0.6}
+ addUserKnob {6 solidColor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {6 despillvideo_g l "despill green" t "despill green" +STARTLINE}
+ addUserKnob {6 despillvideo_b l "despill blue" t "despill blue" -STARTLINE}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 426
+  ypos 507
+  number 1
+ }
+ Dot {
+  name Dot2
+  xpos 460
+  ypos 579
+ }
+set N22150260 [stack 0]
+ Dot {
+  name Dot3
+  xpos 806
+  ypos 579
+ }
+set N22153b10 [stack 0]
+ Dot {
+  name Dot5
+  xpos 806
+  ypos 789
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color 1
+  name Constant1
+  xpos 937
+  ypos 762
+ }
+ Input {
+  inputs 0
+  name video
+  xpos 571
+  ypos -83
+ }
+ Dot {
+  name Dot23
+  xpos 605
+  ypos 140
+ }
+set N223c3670 [stack 0]
+ Dot {
+  name Dot24
+  xpos 448
+  ypos 140
+ }
+set N268da550 [stack 0]
+ Dot {
+  name Dot26
+  xpos 328
+  ypos 140
+ }
+ Expression {
+  expr2 b>(r+g)/2?(r+g)/2:b
+  name Expression2
+  xpos 294
+  ypos 227
+ }
+ Dot {
+  name Dot27
+  xpos 328
+  ypos 404
+ }
+push $N268da550
+ Expression {
+  expr1 g>(r+b)/2?(r+b)/2:g
+  name Expression1
+  note_font Helvetica
+  xpos 414
+  ypos 228
+ }
+ Dot {
+  name Dot25
+  xpos 448
+  ypos 321
+ }
+push $N223c3670
+ Switch {
+  inputs 2
+  which {{parent.despillvideo_g}}
+  name despill_green
+  xpos 571
+  ypos 318
+ }
+ Switch {
+  inputs 2
+  which {{parent.despillvideo_b}}
+  name despill_blue
+  xpos 571
+  ypos 401
+ }
+ Dot {
+  name Dot19
+  xpos 605
+  ypos 460
+ }
+set N10de6900 [stack 0]
+ Dot {
+  name Dot1
+  xpos 605
+  ypos 548
+ }
+set N221624d0 [stack 0]
+ Grade {
+  multiply 0
+  name Grade1
+  xpos 837
+  ypos 545
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix1
+  xpos 837
+  ypos 781
+ }
+ Dot {
+  name Dot21
+  xpos 871
+  ypos 989
+ }
+set N2217f2e0 [stack 0]
+push $N2217f2e0
+push $N22153b10
+push $N10de6900
+ Dot {
+  name Dot7
+  xpos 1113
+  ypos 460
+ }
+set N22181db0 [stack 0]
+ Dot {
+  name Dot14
+  xpos 1552
+  ypos 460
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 1518
+  ypos 571
+ }
+ Premult {
+  name Premult3
+  xpos 1518
+  ypos 610
+ }
+ Dot {
+  name Dot16
+  xpos 1552
+  ypos 662
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "4096 4096 0 0 4096 4096 1 4k"
+  name Constant2
+  xpos 1827
+  ypos 338
+ }
+ Reformat {
+  type "to box"
+  box_width {{"\[value video.width]"}}
+  box_height {{"\[value video.height]"}}
+  box_fixed true
+  black_outside true
+  name Reformat3
+  xpos 1827
+  ypos 419
+ }
+ Dot {
+  name Dot17
+  xpos 1861
+  ypos 534
+ }
+set N221b10a0 [stack 0]
+ Dot {
+  name Dot18
+  xpos 1861
+  ypos 600
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.solidColor.r} {parent.solidColor.g} {parent.solidColor.b} 0}
+  name solidColor
+  xpos 1660
+  ypos 338
+ }
+push $N221b10a0
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos 1660
+  ypos 531
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox2
+  xpos 1660
+  ypos 597
+ }
+ Merge2 {
+  inputs 2
+  metainput A
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge5
+  xpos 1660
+  ypos 659
+ }
+ Dot {
+  name Dot13
+  xpos 1687
+  ypos 943
+ }
+set N221dc050 [stack 0]
+push $N22153b10
+push $N22181db0
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 1079
+  ypos 571
+ }
+ Premult {
+  name Premult1
+  xpos 1079
+  ypos 610
+ }
+ Dot {
+  name Dot9
+  xpos 1113
+  ypos 662
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "4096 4096 0 0 4096 4096 1 4k"
+  name Constant3
+  xpos 1388
+  ypos 338
+ }
+ Reformat {
+  type "to box"
+  box_width {{"\[value video.width]"}}
+  box_height {{"\[value video.height]"}}
+  box_fixed true
+  black_outside true
+  name Reformat2
+  xpos 1388
+  ypos 419
+ }
+ Dot {
+  name Dot11
+  xpos 1422
+  ypos 534
+ }
+set N1f7f4bb0 [stack 0]
+ Dot {
+  name Dot10
+  xpos 1422
+  ypos 600
+ }
+ CheckerBoard2 {
+  inputs 0
+  format "4096 4096 0 0 4096 4096 1 4k"
+  centerlinewidth 0
+  name CheckerBoard1
+  xpos 1221
+  ypos 338
+ }
+push $N1f7f4bb0
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 1221
+  ypos 531
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 1221
+  ypos 597
+ }
+ Merge2 {
+  inputs 2
+  metainput A
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge1
+  xpos 1221
+  ypos 659
+ }
+ Dot {
+  name Dot8
+  xpos 1255
+  ypos 897
+ }
+set N1f7dc680 [stack 0]
+push $N22150260
+ Dot {
+  name Dot4
+  xpos 461
+  ypos 786
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.overlayColor.r} {parent.overlayColor.g} {parent.overlayColor.b} 1}
+  name overlayColor
+  xpos 681
+  ypos 759
+ }
+push $N221624d0
+ Dot {
+  name Dot22
+  xpos 606
+  ypos 664
+ }
+ Keymix {
+  inputs 3
+  mix 0.7
+  bbox B
+  name Keymix2
+  xpos 571
+  ypos 778
+ }
+ Dot {
+  name Dot6
+  xpos 605
+  ypos 857
+ }
+set N1f7b3b90 [stack 0]
+add_layer {colorOverlay_draw colorOverlay_draw.red colorOverlay_draw.green colorOverlay_draw.blue colorOverlay_draw.alpha}
+ Shuffle {
+  out colorOverlay_draw
+  name Shuffle1
+  label "\[value in] -> \[value out]"
+  xpos -11
+  ypos 849
+  hide_input true
+ }
+add_layer {colorOverlay_checkerboard colorOverlay_checkerboard.red colorOverlay_checkerboard.green colorOverlay_checkerboard.blue colorOverlay_checkerboard.alpha}
+ ShuffleCopy {
+  inputs 2
+  alpha alpha2
+  black red
+  white green
+  red2 blue
+  green2 alpha
+  out2 colorOverlay_checkerboard
+  name ShuffleCopy1
+  label "\[value in] -> \[value out2]\n\[value in2] -> \[value out]"
+  xpos -11
+  ypos 883
+ }
+add_layer {colorOverlay_solidColor colorOverlay_solidColor.red colorOverlay_solidColor.green colorOverlay_solidColor.blue colorOverlay_solidColor.alpha}
+ ShuffleCopy {
+  inputs 2
+  black red
+  white green
+  red2 blue
+  green2 alpha
+  out2 colorOverlay_solidColor
+  name ShuffleCopy2
+  label "\[value in] -> \[value out2]\n\[value in2] -> \[value out]"
+  xpos -11
+  ypos 929
+ }
+add_layer {colorOverlay_MT colorOverlay_MT.red colorOverlay_MT.green colorOverlay_MT.blue colorOverlay_MT.alpha}
+ ShuffleCopy {
+  inputs 2
+  black red
+  white green
+  red2 blue
+  green2 alpha
+  out2 colorOverlay_MT
+  name ShuffleCopy3
+  label "\[value in] -> \[value out2]\n\[value in2] -> \[value out]"
+  xpos -11
+  ypos 975
+ }
+ Remove {
+  channels rgba
+  name Remove1
+  xpos -11
+  ypos 1021
+ }
+ LayerContactSheet {
+  showLayerNames true
+  name LayerContactSheet1
+  xpos -11
+  ypos 1116
+ }
+push $N221dc050
+ Dot {
+  name Dot20
+  xpos 1687
+  ypos 1119
+ }
+push $N1f7dc680
+push $N1f7b3b90
+push $N221624d0
+ Dot {
+  name Dot15
+  xpos 521
+  ypos 548
+ }
+ Dot {
+  name Dot12
+  xpos 521
+  ypos 1072
+ }
+ Switch {
+  inputs 6
+  which {{parent.mode x1 2}}
+  name Switch1
+  xpos 837
+  ypos 1116
+ }
+ Output {
+  name Output1
+  xpos 837
+  ypos 1140
+ }
+end_group

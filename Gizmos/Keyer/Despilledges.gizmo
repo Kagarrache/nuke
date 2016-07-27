@@ -1,0 +1,1646 @@
+set cut_paste_input [stack 0]
+version 7.0 v4
+push $cut_paste_input
+Group {
+ name despillEdges
+ help "Advanced Despill method with more controls over the edge.\nSee Help tab for more info"
+ onCreate nuke.load('despillEdges_Evaluate.py')
+ knobChanged despillEdges_knobChanged()
+ tile_color 0x297ffff
+ addUserKnob {20 User l "Main Despill"}
+ addUserKnob {4 spillColour l "Spill Colour" M {Green Blue "" "" ""}}
+ addUserKnob {4 method l "    Method" -STARTLINE M {"Subtract Luma" Keylight "" "" "" "" ""}}
+ addUserKnob {6 showLumaMask l "Show Luma Matte" +STARTLINE}
+ addUserKnob {6 showEdgeMatte -STARTLINE}
+ addUserKnob {6 enableEdgeBias l "enable Edge Bias" t "allows separate control of spill bias for the edge. see spill bias for explanation of control. useful when edges are a lot greener than main spill. " -STARTLINE}
+ addUserKnob {26 sep1 l "" +STARTLINE}
+ addUserKnob {22 Sample t "Calculates coefficients to get perfect gray green screen colour" T "with nuke.thisNode():\n\tnuke.toNode('Sampler')\['sample'].execute()\n" +STARTLINE}
+ addUserKnob {22 Reset t "Resets greenscreen coefficients to default values" -STARTLINE T "with nuke.thisNode():\n\tnuke.toNode('Sampler')\['reset'].execute()"}
+ addUserKnob {6 showBG l "disable BG" t "enables/disables BG input\nuse this to _temporarily_ disable BG input to see better what your greenscreen despilled color look like." -STARTLINE}
+ addUserKnob {7 spillBias l "Spill Bias" t "adjusts the bias of the averaging of the r and b channels that will subtract from the g channel to create the spill matte."}
+ spillBias 0.5
+ addUserKnob {7 spillBiasEdge l "Spill Bias//Edge" t "allows separate control of spill bias for the edge. see spill bias for explanation of control. useful when edges are a lot greener than main spill. " +HIDDEN}
+ spillBiasEdge 0.615
+ addUserKnob {18 spillFineTune l "Spill Fine Tune" t "adjusts colour of the despilled areas." R 0 2}
+ spillFineTune {0 0 0}
+ addUserKnob {7 bgBlurEdge l "BG Blur//Edge" t "blurs the BG input so that when BG color is mixed into edge sharp details are not readable within your matte" R 0 10}
+ bgBlurEdge 7
+ addUserKnob {7 bgBlurCore l "BG Blur//Core" t "blurs the BG input so that when BG color is mixed into despilled areas sharp details are not readable within your matte." R 0 100}
+ bgBlurCore 50
+ addUserKnob {26 ""}
+ addUserKnob {7 tuneLuma l "Tune Luma" t "0 = despilled image minus spill matte 1 = despilled image unaffected. useful for adjusting brightness of edges."}
+ tuneLuma 1
+ addUserKnob {7 bgMix l "BG/Edge Mix" t "takes spill matte and adjusts it's value to create a new matte which affects how much bg is mixed into edges." R 1e-05 2}
+ bgMix 1
+ addUserKnob {7 coreWeight l "Core Weight" t "controls level of the spill matte to multiply bg colour with. this adds bg colour into fg despilled areas but not the edge."}
+ coreWeight 0.3
+ addUserKnob {7 bgHighlights l "BG Highlights" t "uses a combination of luma matte and edge matte to mix through bright areas of bg into edge" R 0 4}
+ bgHighlights 1
+ addUserKnob {18 screenColour l "Spill Colour" t "use the colour picker to pick the colour from your greenscreen. this defines the spill color" +HIDDEN}
+ screenColour {0 1 0}
+ addUserKnob {7 screenBalance l "Spill Bias" t "adjusts the amount of green despilled using keylight" +HIDDEN}
+ screenBalance 0.5
+ addUserKnob {7 bgGrade l "BG Gain" t "adjusts bg gain to compensate for darkening introduced by keylight. values are generally above 8" +HIDDEN R 0 4}
+ bgGrade 8
+ addUserKnob {26 ""}
+ addUserKnob {6 showSpill l "Show Spill Matte" t "shows what your spill matte looks like. gives you an idea of exactly where despill is being applied." -STARTLINE}
+ addUserKnob {12 SamplePos l "Sampler position" t "this should be positioned over your greenscreen"}
+ SamplePos {1208 1040}
+ addUserKnob {20 LumaTab}
+ addUserKnob {6 showLumaMaskB l "show Luma Matte" -STARTLINE}
+ addUserKnob {41 range l "bg Lumakey" T Keyer1.range}
+ addUserKnob {20 Advanced}
+ addUserKnob {7 spillThreshold l "Spill threshold" t "adjusts greenscreen threshold" R 0 5}
+ spillThreshold 1
+ addUserKnob {6 enableAdv +STARTLINE}
+ addUserKnob {6 showAdvLuma +STARTLINE}
+ addUserKnob {41 white_1 l gain T Grade1.white}
+ addUserKnob {41 size_1 l "Edge Softness" T Blur4.size}
+ addUserKnob {41 range_1 l range T Keyer2.range}
+ addUserKnob {26 ""}
+ addUserKnob {6 keylightLumahelper t "shows with mattes overlay area that will be exposed with a value of 1 after keylight grade compensation" +HIDDEN +STARTLINE}
+ addUserKnob {6 outputChannels l "Output Channels" t "outputs two channels possibly useful for extra integration techniques \ndespillColor is the bg color multiplied by the spill matte\ndespillMatte is two spill mattes the r channel is the raw spill matte the g channel is the spill matte with all adjustments from within the despillEdges node applied" -STARTLINE}
+ addUserKnob {6 showHelper l "Show Helper" t "provides a visual representation to match spill area color to a neutral gray as a starting point for despill. adjust spill fine tune match colors." -STARTLINE}
+ addUserKnob {6 stripes t "lets you choose between stripes or solid color to represent your mattes \n" -STARTLINE}
+ stripes true
+ addUserKnob {20 helpTab l Help}
+ addUserKnob {26 stepbystep l "" +STARTLINE T "01. Connect FG and edgeMatte inputs. As the name suggests the edgeMatte requires an edge\n      matte from your keyed matte. Try using edgeFromAlpha_adv or edgeFromAlpha from the \n      Laika menu in Nuke to create your edge matte. As a good starting point your edge matte \n      should be very thin inside your FG element and should be wide and solid enough to cover all\n      soft edge details outside the core of your FG element.\n\n02. Move samplePos over a clear area of your greenscreen (not near any character or set) press\n      the sample button. Your green screen should now be a neutral grey colour.\n\n03. Adjust the spill bias control to achieve the amount of despill you want for your image.\n\n04. Premult and merge your FG image with your BG to see how it looks.\n"}
+ addUserKnob {26 stepbystepSub l "" +STARTLINE T "05. Whilst viewing the merge of your FG and BG images try changing the tune luma. It adjusts\n      the luminance level of the edges of your FG element for better integration with your BG.\n\n06. Adjust the BG edge mix control to define how much of your blurred BG color to mix into the\n      edges of your FG element.\n\n07. Adjust the Core weight control to define how much of your blurred BG color to mix into the\n     despilled areas of your FG element.\n\n08. If you have bright highlights in your BG image you can adjust the luma key in the luma tab\n      to specify the highlight areas of the image. You can then adjust the BG highlights slider to\n      mix in BG highlights into the edges of your FG element."}
+ addUserKnob {26 stepbystepKey l "" +STARTLINE +HIDDEN T "05. Using the color picker in the spill color control pick a clear area of your greenscreen.\n\n06. Adjust the spill bias control under the spill color control to remove any green spill from the\n     edges of your FG element\n\n07. Adjust the BG gain control if you are seeing any darkening on the edges of your FG element\n     now that it has been despilled "}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x393429ff
+  label Helper
+  note_font_size 42
+  xpos -1339
+  ypos 518
+  bdwidth 487
+  bdheight 257
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x393429ff
+  label "                  Overlay Mask"
+  note_font_size 42
+  xpos -324
+  ypos 1199
+  bdwidth 1175
+  bdheight 253
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x253437ff
+  label "Fine tune section"
+  note_font_size 42
+  xpos -788
+  ypos 294
+  bdwidth 684
+  bdheight 685
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0x1d2327ff
+  label "Advanced Luma restoration"
+  note_font_size 42
+  xpos -2098
+  ypos 1131
+  bdwidth 1677
+  bdheight 726
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x3c4148ff
+  label Overlays
+  note_font_size 42
+  xpos -926
+  ypos 2141
+  bdwidth 1663
+  bdheight 879
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x273327ff
+  label "Keylight despill"
+  note_font_size 42
+  xpos 74
+  ypos -706
+  bdwidth 773
+  bdheight 403
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x273327ff
+  label "Standard Despill"
+  note_font_size 42
+  xpos -2357
+  ypos -1323
+  bdwidth 2268
+  bdheight 1416
+ }
+ Input {
+  inputs 0
+  name FG
+  xpos -1049
+  ypos -1545
+ }
+ Dot {
+  name Dot63
+  xpos -1015
+  ypos -1469
+ }
+ Expression {
+  expr0 "\[python \{nuke.thisNode().channels().count('rgba.red')\}] ?r:0.002"
+  expr1 "\[python \{nuke.thisNode().channels().count('rgba.green')\}] ?g:0.1"
+  expr2 "\[python \{nuke.thisNode().channels().count('rgba.blue')\}] ?b:0.037"
+  expr3 "\[python \{nuke.thisNode().channels().count('rgba.alpha')\}] ?a:0"
+  name Is_RGBA_Exists
+  label "defaults to a dark green if rgba not exists"
+  xpos -1049
+  ypos -1418
+ }
+ Dot {
+  name Dot2
+  xpos -1015
+  ypos -1201
+ }
+set N45349470 [stack 0]
+ Dot {
+  name Dot1
+  xpos -1718
+  ypos -1201
+ }
+set N100153a0 [stack 0]
+ Dot {
+  name Dot34
+  xpos -1922
+  ypos -1201
+ }
+set N1bc66790 [stack 0]
+ Dot {
+  name Dot37
+  xpos -1922
+  ypos 1249
+ }
+set N2c5d8e80 [stack 0]
+ Dot {
+  name Dot60
+  xpos -1922
+  ypos 3503
+ }
+push $N45349470
+ Dot {
+  name Dot3
+  xpos -449
+  ypos -1201
+ }
+set Nf1c1f560 [stack 0]
+ Dot {
+  name Dot5
+  xpos -243
+  ypos -1201
+ }
+set Nefeea850 [stack 0]
+ Dot {
+  name Dot14
+  xpos 387
+  ypos -782
+ }
+ Dot {
+  name Dot23
+  xpos 387
+  ypos -611
+ }
+set Nefef26c0 [stack 0]
+push $Nefef26c0
+ OFXuk.co.thefoundry.keylight.keylight_v201 {
+  show "Final Result"
+  unPreMultiply false
+  screenColour {{parent.screenColour.r x11 0.0003114413121} {parent.screenColour.g x11 0.1158000082} {parent.screenColour.b x11 0.03810747713}}
+  screenGain 1
+  screenBalance {{parent.screenBalance}}
+  alphaBias {0.5 0.5 0.5}
+  despillBias {0.5 0.5 0.5}
+  gangBiases true
+  preBlur 0
+  "Screen Matte" 0
+  screenClipMin 0
+  screenClipMax 1
+  screenClipRollback 0
+  screenGrowShrink 0
+  screenSoftness 0
+  screenDespotBlack 0
+  screenDespotWhite 0
+  screenReplaceMethod "Soft Colour"
+  screenReplaceColour {0.5 0.5 0.5}
+  Tuning 0
+  midPoint 0.5
+  lowGain 1
+  midGain 1
+  highGain 1
+  "Inside Mask" 0
+  sourceAlphaHandling Ignore
+  insideReplaceMethod "Soft Colour"
+  insideReplaceColour {0.5 0.5 0.5}
+  Crops 0
+  SourceXMethod Colour
+  SourceYMethod Colour
+  SourceEdgeColour 0
+  SourceCropL 0
+  SourceCropR 1
+  SourceCropB 0
+  SourceCropT 1
+  balanceSet true
+  insideComponent None
+  outsideComponent None
+  cacheBreaker true
+  name Keylight1
+  xpos 353
+  ypos -521
+ }
+set Nefef65f0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge13
+  xpos 485
+  ypos -521
+ }
+ Saturation {
+  saturation 0
+  mode Maximum
+  name Saturation3
+  xpos 485
+  ypos -497
+ }
+set Nda658090 [stack 0]
+push $Nda658090
+ Grade {
+  multiply {{bgGrade}}
+  name Grade2
+  label "BG Gain"
+  xpos 485
+  ypos -473
+ }
+set Nda661c90 [stack 0]
+ Dot {
+  name Dot32
+  xpos 626
+  ypos -464
+ }
+set Ne981c40 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  red red
+  green red2
+  blue black
+  alpha black
+  name ShuffleCopy4
+  xpos 685
+  ypos -467
+ }
+push $Nefeea850
+ Dot {
+  name Dot66
+  xpos -243
+  ypos 152
+ }
+push $N100153a0
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name Shuffle10
+  tile_color 0xffff
+  xpos -1851
+  ypos -1042
+ }
+push $N100153a0
+ Shuffle {
+  red green
+  blue green
+  alpha black
+  name Shuffle3
+  tile_color 0xff00ff
+  xpos -1752
+  ypos -1042
+ }
+ Switch {
+  inputs 2
+  which {{spillColour}}
+  name Switch1
+  xpos -1752
+  ypos -944
+ }
+ Dot {
+  name Dot20
+  xpos -1718
+  ypos -841
+ }
+set Nc57c3c30 [stack 0]
+ Input {
+  inputs 0
+  name edgeMatte
+  xpos 1686
+  ypos -1539
+  number 2
+ }
+ Dot {
+  name Dot56
+  xpos 1720
+  ypos -1297
+ }
+ Expression {
+  temp_name0 isalpha
+  temp_expr0 "1-\[python \{nuke.thisNode().channels().count('rgba.red')\}] "
+  expr0 isalpha?1:a
+  expr1 isalpha?1:a
+  expr2 isalpha?1:a
+  expr3 isalpha?1:a
+  name Is_Alpha_Exists
+  xpos 1686
+  ypos -1241
+ }
+set N10023ea0 [stack 0]
+ Dot {
+  name Dot52
+  xpos 1720
+  ypos -1107
+ }
+set N1bdf1c40 [stack 0]
+ Dot {
+  name Dot53
+  label EDGE
+  xpos -812
+  ypos -1107
+ }
+ Dot {
+  name Dot54
+  label EDGE
+  xpos -812
+  ypos -598
+ }
+push $Nc57c3c30
+ Dot {
+  name Dot15
+  xpos -1085
+  ypos -841
+ }
+set Nc57cf9e0 [stack 0]
+ Dot {
+  name Dot51
+  xpos -719
+  ypos -841
+ }
+push $Nf1c1f560
+ Shuffle {
+  red green
+  blue green
+  alpha black
+  name Shuffle11
+  tile_color 0xff00ff
+  xpos -358
+  ypos -1044
+ }
+push $Nf1c1f560
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name Shuffle5
+  tile_color 0xffff
+  xpos -483
+  ypos -1040
+ }
+ Switch {
+  inputs 2
+  which {{spillColour}}
+  name Switch2
+  xpos -483
+  ypos -921
+ }
+ Dot {
+  name Dot28
+  xpos -449
+  ypos -756
+ }
+set Nc90253a0 [stack 0]
+ Dot {
+  name Dot50
+  xpos -449
+  ypos -687
+ }
+set Nc9029370 [stack 0]
+push $N45349470
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name Shuffle4
+  tile_color 0xff0000ff
+  xpos -1219
+  ypos -1036
+ }
+set Nc902d220 [stack 0]
+ Dot {
+  name Dot26
+  xpos -936
+  ypos -1033
+ }
+set Nc9039cd0 [stack 0]
+ Dot {
+  name Dot49
+  xpos -609
+  ypos -1033
+ }
+ Dissolve {
+  inputs 2
+  which {{parent.spillBiasEdge}}
+  name Dissolve7
+  label "AVERAGE Edge"
+  xpos -643
+  ypos -702
+ }
+ Grade {
+  gamma {{parent.spillThreshold}}
+  black_clamp false
+  name Grade6
+  label "Greenscreen Threshold"
+  xpos -643
+  ypos -650
+ }
+ set Cc9024fa0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge20
+  xpos -753
+  ypos -644
+ }
+push $Nc57cf9e0
+push $Nc90253a0
+push $Nc9039cd0
+ Dissolve {
+  inputs 2
+  which {{spillBias}}
+  name WeightedAverage
+  label "AVERAGE MAIN "
+  xpos -970
+  ypos -771
+ }
+clone $Cc9024fa0 {
+  xpos -970
+  ypos -723
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge11
+  xpos -1119
+  ypos -717
+ }
+set Nd5e0e2f0 [stack 0]
+ Keymix {
+  inputs 3
+  name Keymix4
+  xpos -971
+  ypos -607
+ }
+push $Nd5e0e2f0
+ Switch {
+  inputs 2
+  which {{parent.enableEdgeBias.L}}
+  name Switch10
+  xpos -1119
+  ypos -538
+ }
+set Nd5e21830 [stack 0]
+ Grade {
+  channels rgba
+  multiply {1 1 1 0}
+  name GradeDespill
+  label "Calculated by python script\n by sampling colors at helper pos"
+  xpos -1119
+  ypos -480
+ }
+set Nd5e27f30 [stack 0]
+ Dot {
+  name Dot6
+  xpos -1085
+  ypos -315
+ }
+set Nd5e33a60 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos -1752
+  ypos -318
+ }
+set Nd5e37a60 [stack 0]
+ Dot {
+  name Dot68
+  xpos -1427
+  ypos -191
+ }
+set Nd4be0480 [stack 0]
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle17
+  tile_color 0xffff
+  xpos -1344
+  ypos -121
+ }
+push $Nd4be0480
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle18
+  tile_color 0xff00ff
+  xpos -1473
+  ypos -122
+ }
+ Switch {
+  inputs 2
+  which {{spillColour}}
+  name Switch15
+  xpos -1473
+  ypos -35
+ }
+push 0
+push $Nd5e33a60
+push $Nc9029370
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge9
+  xpos -483
+  ypos -183
+ }
+set Nd4c03ce0 [stack 0]
+ Dot {
+  name Dot67
+  xpos -634
+  ypos -180
+ }
+set Nd4bfd450 [stack 0]
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle14
+  tile_color 0xff00ff
+  xpos -611
+  ypos -65
+ }
+push $Nd4bfd450
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle15
+  tile_color 0xffff
+  xpos -722
+  ypos -65
+ }
+ Switch {
+  inputs 2
+  which {{spillColour}}
+  name Switch6
+  xpos -688
+  ypos -16
+ }
+push $Nd5e33a60
+push $Nc902d220
+ Dot {
+  name Dot4
+  xpos -1185
+  ypos -174
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge8
+  xpos -1119
+  ypos -177
+ }
+set Nd7065a00 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle16
+  tile_color 0xff0000ff
+  xpos -966
+  ypos -93
+ }
+ Merge2 {
+  inputs 3+1
+  operation max
+  name DefaultDespil
+  xpos -966
+  ypos 68
+ }
+set N1ca20730 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge10
+  xpos -277
+  ypos 408
+ }
+ Saturation {
+  saturation 0
+  mode Maximum
+  name Saturation2
+  xpos -277
+  ypos 468
+ }
+set N1ca39780 [stack 0]
+ Dot {
+  name Dot57
+  xpos -72
+  ypos 471
+ }
+set Ne992580 [stack 0]
+push $N1ca39780
+ Grade {
+  whitepoint {{bgMix}}
+  white 4
+  white_clamp true
+  name Grade10
+  label "BG/Edge Mix"
+  xpos -277
+  ypos 533
+ }
+set Nf385d680 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  red red
+  green red2
+  blue black
+  alpha black
+  name ShuffleCopy3
+  xpos 38
+  ypos 539
+ }
+ Switch {
+  inputs 2
+  which {{method}}
+  name Switch13
+  label "switching between Ketylight and Subtract de_spillmattes\nswitch -> method"
+  xpos 685
+  ypos 527
+ }
+ Dot {
+  name Dot62
+  xpos 719
+  ypos 3389
+ }
+push $N1bdf1c40
+ Dot {
+  name Dot33
+  xpos 1720
+  ypos -634
+ }
+set Nf958030 [stack 0]
+ Input {
+  inputs 0
+  name BG
+  xpos 1272
+  ypos -1528
+  number 1
+ }
+ Expression {
+  expr0 "\[python \{nuke.thisNode().channels().count('rgba.red')\}] ?r:0"
+  expr1 "\[python \{nuke.thisNode().channels().count('rgba.green')\}] ?g:0"
+  expr2 "\[python \{nuke.thisNode().channels().count('rgba.blue')\}] ?b:0"
+  expr3 "\[python \{nuke.thisNode().channels().count('rgba.alpha')\}] ?a:0"
+  name Is_RGBA_Exists1
+  xpos 1272
+  ypos -1433
+ }
+ Multiply {
+  value 0
+  name Multiply3
+  xpos 1272
+  ypos -1409
+  disable {{1-parent.showBG}}
+ }
+ Dot {
+  name Dot7
+  xpos 1306
+  ypos -882
+ }
+set Ncf2ba690 [stack 0]
+ Blur {
+  channels rgba
+  size {{bgBlurCore}}
+  name bgBlurCore
+  xpos 1354
+  ypos -781
+ }
+push $Ncf2ba690
+ Blur {
+  channels rgba
+  size {{bgBlurEdge}}
+  name bgBlurEdge
+  xpos 1184
+  ypos -779
+ }
+ Keymix {
+  inputs 3
+  invertMask true
+  name Keymix2
+  xpos 1272
+  ypos -643
+ }
+ Dot {
+  name Dot29
+  xpos 1306
+  ypos -436
+ }
+set Nf1c1b7e0 [stack 0]
+push $Nda661c90
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge14
+  xpos 485
+  ypos -439
+ }
+set N1bbe84c0 [stack 0]
+push $Nf958030
+ Dot {
+  name Dot13
+  label "Edge Matte"
+  xpos 1715
+  ypos 590
+ }
+set Nf95c030 [stack 0]
+ Dot {
+  name Dot41
+  xpos 1715
+  ypos 884
+ }
+set N1000c340 [stack 0]
+push $Nf1c1b7e0
+ Dot {
+  name Dot30
+  xpos 1306
+  ypos 663
+ }
+set N1bc053f0 [stack 0]
+ Keyer {
+  operation "luminance key"
+  range {0.05950150411 0.1741546484 1 1}
+  name Keyer1
+  xpos 1272
+  ypos 750
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge19
+  xpos 1272
+  ypos 881
+ }
+ Dot {
+  name Dot9
+  xpos -39
+  ypos 884
+ }
+set Nc73f8190 [stack 0]
+push $N1bc053f0
+push $Nf95c030
+push $Nf385d680
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  mix {{1-coreWeight}}
+  name Multiply1
+  xpos -277
+  ypos 581
+ }
+set N1ca391e0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  xpos -277
+  ypos 673
+ }
+push $N1ca391e0
+ Dot {
+  name Dot17
+  xpos -380
+  ypos 590
+ }
+ Grade {
+  white {0.1550000012 0.05232757702 0.108827047 1}
+  name Grade7
+  xpos -414
+  ypos 772
+ }
+ Switch {
+  inputs 2
+  which 1
+  name Switch5
+  xpos -277
+  ypos 772
+ }
+ Grade {
+  inputs 1+1
+  white {{bgHighlights}}
+  name Grade4
+  label "BG Highlights"
+  xpos -277
+  ypos 875
+ }
+set Nf4694e20 [stack 0]
+ Switch {
+  inputs 2
+  which {{method}}
+  name Switch12
+  label "switching between Ketylight and Subtract de_spillColors\nswitch -> method"
+  xpos 485
+  ypos 985
+ }
+ Dot {
+  name Dot59
+  xpos 497
+  ypos 3292
+ }
+push $Ne981c40
+ Expression {
+  expr0 r<1?0:1
+  channel2 {-rgba.red rgba.green rgba.blue}
+  name Expression2
+  xpos 592
+  ypos 1322
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle8
+  xpos 592
+  ypos 1346
+ }
+ Dot {
+  name Dot31
+  xpos 626
+  ypos 2836
+ }
+push $Nf4694e20
+ Dot {
+  name Dot42
+  xpos -243
+  ypos 1242
+ }
+set Nd9903e90 [stack 0]
+ Expression {
+  expr0 abs(sin((x/2)-y/2))
+  name Stripes
+  xpos -277
+  ypos 1285
+ }
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue}
+  blackpoint 0.006
+  white 1.2
+  gamma 0.16
+  white_clamp true
+  name Grade3
+  xpos -277
+  ypos 1322
+ }
+push $Nd9903e90
+ Expression {
+  expr0 1
+  name Constant
+  xpos -171
+  ypos 1286
+ }
+ Switch {
+  inputs 2
+  which {{stripes}}
+  name Switch9
+  xpos -277
+  ypos 1384
+ }
+ Dot {
+  name Dot18
+  xpos -243
+  ypos 2434
+ }
+set Nd9929bd0 [stack 0]
+ Dot {
+  name Dot46
+  xpos -90
+  ypos 2434
+ }
+push $N1000c340
+ Dot {
+  name Dot27
+  xpos 1720
+  ypos 1173
+ }
+set Nd3515b00 [stack 0]
+ Dot {
+  name Dot36
+  xpos 1720
+  ypos 1470
+ }
+set Nd9938aa0 [stack 0]
+ Dot {
+  name Dot38
+  xpos 1720
+  ypos 1688
+ }
+set Nd9b3c1d0 [stack 0]
+ Dot {
+  name Dot24
+  xpos 1720
+  ypos 2718
+ }
+push $Nd9929bd0
+push $Nd5e21830
+ Dot {
+  name Dot64
+  xpos -947
+  ypos -535
+ }
+ Grade {
+  channels rgba
+  multiply {{spillFineTune.r} {spillFineTune.g} {spillFineTune.b} {spillFineTune.a}}
+  name Grade5
+  label "Fine tune color of despill"
+  xpos -981
+  ypos -420
+ }
+ Dot {
+  name Dot8
+  xpos -947
+  ypos -272
+ }
+set Nf46b0c30 [stack 0]
+ Dot {
+  name Dot12
+  xpos -947
+  ypos -141
+ }
+set Nf46b0600 [stack 0]
+push $Nd4c03ce0
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge22
+  xpos -483
+  ypos -150
+ }
+set Nf46b8450 [stack 0]
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle13
+  tile_color 0xff00ff
+  xpos -372
+  ypos -126
+ }
+push $Nf46b8450
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle6
+  tile_color 0xffff
+  xpos -483
+  ypos -126
+ }
+ Switch {
+  inputs 2
+  which {{spillColour}}
+  name Switch4
+  xpos -483
+  ypos -71
+ }
+push 0
+push $Nf46b0c30
+push $Nd5e37a60
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge4
+  xpos -1752
+  ypos -275
+ }
+set Nf2a48e90 [stack 0]
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle12
+  tile_color 0xffff
+  xpos -1623
+  ypos -114
+ }
+push $Nf2a48e90
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle1
+  tile_color 0xff00ff
+  xpos -1752
+  ypos -115
+ }
+ Switch {
+  inputs 2
+  which {{spillColour}}
+  name Switch3
+  xpos -1752
+  ypos -28
+ }
+ Dot {
+  name Dot25
+  xpos -1718
+  ypos 49
+ }
+push $Nf46b0600
+push $Nd7065a00
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge21
+  xpos -1119
+  ypos -144
+ }
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle2
+  tile_color 0xff0000ff
+  xpos -1119
+  ypos -104
+ }
+ Merge2 {
+  inputs 3+1
+  operation max
+  name DefaultDespilG
+  xpos -707
+  ypos 46
+ }
+ Dot {
+  name Dot48
+  xpos -673
+  ypos 411
+ }
+set N145cbd50 [stack 0]
+ Dot {
+  name Dot65
+  xpos -1097
+  ypos 466
+ }
+ Crop {
+  box {{SamplePos.x} {SamplePos.y} {SamplePos.x+100} {SamplePos.y+100}}
+  reformat true
+  crop false
+  name Crop1
+  xpos -1131
+  ypos 578
+ }
+ Shuffle {
+  alpha white
+  name Shuffle7
+  xpos -1131
+  ypos 602
+ }
+ Blur {
+  channels rgba
+  size 21
+  name Blur2
+  xpos -1131
+  ypos 626
+ }
+set Nd9b5c650 [stack 0]
+ Dot {
+  name Dot19
+  xpos -966
+  ypos 635
+ }
+ Saturation {
+  saturation 0
+  mode Maximum
+  name Saturation1
+  xpos -1000
+  ypos 653
+ }
+ Transform {
+  translate {100 0}
+  center {25 24.5}
+  name Transform1
+  xpos -1000
+  ypos 677
+ }
+push $Nd9b5c650
+ Crop {
+  box {0 0 200 100}
+  reformat true
+  name Crop2
+  xpos -1131
+  ypos 662
+ }
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos -1131
+  ypos 711
+ }
+ Transform {
+  translate {{SamplePos} {SamplePos}}
+  scale 2
+  name Transform2
+  xpos -1131
+  ypos 735
+ }
+ Dot {
+  name Dot43
+  xpos -1097
+  ypos 2360
+ }
+push $Ne992580
+ Dot {
+  name Dot58
+  xpos -72
+  ypos 2255
+ }
+push $N2c5d8e80
+ Dot {
+  name Dot39
+  xpos -865
+  ypos 1249
+ }
+ Dot {
+  name Dot40
+  xpos -865
+  ypos 1343
+ }
+set N4425d650 [stack 0]
+ Keyer {
+  operation "luminance key"
+  range {0.07778212672 0.1746691279 1 1}
+  name Keyer2
+  xpos -769
+  ypos 1550
+ }
+set Nd399ff40 [stack 0]
+ Blur {
+  channels rgba
+  size 2.8
+  name Blur5
+  xpos -769
+  ypos 1586
+ }
+set Nd39a8040 [stack 0]
+push $Nd9b3c1d0
+ Dot {
+  name Dot47
+  xpos -400
+  ypos 1688
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge17
+  xpos -769
+  ypos 1685
+ }
+push $N4425d650
+push $Nd9938aa0
+ Blur {
+  channels rgba
+  size 15.5
+  name Blur4
+  xpos -531
+  ypos 1461
+ }
+push $Nd399ff40
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge18
+  xpos -641
+  ypos 1467
+  disable true
+ }
+push $N2c5d8e80
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace1
+  selected true
+  xpos -1861
+  ypos 1334
+ }
+push $Nd3515b00
+push $N1bbe84c0
+push $Nefef65f0
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge15
+  xpos 353
+  ypos -439
+ }
+ Dot {
+  name Dot11
+  xpos 387
+  ypos 1089
+ }
+push $Nf4694e20
+push $N145cbd50
+ Dot {
+  name Dot10
+  xpos -673
+  ypos 527
+ }
+set N446b6fb0 [stack 0]
+push $N446b6fb0
+push $N145cbd50
+push $N1ca39780
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge7
+  xpos -506
+  ypos 468
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge6
+  xpos -559
+  ypos 524
+ }
+ Expression {
+  expr0 r<0?0:r
+  expr1 g<0?0:g
+  expr2 b<0?0:b
+  expr3 a<0?0:a
+  name ClampNegative
+  xpos -559
+  ypos 548
+ }
+ Dissolve {
+  inputs 2
+  which {{tuneLuma}}
+  name Dissolve3
+  label "Tune Luma"
+  xpos -707
+  ypos 627
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge12
+  xpos -707
+  ypos 881
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  label "Mixing Keylight Edge on top of subtract Method"
+  xpos -707
+  ypos 1158
+  disable {{!method}}
+ }
+ Dot {
+  name Dot35
+  xpos -673
+  ypos 1394
+ }
+set Nd125e200 [stack 0]
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace3
+  selected true
+  xpos -1724
+  ypos 1391
+ }
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.blue
+  name Copy1
+  selected true
+  xpos -1861
+  ypos 1385
+ }
+ Colorspace {
+  colorspace_in HSL
+  name Colorspace2
+  selected true
+  xpos -1861
+  ypos 1467
+ }
+push $Nd125e200
+ Keymix {
+  inputs 3
+  invertMask true
+  name Keymix3
+  label "Restore LUMA"
+  xpos -790
+  ypos 1455
+  disable {{!enableAdv x95 1}}
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge16
+  xpos -899
+  ypos 1575
+ }
+ Saturation {
+  saturation 0
+  mode Maximum
+  name Saturation4
+  xpos -899
+  ypos 1642
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  name Multiply2
+  xpos -899
+  ypos 1684
+ }
+push $Nd125e200
+ Grade {
+  inputs 1+1
+  white 9
+  maskChannelMask rgba.red
+  name Grade1
+  label "adv Luma Restore"
+  xpos -707
+  ypos 1797
+  disable {{!enableAdv x101 1}}
+ }
+ Switch {
+  inputs 2
+  which {{showSpill}}
+  name Switch11
+  xpos -707
+  ypos 2252
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -707
+  ypos 2357
+  disable {{!showHelper}}
+ }
+ Dot {
+  name Dot45
+  xpos -673
+  ypos 2402
+ }
+set N3db2d480 [stack 0]
+ Dot {
+  name Dot22
+  xpos -563
+  ypos 2402
+ }
+set N145a0d00 [stack 0]
+ Dot {
+  name Dot16
+  xpos -369
+  ypos 2402
+ }
+set N3db348b0 [stack 0]
+ Dissolve {
+  inputs 2+1
+  which 1
+  name Dissolve4
+  xpos -403
+  ypos 2709
+ }
+push $Nc73f8190
+ Dot {
+  name Dot21
+  xpos -39
+  ypos 2661
+ }
+push $Nd9929bd0
+push $N3db348b0
+ Dissolve {
+  inputs 2+1
+  which 1
+  name Dissolve1
+  xpos -277
+  ypos 2652
+ }
+push $Nd39a8040
+ Dot {
+  name Dot44
+  xpos -510
+  ypos 1595
+ }
+push $Nd9929bd0
+ Shuffle {
+  green red
+  blue red
+  alpha white
+  name Shuffle9
+  xpos -488
+  ypos 2431
+ }
+push $N145a0d00
+ Dissolve {
+  inputs 2+1
+  which 1
+  name Dissolve6
+  xpos -544
+  ypos 2487
+ }
+push $N3db2d480
+ Switch {
+  inputs 2
+  which {{showAdvLuma}}
+  name Switch8
+  xpos -707
+  ypos 2493
+ }
+ Switch {
+  inputs 2
+  which {{showLumaMask}}
+  name lumaMask
+  xpos -707
+  ypos 2658
+ }
+ Switch {
+  inputs 2
+  which {{showEdgeMatte}}
+  name edgeMask
+  xpos -707
+  ypos 2715
+ }
+set N3db5f180 [stack 0]
+ Dissolve {
+  inputs 2+1
+  which 1
+  name Dissolve5
+  xpos -124
+  ypos 2827
+ }
+push $N3db5f180
+ Switch {
+  inputs 2
+  which {{keylightLumahelper}}
+  name Switch7
+  xpos -707
+  ypos 2833
+ }
+ Dot {
+  name Dot69
+  xpos -673
+  ypos 3085
+ }
+set Nd91d2050 [stack 0]
+ Dot {
+  name Dot61
+  xpos -214
+  ypos 3085
+ }
+add_layer {despillColor despillColor.red despillColor.green despillColor.blue despillColor.alpha}
+ ShuffleCopy {
+  inputs 2
+  alpha alpha2
+  black red
+  white green
+  red2 blue
+  green2 alpha
+  out2 despillColor
+  name ShuffleCopy1
+  xpos -248
+  ypos 3289
+ }
+add_layer {despillMatte despillMatte.red despillMatte.green despillMatte.blue despillMatte.alpha}
+ ShuffleCopy {
+  inputs 2
+  alpha alpha2
+  black red
+  white green
+  red2 blue
+  green2 alpha
+  out2 despillMatte
+  name ShuffleCopy2
+  xpos -248
+  ypos 3386
+ }
+push $Nd91d2050
+ Switch {
+  inputs 2
+  which {{outputChannels}}
+  name Switch14
+  xpos -707
+  ypos 3386
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -707
+  ypos 3494
+ }
+ Output {
+  name Output1
+  xpos -707
+  ypos 3778
+ }
+ Transform {
+  inputs 0
+  center {1174 783}
+  name Transform3
+  xpos -1242
+  ypos 446
+ }
+push $N1bc66790
+ Dot {
+  name SourceColor
+  xpos -2046
+  ypos -1201
+ }
+ Expression {
+  temp_name0 avg
+  temp_expr0 r*(1-wt)+b*(wt)
+  temp_name1 dr
+  temp_expr1 r+(g-avg)
+  temp_name2 db
+  temp_expr2 b+(g-avg)
+  temp_name3 dg
+  temp_expr3 g-(g-avg)
+  expr0 avg>g?rr
+  expr1 avg>g?gg
+  expr2 avg>g?bb
+  name DefaultDespilExpr
+  xpos -2080
+  ypos -765
+  addUserKnob {20 User}
+  addUserKnob {7 wt l weight}
+  wt {{parent.WeightedAverage.which.L}}
+ }
+ Expression {
+  expr3 sample.g<min(sample.r,sample.b)?1:sample.r<min(sample.g,sample.b)?0:2
+  name Sampler
+  label "Evaluates Values Automaticaly"
+  xpos -2224
+  ypos -771
+  addUserKnob {20 User}
+  addUserKnob {7 spillColor l SpillColor}
+  spillColor {{parent.spillColour}}
+  addUserKnob {7 maxVal l maxValue}
+  maxVal 0.04025268555
+  addUserKnob {7 minVal l minValue}
+  minVal 0.0003294944763
+  addUserKnob {18 minCol t "min of 3\nShows 1 in a channel with lowest value"}
+  minCol {0 1 0}
+  addUserKnob {18 minColA t "min of r and b\nshows 1 in a channel with lowest value"}
+  minColA {1 0 0}
+  addUserKnob {22 sample t "Samples color ar helper position and evaluates despill to replace screen color with perfectly gray color" T "nuke.load('despillEdges_Evaluate.py')\ndespillEdges_Evaluate()" +STARTLINE}
+  addUserKnob {22 reset t "resets despill color to default" -STARTLINE T "nuke.load('despillEdges_Evaluate.py')\ndespillEdges_Reset()"}
+  addUserKnob {18 cp1 l "" t "source color sampled" +STARTLINE}
+  cp1 {0.0003294944763 0.1225585938 0.04025268555}
+  addUserKnob {18 cp l "" t "despilled color sampled" +STARTLINE}
+  cp {0.1025969982 0.02029109001 0.1425201893}
+  addUserKnob {12 pos}
+  pos {{SamplePos x1 849.4199829} {SamplePos x1 332.2600098}}
+ }
+push $Nd5e27f30
+push $N10023ea0
+push $N1ca20730
+ Viewer {
+  inputs 3
+  input_number 1
+  input_process false
+  translate {0.3704999983 -0.07450000197}
+  name Viewer1
+  xpos -1710
+  ypos 3021
+ }
+end_group
+

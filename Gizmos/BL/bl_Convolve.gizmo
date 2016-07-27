@@ -1,0 +1,306 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l bl_Convolve}
+ addUserKnob {4 kernel M {blur3x3 blur5x5 sharpen edge3x3 edge5x5 laplace smoothedge sobelH sobelV BabuV BabuH "Robinson H 3x3" "Kirsch H 3x3" "MexicanHat 5x5" "LineFinding H 5x5" "BoxFilter 7x7" "Gaussian 7x7" "Bartlett 7x7" "MexicanHat 17x17" ""}}
+ addUserKnob {7 percent R 0 100}
+ percent 100
+ addUserKnob {6 abs l absolute +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 838
+  ypos 231
+ }
+ NoOp {
+  name NoOp2
+  xpos 838
+  ypos 271
+ }
+set N1ae8ead0 [stack 0]
+ Matrix {
+  matrix {
+      {0 0 0 0 0 0 -1 -1 -1 -1 -1 0 0 0 0 0 0}
+      {0 0 0 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 0 0 0 0}
+      {0 0 -1 -1 -1 -2 -3 -3 -3 -3 -3 -2 -1 -1 -1 0 0}
+      {0 0 -1 -1 -2 -3 -3 -3 -3 -3 -3 -3 -2 -1 -1 0 0}
+      {0 -1 -1 -2 -3 -3 -3 -2 -3 -2 -3 -3 -3 -2 -1 -1 0}
+      {0 -1 -2 -3 -3 -3 0 2 4 2 0 -3 -3 -3 -2 -1 0}
+      {-1 -1 -3 -3 -3 0 4 10 12 10 4 0 -3 -3 -3 -1 -1}
+      {-1 -1 -3 -3 -2 2 10 18 21 18 10 2 -2 -3 -3 -1 -1}
+      {-1 -1 -3 -3 -3 4 12 21 24 21 12 4 -3 -3 -3 -1 -1}
+      {-1 -1 -3 -3 -2 2 10 18 21 18 10 2 -2 -3 -3 -1 -1}
+      {-1 -1 -2147483648 -3 -3 0 4 10 12 10 4 0 -3 -3 -3 -1 -1}
+      {0 -1 -2 -3 -3 -3 0 2 4 2 0 -3 -3 -3 -2 -1 0}
+      {0 -1 -1 -2 -3 -3 -3 -2 -3 -2 -3 -3 -3 -2 -1 -1 0}
+      {0 0 -1 -2147483648 -2 -3 -3 -3 -3 -3 -3 -3 -2 -1 -1 0 0}
+      {0 -2147483648 -1 -1 -1 -2 -3 -3 -3 -3 -3 -2 -1 -1 -1 0 0}
+      {0 0 0 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 0 0 0 0}
+      {0 0 0 0 0 0 -1 -1 -1 -1 -1 0 0 0 0 0 0}
+    }
+  name MexicanHat17x1
+  xpos 1367
+  ypos 395
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {1 2 3 4 3 2 1}
+      {2 4 6 8 6 4 2}
+      {3 6 9 12 9 6 3}
+      {4 8 12 16 12 6 4}
+      {3 6 9 12 9 6 3}
+      {2 4 6 8 6 4 2}
+      {1 2 3 4 3 2 1}
+    }
+  normalize true
+  name Bartlett7x1
+  xpos 1277
+  ypos 395
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {1 4 8 10 8 4 1}
+      {4 12 25 29 25 12 4}
+      {8 25 49 58 49 25 8}
+      {10 29 58 67 58 29 10}
+      {8 25 49 58 49 25 8}
+      {4 12 25 29 25 12 4}
+      {1 4 8 10 8 1 1}
+    }
+  normalize true
+  name Gaussian7x1
+  xpos 1187
+  ypos 395
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {1 1 1 1 1 1 1}
+      {1 1 1 1 1 1 1}
+      {1 1 1 1 1 1 1}
+      {1 1 1 1 1 1 1}
+      {1 1 1 1 1 1 1}
+      {1 1 1 1 1 1 1}
+      {1 1 1 1 1 1 1}
+    }
+  normalize true
+  name BoxFilter7x1
+  xpos 1096
+  ypos 394
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {0 0 0 0 0}
+      {0 -1 -1 -1 0}
+      {0 2 2 2 0}
+      {0 -1 -1 -1 0}
+      {0 0 0 0 0}
+    }
+  name LineFindingH1
+  xpos 1005
+  ypos 394
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {0 0 -1 0 0}
+      {0 -1 -2 -1 0}
+      {-1 -2 16 -2 -1}
+      {0 -1 -2 -1 0}
+      {0 0 -1 0 0}
+    }
+  name MexicanHat5x1
+  xpos 914
+  ypos 393
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {3 3 3}
+      {3 0 3}
+      {-5 -5 -5}
+    }
+  name KirschH1
+  xpos 823
+  ypos 392
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {1 1 1}
+      {1 -2 1}
+      {-1 -1 -1}
+    }
+  name RobinsonH1
+  xpos 728
+  ypos 392
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-1 -1 -1 -1 -1}
+      {-1 -1 -1 -1 -1}
+      {0 0 0 0 0}
+      {1 1 1 1 1}
+      {1 1 1 1 1}
+    }
+  name BabuH1
+  xpos 605
+  ypos 392
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-1 -1 0 1 1}
+      {-1 -1 0 1 1}
+      {-1 -1 0 1 1}
+      {-1 -1 0 1 1}
+      {-1 -1 0 1 1}
+    }
+  name BabuV1
+  xpos 512
+  ypos 392
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-1 0 1}
+      {-2 0 2}
+      {-1 0 1}
+    }
+  name sobelV1
+  xpos 419
+  ypos 392
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-1 -2 -1}
+      {0 0 0}
+      {1 2 1}
+    }
+  name sobelH1
+  xpos 324
+  ypos 392
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-0.0625 -0.125 -0.25 -0.125 -0.0625}
+      {-0.125 -0.25 -0.5 -0.25 -0.125}
+      {-0.25 -0.5 5 -0.5 -0.25}
+      {-0.125 -0.25 -0.5 -0.25 -0.125}
+      {-0.0625 -0.125 -0.25 -0.125 -0.0625}
+    }
+  name smoothedge1
+  xpos 229
+  ypos 391
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {{-sqrt(2)/2 i} -1 {-sqrt(2)/2 i}}
+      {-1 {4+2*sqrt(2) i} -1}
+      {{-sqrt(2)/2 i} -1 {-sqrt(2)/2 i}}
+    }
+  name laplace1
+  xpos 130
+  ypos 391
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-1 -1 -1 -1 -1}
+      {-1 -1 -1 -1 -1}
+      {-1 -1 24 -1 -1}
+      {-1 -1 -1 -1 -1}
+      {-1 -1 -1 -1 -1}
+    }
+  name edge5x1
+  xpos 30
+  ypos 392
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-1 -1 -1}
+      {-1 8 -1}
+      {-1 -1 -1}
+    }
+  name edge3x1
+  xpos -74
+  ypos 391
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {-1 -1 -1}
+      {-1 9 -1}
+      {-1 -1 -1}
+    }
+  name sharpen1
+  xpos -175
+  ypos 389
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {1 1 1 1 1}
+      {1 1 1 1 1}
+      {1 1 1 1 1}
+      {1 1 1 1 1}
+      {1 1 1 1 1}
+    }
+  normalize true
+  name blur5x1
+  xpos -274
+  ypos 389
+ }
+push $N1ae8ead0
+ Matrix {
+  matrix {
+      {1 1 1}
+      {1 1 1}
+      {1 1 1}
+    }
+  normalize true
+  name blur3x1
+  xpos -371
+  ypos 389
+ }
+ Switch {
+  inputs 19
+  which {{parent.kernel i}}
+  name Switch2
+  xpos 728
+  ypos 578
+ }
+push $N1ae8ead0
+ Dissolve {
+  inputs 2
+  which {{parent.percent/100 i}}
+  name Dissolve2
+  xpos 838
+  ypos 684
+ }
+ Expression {
+  channel0 rgb
+  expr0 abs(r)
+  channel1 none
+  channel2 none
+  name Expression1
+  xpos 838
+  ypos 726
+  disable {{1-parent.abs i}}
+ }
+ Output {
+  name Output1
+  xpos 838
+  ypos 796
+ }
+end_group

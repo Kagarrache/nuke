@@ -1,0 +1,93 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l Solarize}
+ addUserKnob {7 value R 0.0001 0.9999}
+ value 0.5
+ addUserKnob {4 thresholdType M {high low ""}}
+}
+ Input {
+  inputs 0
+  name In
+  xpos -220
+  ypos 212
+ }
+set N1a45e6b0 [stack 0]
+push $N1a45e6b0
+ Multiply {
+  channels rgba
+  value 0
+  name Multiply17
+  xpos -91
+  ypos 212
+ }
+ Add {
+  channels rgba
+  value {{parent.value i}}
+  name sol_value
+  xpos -91
+  ypos 238
+ }
+set N1a798e50 [stack 0]
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge7
+  xpos -220
+  ypos 406
+ }
+ Clamp {
+  channels rgba
+  name Clamp4
+  xpos -220
+  ypos 432
+ }
+push $N1a45e6b0
+ Invert {
+  channels rgba
+  name Invert19
+  xpos -102
+  ypos 364
+ }
+push $N1a798e50
+ Invert {
+  channels rgba
+  name Invert20
+  xpos -10
+  ypos 365
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge8
+  xpos -60
+  ypos 406
+ }
+ Clamp {
+  channels rgba
+  name Clamp5
+  xpos -60
+  ypos 432
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge9
+  xpos -141
+  ypos 497
+ }
+ Invert {
+  channels rgba
+  name type
+  selected true
+  xpos -141
+  ypos 523
+  disable {{!parent.thresholdType}}
+ }
+ Output {
+  name Output1
+  xpos -141
+  ypos 590
+ }
+end_group

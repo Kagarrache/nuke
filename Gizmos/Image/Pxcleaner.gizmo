@@ -1,0 +1,528 @@
+#! C:/Program Files/Nuke6.0v1/Nuke6.0.exe -nx
+version 6.0 v1
+Gizmo {
+ inputs 2
+ tile_color 0x280200ff
+ gl_color 0x434346ff
+ label "\[value type]"
+ addUserKnob {20 Cleaner}
+ addUserKnob {4 type l "" +STARTLINE M {smartBG offsetTime offsetPos chromaScreen "" ""}}
+ addUserKnob {20 smartBG n 1}
+ smartBG 0
+ addUserKnob {41 size l erodeColor T px__Blur2.size}
+ addUserKnob {41 size_1 l blur T px__afterblur.size}
+ addUserKnob {26 grainSize l "@b;grainSize"}
+ addUserKnob {41 red_size l red T px__Grain2_2.red_size}
+ addUserKnob {41 green_size l green T px__Grain2_2.green_size}
+ addUserKnob {41 blue_size l blue T px__Grain2_2.blue_size}
+ addUserKnob {26 grainIntesity l "@b;grainIntensity"}
+ addUserKnob {41 red_m l red T px__Grain2_2.red_m}
+ addUserKnob {41 green_m l green T px__Grain2_2.green_m}
+ addUserKnob {41 blue_m l blue T px__Grain2_2.blue_m}
+ addUserKnob {41 black T px__Grain2_2.black}
+ addUserKnob {41 minimum T px__Grain2_2.minimum}
+ addUserKnob {20 endGroup_5 l endGroup n -1}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ___________________div l INVISIBLE +INVISIBLE}
+ addUserKnob {20 offsetTime n 1}
+ offsetTime 0
+ addUserKnob {41 time_offset l frames T px__TimeOffset.time_offset}
+ addUserKnob {26 coloradjust1 l "@b;color adjust"}
+ addUserKnob {41 whitepoint T px__masterGrade.whitepoint}
+ addUserKnob {41 black_1 l lift T px__masterGrade.black}
+ addUserKnob {41 white l gain T px__masterGrade.white}
+ addUserKnob {41 gamma T px__masterGrade.gamma}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 offsetPos n 1}
+ offsetPos 0
+ addUserKnob {41 translate T px__Transform1.translate}
+ addUserKnob {41 rotate T px__Transform1.rotate}
+ addUserKnob {41 scale T px__Transform1.scale}
+ addUserKnob {12 pivot}
+ addUserKnob {26 coloradjust2 l "@b;color adjust"}
+ addUserKnob {41 whitepoint_1 l whitepoint T px__masterGrade.whitepoint}
+ addUserKnob {41 black_2 l lift T px__masterGrade.black}
+ addUserKnob {41 white_1 l gain T px__masterGrade.white}
+ addUserKnob {41 gamma_1 l gamma T px__masterGrade.gamma}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 chromaScreen n 1}
+ chromaScreen 0
+ addUserKnob {41 color T px__Constant1.color}
+ addUserKnob {41 whitepoint_2 l whitepoint T px__chromaGrade.whitepoint}
+ addUserKnob {41 black_4 l lift T px__chromaGrade.black}
+ addUserKnob {41 white_2 l gain T px__chromaGrade.white}
+ addUserKnob {41 gamma_2 l gamma T px__chromaGrade.gamma}
+ addUserKnob {41 saturation T px__Saturation1.saturation}
+ addUserKnob {26 grainSize2 l "@b;grainSize"}
+ addUserKnob {41 red_size_1 l red T px__Grain2_2.red_size}
+ addUserKnob {41 green_size_1 l green T px__Grain2_2.green_size}
+ addUserKnob {41 blue_size_1 l blue T px__Grain2_2.blue_size}
+ addUserKnob {26 grainIntensity2 l "@b;grainIntensity"}
+ addUserKnob {41 red_m_1 l red T px__Grain2_2.red_m}
+ addUserKnob {41 green_m_1 l green T px__Grain2_2.green_m}
+ addUserKnob {41 blue_m_1 l blue T px__Grain2_2.blue_m}
+ addUserKnob {41 black_3 l black T px__Grain2_2.black}
+ addUserKnob {41 minimum_1 l minimum T px__Grain2_2.minimum}
+ addUserKnob {20 endGroup_4 l endGroup n -1}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 from0 l mask T px__Copy1.from0}
+ addUserKnob {6 invert -STARTLINE}
+ addUserKnob {6 inject -STARTLINE}
+ addUserKnob {41 size_2 l size T px__EXPBlur.size}
+ addUserKnob {22 bezier T "import nuke\nnuke.endGroup()\nu=nuke.selectedNode()\nb=nuke.createNode('Bezier', inpanel=True)\nn=nuke.selectedNode()\nnuke.extractSelected()\n\nn.setXYpos( (u.xpos() +100), u.ypos() +5)\n\nu.setInput(1,n)" +STARTLINE}
+ addUserKnob {22 paint -STARTLINE T "import nuke\nnuke.endGroup()\nu=nuke.selectedNode()\nc=nuke.createNode('Constant', inpanel=True)\nnuke.extractSelected()\n\nb=nuke.createNode('Paint', inpanel=True)\nn=nuke.selectedNode()\nnuke.extractSelected()\n\nn.setXYpos( (u.xpos() +100), u.ypos() +5)\nc.setXYpos( (u.xpos() +100), u.ypos() -70)\nu.setInput(1,n)\nb.setInput(0,c)"}
+ addUserKnob {22 RotoPaint -STARTLINE T "import nuke\nnuke.endGroup()\nu=nuke.selectedNode()\nb=nuke.createNode('RotoPaint', inpanel=True)\nn=nuke.selectedNode()\nnuke.extractSelected()\n\nn.setXYpos( (u.xpos() +100), u.ypos() +5)\n\nu.setInput(1,n)"}
+ addUserKnob {26 div l "" -STARTLINE T "        "}
+ addUserKnob {22 help_1 l help -STARTLINE T nukescripts.start('http://google.com')}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 422
+  ypos -782
+ }
+ Dot {
+  name Dot2
+  xpos 456
+  ypos -630
+ }
+set N1c1d5a50 [stack 0]
+ Input {
+  inputs 0
+  name Mask
+  xpos 552
+  ypos -781
+  number 1
+ }
+ Expression {
+  expr0 a>r?a:r
+  expr1 a>g?a:g
+  expr2 a>b?a:b
+  expr3 r>a?r:a
+  name Expression1
+  xpos 552
+  ypos -658
+ }
+ Group {
+  name px__EXPBlur
+  tile_color 0xff7509ff
+  note_font_color 0xff7509ff
+  xpos 552
+  ypos -632
+  addUserKnob {20 ExponBlur}
+  addUserKnob {14 size R -40 40}
+  addUserKnob {7 Multiplier R 0 10}
+  Multiplier 2
+  addUserKnob {6 rgba_only l "rgba only" +STARTLINE}
+  rgba_only true
+  addUserKnob {6 crop l "crop to format" +STARTLINE}
+  addUserKnob {6 GenerateAlpha l "generate alpha" +STARTLINE}
+  addUserKnob {26 Description l Description- t "This tool requires an alpha, if none exists, use the generate alpha command." T "This tool requires an alpha, if none exists, use the generate alpha command."}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos -165
+   ypos -145
+  }
+set N1c1d7790 [stack 0]
+  Expression {
+   channel3 alpha
+   expr3 r+g+b>=.01?1:0
+   name Expression1
+   xpos -105
+   ypos -107
+  }
+push $N1c1d7790
+  Dissolve {
+   inputs 2
+   which {{ExponBlur.GenerateAlpha i}}
+   name Dissolve3
+   xpos -165
+   ypos -7
+  }
+  Invert {
+   name Invert1
+   xpos -165
+   ypos 31
+   disable {{parent.size>0?1:0 i}}
+  }
+  Dot {
+   name Dot3
+   xpos -131
+   ypos 158
+  }
+set N1c1d4bb0 [stack 0]
+  Dot {
+   name Dot1
+   xpos -409
+   ypos 158
+  }
+set N1c1d4940 [stack 0]
+  Remove {
+   operation keep
+   channels rgba
+   name Remove1
+   xpos -333
+   ypos 220
+  }
+push $N1c1d4940
+  Dissolve {
+   inputs 2
+   which {{ExponBlur.rgba_only i}}
+   name Dissolve2
+   xpos -443
+   ypos 256
+  }
+  Dot {
+   name Dot5
+   xpos -409
+   ypos 319
+  }
+set N1c1d41f0 [stack 0]
+  Blur {
+   size {{parent.size.w i} {parent.size.h i}}
+   crop {{parent.crop i}}
+   name Blur1
+   label "\[value size]"
+   xpos -599
+   ypos 484
+  }
+push $N1c1d41f0
+  Blur {
+   size {{parent.size.w*parent.Multiplier i} {parent.size.h*parent.Multiplier i}}
+   crop {{parent.crop i}}
+   name Blur2
+   label "\[value size]"
+   xpos -477
+   ypos 482
+  }
+  Merge2 {
+   inputs 2
+   name Merge7
+   xpos -571
+   ypos 568
+  }
+push $N1c1d41f0
+  Blur {
+   size {{parent.size.w*parent.Multiplier*2 i} {parent.size.h*parent.Multiplier*2 i}}
+   crop {{parent.crop i}}
+   name Blur3
+   label "\[value size]"
+   xpos -357
+   ypos 481
+  }
+  Merge2 {
+   inputs 2
+   name Merge8
+   xpos -472
+   ypos 647
+  }
+push $N1c1d41f0
+  Blur {
+   size {{parent.size.w*parent.Multiplier*4 i} {parent.size.h*parent.Multiplier*4 i}}
+   crop {{parent.crop i}}
+   name Blur4
+   label "\[value size]"
+   xpos -234
+   ypos 482
+  }
+  Merge2 {
+   inputs 2
+   name Merge9
+   xpos -412
+   ypos 707
+  }
+set N1c279680 [stack 0]
+push $N1c1d4bb0
+  Dot {
+   name Dot2
+   xpos -131
+   ypos 847
+  }
+  ShuffleCopy {
+   inputs 2
+   red red
+   green green
+   blue blue
+   black red
+   white green
+   red2 blue
+   green2 alpha
+   out2 rgba
+   name ShuffleCopy1
+   xpos -280
+   ypos 842
+  }
+push $N1c279680
+  Dissolve {
+   inputs 2
+   which {{ExponBlur.rgba_only}}
+   name Dissolve1
+   xpos -412
+   ypos 907
+  }
+  Invert {
+   name Invert2
+   xpos -412
+   ypos 945
+   disable {{parent.size>0?1:0}}
+  }
+  Output {
+   name Output1
+   xpos -412
+   ypos 1088
+  }
+push $N1c1d7790
+  Viewer {
+   input_process false
+   name Viewer1
+   selected true
+   xpos -412
+   ypos 1146
+  }
+ end_group
+ Invert {
+  channels rgba
+  name px__Invert1
+  xpos 552
+  ypos -606
+  disable {{parent.invert==0?1:0 i}}
+ }
+ Copy {
+  inputs 2
+  to0 rgba.alpha
+  name px__Copy1
+  xpos 552
+  ypos -580
+  disable {{px__Copy1.from0==0?1:0 i}}
+ }
+set N1c27a790 [stack 0]
+push $N1c27a790
+push $N1c1d5a50
+ Shuffle {
+  alpha white
+  name px__Shuffle2
+  xpos 422
+  ypos -530
+ }
+set N1c27aa00 [stack 0]
+ Merge2 {
+  inputs 2
+  operation stencil
+  name px__Out1
+  xpos 552
+  ypos -530
+ }
+set N1bcf1da0 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 0 0}
+  name px__Constant1
+  xpos 228
+  ypos -548
+ }
+ Saturation {
+  name px__Saturation1
+  selected true
+  xpos 228
+  ypos -449
+ }
+ Grade {
+  name px__chromaGrade
+  xpos 228
+  ypos -423
+ }
+ Grain2 {
+  name px__Grain2_1
+  label "Kodak GT5274"
+  xpos 228
+  ypos -371
+  red_size {{parent.px__Grain2_2.red_size.main i}}
+  green_size {{parent.px__Grain2_2.green_size.main i}}
+  blue_size {{parent.px__Grain2_2.blue_size.main i}}
+  red_i {{parent.px__Grain2_2.red_i.main i}}
+  green_i {{parent.px__Grain2_2.green_i.main i}}
+  blue_i {{parent.px__Grain2_2.blue_i.main i}}
+  red_m {{parent.px__Grain2_2.red_m.main i}}
+  green_m {{parent.px__Grain2_2.green_m.main i}}
+  blue_m {{parent.px__Grain2_2.blue_m.main i}}
+  black {0 0 0}
+  minimum {0 0 0}
+  maskgrain false
+ }
+ Merge2 {
+  inputs 2
+  name px__offsetPos_merge1
+  xpos 228
+  ypos -333
+ }
+push $N1bcf1da0
+push $N1c27aa00
+ Transform {
+  center {1024 778}
+  name px__Transform1
+  xpos 325
+  ypos -530
+ }
+ Grade {
+  name px__masterGrade
+  xpos 325
+  ypos -456
+ }
+ set C1c0cbb50 [stack 0]
+ Merge2 {
+  inputs 2
+  name px__offsetPos_merge
+  xpos 325
+  ypos -331
+ }
+push $N1bcf1da0
+push $N1c27aa00
+ TimeOffset {
+  name px__TimeOffset
+  xpos 422
+  ypos -504
+ }
+clone $C1c0cbb50 {
+  xpos 422
+  ypos -456
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  name px__offestTime_merge
+  xpos 422
+  ypos -366
+ }
+push $N1bcf1da0
+ Dot {
+  name Dot6
+  xpos 727
+  ypos -526
+ }
+push $N1bcf1da0
+ Blur {
+  size 10
+  name px__Blur2
+  xpos 552
+  ypos -504
+ }
+ Unpremult {
+  name px__Unpremult2
+  xpos 552
+  ypos -466
+ }
+ Blur {
+  size 10
+  name px__afterblur
+  xpos 552
+  ypos -440
+ }
+ Grain2 {
+  name px__Grain2_2
+  label "Kodak GT5274"
+  xpos 552
+  ypos -402
+  red_size 1
+  green_size 1.2
+  blue_size 1.6
+  red_i 0.9
+  green_i 0.76
+  blue_i 0.81
+  red_m 0.09
+  green_m 0.08
+  blue_m 0.15
+  black {0 0 0}
+  minimum {0 0 0}
+  maskgrain false
+ }
+clone $C1c0cbb50 {
+  xpos 552
+  ypos -364
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  name px__smartBG_merge
+  xpos 693
+  ypos -364
+ }
+ Switch {
+  inputs 4
+  which {{parent.type i}}
+  name px__Switch2
+  xpos 693
+  ypos -302
+ }
+set N1bce3e40 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name px__inject
+  xpos 693
+  ypos -214
+  disable {{parent.inject==0?1:0 i}}
+ }
+ Output {
+  name Output1
+  xpos 693
+  ypos -136
+ }
+ Group {
+  inputs 0
+  name TestPyButton
+  xpos 942
+  ypos -152
+  addUserKnob {20 User}
+  addUserKnob {22 test l "  test  " T "def test1():\n    nuke.createNode(\"Blur\")\n\ndef test2():\n    nuke.createNode(\"Bezier\")\n\ndef test3():\n    ask = nuke.ask(\"Blur (Yes) or Bezier (No)\")\n    if ask == True:\n        test1()\n    else:\n        test2()\n\ntest3()" +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos -692
+   ypos -312
+  }
+  NoOp {
+   name NoOp1
+   xpos -692
+   ypos -246
+  }
+  Bezier {
+   points {{
+}}
+   shape {}
+   center {1024 778}
+   name Bezier1
+   xpos -692
+   ypos -220
+  }
+  Output {
+   name Output1
+   xpos -692
+   ypos -44
+  }
+  Blur {
+   inputs 0
+   name Blur1
+   selected true
+   xpos 190
+   ypos -386
+  }
+ end_group
+push $N1bce3e40
+push $N1c27aa00
+ Viewer {
+  inputs 2
+  input_number 1
+  gain 0.385
+  viewerProcess None
+  input_process false
+  name Viewer1
+  xpos 118
+  ypos -803
+ }
+end_group

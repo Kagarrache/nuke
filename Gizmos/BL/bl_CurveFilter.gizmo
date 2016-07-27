@@ -1,0 +1,156 @@
+#! /s/apps/lin/nuke/Nuke6.2v4/Nuke6.2 -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l CurveFilter}
+ addUserKnob {41 Size T Control1.Size}
+ addUserKnob {41 normalize l Normalize -STARTLINE T Convolve2.normalize}
+ addUserKnob {26 ""}
+ addUserKnob {41 lut l "" +STARTLINE T ColorLookup2.lut}
+}
+ NoOp {
+  inputs 0
+  name Control1
+  tile_color 0xff0000ff
+  xpos 456
+  ypos -321
+  addUserKnob {20 User}
+  addUserKnob {14 Size R 0 100}
+  Size 10
+ }
+ ColorWheel {
+  inputs 0
+  format "256 256 0 0 256 256 1 square_256"
+  gamma 0.45
+  name ColorWheel2
+  xpos 341
+  ypos -490
+  postage_stamp false
+ }
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace1
+  xpos 341
+  ypos -464
+ }
+ Invert {
+  channels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  name Invert1
+  xpos 341
+  ypos -438
+ }
+ Shuffle {
+  red green
+  blue green
+  name Shuffle2
+  xpos 341
+  ypos -398
+ }
+ Premult {
+  name Premult3
+  xpos 341
+  ypos -372
+ }
+ Reformat {
+  type "to box"
+  box_width 100
+  box_height 100
+  box_fixed true
+  name Reformat3
+  xpos 341
+  ypos -346
+ }
+ Transform {
+  scale {{"parent.Control1.Size / 100" i}}
+  center {{width/2 i} {height/2 i}}
+  black_outside false
+  name Transform3
+  xpos 341
+  ypos -320
+ }
+ Crop {
+  box {{input.bbox.x i} {input.bbox.y i} {input.bbox.r i} {input.bbox.t i}}
+  reformat true
+  crop false
+  name Crop4
+  xpos 341
+  ypos -294
+  disable true
+ }
+ ColorLookup {
+  name ColorLookup2
+  xpos 341
+  ypos -242
+ }
+set N385c35d0 [stack 0]
+ Input {
+  inputs 0
+  name Input
+  xpos 668
+  ypos -258
+ }
+set N38609500 [stack 0]
+ Convolve {
+  inputs 2
+  channels alpha
+  channel rgba.alpha
+  name Convolve4
+  xpos 668
+  ypos -180
+ }
+push $N385c35d0
+push $N38609500
+ Convolve {
+  inputs 2
+  channels {-rgba.red -rgba.green rgba.blue}
+  channel rgba.blue
+  name Convolve3
+  xpos 560
+  ypos -181
+ }
+push $N385c35d0
+push $N38609500
+ Convolve {
+  inputs 2
+  channels {-rgba.red rgba.green -rgba.blue}
+  channel rgba.green
+  name Convolve1
+  xpos 449
+  ypos -180
+ }
+push $N385c35d0
+push $N38609500
+ Convolve {
+  inputs 2
+  channels {rgba.red -rgba.green -rgba.blue}
+  channel rgba.red
+  name Convolve2
+  xpos 341
+  ypos -181
+ }
+ ShuffleCopy {
+  inputs 2
+  green green
+  alpha alpha2
+  name ShuffleCopy1
+  xpos 341
+  ypos -117
+ }
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  alpha alpha2
+  name ShuffleCopy2
+  xpos 341
+  ypos -91
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy3
+  xpos 341
+  ypos -65
+ }
+ Output {
+  name Output
+  xpos 341
+ }
+end_group

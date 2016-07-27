@@ -1,0 +1,85 @@
+set cut_paste_input [stack 0]
+version 6.3 v1
+push $cut_paste_input
+Axis {
+ rotate {{"-degrees(atan2 ((CamsTransform.translate.y-Target1.translate.y),sqrt(pow2(CamsTransform.translate.z-Target1.translate.z)+pow2(CamsTransform.translate.x-Target1.translate.x))))" i} {"(CamsTransform.translate.z-Target1.translate.z)<=0?180-degrees(atan2 ((CamsTransform.translate.x-Target1.translate.x),abs(CamsTransform.translate.z-Target1.translate.z))):-degrees(atan2 ((Target1.translate.x-CamsTransform.translate.x),abs(CamsTransform.translate.z-Target1.translate.z)))" i} {curve i}}
+ name CamsTransform
+ tile_color 0xffffff00
+ gl_color 0xffff
+ label "\[frame]"
+ selected true
+ xpos -160
+ ypos -397
+}
+set N8490f70 [stack 0]
+Camera2 {
+ translate {{parent.LeftCam.translate.left*-1 i} {parent.LeftCam.translate.left*-1 i} {parent.LeftCam.translate.left*-1 i}}
+ rotate {{parent.LeftCam.rotate.left*-1 i} {parent.LeftCam.rotate.left*-1 i} {parent.LeftCam.rotate.left*-1 i}}
+ name RightCam
+ tile_color 0xff0000
+ gl_color 0xff00ff
+ selected true
+ xpos -20
+ ypos -315
+}
+set N8490c40 [stack 0]
+Axis2 {
+ inputs 0
+ translate {0 0 -3}
+ name Target1
+ tile_color 0xffffffff
+ gl_color 0xffff
+ selected true
+ xpos -65
+ ypos -393
+}
+push $N8490f70
+push $N8490c40
+push $N8490f70
+Camera2 {
+ translate {0.05 0 0}
+ name LeftCam
+ tile_color 0xc40000ff
+ gl_color 0xc40000ff
+ selected true
+ xpos -309
+ ypos -315
+}
+set N852c660 [stack 0]
+Scene {
+ inputs 4
+ name Scene1
+ tile_color 0xffffff00
+ selected true
+ xpos -160
+ ypos -174
+}
+set N852c330 [stack 0]
+push 0
+ScanlineRender {
+ inputs 3
+ name RIGHT
+ tile_color 0xff0000
+ selected true
+ xpos -30
+ ypos -85
+}
+push $N852c660
+push $N852c330
+push 0
+ScanlineRender {
+ inputs 3
+ name LEFT
+ tile_color 0xc40000ff
+ selected true
+ xpos -319
+ ypos -85
+}
+JoinViews {
+ inputs 2
+ name JoinViews1
+ selected true
+ xpos -169
+ ypos -85
+ viewassoc "left\nright"
+}

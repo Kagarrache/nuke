@@ -1,0 +1,207 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Skin_Cleaner_v1\n\nA tool delevopped to clean up model’s skin in common beauty/fashion shots.\n\nfeel free to contact me at niccolo.barbero@gmail.com"
+ addUserKnob {20 User l DUCK_Skin_Cleaner_v1}
+ addUserKnob {26 ""}
+ addUserKnob {26 RED_channel_blur}
+ addUserKnob {41 size T R_Blur.size}
+ addUserKnob {26 GREEN_channel_blur}
+ addUserKnob {41 size_1 l size T G_Blur.size}
+ addUserKnob {26 BLU_channel_blur}
+ addUserKnob {41 size_2 l size T B_blur.size}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 185
+  ypos -14
+ }
+set Nc4dc6c0 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle6
+  xpos -161
+  ypos 183
+ }
+set Nc4de2c0 [stack 0]
+push $Nc4de2c0
+ Blur {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  size 2
+  name R_Blur
+  xpos -361
+  ypos 176
+ }
+set Nc4e6670 [stack 0]
+ Merge2 {
+  inputs 2
+  operation min
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Min4
+  xpos -161
+  ypos 334
+ }
+set Nc4f0b70 [stack 0]
+push $Nc4f0b70
+push $Nc4e6670
+push $Nc4de2c0
+ Merge2 {
+  inputs 2
+  operation max
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Max4
+  xpos -361
+  ypos 336
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Merge6
+  xpos -269
+  ypos 439
+ }
+push $Nc4dc6c0
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle5
+  xpos 185
+  ypos 97
+ }
+set N3bd19750 [stack 0]
+push $N3bd19750
+ Blur {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  size 2
+  name G_Blur
+  xpos 185
+  ypos 209
+ }
+set N3bd23c90 [stack 0]
+ Merge2 {
+  inputs 2
+  operation min
+  Achannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  output {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  name Min5
+  xpos 315
+  ypos 272
+ }
+push $N3bd23c90
+push $N3bd19750
+ Merge2 {
+  inputs 2
+  operation max
+  Achannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  output {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  name Max5
+  xpos 51
+  ypos 271
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  name Merge7
+  xpos 186
+  ypos 336
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green -rgba.blue rgba.alpha}
+  name Merge8
+  xpos 186
+  ypos 439
+ }
+push $Nc4dc6c0
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle4
+  xpos 557
+  ypos 278
+ }
+set N3bd5d8a0 [stack 0]
+push $N3bd5d8a0
+ Blur {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  size 2
+  name B_blur
+  xpos 557
+  ypos 391
+ }
+set N3bd694c0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation min
+  Achannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  name Min3
+  xpos 694
+  ypos 451
+ }
+push $N3bd694c0
+push $N3bd5d8a0
+ Merge2 {
+  inputs 2
+  operation max
+  Achannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  name Max3
+  xpos 424
+  ypos 421
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  Achannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  name Merge9
+  xpos 560
+  ypos 541
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge10
+  xpos 186
+  ypos 548
+ }
+ Output {
+  name Output1
+  xpos 186
+  ypos 638
+ }
+set N3bda1930 [stack 0]
+push $N3bda1930
+ Viewer {
+  inputs 3
+  input_process false
+  name Viewer1
+  selected true
+  xpos -275
+  ypos 904
+ }
+end_group

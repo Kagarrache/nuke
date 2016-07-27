@@ -1,0 +1,163 @@
+#! C:/Program Files/Nuke8.0v6/nuke-8.0.v6.dll -nx
+version 8.0 v6
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {41 size_3 l outerEdgeBlur t "Blurs matte on the outer Edge" T outerEdgeBlur.size}
+ addUserKnob {41 gain l outerEdgeGain t "Intnsity of outer Edge" T outerEdgeGain.gain}
+ addUserKnob {41 size l innerEdgeBlur t "Blur matte inside" T innerEdgeBlur.size}
+ addUserKnob {41 EdgeGain T CC_edgegain.gain}
+ addUserKnob {41 size_1 l PostBlur t "Blur result" T PostBlur.size}
+ addUserKnob {41 gain_2 l overallGain t "Gain on result" T CC_overallgain.gain}
+ addUserKnob {4 clampAlpha l SwitchClampAlpha M {Unclamped Clamped ""}}
+ clampAlpha Clamped
+ addUserKnob {41 which l INVISIBLE t "Turn clamp Alpha on/off" +INVISIBLE T SwitchClamp.which}
+ addUserKnob {4 outputMode l SelectOutput t "Switches between AlphaEdge only, unpremult RGB cahnnels plus the new alpha and the premultiplied RGB pass." M {Alpha Unpremult Premult "" "" "" "" ""}}
+ addUserKnob {20 Erode n 1}
+ addUserKnob {41 which_1 l INVISIBLE +INVISIBLE T SwitchOutput.which}
+ addUserKnob {41 size_4 l "Dilate Main" t "Dilates/Erodes the incoming Alpha channel." T Dilate1.size}
+ addUserKnob {41 size_2 l ErodeCenter t "Reduces the core of the matte even further." T Erode1.size}
+ addUserKnob {41 blur l ErodeBlurCenter t "Softens the Erode operation." T Erode1.blur}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 disclaimer l Disclaimer T "AlphaEdge v05 by Mortiemr Warlimont\nmortimer@warlimont.net"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -277
+  ypos -462
+ }
+ Dot {
+  name Dot1
+  xpos -243
+  ypos -423
+ }
+set N12fbd800 [stack 0]
+ Dilate {
+  name Dilate1
+  xpos -365
+  ypos -382
+ }
+set N12fbdee0 [stack 0]
+ Blur {
+  channels alpha
+  size 10
+  name outerEdgeBlur
+  xpos -482
+  ypos -287
+ }
+ ColorCorrect {
+  channels alpha
+  gain 1.4
+  name outerEdgeGain
+  xpos -482
+  ypos -245
+ }
+ Clamp {
+  name Clamp1
+  xpos -482
+  ypos -203
+ }
+push $N12fbdee0
+ Blur {
+  channels alpha
+  size 10
+  name innerEdgeBlur
+  xpos -365
+  ypos -289
+ }
+ Erode {
+  size 0
+  name Erode1
+  xpos -365
+  ypos -251
+ }
+ Merge2 {
+  inputs 2
+  operation out
+  bbox A
+  metainput A
+  name Merge1
+  xpos -398
+  ypos -94
+ }
+ ColorCorrect {
+  channels rgba
+  gain 1.4
+  name CC_edgegain
+  xpos -398
+  ypos -70
+ }
+set N143d5850 [stack 0]
+ Blur {
+  channels alpha
+  name PostBlur
+  xpos -398
+  ypos -42
+ }
+ ColorCorrect {
+  channels rgba
+  gain 2
+  name CC_overallgain
+  xpos -398
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -398
+  ypos 80
+ }
+set N143d5f30 [stack 0]
+ Clamp {
+  name Clamp2
+  xpos -355
+  ypos 125
+ }
+push $N143d5f30
+ Switch {
+  inputs 2
+  which {{clampAlpha}}
+  name SwitchClamp
+  xpos -398
+  ypos 192
+ }
+set N13382f30 [stack 0]
+push $N12fbd800
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos -277
+  ypos 260
+ }
+set N143d43b0 [stack 0]
+ Premult {
+  name Premult1
+  xpos -277
+  ypos 333
+ }
+push $N143d43b0
+push $N13382f30
+ Switch {
+  inputs 3
+  which {{outputMode}}
+  name SwitchOutput
+  xpos -398
+  ypos 385
+ }
+ Output {
+  name Output1
+  xpos -398
+  ypos 487
+ }
+push $N143d5850
+push 0
+ Viewer {
+  inputs 2
+  input_process false
+  name Viewer1
+  xpos 76
+  ypos -44
+ }
+end_group

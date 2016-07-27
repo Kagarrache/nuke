@@ -1,0 +1,98 @@
+#! C:/Program Files/Nuke6.2v2/Nuke6.2.exe -nx
+version 6.2 v2
+Gizmo {
+ addUserKnob {20 drop l DropShadow}
+ addUserKnob {6 onlyshadow +STARTLINE}
+ addUserKnob {14 transform R 0 100}
+ addUserKnob {7 blur R 0 30}
+ addUserKnob {6 off -STARTLINE}
+ addUserKnob {16 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 123
+  ypos 39
+ }
+set N8c52110 [stack 0]
+ Shuffle {
+  in alpha
+  red black
+  green black
+  blue black
+  alpha red
+  name Shuffle1
+  xpos 259
+  ypos 39
+ }
+ Group {
+  name Group1
+  tile_color 0xaadfffff
+  note_font Verdana
+  xpos 259
+  ypos 69
+  mapsize {0.15 0.15}
+  addUserKnob {20 txt l Tool}
+  addUserKnob {41 text l Opacity T Merge3.mix}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos -49
+   ypos -91
+  }
+  Constant {
+   inputs 0
+   channels {-rgba.red -rgba.green -rgba.blue}
+   name Constant1
+   xpos 94
+   ypos -17
+  }
+  Merge2 {
+   inputs 2
+   mix {{parent.parent.mix}}
+   name Merge3
+   xpos -49
+   ypos 13
+  }
+  Output {
+   name Output1
+   xpos -49
+   ypos 113
+  }
+ end_group
+ Blur {
+  size {{parent.blur+10 i}}
+  name Blur1
+  xpos 259
+  ypos 95
+  disable {{parent.off i}}
+ }
+ Transform {
+  translate {{parent.transform.w+25 i} {parent.transform.h+15 i}}
+  center {960 540}
+  name Transform1
+  xpos 259
+  ypos 178
+ }
+push $N8c52110
+ Switch {
+  which {{onlyshadow i}}
+  name Switch1
+  xpos 123
+  ypos 102
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge1
+  xpos 123
+  ypos 178
+ }
+ Output {
+  name Output1
+  xpos 123
+  ypos 335
+ }
+end_group

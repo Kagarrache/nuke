@@ -1,0 +1,22 @@
+Gizmo {
+ inputs 2
+ tile_color 0x6aff55ff
+}
+ Input {
+  inputs 0
+  name Render
+  number 1
+ }
+ Input {
+  inputs 0
+  name GUI
+ }
+ Switch {
+  inputs 2
+  which {{"(\$gui==1)? 0 : 1" i}}
+  name Switch6
+ }
+ Output {
+  name Output
+ }
+end_group

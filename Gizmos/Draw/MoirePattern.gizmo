@@ -1,0 +1,340 @@
+#! /Applications/Nuke8.0v1/Nuke8.0v1.app/Contents/MacOS/libnuke-8.0.v1.dylib -nx
+version 8.0 v1
+Gizmo {
+ help "Emulates a moire pattern typically seen in monitors at an angle.\n\nAnimates by default to emulate some screen chatter. Enabling framehold will decrease processing time but will also stop any animation.\n\nsize - The density of the moire grid.\nspeed - How fast it animates.\noffset - Asymmetrically offsets the pattern.\nmix - The level of the effect on the input.\n\nFlicker can be enabled to emulate screen strobing. \n\nspeed - How fast it flickers.\namount - The amplitude of the flicker."
+ addUserKnob {20 MoirePattern l "Moire Pattern"}
+ addUserKnob {41 boxsize l size t "Size of the \"pixels\" in the pattern" T CheckerBoard1.boxsize}
+ addUserKnob {7 speed t "The rate at which the moire pattern oscillates." R 0 10}
+ speed 1
+ addUserKnob {7 offset t "Increase offset to make the pattern uneven. Leave at \"0\" to keep it symmetrical." R 0 10}
+ addUserKnob {26 div l "" +STARTLINE T "    "}
+ addUserKnob {26 ""}
+ addUserKnob {41 first_frame l framehold t "Frame holds the current pattern on a given frame" T FrameHold1.first_frame}
+ addUserKnob {22 current l "Use Current Frame" t "Does what you think it does" -STARTLINE T "with nuke.thisGroup():\n    current = nuke.Root()\['frame'].value()\n    nuke.toNode('FrameHold1')\['first_frame'].setValue(current)"}
+ addUserKnob {6 enable l Enable t "Enable frame hold on given frame" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix T Scrn1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 footer l "" +STARTLINE T "<span style=\"color:#454545\">// Moire Pattern v01 - Tyler Lockard - 2014 "}
+ addUserKnob {20 flicker l Flicker}
+ addUserKnob {6 enableflicker l "Enable Flicker" t "Enables strobing screen flicker controls" +STARTLINE}
+ enableflicker true
+ addUserKnob {26 ""}
+ addUserKnob {7 flickerspeed l speed t "The rate at which the screen flickers" R 1 10}
+ flickerspeed 5
+ addUserKnob {7 flickeramount l amount t "The amplitude of the flicker effect" R 1 10}
+ flickeramount 5
+ addUserKnob {26 ""}
+}
+ CheckerBoard2 {
+  inputs 0
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  boxsize 2.5
+  color0 0
+  color1 1
+  color2 0
+  color3 1
+  centerlinecolor 0
+  centerlinewidth 0
+  name CheckerBoard1
+  xpos 222
+  ypos -383
+ }
+set N261258e0 [stack 0]
+ Transform {
+  rotate {{"frame * (\[value parent.speed] / (100+\[value parent.offset]*20))"}}
+  center {1024 1024}
+  shutteroffset centred
+  name Transform2
+  xpos 270
+  ypos -291
+  icon ConcatBoth.png
+ }
+push $N261258e0
+ Transform {
+  rotate {{"-frame * (\[value parent.speed]/100)"}}
+  center {1024 1024}
+  shutteroffset centred
+  name Transform4
+  xpos 175
+  ypos -292
+  icon ConcatBoth.png
+ }
+ Merge2 {
+  inputs 2
+  operation color-burn
+  bbox B
+  name Merge3
+  xpos 226
+  ypos -217
+ }
+ Reformat {
+  name Reformat2
+  xpos 226
+  ypos -166
+  icon ConcatBoth.png
+ }
+ Transform {
+  scale 1.14
+  center {960 540}
+  shutteroffset centred
+  name Transform3
+  xpos 226
+  ypos -136
+  icon ConcatBoth.png
+ }
+ SphericalTransform {
+  input "Light Probe 360"
+  output Fisheye
+  fix true
+  name SphericalTransform1
+  xpos 226
+  ypos -76
+  icon ConcatUp.png
+ }
+ SphericalTransform {
+  fix true
+  name SphericalTransform2
+  xpos 226
+  ypos -38
+  icon ConcatUp.png
+ }
+ Group {
+  name ChromaticAb
+  help "Start by setting the red, green and blue abberation sliders to slightly different values. Then edit the coverage settings to set the area of the image to be affected."
+  xpos 226
+  ypos 46
+  addUserKnob {20 "" l ChromAbb}
+  addUserKnob {26 "" l "Abberation settings"}
+  addUserKnob {7 red_abberation l "red abberation" t "Controls the abberation of the red channel" R 1 2}
+  red_abberation 1.04
+  addUserKnob {7 green_abberation l "green abberation" t "Controls the abberation of the green channel" R 1 2}
+  green_abberation 1.02
+  addUserKnob {7 blue_abberation l "blue abberation" t "Controls the abberation of the blue channel" R 1 2}
+  blue_abberation 1
+  addUserKnob {7 abberation_multiplier l INVISIBLE t "Increase r, g and b abberation proportionally" +INVISIBLE R 1 1.1}
+  abberation_multiplier 1
+  addUserKnob {41 red_blur l "red blur" T Blur4.size}
+  addUserKnob {41 green_blur l "green blur" T Blur2.size}
+  addUserKnob {41 blue_blur l "blue blur" T Blur1.size}
+  addUserKnob {26 "" l "Coverage settings"}
+  addUserKnob {12 center_position l "center position"}
+  center_position {{width/2} {height/2}}
+  addUserKnob {41 coverage_scale T TransformMasked1.scale}
+  addUserKnob {41 coverage_edge_blur l "coverage edge blur" T Blur3.size}
+  addUserKnob {41 coverage_softness l "coverage softness" T Radial1.softness}
+  addUserKnob {26 ""}
+  addUserKnob {41 from0 l mask T Copy1.from0}
+  addUserKnob {41 disable_1 l invert T Invert1.disable}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos 130
+   ypos -237
+  }
+set N2617c3a0 [stack 0]
+add_layer {abberation abberation.temp}
+  Radial {
+   output {-rgba.red -rgba.green -rgba.blue abberation.temp}
+   area {0 0 {width i} {height i}}
+   softness 0.5
+   name Radial1
+   xpos 130
+   ypos -192
+  }
+  Blur {
+   channels abberation
+   size 100
+   name Blur3
+   xpos 130
+   ypos -158
+  }
+  TransformMasked {
+   channels abberation
+   center {{center_position.x i} {center_position.y}}
+   name TransformMasked1
+   xpos 130
+   ypos -70
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   name Crop2
+   xpos 130
+   ypos -21
+  }
+set N2619ab40 [stack 0]
+  GodRays {
+   scale {{blue_abberation*abberation_multiplier i}}
+   center {{center_position.x i} {center_position.y i}}
+   maskChannelInput abberation.temp
+   invert_mask true
+   name GodRays3
+   label blue
+   xpos 220
+   ypos 51
+  }
+  Blur {
+   size 1
+   maskChannelInput abberation.temp
+   invert_mask true
+   name Blur1
+   label blue
+   xpos 220
+   ypos 105
+  }
+push $N2619ab40
+  GodRays {
+   scale {{red_abberation*abberation_multiplier i}}
+   center {{center_position.x i} {center_position.y i}}
+   maskChannelInput abberation.temp
+   invert_mask true
+   name GodRays1
+   label red
+   xpos 38
+   ypos 55
+  }
+  Blur {
+   size 1
+   maskChannelInput abberation.temp
+   invert_mask true
+   name Blur4
+   label red
+   xpos 38
+   ypos 109
+  }
+push $N2619ab40
+  GodRays {
+   scale {{green_abberation*abberation_multiplier i}}
+   center {{center_position.x i} {center_position.y i}}
+   maskChannelInput abberation.temp
+   invert_mask true
+   name GodRays2
+   label green
+   xpos 130
+   ypos 53
+  }
+  Blur {
+   size 1
+   maskChannelInput abberation.temp
+   invert_mask true
+   name Blur2
+   label green
+   xpos 130
+   ypos 107
+  }
+  ShuffleCopy {
+   inputs 2
+   red red
+   name ShuffleCopy1
+   xpos 79
+   ypos 176
+  }
+  ShuffleCopy {
+   inputs 2
+   blue blue
+   name ShuffleCopy2
+   xpos 178
+   ypos 217
+  }
+  Crop {
+   box {0 0 {width i} {height}}
+   name Crop1
+   xpos 133
+   ypos 368
+  }
+  Remove {
+   channels abberation
+   name Remove1
+   xpos 133
+   ypos 394
+  }
+set N26c0b320 [stack 0]
+  Dot {
+   name Dot2
+   xpos 55
+   ypos 506
+  }
+push $N26c0b320
+  Invert {
+   name Invert1
+   xpos 297
+   ypos 394
+  }
+push $N2617c3a0
+  Dot {
+   name Dot1
+   xpos 489
+   ypos 246
+  }
+  Copy {
+   inputs 2
+   to0 rgba.alpha
+   name Copy1
+   xpos 455
+   ypos 394
+  }
+push $N26c0b320
+  Merge2 {
+   inputs 2
+   operation matte
+   name Merge1
+   xpos 133
+   ypos 545
+  }
+  Copy {
+   inputs 2
+   from0 rgba.alpha
+   to0 rgba.alpha
+   name Copy2
+   xpos 133
+   ypos 645
+  }
+  Output {
+   name Output1
+   xpos 133
+   ypos 818
+  }
+push $N2619ab40
+  Viewer {
+   input_process false
+   name Viewer1
+   selected true
+   xpos 130
+   ypos -213
+  }
+ end_group
+ FrameHold {
+  first_frame 1
+  name FrameHold1
+  xpos 226
+  ypos 121
+  disable {{1-parent.enable}}
+ }
+ Grade {
+  white {{"1 + random(frame/10*parent.flickerspeed) * (parent.flickeramount*0.2)"}}
+  name Grade1
+  xpos 226
+  ypos 208
+  disable {{"1 - parent.enableflicker"}}
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -1
+  ypos 206
+ }
+ Merge2 {
+  inputs 2
+  operation soft-light
+  mix 0.1
+  name Scrn1
+  xpos 110
+  ypos 330
+ }
+ Output {
+  name Output1
+  xpos 110
+  ypos 485
+ }
+end_group

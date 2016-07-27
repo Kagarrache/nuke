@@ -1,0 +1,113 @@
+#! /mnt/RT0/tools/SITE/software/Linux/Nuke9.0v4/libnuke-9.0.4.so -nx
+version 9.0 v4
+Gizmo {
+inputs 3
+addUserKnob {20 User}
+addUserKnob {26 edge l Edge}
+addUserKnob {41 erodesize l "Edge Detect Size" T EdgeDetect1.erodesize}
+addUserKnob {41 edge_blur l "Edge Detect Softness" T Blur6.size}
+addUserKnob {26 bg l Background}
+addUserKnob {41 blur_bg l "Blur Background" T Blur5.size}
+addUserKnob {26 mix l "Mixer Controls"}
+addUserKnob {41 hue_mix l "Hue Mix" t "How much background hue to mix with edge" T HueMix.which}
+addUserKnob {41 sat_mix l "Saturation Mix" t "How much background hue to mix with edge" T SatMix.which}
+addUserKnob {41 amount l Amount T Keymix2.mix}
+addUserKnob {6 usealpha l "Use Alpha" t "Default uses alpha from FG" +STARTLINE}
+}
+Input {
+inputs 0
+name Alpha
+xpos 411
+ypos -15
+number 2
+}
+Input {
+inputs 0
+name FG
+xpos 573
+ypos -18
+}
+set N2a6f0590 [stack 0]
+Switch {
+inputs 2
+which {{usealpha}}
+name UseAlpha
+xpos 420
+ypos 114
+}
+EdgeDetectWrapper {
+channels alpha
+name EdgeDetect1
+xpos 420
+ypos 178
+}
+Blur {
+size 12.2
+name Blur6
+xpos 420
+ypos 216
+}
+Input {
+inputs 0
+name BG
+xpos 844
+ypos 47
+number 1
+}
+Colorspace {
+colorspace_out HSV
+name Colorspace7
+xpos 844
+ypos 89
+}
+Blur {
+size 14.8
+name Blur5
+xpos 844
+ypos 132
+}
+set Ne1fb4a70 [stack 0]
+push $Ne1fb4a70
+push $N2a6f0590
+Colorspace {
+colorspace_out HSV
+name Colorspace6
+xpos 724
+ypos 94
+}
+Dissolve {
+inputs 2
+channels {rgba.red -rgba.green -rgba.blue none}
+which 1
+name HueMix
+xpos 724
+ypos 138
+}
+Dissolve {
+inputs 2
+channels {-rgba.red rgba.green -rgba.blue none}
+which 0.63
+name SatMix
+xpos 724
+ypos 207
+}
+Colorspace {
+colorspace_in HSV
+name Colorspace8
+xpos 734
+ypos 238
+}
+push $N2a6f0590
+Keymix {
+inputs 3
+mix 0.58
+name Keymix2
+xpos 573
+ypos 262
+}
+Output {
+name Output1
+xpos 573
+ypos 362
+}
+end_group

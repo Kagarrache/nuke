@@ -1,0 +1,170 @@
+#! C:/Program Files/Nuke7.0v8/Nuke7.0.exe -nx
+version 7.0 v8
+Gizmo {
+ inputs 2
+ help "WorldPos_Texture_Projection create parallel projection of texture over world position point. Place center of your projection, press “Bake Position”, adjust transformation and tilling options, enjoy!\n------\nv001\nIvan Kokov. Yellow Mountain Studio Tianjin. 2013\nbutafor@inbox.ru"
+ addUserKnob {20 User}
+ addUserKnob {41 Center T Pick1.Center}
+ addUserKnob {41 CenterPosition l INVISIBLE +INVISIBLE T Pick1.CenterPosition}
+ addUserKnob {41 BakePosition l "Bake Position" T Pick1.BakePosition}
+ addUserKnob {41 BakedCenterPosition T Pick1.BakedCenterPosition}
+ addUserKnob {26 ""}
+ addUserKnob {41 rotate T AxisTransformation.rotate}
+ addUserKnob {41 scaling l scale T AxisTransformation.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T AxisTransformation.uniform_scale}
+ addUserKnob {41 skew T AxisTransformation.skew}
+ addUserKnob {26 ""}
+ addUserKnob {41 TileX T Tiling2.TileX}
+ addUserKnob {41 MirrorX -STARTLINE T Tiling2.MirrorX}
+ addUserKnob {41 TileY T Tiling2.TileY}
+ addUserKnob {41 MirrorY -STARTLINE T Tiling2.MirrorY}
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "v002 © Ivan Kokov. Yelow Mountain Studio. Tianjin. 2013"}
+}
+ Input {
+  inputs 0
+  name InputScr
+  xpos 462
+  ypos -60
+ }
+ Dot {
+  name Dot8
+  xpos 496
+  ypos -20
+ }
+ NoOp {
+  name scr1
+  xpos 462
+  ypos 19
+ }
+ Dot {
+  name Dot9
+  selected true
+  xpos 496
+  ypos 106
+ }
+set N135bae00 [stack 0]
+ NoOp {
+  name Get_format1
+  xpos 378
+  ypos 103
+  addUserKnob {20 User}
+  addUserKnob {14 format R 0 100}
+  format {{format.h} {format.w}}
+ }
+ Input {
+  inputs 0
+  name InputPointPos
+  xpos 48
+  ypos -15
+  number 1
+ }
+ NoOp {
+  name PointPos1
+  xpos 48
+  ypos 25
+ }
+ Dot {
+  name Dot6
+  xpos 82
+  ypos 107
+ }
+set N135bbbc0 [stack 0]
+ NoOp {
+  name Pick1
+  xpos 174
+  ypos 104
+  addUserKnob {20 User}
+  addUserKnob {12 Center}
+  Center {1024.5 778.5}
+  addUserKnob {13 CenterPosition}
+  CenterPosition {{"\[sample this Red Center.x Center.y]"} {"\[sample this Green Center.x Center.y]"} {"\[sample this Blue Center.x Center.y]"}}
+  addUserKnob {22 BakePosition l "Bake Position" T "m = nuke.thisNode()\nxyz = m\['CenterPosition'].getValue()\nm\['BakedCenterPosition'].setValue(xyz)" +STARTLINE}
+  addUserKnob {13 BakedCenterPosition}
+ }
+push $N135bbbc0
+ Expression {
+  expr0 "r - parent.Pick1.BakedCenterPosition.x"
+  expr1 "g - parent.Pick1.BakedCenterPosition.y"
+  expr2 "b - parent.Pick1.BakedCenterPosition.z"
+  name MoveToCenter1
+  xpos 48
+  ypos 146
+ }
+ ColorMatrix {
+  matrix {
+      {{parent.Axis2.world_matrix.0} {parent.Axis2.world_matrix.1} {parent.Axis2.world_matrix.2}}
+      {{parent.Axis2.world_matrix.4} {parent.Axis2.world_matrix.5} {parent.Axis2.world_matrix.6}}
+      {{parent.Axis2.world_matrix.8} {parent.Axis2.world_matrix.9} {parent.Axis2.world_matrix.10}}
+    }
+  name ColorMatrix2
+  xpos 48
+  ypos 215
+ }
+ Expression {
+  expr0 "(r + (parent.Get_format1.format.w/2) ) / parent.Get_format1.format.w"
+  expr1 "(g + (parent.Get_format1.format.h/2) ) / parent.Get_format1.format.h"
+  name Transform_to_STMap1
+  xpos 48
+  ypos 268
+ }
+ Expression {
+  expr0 "TileX ? ( MirrorX ? (     (abs(fmod(r, 2)) > 1) ? (1 - abs(fmod(r,1))) : abs(fmod(r,1))     ) :  abs(fmod(r, 1)) ) : r"
+  expr1 "TileY ? ( MirrorY ? (     (abs(fmod(g, 2)) > 1) ? (1 - abs(fmod(g,1))) : abs(fmod(g,1))     ) :  abs(fmod(g, 1)) ) : g"
+  name Tiling2
+  xpos 48
+  ypos 324
+  addUserKnob {20 User}
+  addUserKnob {6 TileX +STARTLINE}
+  addUserKnob {6 MirrorX -STARTLINE}
+  addUserKnob {6 TileY +STARTLINE}
+  addUserKnob {6 MirrorY -STARTLINE}
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos 48
+  ypos 348
+ }
+push $N135bae00
+ Dot {
+  name Dot10
+  xpos 496
+  ypos 428
+ }
+ STMap {
+  inputs 2
+  uv rgb
+  name STMap2
+  xpos 48
+  ypos 419
+ }
+set N135e7bc0 [stack 0]
+ Output {
+  name Output1
+  xpos 48
+  ypos 519
+ }
+push $N135e7bc0
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -196
+  ypos 346
+ }
+ Axis2 {
+  inputs 0
+  name AxisTransformation
+  xpos -171
+  ypos 177
+ }
+ Axis2 {
+  inputs 0
+  rotate {{-parent.AxisTransformation.rotate} {-parent.AxisTransformation.rotate} {-parent.AxisTransformation.rotate}}
+  scaling {{1/parent.AxisTransformation.scaling} {1/parent.AxisTransformation.scaling} {1/parent.AxisTransformation.scaling}}
+  uniform_scale {{1000/parent.AxisTransformation.uniform_scale}}
+  skew {{-parent.AxisTransformation.skew} {-parent.AxisTransformation.skew} {-parent.AxisTransformation.skew}}
+  name Axis2
+  xpos -65
+  ypos 193
+ }
+end_group

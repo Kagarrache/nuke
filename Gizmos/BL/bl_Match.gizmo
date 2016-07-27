@@ -1,0 +1,68 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ inputs 2
+ addUserKnob {20 User l Match}
+ addUserKnob {6 MatchFormat l "Match Format" +STARTLINE}
+ MatchFormat true
+ addUserKnob {6 MatchRatio l "Match Aspect Ratio" +STARTLINE}
+ MatchRatio true
+ addUserKnob {6 MatchBBOX l "Match Bounding Box" +STARTLINE}
+ MatchBBOX true
+ addUserKnob {6 MatchRange l "Match Frame Range" +STARTLINE}
+ MatchRange true
+}
+ Input {
+  inputs 0
+  name B
+  xpos -688
+  ypos 150
+  number 1
+ }
+ NoOp {
+  name Source
+  xpos -688
+  ypos 176
+ }
+ Reformat {
+  type "to box"
+  box_width {{"parent.MatchFormat == 1?\nTarget.width : Source.width" i}}
+  box_height {{"parent.MatchFormat == 1?\nTarget.height : Source.height" i}}
+  box_fixed true
+  box_pixel_aspect {{"parent.MatchRatio == 1?\nTarget.pixel_aspect : \nSource.pixel_aspect" i}}
+  name Reformat1
+  xpos -688
+  ypos 249
+ }
+ Crop {
+  box {{Target.bbox.x i} {Target.bbox.y i} {Target.bbox.r i} {Target.bbox.t i}}
+  name Crop1
+  xpos -688
+  ypos 275
+  disable {{1-parent.MatchBBOX i}}
+ }
+ FrameRange {
+  first_frame {{Target.first_frame i}}
+  last_frame {{Target.last_frame i}}
+  name FrameRange1
+  xpos -688
+  ypos 301
+  disable {{1-parent.MatchRange i}}
+ }
+ Output {
+  name Output
+  xpos -688
+  ypos 327
+ }
+ Input {
+  inputs 0
+  name A
+  xpos -532
+  ypos 150
+ }
+ NoOp {
+  name Target
+  xpos -532
+  ypos 176
+ }
+end_group

@@ -1,0 +1,160 @@
+#! /software/apps/nuke/7.0v2/Linux-x86_64/Nuke7.0 -nx
+version 7.0 v2
+Gizmo {
+ addUserKnob {20 cornerpinaspectratio l "CornerPin Aspect Ratio"}
+ addUserKnob {1 trackername l "Tracker Name"}
+ addUserKnob {1 referenceframe l "Aspect Ratio Ref Frame"}
+ addUserKnob {26 ""}
+ addUserKnob {4 cornerpinselect l "CornerPin Select" M {"CornerPin Aspect Ratio" "Standard Corner Pin"}}
+ addUserKnob {26 ""}
+ addUserKnob {20 transform l Transform n 1}
+ transform 0
+ addUserKnob {41 translate T Transform.translate}
+ addUserKnob {41 rotate T Transform.rotate}
+ addUserKnob {41 scale T Transform.scale}
+ addUserKnob {41 skewX l "skew X" T Transform.skewX}
+ addUserKnob {41 skewY l "skew Y" T Transform.skewY}
+ addUserKnob {41 skew_order l "skew order" T Transform.skew_order}
+ addUserKnob {41 center T Transform.center}
+ addUserKnob {41 invert_matrix l invert T Transform.invert_matrix}
+ addUserKnob {41 filter T Transform.filter}
+ addUserKnob {41 clamp T Transform.clamp}
+ addUserKnob {41 black_outside l "black outside" T Transform.black_outside}
+ addUserKnob {41 motionblur T Transform.motionblur}
+ addUserKnob {41 shutter T Transform.shutter}
+ addUserKnob {41 shutteroffset l "shutter offset" T Transform.shutteroffset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T Transform.shuttercustomoffset}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 motionblur_1 l "Motion Blur" n 1}
+ motionblur_1 0
+ addUserKnob {41 scale_1 l multiply T VectorBlur.scale}
+ addUserKnob {41 offset T VectorBlur.offset}
+ addUserKnob {41 grow_bbox l "grow bbox" T VectorBlur.grow_bbox}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Transform {
+  inputs 0
+  translate {{"\[value trackername].translate.x"} {"\[value trackername].translate.y"}}
+  rotate {{"\[value trackername].rotate"}}
+  scale {{"\[value trackername].scale"}}
+  skewX {{"\[value trackername].skewX"}}
+  skewY {{"\[value trackername].skewY"}}
+  center {{"\[value trackername].center.x"} {"\[value trackername].center.y"}}
+  name Transform_For_MotionBlur
+  xpos -260
+  ypos -185
+ }
+ Switch {
+  which {{Calculations.newresolution.x>0?0:1}}
+  name Switch1
+  xpos -260
+  ypos -110
+ }
+ Dot {
+  name Dot3
+  xpos -226
+  ypos 219
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 70
+  ypos -260
+ }
+set N4a99b40 [stack 0]
+ Dot {
+  name Dot2
+  xpos 214
+  ypos -181
+ }
+ CornerPin2D {
+  to1 {{"\[value trackername].tracks.1.track_x"} {"\[value trackername].tracks.1.track_y"}}
+  to2 {{"\[value trackername].tracks.2.track_x"} {"\[value trackername].tracks.2.track_y" x1 0}}
+  to3 {{"\[value trackername].tracks.3.track_x"} {"\[value trackername].tracks.3.track_y"}}
+  to4 {{"\[value trackername].tracks.4.track_x"} {"\[value trackername].tracks.4.track_y"}}
+  invert false
+  from1 {0 0}
+  from2 {{input.width} 0}
+  from3 {{input.width} {input.height}}
+  from4 {0 {input.height}}
+  name CornerPin_Standard
+  xpos 180
+  ypos -35
+ }
+ Dot {
+  name Dot1
+  xpos 214
+  ypos 44
+ }
+push $N4a99b40
+ Transform {
+  center {{(input.width)/2} {(input.height)/2}}
+  name Transform
+  xpos -40
+  ypos -185
+ }
+ NoOp {
+  name Calculations
+  xpos -40
+  ypos -110
+  addUserKnob {20 User}
+  addUserKnob {12 inputresolution l "input resolution"}
+  inputresolution {{input.width} {input.height}}
+  addUserKnob {12 newresolution l "new resolution"}
+  newresolution {{"((\[value trackername].tracks.2.track_x-\[value trackername].tracks.1.track_x)+(\[value trackername].tracks.3.track_x-\[value trackername].tracks.4.track_x))/2"} {"((\[value trackername].tracks.4.track_y-\[value trackername].tracks.1.track_y)+(\[value trackername].tracks.3.track_y-\[value trackername].tracks.2.track_y))/2"}}
+  addUserKnob {3 trackerareaaspectratio l "tracker area aspect ratio"}
+  trackerareaaspectratio {{newresolution.x/newresolution.y}}
+  addUserKnob {12 newinputresolution l "new input resolution"}
+  newinputresolution {{inputresolution.y*trackerareaaspectratio} {newinputresolution.x/trackerareaaspectratio}}
+  addUserKnob {12 totalareatocrop l "total area to crop"}
+  totalareatocrop {{inputresolution.x-newinputresolution.x x1 nan} {inputresolution.y-newinputresolution.y x1 nan}}
+ }
+ Crop {
+  box {{(Calculations.totalareatocrop.x(referenceframe))/2 x1 nan} {(Calculations.totalareatocrop.y(referenceframe))/2 x1 nan} {input.width-box.x x1 nan} {input.height-box.y x1 nan}}
+  reformat true
+  crop false
+  name Crop1
+  xpos -40
+  ypos -35
+ }
+ CornerPin2D {
+  to1 {{"\[value trackername].tracks.1.track_x"} {"\[value trackername].tracks.1.track_y"}}
+  to2 {{"\[value trackername].tracks.2.track_x"} {"\[value trackername].tracks.2.track_y" x1 0}}
+  to3 {{"\[value trackername].tracks.3.track_x"} {"\[value trackername].tracks.3.track_y"}}
+  to4 {{"\[value trackername].tracks.4.track_x"} {"\[value trackername].tracks.4.track_y"}}
+  invert false
+  from1 {0 0}
+  from2 {{input.width} 0}
+  from3 {{input.width} {input.height}}
+  from4 {0 {input.height}}
+  name CornerPin_Aspect
+  xpos -40
+  ypos 40
+ }
+ Switch {
+  inputs 2
+  which {{cornerpinselect}}
+  name Switch
+  xpos 70
+  ypos 115
+ }
+ MotionBlur2D {
+  inputs 2
+  uv motion
+  name MotionBlur2D
+  xpos 70
+  ypos 215
+ }
+ VectorBlur {
+  uv motion
+  scale 0
+  name VectorBlur
+  xpos 70
+  ypos 284
+ }
+ Output {
+  name Output1
+  xpos 70
+  ypos 390
+ }
+end_group

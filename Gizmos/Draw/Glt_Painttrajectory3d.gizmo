@@ -1,0 +1,33 @@
+#! C:/Program Files/Nuke6.3v2/Nuke6.3.exe -nx
+version 6.3 v2
+Gizmo {
+ help "Connect the viewing camera to cam input, and link a (animated) 3d point to motionpath knob, and run. Spits out a rotopaint with the trajectory painted. In the paint node on stroke tab, set the pressure alters to size, and uncheck opacity (sorry, do it manually at this time), and you can see that the further the point from camera, the thinner the painted line."
+ addUserKnob {20 User l paint}
+ addUserKnob {13 motionPath}
+ addUserKnob {12 pointInScreenspace}
+ pointInScreenspace {0 0}
+ addUserKnob {7 depth R 0 1000}
+ depth {1}
+ addUserKnob {1 frameRange}
+ frameRange 1-100
+ addUserKnob {22 run l Run T "\nimport math\nimport nuke.rotopaint as rp\ngr = nuke.thisGroup()\nrange = nuke.FrameRange(gr\['frameRange'].value())\nc = gr.input(0)\nprint gr.name()\ngr\['pointInScreenspace'].setAnimated()\ngr\['depth'].setAnimated()\n\nnuke.root().begin()\npaintNode = nuke.createNode('RotoPaint')\ncurvesKnob = paintNode\['curves']\n\nstroke = rp.Stroke(curvesKnob)\nctrlPoints = \[]\nposlist = \[]\ndepthlist = \[]\nfinalPoslist = \[]\n\nfor f in range:\n    tr = gr.knob('motionPath').valueAt(f)\n    print '\\n---------\\nTranslate3d:'\n    print tr\n    pos= nukescripts.snap3d.projectPoint( c, tr )\n    poslist = \[pos\[0], pos\[1]]\n    print '\\nPosition 2d:'\n    print poslist\n    #gr\['pointInScreenspace'].setKeyAt(f)\n    gr\['pointInScreenspace'].setValueAt(time=f, value=pos\[0], index=0)\n    gr\['pointInScreenspace'].setValueAt(time=f, value=pos\[1], index=1)\n    d = math.hypot (math.hypot(tr\[0] -  c\['translate'].value(0), tr\[1] - c\['translate'].value(1) ), tr\[2] -  c\['translate'].value(2))\n    print '\\nDistance:'\n    print d \n    depthlist.append(d)\n    \n    gr\['depth'].setValueAt(time=f, value=d)\n\n    try :\n          # IF PARENT NODE HAS \"CENTER\" KNOB ADD THE OFFSET TO LINE UP STROKE PROPERLY\n            offset =gr\['center'].valueAt(f)\n    except NameError:\n           # OTHERWISE NO OFFSET IS APPLIED\n           offset =(0, 0)\n    finalPos = \[ sum(p) for p in zip(poslist, offset) ]\n    finalPoslist.append(finalPos)\n\n\n\n\ndepthmax = max(depthlist)\ndepthmin = min(depthlist)\nprint 'Depth max: %f and depth min: %f' % (depthmax, depthmin)\n\n\ni=0\nfor fp in finalPoslist:\n    newdepth = (1-(depthlist\[i]-depthmin+.2)/depthmax)\n    fp.append(newdepth )\n    print newdepth \n    stroke.append(rp.AnimControlPoint(*fp))\n    i+=1\n\nstroke.name = 'trajectory for %s' %(gr.name())\ncurvesKnob.rootLayer.append(stroke)\n#for shape in curvesKnob.rootLayer:\n#    print shape.name\n#    print dir(shape)\n#    print shape.getAttributes()\n#curvesKnob.rootLayer.stroke\['dynamic_transparency'].setValue(0)\n#curvesKnob.rootLayer.stroke\['dynamic_size'].setValue(1)\n\npaintNode.setInput(0, gr)\n" +STARTLINE}
+}
+ Output {
+  inputs 0
+  name Output1
+  xpos -214
+  ypos 251
+ }
+ Input {
+  inputs 0
+  name Cam
+  xpos -214
+  ypos 111
+ }
+ NoOp {
+  name NoOp1
+  selected true
+  xpos -214
+  ypos 183
+ }
+end_group

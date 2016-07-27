@@ -1,0 +1,215 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Night_Vision_v3\n\nIt simulates an infrared night vision effect. You have the option to manage the green multiplier , vignette, grain and glow. To work properly you must  set the project settings format  as the footage you want to give a night vision of. \n\nfeel free to contact me at niccolo.barbero@gmail.com"
+ addUserKnob {20 User l DUCK_Night_Vision_v3}
+ addUserKnob {26 ""}
+ addUserKnob {26 Green_amount l "" +STARTLINE T Green_ammaunt}
+ addUserKnob {41 mix_2 l mix T Green_Ammaunt_merge.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 Vignette_CC l "" +STARTLINE T Vignette_CC}
+ addUserKnob {41 contrast T Vignette_ColorCorrect.contrast}
+ addUserKnob {41 gamma T Vignette_ColorCorrect.gamma}
+ addUserKnob {41 gain T Vignette_ColorCorrect.gain}
+ addUserKnob {26 ""}
+ addUserKnob {26 internal_white_noise l "" +STARTLINE T Center_white_noise}
+ addUserKnob {41 mix T Internal_Plus.mix}
+ addUserKnob {26 Corner_white_noise l "" +STARTLINE T Corner_white_noise}
+ addUserKnob {41 mix_1 l mix T Corner_Plus.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 Glow_size l "" +STARTLINE T Glow_size}
+ addUserKnob {41 size T Glow1.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 Overall_grain_size l "" +STARTLINE T Overall_grain_size}
+ addUserKnob {41 red_size l red T Grain2_2.red_size}
+ addUserKnob {41 green_size l green T Grain2_2.green_size}
+ addUserKnob {41 blue_size l blue T Grain2_2.blue_size}
+}
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos -176
+  ypos -356
+ }
+ Dot {
+  name Dot2
+  xpos -142
+  ypos -235
+ }
+set N37abff30 [stack 0]
+ Radial {
+  output alpha
+  invert true
+  area {{root.format.x+2} {root.format.y-2} {root.format.r+4} {root.format.t+2}}
+  name Radial5
+  xpos 11
+  ypos 343
+ }
+push $N37abff30
+ Radial {
+  output alpha
+  invert true
+  area {{root.format.x+2} {root.format.y-2} {root.format.r+4} {root.format.t+2}}
+  name Radial4
+  xpos -9
+  ypos 66
+ }
+push $N37abff30
+ Radial {
+  output alpha
+  invert true
+  area {{root.format.x+2} {root.format.y-2} {root.format.r+4} {root.format.t+2}}
+  name Radial1
+  xpos -37
+  ypos -142
+ }
+set N37ada3b0 [stack 0]
+push $N37abff30
+ Noise {
+  size 1.04
+  zoffset {{"random(frame) "}}
+  nyquist false
+  lacunarity 2.32
+  gain 0.71
+  center {960 540}
+  name Noise1
+  xpos 41
+  ypos -198
+ }
+set N37adc1b0 [stack 0]
+push $N37ada3b0
+push $N37ada3b0
+push $N37adc1b0
+ Input {
+  inputs 0
+  name Input1
+  xpos 200
+  ypos -535
+ }
+ Dot {
+  name Dot3
+  xpos 234
+  ypos -473
+ }
+set N37ae8a10 [stack 0]
+ ColorCorrect {
+  saturation 0.05
+  name ColorCorrect1
+  xpos 200
+  ypos -400
+ }
+push $N37ae8a10
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle1
+  xpos 90
+  ypos -391
+ }
+ Merge2 {
+  inputs 2
+  mix 0.25
+  name Green_Ammaunt_merge
+  xpos 200
+  ypos -324
+ }
+ ColorCorrect {
+  contrast 2
+  name ColorCorrect3
+  xpos 200
+  ypos -291
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  mix 0.15
+  name Internal_Plus
+  xpos 200
+  ypos -198
+ }
+ Grade {
+  blackpoint {0.015 0.015 0.015 0}
+  name Grade1
+  xpos 200
+  ypos -141
+ }
+ ColorCorrect {
+  inputs 1+1
+  contrast 0.5
+  gamma 0.18
+  name Vignette_ColorCorrect
+  xpos 200
+  ypos -62
+ }
+set N3cf4c3b0 [stack 0]
+ Blur {
+  size 3
+  name Vignette_Blur1
+  xpos 319
+  ypos -21
+ }
+push $N3cf4c3b0
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix1
+  xpos 200
+  ypos 68
+ }
+ Merge2 {
+  inputs 2+1
+  operation plus
+  bbox B
+  mix 0.01
+  name Corner_Plus
+  xpos 200
+  ypos 165
+ }
+ ColorCorrect {
+  inputs 1+1
+  highlights.gamma 1.2
+  highlights.gain 1.2
+  name ColorCorrect4
+  xpos 200
+  ypos 257
+ }
+set N3cf78210 [stack 0]
+ Glow {
+  inputs 1+1
+  name Glow1
+  xpos 200
+  ypos 413
+ }
+set N3cf79ea0 [stack 0]
+ Grain2 {
+  name Grain2_2
+  label "Kodak 5248"
+  xpos 200
+  ypos 496
+  red_size 5
+  green_size 6
+  blue_size 8
+  black {0 0 0}
+  minimum {0 0 0}
+ }
+set N3cf93750 [stack 0]
+ Output {
+  name Output1
+  xpos 200
+  ypos 590
+ }
+push $N3cf79ea0
+push $N3cf78210
+push $N3cf93750
+ Viewer {
+  inputs 3
+  input_process false
+  name Viewer1
+  selected true
+  xpos 212
+  ypos 644
+ }
+end_group

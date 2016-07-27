@@ -1,0 +1,103 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l SpillSupressor}
+ addUserKnob {4 mode M {Average Maximum}}
+ addUserKnob {4 screenChannel M {"Red Screen" "Green Screen" "Blue Screen"}}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -370
+  ypos 109
+ }
+set N85b6000 [stack 0]
+push $N85b6000
+ Dot {
+  name Dot2
+  xpos -39
+  ypos 113
+ }
+ Expression {
+  channel0 {-rgba.red rgba.green -rgba.blue}
+  expr0 "( r>=g && r>=b )? max(g,b) : r"
+  expr1 "( g>=r && g>=b )? max(r,b) : g"
+  expr2 "( b>=r && b>=g )? max(r,g) : b"
+  channel3 none
+  name Expression2
+  xpos -73
+  ypos 149
+ }
+push $N85b6000
+ Dot {
+  name Dot1
+  xpos -147
+  ypos 113
+ }
+ Expression {
+  expr0 "( r>g && r>b )? (g+b)/2 : r"
+  expr1 "( g>r && g>b )? (r+b)/2 : g"
+  expr2 "( b>r && b>g )? (r+g)/2 : b"
+  channel3 none
+  name Expression1
+  xpos -181
+  ypos 151
+ }
+ Switch {
+  inputs 2
+  which {{parent.mode i}}
+  name Switch1
+  xpos -126
+  ypos 190
+ }
+set N7073ab0 [stack 0]
+push $N85b6000
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  name ShuffleCopy3
+  xpos -157
+  ypos 249
+ }
+push $N7073ab0
+push $N85b6000
+ ShuffleCopy {
+  inputs 2
+  green green
+  name ShuffleCopy2
+  xpos -261
+  ypos 250
+ }
+push $N7073ab0
+push $N85b6000
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy1
+  xpos -370
+  ypos 254
+ }
+ Switch {
+  inputs 3
+  which {{parent.screenChannel i}}
+  name Switch2
+  xpos -261
+  ypos 276
+ }
+ Dissolve {
+  inputs 2
+  channels rgb
+  which {{"1 - parent.mix"}}
+  name Dissolve1
+  xpos -261
+  ypos 324
+ }
+ Output {
+  name Output
+  xpos -261
+  ypos 350
+ }
+end_group

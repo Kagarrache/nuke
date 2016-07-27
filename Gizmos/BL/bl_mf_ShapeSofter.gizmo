@@ -1,0 +1,33 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l ShapeSofter}
+ addUserKnob {41 size T Blur1.size}
+ addUserKnob {41 filter T Blur1.filter}
+ addUserKnob {41 Threshold T bl_mf_Binary1.Threshold}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -55
+  ypos 74
+ }
+add_layer {rgba rgba.beta}
+ Blur {
+  channels rgba
+  name Blur1
+  xpos -55
+  ypos 114
+ }
+ bl_mf_Binary {
+  name bl_mf_Binary1
+  xpos -55
+  ypos 140
+  Threshold 0.5
+ }
+ Output {
+  name Output1
+  xpos -55
+  ypos 240
+ }
+end_group

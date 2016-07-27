@@ -1,0 +1,558 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Group {
+ name iblur_hub
+ inputs 2
+ help "iblur hub is yet another iblur node but not only ;-)\n\nFor small values and no bonus option selected it can replace others iblur, with no extra time renders.\n\n - For small values, prefers the \"horizontal\" or \"diagonal\" mode to avoid extra renders.\n - For larger values \"POST BLURS\" with \"Larger Blur\" option ticked can fix small details artefacts. (like the right part in the example.  See it by clicking the \"infos\" button at the bottom.)\n\nIt can also make a lot more.\n\n\"NOISE DISTORT\" adds quickly random extra details in the edges. \nJust like in the \"Nuke Noise\" node :\n - \"X/Y Size\" controls noise's frequency\n - \"Z\" can be used to change noise's seed and animate it.\n\n\"CHROMATIC ABBERATIONS\" with \"Noise Distort\" can create nice Glint FXs\n - Just one parameter to control the amount.\n - For other sets of color, just do it your self ! \n"
+ tile_color 0xff8332ff
+ label "\[if \{\[value NoiseTrigger]\} \{return Noised\}]\n"
+ note_font_color 0xffffffff
+ addUserKnob {20 iblur_hub l "iblur hub"}
+ addUserKnob {41 from0 l u T Copy1.from0}
+ addUserKnob {6 VtakesUvalue l "same for" -STARTLINE}
+ VtakesUvalue true
+ addUserKnob {41 from1 l v -STARTLINE T Copy1.from1}
+ addUserKnob {4 Mode M {Horizontal/Vertical Diagonal "All (Slower)"}}
+ Mode "All (Slower)"
+ addUserKnob {7 size l Size R 0 100}
+ size 10
+ addUserKnob {7 offset l Offset R -1 1}
+ offset -0.5
+ addUserKnob {26 ""}
+ addUserKnob {6 NoiseTrigger l "<b>Noise Distort</b>" +STARTLINE}
+ addUserKnob {19 NoiseBoost_white l Gain R 0 4}
+ NoiseBoost_white 3.6
+ addUserKnob {19 NoiseBoost_gamma l Gamma R 0.2 5}
+ NoiseBoost_gamma 1
+ addUserKnob {41 size_1 l "X/Y Size" T Noise1.size}
+ addUserKnob {8 Noise1_zoffset l Z R 0 5}
+ Noise1_zoffset 1
+ addUserKnob {26 ""}
+ addUserKnob {6 postBlurs l "<b>Post Blurs</b>" +STARTLINE}
+ addUserKnob {7 postBlurSize_expr l "Size Mult" R 0 5}
+ postBlurSize_expr 1
+ addUserKnob {6 moreBlur l "Larger Blur" -STARTLINE}
+ moreBlur true
+ addUserKnob {6 Extreme -STARTLINE}
+ addUserKnob {41 mix l Mix T Blur1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 chromatic l "<b>Chromatic Abberrations</b>" +STARTLINE}
+ addUserKnob {7 ChromaticMult l Multiplier R 0 5}
+ ChromaticMult 1
+ addUserKnob {26 ""}
+ addUserKnob {7 grow_bbox l "Grow Bbox" R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {22 infos T "import webbrowser \nwebbrowser.open(\"http://www.nukepedia.com/gizmos/gizmos/filter/iblur_hub/\")" +STARTLINE}
+ addUserKnob {26 philhub2013 l "philhub 2013" -STARTLINE T "\n"}
+}
+ Noise {
+  inputs 0
+  size 28
+  zoffset {{parent.Noise1_zoffset i}}
+  center {640 360}
+  name Noise1
+  xpos 772
+  ypos 45
+ }
+ Grade {
+  channels rgba
+  white {{parent.NoiseBoost_white.r i} {parent.NoiseBoost_white.g i} {parent.NoiseBoost_white.b i} {parent.NoiseBoost_white.a i}}
+  gamma {{parent.NoiseBoost_gamma.r i} {parent.NoiseBoost_gamma.g i} {parent.NoiseBoost_gamma.b i} {parent.NoiseBoost_gamma.a i}}
+  name NoiseBoost
+  xpos 650
+  ypos 45
+ }
+ Input {
+  inputs 0
+  name InputMask
+  xpos 253
+  ypos -225
+  number 1
+ }
+set N17abfa30 [stack 0]
+ Dot {
+  name Dot4
+  xpos 287
+  ypos -52
+ }
+set N17abfd60 [stack 0]
+push $N17abfa30
+push $N17abfa30
+ Input {
+  inputs 0
+  name Input1
+  xpos 520
+  ypos -319
+ }
+set N17ac0090 [stack 0]
+ FilterErode {
+  inputs 1+1
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{-parent.TransformChromatic.translate.x/3 i}}
+  name FilterErodeChromatic
+  xpos 520
+  ypos -277
+ }
+ TransformMasked {
+  inputs 1+1
+  channels {rgba.red -rgba.green -rgba.blue}
+  translate {{parent.size/3*parent.ChromaticMult i} 0}
+  center {640 360}
+  name TransformChromatic
+  xpos 520
+  ypos -231
+ }
+ Dot {
+  name Dot8
+  xpos 554
+  ypos -195
+ }
+set N17ac0a20 [stack 0]
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos 609
+  ypos -198
+ }
+push $N17ac0a20
+add_layer {shadow}
+ ShuffleCopy {
+  inputs 2
+  alpha red
+  name createAlpha
+  xpos 520
+  ypos -165
+ }
+push $N17ac0090
+ Dot {
+  name Dot7
+  xpos 740
+  ypos -316
+ }
+ Dot {
+  name Dot6
+  xpos 740
+  ypos -108
+ }
+ Switch {
+  inputs 2
+  which {{parent.chromatic i}}
+  name SwitchChromatic
+  label "\[value which]"
+  xpos 520
+  ypos -117
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 backward.u
+  from1 -rgba.alpha
+  to1 backward.v
+  name Copy1
+  xpos 520
+  ypos -67
+  disable {{"!\[ exists parent.input\[value InputMask.number] ]" i}}
+ }
+ Shuffle {
+  in backward
+  green red
+  out backward
+  name copyU2V
+  label "\[value in]"
+  xpos 520
+  ypos -19
+  disable {{!parent.VtakesUvalue i}}
+ }
+ Merge2 {
+  inputs 2
+  operation soft-light
+  Bchannels motion
+  output motion
+  name M_noise
+  note_font_color 0xffffffff
+  xpos 520
+  ypos 39
+  disable {{!parent.NoiseTrigger i}}
+ }
+ Dot {
+  name Dot2
+  xpos 554
+  ypos 97
+ }
+set N17ac23a0 [stack 0]
+ Dot {
+  name Dot16
+  xpos 836
+  ypos 97
+ }
+ Erode {
+  channels rgba
+  size 16
+  blur 0.44
+  name Erode1
+  xpos 802
+  ypos 558
+ }
+ Blur {
+  channels rgba
+  size 10
+  name Blur5
+  xpos 802
+  ypos 582
+ }
+ Dot {
+  name Dot9
+  xpos 836
+  ypos 661
+ }
+push $N17abfd60
+ Dot {
+  name Dot3
+  xpos 153
+  ypos -52
+ }
+ Dot {
+  name Dot12
+  xpos 153
+  ypos 270
+ }
+set N17b43700 [stack 0]
+ Dot {
+  name Dot1
+  xpos 184
+  ypos 402
+ }
+push $N17ac23a0
+push $N17ac23a0
+ Expression {
+  channel0 {forward.u -forward.v -backward.u none}
+  expr0 backward.u
+  channel1 {-forward.u forward.v -backward.u none}
+  expr1 0
+  name expr6
+  xpos 362
+  ypos 130
+ }
+ VectorBlur {
+  channels rgba
+  uv forward
+  scale {{parent.size i}}
+  offset {{parent.offset i}}
+  grow_bbox {{parent.grow_bbox i}}
+  method forward
+  alpha rgba.alpha
+  name VectorBlur10
+  xpos 362
+  ypos 154
+ }
+push $N17ac23a0
+ Expression {
+  channel0 {forward.u -forward.v -backward.u none}
+  expr0 0
+  channel1 {-forward.u forward.v -backward.u none}
+  expr1 backward.v
+  name expr7
+  xpos 459
+  ypos 130
+ }
+ VectorBlur {
+  channels rgba
+  uv forward
+  scale {{parent.size i}}
+  offset {{parent.offset i}}
+  grow_bbox {{parent.grow_bbox i}}
+  method forward
+  alpha rgba.alpha
+  name VectorBlur11
+  xpos 459
+  ypos 154
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which 0.5
+  name Dissolve4
+  label "\[value which]"
+  xpos 410
+  ypos 226
+ }
+set N17b44a20 [stack 0]
+push $N17ac23a0
+ VectorBlur {
+  channels rgba
+  uv backward
+  scale {{parent.size i}}
+  offset {{parent.offset i}}
+  grow_bbox {{parent.grow_bbox i}}
+  method forward
+  alpha rgba.alpha
+  name VectorBlur12
+  xpos 559
+  ypos 151
+ }
+push $N17ac23a0
+ Expression {
+  channel0 {forward.u -forward.v -backward.u none}
+  expr0 -backward.u
+  channel1 {-forward.u forward.v -backward.u none}
+  expr1 backward.v
+  name expr8
+  xpos 662
+  ypos 129
+ }
+ VectorBlur {
+  channels rgba
+  uv forward
+  scale {{parent.size i}}
+  offset {{parent.offset i}}
+  grow_bbox {{parent.grow_bbox i}}
+  method forward
+  alpha rgba.alpha
+  name VectorBlur13
+  xpos 662
+  ypos 153
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which 0.5
+  name Dissolve5
+  label "\[value which]"
+  xpos 611
+  ypos 226
+ }
+set N17b456e0 [stack 0]
+ Dissolve {
+  inputs 2
+  channels rgba
+  which 0.5
+  name Dissolve6
+  label "\[value which]"
+  xpos 521
+  ypos 250
+ }
+push $N17b456e0
+push $N17b44a20
+ Switch {
+  inputs 3
+  which {{Mode i}}
+  name SwitchMode
+  label "\[value which]"
+  xpos 521
+  ypos 310
+ }
+ Dot {
+  name Dot14
+  xpos 555
+  ypos 353
+ }
+set N17b45d40 [stack 0]
+ Merge2 {
+  inputs 2
+  operation stencil
+  name M_
+  note_font_color 0xffffffff
+  xpos 242
+  ypos 348
+ }
+set N17b46070 [stack 0]
+ Grade {
+  channels rgba
+  blackpoint 0.2
+  whitepoint 0.22
+  white 0.7
+  name Grade1
+  xpos 383
+  ypos 375
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name M_2
+  xpos 383
+  ypos 399
+ }
+ Blur {
+  channels rgba
+  size {{parent.size/2}}
+  name Blur4
+  xpos 383
+  ypos 438
+ }
+ Grade {
+  channels rgba
+  blackpoint 0.4
+  name Grade5
+  xpos 383
+  ypos 462
+ }
+push $N17b43700
+push $N17ac0090
+ Dot {
+  name Dot10
+  xpos 10
+  ypos -316
+ }
+ Dot {
+  name Dot11
+  xpos 10
+  ypos 270
+ }
+set N17b47390 [stack 0]
+ Merge2 {
+  inputs 2
+  operation stencil
+  name M_4
+  xpos 45
+  ypos 383
+ }
+ FilterErode {
+  channels rgba
+  size -2
+  name FilterErode1
+  xpos 45
+  ypos 419
+ }
+set N17c17810 [stack 0]
+ Blur {
+  channels rgba
+  size {{parent.size/2 i}}
+  name Blur6
+  xpos 45
+  ypos 443
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.5
+  name Grade6
+  xpos 45
+  ypos 467
+ }
+set N18f078f0 [stack 0]
+ Dot {
+  name Dot15
+  xpos 79
+  ypos 501
+ }
+set N17c17b40 [stack 0]
+ Dot {
+  name Dot5
+  xpos 79
+  ypos 540
+ }
+push $N17c17b40
+push $N17b46070
+ Grade {
+  channels rgba
+  whitepoint 0.01
+  name Grade4
+  xpos 242
+  ypos 372
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name M_5
+  xpos 242
+  ypos 413
+ }
+ Blur {
+  channels rgba
+  size {{parent.size/2 i}}
+  invert_mask true
+  name Blur2
+  xpos 242
+  ypos 437
+ }
+ Grade {
+  channels rgba
+  blackpoint 0.4
+  name Grade2
+  xpos 242
+  ypos 470
+ }
+ Blur {
+  channels rgba
+  size {{parent.size/2 i}}
+  name Blur3
+  xpos 242
+  ypos 504
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name M_3
+  xpos 242
+  ypos 537
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.5
+  white_clamp {{!parent.Extreme i}}
+  name Grade3
+  xpos 242
+  ypos 567
+ }
+ Blur {
+  channels rgba
+  size 20
+  name Blur7
+  xpos 242
+  ypos 591
+ }
+set N2f11b420 [stack 0]
+ Switch {
+  inputs 2
+  which 1
+  name SwitchMoreBlur
+  xpos 383
+  ypos 591
+  disable {{parent.moreBlur i}}
+ }
+ Clamp {
+  channels rgba
+  name Clamp1
+  xpos 383
+  ypos 615
+ }
+push $N17b45d40
+ Blur {
+  inputs 1+1
+  channels rgba
+  size {{parent.postBlurSize_expr*parent.size/4 i}}
+  name Blur1
+  xpos 521
+  ypos 615
+  disable {{!parent.postBlurs i}}
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  mix 0.7
+  name Scrn
+  xpos 522
+  ypos 658
+ }
+ Output {
+  name Output1
+  xpos 522
+  ypos 700
+ }
+push $N17b47390
+ Dot {
+  name Dot13
+  xpos 10
+  ypos 383
+ }
+push $N2f11b420
+push $N18f078f0
+push $N17c17810
+ Viewer {
+  inputs 3
+  input_number 2
+  input_process false
+  name Viewer1
+  xpos -150
+  ypos 437
+ }
+end_group

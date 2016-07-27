@@ -1,0 +1,172 @@
+#! /Applications/Nuke6.2v2/NukeX6.2v2.app/../Nuke6.2v2.app/Contents/MacOS/Nuke6.2v2 -nx
+version 6.2 v2
+Gizmo {
+ label "by danikei"
+ selected true
+ xpos -15
+ ypos -101
+ addUserKnob {20 Controles}
+ addUserKnob {41 Densidad T MULT.mix}
+ addUserKnob {41 Luminosidad T LUMINOSIDAD.LumCheck}
+ addUserKnob {41 Filtro t "Filtro 0: Cooling (80) \nFiltro 1: Cooling LBB\nFiltro 2: Cooling (82)\nFiltro 3: Warming (85)\nFiltro 4: Warming LBA\nFiltro 5: Warming (81)\nFiltro 6: Custom" T FILTROS.which}
+ addUserKnob {26 Filtros l "" +STARTLINE T "Filtro 0: Cooling (80) \nFiltro 1: Cooling LBB\nFiltro 2: Cooling (82)\nFiltro 3: Warming (85)\nFiltro 4: Warming LBA\nFiltro 5: Warming (81)\nFiltro 6: Custom\n"}
+ addUserKnob {41 Custom T FILTRO6.color}
+}
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name FILTRO6
+  xpos 593
+  ypos -255
+  addUserKnob {20 Filtro l User}
+  addUserKnob {41 Color l color T FILTRO6.color}
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.8307697177 0.4396570623 0.006512090098 0}
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name FILTRO5
+  xpos 509
+  ypos -264
+  addUserKnob {20 Filtro l User}
+  addUserKnob {41 Color l color T FILTRO5.color}
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.9559732676 0.304987222 0 0}
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name FILTRO4
+  xpos 423
+  ypos -259
+  addUserKnob {20 Filtro l User}
+  addUserKnob {41 Color l color T FILTRO4.color}
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.838798821 0.2541520298 0 0}
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name FILTRO3
+  xpos 335
+  ypos -260
+  addUserKnob {20 Filtro l User}
+  addUserKnob {41 Color l color T FILTRO3.color}
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {-0.5432142019 0.3838966489 2.384000063 0}
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name FILTRO2
+  xpos 246
+  ypos -259
+  addUserKnob {20 Filtro l User}
+  addUserKnob {41 Color l color T FILTRO2.color}
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {-0.04500000179 0.02563451603 1.827000022 0}
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name FILTRO1
+  xpos 142
+  ypos -253
+  addUserKnob {20 Filtro l User}
+  addUserKnob {41 Color l color T FILTRO1.color}
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {-0.1 0.092 1.68599999 0}
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name FILTRO
+  xpos 47
+  ypos -252
+ }
+ Switch {
+  inputs 7
+  name FILTROS
+  xpos 194
+  ypos -112
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -175
+  ypos -157
+ }
+ Sampler {
+  name Sampler1
+  xpos -175
+  ypos -117
+ }
+set N2282dfb0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  bbox B
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  mix 0.25
+  name MULT
+  xpos -74
+  ypos -74
+ }
+set N22832680 [stack 0]
+push $N22832680
+ Saturation {
+  saturation 0
+  name Saturation2
+  xpos -74
+  ypos 18
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos 36
+  ypos 18
+ }
+push $N2282dfb0
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos -175
+  ypos 42
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge2
+  xpos 36
+  ypos 42
+ }
+push $N22832680
+ Switch {
+  inputs 2
+  which {{LumCheck}}
+  name LUMINOSIDAD
+  selected true
+  xpos 36
+  ypos 131
+  addUserKnob {20 User}
+  addUserKnob {6 LumCheck +STARTLINE}
+ }
+ Output {
+  name Output1
+  xpos 36
+  ypos 180
+ }
+push $N2282dfb0
+ Multiply {
+  value {{FILTRO.color.r i} {FILTRO.color.g i} {FILTRO.color.b i} {FILTRO.color.a i}}
+  mix 0.5
+  name PHOTOFILTER80
+  xpos -407
+  ypos -122
+ }
+end_group

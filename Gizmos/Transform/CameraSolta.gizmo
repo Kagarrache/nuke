@@ -1,0 +1,43 @@
+#! /Applications/Nuke9.0v4/Nuke9.0v4.app/Contents/MacOS//libnuke-9.0.4.dylib -nx
+version 9.0 v4
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {26 settings_cam_suave l "Settings_cam_suave\n\n" T "x: (random(1,frame*0.2)*3)+2\ny: (random(1,frame*0.3)*2)+2"}
+ addUserKnob {26 x l X}
+ addUserKnob {16 seed l "seed x"}
+ seed 0.27
+ addUserKnob {16 frequency l "frequency x"}
+ frequency 0.145
+ addUserKnob {16 amplitude l "amplitude x"}
+ amplitude 0.695
+ addUserKnob {16 value_offset l "value_offset x"}
+ value_offset 0.73
+ addUserKnob {26 y}
+ addUserKnob {16 seedy l "seed y"}
+ seedy 0.415
+ addUserKnob {16 frequencyy l "frequency y"}
+ frequencyy 0.405
+ addUserKnob {16 amplitudey l "amplitude y"}
+ amplitudey 0.625
+ addUserKnob {16 value_offsety l "value_offset y"}
+ value_offsety 0.73
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 70
+  ypos -158
+ }
+ Transform {
+  translate {{(random((Camera_Solta.seed),frame*(Camera_Solta.frequency))*(Camera_Solta.amplitude))+(Camera_Solta.value_offset) i} {(random((Camera_Solta.seedy),frame*(Camera_Solta.frequencyy))*(Camera_Solta.amplitudey))+(Camera_Solta.value_offsety) i}}
+  center {1024 778}
+  name Transform7
+  xpos 70
+  ypos -85
+ }
+ Output {
+  name Output1
+  xpos 70
+  ypos -18
+ }
+end_group

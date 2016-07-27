@@ -1,0 +1,28 @@
+#! //online1/software/Nuke/Nuke6.3v5_win64/Nuke6.3.exe -nx
+version 6.3 v5
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {6 reverse l Reverse +STARTLINE}
+ reverse false
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 477
+  ypos -182
+ }
+ Expression {
+  expr0 "reverse ? tan(r / (2 / pi)) / (pi / 2): atan(0.5* pi *r) /(0.5* pi)"
+  expr1 "reverse ? tan(g / (2 / pi)) / (pi / 2): atan(0.5* pi *g) /(0.5* pi)"
+  expr2 "reverse ? tan(b / (2 / pi)) / (pi / 2): atan(0.5* pi *b) /(0.5* pi)"
+  expr3 a
+  name To_PS2
+  xpos 477
+  ypos -142
+ }
+ Output {
+  name Output1
+  xpos 477
+  ypos -42
+ }
+end_group

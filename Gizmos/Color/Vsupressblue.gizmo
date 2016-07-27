@@ -1,0 +1,178 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ help "vSupressBlue STAGE3\n\nBluescreen spill suppresion\n\nGizmo was developed for spill supression on  plates with very strong grain. Tested with Kodak Vision3 500T.\n\n--\ndeveloped by Vit Sedlacek (c)2010\nwww.vitsedlacek.com"
+ tile_color 0xb5eaaff
+ addUserKnob {20 vsb l vSupressBlue}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 SHADOWS n 1}
+ addUserKnob {7 l_amount l Amount -STARTLINE R 0 4}
+ l_amount 1
+ addUserKnob {7 l_bal l Balance}
+ addUserKnob {7 l_mix l Mix}
+ l_mix 1
+ addUserKnob {26 ""}
+ addUserKnob {7 l_sup l Supress}
+ addUserKnob {7 l_sat l Saturation}
+ l_sat 1
+ addUserKnob {7 l_lum l Luma R -0.5 0.5}
+ addUserKnob {26 ""}
+ addUserKnob {20 MIDTONES -STARTLINE n 1}
+ addUserKnob {7 m_amount l Amount R 0 4}
+ m_amount 1
+ addUserKnob {7 m_bal l Balance}
+ addUserKnob {7 m_mix l Mix}
+ m_mix 1
+ addUserKnob {26 ""}
+ addUserKnob {7 m_sup l Supress}
+ addUserKnob {7 m_sat l Saturation}
+ m_sat 1
+ addUserKnob {7 m_lum l Luma R -0.5 0.5}
+ addUserKnob {26 ""}
+ addUserKnob {20 HIGHLIGHTS n 1}
+ addUserKnob {7 h_amount l Amount R 0 4}
+ h_amount 1
+ addUserKnob {7 h_bal l Balance}
+ addUserKnob {7 h_mix l Mix}
+ h_mix 1
+ addUserKnob {26 ""}
+ addUserKnob {7 h_sup l Supress}
+ addUserKnob {7 h_sat l Saturation}
+ h_sat 1
+ addUserKnob {7 h_lum l Luma R -0.5 0.5}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 desc l "" +STARTLINE T "developed by Vit Sedlacek (c)2010\nwww.vitsedlacek.com"}
+}
+ Input {
+  inputs 0
+  name input
+  xpos 493
+  ypos 58
+ }
+set N99eb6f0 [stack 0]
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace1
+  xpos 603
+  ypos 58
+ }
+set N99eb090 [stack 0]
+ Expression {
+  channel0 alpha
+  expr0 clamp(-1*pow(2*((r<(2/6)?r+1:r)-(4.1/6))*1.7,2)+1)
+  channel1 none
+  channel2 none
+  channel3 none
+  name NEW_SHIFT
+  xpos 603
+  ypos 174
+ }
+set N99eba20 [stack 0]
+push $N99eb090
+ Dot {
+  name Dot1
+  xpos 747
+  ypos 61
+ }
+ MergeExpression {
+  inputs 2
+  channel0 alpha
+  expr0 Aa*Bg*2
+  channel1 none
+  channel2 none
+  channel3 none
+  name MergeExpression2
+  xpos 713
+  ypos 174
+ }
+ Dot {
+  name Dot2
+  xpos 747
+  ypos 234
+ }
+push $N99eba20
+push $N99eba20
+push $N99eb6f0
+add_layer {ranges ranges.low ranges.mid ranges.hi}
+ Expression {
+  temp_name0 low
+  temp_expr0 pow(clamp(1.04-1/(1/b*1.2+1)),18)
+  temp_name2 high
+  temp_expr2 pow(clamp(1/(1/b)+0.35),7)
+  channel0 {ranges.low -ranges.mid -ranges.hi}
+  expr0 low
+  channel1 {-ranges.low ranges.mid -ranges.hi}
+  expr1 1-max(low,high)
+  channel2 {-ranges.low -ranges.mid ranges.hi}
+  expr2 high
+  channel3 none
+  name RANGES
+  tile_color 0xbf0000ff
+  gl_color 0xbf0000ff
+  xpos 493
+  ypos 102
+  addUserKnob {20 despill}
+  addUserKnob {26 "" l shadows}
+  addUserKnob {7 l_amount l Amount R 0 4}
+ }
+ Expression {
+  temp_name0 low
+  temp_expr0 pow(clamp(1.04-1/(1/b*1.2+1)),18)
+  temp_name2 high
+  temp_expr2 pow(clamp(1/(1/b)+0.35),7)
+  expr0 r
+  expr1 g
+  expr2 mix(b,(min(mix(g,r,parent.l_bal),b)/parent.l_amount),l_mix)*low+mix(b,(min(mix(g,r,parent.m_bal),b)/parent.m_amount),m_mix)*(1-max(low,high))+mix(b,(min(mix(g,r,parent.h_bal),b)/parent.h_amount),h_mix)*high
+  channel3 none
+  name COMPLEMENT_STAGE2
+  tile_color 0xbf0000ff
+  gl_color 0xbf0000ff
+  xpos 493
+  ypos 136
+  addUserKnob {20 despill}
+  addUserKnob {26 "" l shadows}
+  addUserKnob {7 l_amount l Amount R 0 4}
+ }
+ Expression {
+  inputs 1+1
+  expr2 b*(1-l_sup)*ranges.low+b*(1-m_sup)*ranges.mid+b*(1-h_sup)*ranges.hi
+  channel3 none
+  name SUPRESS
+  tile_color 0xbf0000ff
+  gl_color 0xbf0000ff
+  xpos 493
+  ypos 174
+ }
+ Expression {
+  inputs 1+1
+  temp_name3 lum
+  temp_expr3 (r+g)/2
+  expr0 mix(lum,r,l_sat)*ranges.low+mix(lum,r,m_sat)*ranges.mid+mix(lum,r,h_sat)*ranges.hi
+  expr1 mix(lum,g,l_sat)*ranges.low+mix(lum,g,m_sat)*ranges.mid+mix(lum,g,h_sat)*ranges.hi
+  expr2 mix(lum,b,l_sat)*ranges.low+mix(lum,b,m_sat)*ranges.mid+mix(lum,b,h_sat)*ranges.hi
+  channel3 none
+  name SAT
+  tile_color 0xbf0000ff
+  gl_color 0xbf0000ff
+  xpos 493
+  ypos 198
+ }
+ Expression {
+  inputs 1+1
+  expr0 r*(l_lum+1)*ranges.low+r*(m_lum+1)*ranges.mid+r*(h_lum+1)*ranges.hi
+  expr1 g*(l_lum+1)*ranges.low+g*(m_lum+1)*ranges.mid+g*(h_lum+1)*ranges.hi
+  expr2 b*(l_lum+1)*ranges.low+b*(m_lum+1)*ranges.mid+b*(h_lum+1)*ranges.hi
+  channel3 none
+  name LUM
+  tile_color 0xbf0000ff
+  gl_color 0xbf0000ff
+  xpos 493
+  ypos 231
+ }
+ Output {
+  name Output1
+  xpos 493
+  ypos 282
+ }
+end_group

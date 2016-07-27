@@ -1,0 +1,649 @@
+#! /Volumes/Macintosh HD/Applications/Nuke6.3v1/NukeX6.3v1.app/../Nuke6.3v1.app/Contents/MacOS/Nuke6.3v1 -nx
+version 6.3 v1
+Gizmo {
+ inputs 10
+ tile_color 0x7f7f7fff
+ addUserKnob {20 explodeit l "Explode It v1"}
+ addUserKnob {7 explode l Explode}
+ explode 1
+ addUserKnob {7 factor l Factor R 1 100}
+ factor 20
+ addUserKnob {20 options l Options}
+ addUserKnob {26 frame l "@b;Frame and Grid"}
+ addUserKnob {18 framecolor l "Frame Color"}
+ framecolor 0.05
+ addUserKnob {18 gridcolor l "Grid Color"}
+ gridcolor 0.035
+ addUserKnob {26 back l "@b;Background"}
+ addUserKnob {18 bgcolor0 l "Color 0"}
+ bgcolor0 0.02
+ addUserKnob {18 bgcolor1 l "Color 1"}
+ bgcolor1 0.035
+ addUserKnob {7 dither l Dither}
+ dither 0.001
+ addUserKnob {6 mono l "Monochromatic Dither" +STARTLINE}
+ mono true
+ addUserKnob {6 static l "Static Dither" -STARTLINE}
+ static true
+ addUserKnob {6 draw_grid l "Draw Grid" -STARTLINE}
+ draw_grid true
+}
+ Camera2 {
+  inputs 0
+  translate {{-parent.explode*(parent.factor*(10+LayersAmount.layers)) i} {parent.explode*(parent.factor*2+(LayersAmount.layers*5)) i} {parent.explode*(parent.factor*LayersAmount.layers-1) i}}
+  rotate {{"degrees( atan2( Target.translate.y - translate.y, sqrt( pow( Target.translate.x - translate.x, 2 ) + pow( Target.translate.z - translate.z, 2 ) ) ) )" i} {"Target.translate.z - this.translate.z >= 0 ? 180 + degrees( atan2( Target.translate.x - translate.x, Target.translate.z - translate.z ) ) : 180 + degrees( atan2( Target.translate.x - translate.x, Target.translate.z - translate.z ) )" i} {curve i}}
+  name Camera1
+  xpos 338
+  ypos 526
+ }
+ CheckerBoard2 {
+  inputs 0
+  format "1024 1024 0 0 1024 1024 1 Square_1K"
+  color0 0
+  color1 0
+  color2 0
+  color3 0
+  linecolor {{parent.gridcolor.r i} {parent.gridcolor.g i} {parent.gridcolor.b i} 1}
+  linewidth {{parent.LayersAmount.line i}}
+  centerlinecolor {{parent.gridcolor.r i} {parent.gridcolor.g i} {parent.gridcolor.g i} {((parent.gridcolor.r+parent.gridcolor.g+parent.gridcolor.b)/3) i}}
+  centerlinewidth {{parent.LayersAmount.line i}}
+  name CheckerBoard1
+  xpos 245
+  ypos 291
+ }
+ Card2 {
+  translate {0 -30 {-100-((parent.factor/2)*parent.explode) i}}
+  rotate {-90 0 0}
+  uniform_scale 70
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card12
+  xpos 245
+  ypos 413
+  disable {{!parent.draw_grid i}}
+ }
+ Input {
+  inputs 0
+  name Input10
+  xpos 945
+  ypos -115
+  number 9
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input9.disable]" i}}
+ }
+ Grade {
+  channels rgba
+  black {{parent.explode*0.003 i}}
+  black_clamp false
+  name Grade1
+  xpos 945
+  ypos -86
+ }
+ set C2a0b9e40 [stack 0]
+ Ramp {
+  opacity {{parent.explode*0.015 i}}
+  p0 {{input.width i} 0}
+  p1 {0 {input.height i}}
+  type plinear
+  name Ramp1
+  xpos 945
+  ypos -47
+ }
+ set C286efba0 [stack 0]
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame10
+  xpos 945
+  ypos -5
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*9)+0.09 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card10
+  xpos 945
+  ypos 57
+  disable {{!parent.Input10.input i}}
+ }
+ Input {
+  inputs 0
+  name Input9
+  xpos 835
+  ypos -115
+  number 8
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input8.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 835
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 835
+  ypos -48
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame9
+  xpos 835
+  ypos -5
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*8)+0.08 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card9
+  xpos 835
+  ypos 57
+  disable {{!parent.Input9.input i}}
+ }
+ Input {
+  inputs 0
+  name Input8
+  xpos 725
+  ypos -115
+  number 7
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input7.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 725
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 725
+  ypos -45
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame8
+  xpos 725
+  ypos -3
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*7)+0.07 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card8
+  xpos 725
+  ypos 57
+  disable {{!parent.Input8.input i}}
+ }
+ Input {
+  inputs 0
+  name Input7
+  xpos 615
+  ypos -115
+  number 6
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input6.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 615
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 615
+  ypos -46
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame7
+  xpos 615
+  ypos -3
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*6)+0.06 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card7
+  xpos 615
+  ypos 57
+  disable {{!parent.Input7.input i}}
+ }
+ Input {
+  inputs 0
+  name Input6
+  xpos 505
+  ypos -115
+  number 5
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input5.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 505
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 505
+  ypos -48
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame6
+  xpos 505
+  ypos -3
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*5)+0.05 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card6
+  xpos 505
+  ypos 57
+  disable {{!parent.Input6.input i}}
+ }
+ Input {
+  inputs 0
+  name Input5
+  xpos 395
+  ypos -115
+  number 4
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input4.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 395
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 395
+  ypos -47
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame5
+  xpos 395
+  ypos -4
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*4)+0.04 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card5
+  xpos 395
+  ypos 57
+  disable {{!parent.Input5.input i}}
+ }
+ Input {
+  inputs 0
+  name Input4
+  xpos 285
+  ypos -116
+  number 3
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input3.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 285
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 285
+  ypos -49
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame4
+  xpos 285
+  ypos -5
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*3)+0.03 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card4
+  xpos 285
+  ypos 56
+  disable {{!parent.Input4.input i}}
+ }
+ Input {
+  inputs 0
+  name Input3
+  xpos 175
+  ypos -115
+  number 2
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input2.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 175
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 175
+  ypos -48
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame3
+  xpos 175
+  ypos -5
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*(parent.factor*2)+0.02 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card3
+  xpos 175
+  ypos 57
+  disable {{!parent.Input3.input i}}
+ }
+ Input {
+  inputs 0
+  name Input2
+  xpos 65
+  ypos -115
+  number 1
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input1.disable]" i}}
+ }
+clone $C2a0b9e40 {
+  xpos 65
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos 66
+  ypos -49
+  selected false
+ }
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame2
+  xpos 66
+  ypos -5
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  translate {0 0 {parent.explode*parent.factor+0.01 i}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {1 1 0} }
+  name Card2
+  xpos 65
+  ypos 57
+  disable {{!parent.Input2.input i}}
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -45
+  ypos -115
+  addUserKnob {20 User}
+  addUserKnob {6 input +STARTLINE}
+  input {{"\[exists input0.disable]" i}}
+ }
+set N45db5770 [stack 0]
+clone $C2a0b9e40 {
+  xpos -45
+  ypos -86
+  selected false
+ }
+clone $C286efba0 {
+  xpos -45
+  ypos -50
+  selected false
+ }
+set N45dc0f40 [stack 0]
+ Rectangle {
+  invert true
+  area {{(LayersAmount.line)*parent.explode i} {(LayersAmount.line)*parent.explode i} {input.width-(LayersAmount.line*parent.explode) i} {input.height-(LayersAmount.line*parent.explode) i}}
+  color {{parent.framecolor.r i} {parent.framecolor.g i} {parent.framecolor.b i} 1}
+  name Frame1
+  xpos -45
+  ypos -4
+ }
+ Card2 {
+  z 100
+  lens_in_focal 50
+  lens_in_haperture 24.576
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0 0 0} 
+1 {-0.5 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {-0.5 0.5 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.166667 0 0} 0 {0 0 0} 0 {1 0 0} 
+1 {0 -0.5 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {0.5 0.5 0} 
+1 {0 0.5 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0.166667 0 0} 0 {-0.166667 0 0} 0 {1 0.5 0} 
+1 {0.5 -0.5 0} 0 {0 0.166667 0} 0 {0 0 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0 1 0} 
+1 {0.5 0 0} 0 {0 0.166667 0} 0 {0 -0.166667 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {0 -0.166667 0} 0 {0 0 0} 0 {-0.166667 0 0} 0 {1 1 0} }
+  name Card1
+  xpos -45
+  ypos 57
+  disable {{!parent.Input1.input i}}
+ }
+ MergeGeo {
+  inputs 10
+  name MergeGeo1
+  xpos 448
+  ypos 185
+ }
+ TransformGeo {
+  translate {0 0 {-((LayersAmount.layers*parent.factor)/2)*parent.explode i}}
+  name TransformGeo1
+  xpos 448
+  ypos 288
+ }
+ Scene {
+  inputs 2
+  name Scene1
+  xpos 458
+  ypos 392
+ }
+push $N45db5770
+ Rectangle {
+  replace true
+  area {0 0 {input.width i} {input.height i}}
+  ramp linear
+  color {{parent.bgcolor1.r i} {parent.bgcolor1.g i} {parent.bgcolor1.b i} 1}
+  p1 {100 {input.height i}}
+  color0 {{parent.bgcolor0.r i} {parent.bgcolor0.g i} {parent.bgcolor0.b i} 1}
+  p0 {100 0}
+  name Rectangle1
+  xpos 587
+  ypos 505
+  hide_input true
+ }
+ Dither {
+  amount {{parent.dither i}}
+  monodither {{parent.mono i}}
+  static_seed {{parent.static i}}
+  name Dither1
+  xpos 587
+  ypos 534
+ }
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  name ScanlineRender1
+  xpos 448
+  ypos 542
+ }
+ Output {
+  name Output1
+  xpos 448
+  ypos 668
+ }
+push $N45dc0f40
+ Viewer {
+  name Viewer1
+  xpos -189
+  ypos 39
+ }
+ NoOp {
+  inputs 0
+  name LayersAmount
+  xpos 452
+  ypos -189
+  addUserKnob {20 User}
+  addUserKnob {3 layers l Layers}
+  layers {{parent.Input1.input+parent.Input2.input+parent.Input3.input+parent.Input4.input+parent.Input5.input+parent.Input6.input+parent.Input7.input+parent.Input8.input+parent.Input9.input+parent.Input10.input i}}
+  addUserKnob {3 line}
+  line {{ceil(input.format.h*0.01) i}}
+ }
+ Axis2 {
+  inputs 0
+  translate {{-((10-LayersAmount.layers+2)*parent.explode) i} 0 -100}
+  name Target
+  xpos 247
+  ypos 523
+ }
+end_group

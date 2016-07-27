@@ -1,0 +1,218 @@
+#! /Applications/Nuke5.2v1b15/Nuke5.2v1b15.app/Contents/MacOS/Nuke5.2v1b15 -nx
+version 5.2115
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {4 output M {Over Right Left Top Bottom}}
+ addUserKnob {7 thickness}
+ thickness 0.5
+ addUserKnob {12 pos1}
+ addUserKnob {12 pos2}
+ pos2 {2048 0}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -535
+  ypos -255
+ }
+set N33d13870 [stack 0]
+ Transform {
+  translate {{-parent.pos1 i} {-parent.pos1 i}}
+  black_outside false
+  name Transform4
+  label T
+  xpos -535
+  ypos -231
+ }
+ Transform {
+  rotate {{"-degrees( atan2(parent.pos2.y-parent.pos1.y, parent.pos2.x-parent.pos1.x) )" i}}
+  black_outside false
+  name Transform5
+  label "R\n"
+  xpos -535
+  ypos -197
+ }
+ Transform {
+  scale {{"width / sqrt(pow(parent.pos2.x-parent.pos1.x,2) + pow(parent.pos2.y-parent.pos1.y,2))" i}}
+  black_outside false
+  name Transform6
+  label S
+  xpos -535
+  ypos -160
+ }
+ Crop {
+  box {0 0 {Input1.width i} 1}
+  reformat true
+  crop false
+  name Crop1
+  xpos -536
+  ypos -121
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input1.width i}}
+  box_height {{Input1.height i}}
+  box_fixed true
+  resize distort
+  filter Impulse
+  name Reformat1
+  xpos -536
+  ypos -92
+ }
+ Expression {
+  expr0 "fabs((y/height)-r)<=tolerance ? 1 : 0"
+  expr1 "fabs((y/height)-g)<=tolerance ? 1 : 0"
+  expr2 "fabs((y/height)-b)<=tolerance ? 1 : 0"
+  name Expression3
+  xpos -536
+  ypos -47
+  addUserKnob {20 User}
+  addUserKnob {7 tolerance}
+  tolerance {{parent.thickness/100 i}}
+ }
+set N2e76fa70 [stack 0]
+ Dot {
+  name Dot3
+  xpos -293
+  ypos -44
+ }
+set N2b85ca80 [stack 0]
+ Dot {
+  name Dot4
+  xpos -192
+  ypos -44
+ }
+set N32e1eb10 [stack 0]
+ Dot {
+  name Dot6
+  xpos -93
+  ypos -44
+ }
+set N2b661c30 [stack 0]
+ Dot {
+  name Dot9
+  xpos 29
+  ypos -44
+ }
+push $N33d13870
+ Dot {
+  name Dot2
+  selected true
+  xpos -367
+  ypos -252
+ }
+set N33ecb600 [stack 0]
+ Dot {
+  name Dot1
+  selected true
+  xpos -249
+  ypos -252
+ }
+set N33da85c0 [stack 0]
+ Dot {
+  name Dot5
+  selected true
+  xpos -136
+  ypos -252
+ }
+set N2e7071a0 [stack 0]
+ Dot {
+  name Dot8
+  selected true
+  xpos -26
+  ypos -252
+ }
+set N33e9c720 [stack 0]
+ Dot {
+  name Dot7
+  selected true
+  xpos 90
+  ypos -252
+ }
+ ContactSheet {
+  inputs 2
+  width {{Input1.width i}}
+  height {{Input1.height*2 i}}
+  rows 2
+  columns 1
+  roworder TopBottom
+  name ContactSheet2
+  xpos 56
+  ypos -23
+ }
+push $N2b661c30
+push $N33e9c720
+ ContactSheet {
+  inputs 2
+  width {{Input1.width i}}
+  height {{Input1.height*2 i}}
+  rows 2
+  columns 1
+  name ContactSheet3
+  xpos -56
+  ypos -21
+ }
+push $N32e1eb10
+push $N2e7071a0
+ ContactSheet {
+  inputs 2
+  width {{Input1.width*2 i}}
+  height {{Input1.height i}}
+  rows 1
+  columns 2
+  colorder RightLeft
+  name ContactSheet4
+  xpos -170
+  ypos -16
+ }
+push $N2b85ca80
+push $N33da85c0
+ ContactSheet {
+  inputs 2
+  width {{Input1.width*2 i}}
+  height {{Input1.height i}}
+  rows 1
+  columns 2
+  name ContactSheet1
+  xpos -283
+  ypos -17
+ }
+push $N2e76fa70
+push $N2e76fa70
+ ChannelMerge {
+  inputs 2
+  A rgba.red
+  B rgba.green
+  name ChannelMerge1
+  xpos -536
+  ypos -9
+ }
+set N32e1a8b0 [stack 0]
+push $N32e1a8b0
+ ChannelMerge {
+  inputs 2
+  B rgba.blue
+  name ChannelMerge2
+  xpos -536
+  ypos 37
+ }
+push $N33ecb600
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -401
+  ypos 48
+ }
+ Switch {
+  inputs 5
+  which {{parent.output i}}
+  name Switch1
+  xpos -283
+  ypos 48
+ }
+ Output {
+  name Output1
+  xpos -283
+  ypos 170
+ }
+end_group

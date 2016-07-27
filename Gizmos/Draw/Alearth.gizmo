@@ -1,0 +1,2619 @@
+#! C:/Program Files/Nuke7.0v4/Nuke7.0.exe -nx
+version 7.0 v4
+Gizmo {
+ inputs 9
+ tile_color 0x3aacffff
+ label "\nVersion 1.3\ncreated by \nAlexander Leiker"
+ postage_stamp true
+ addUserKnob {20 earthrendering l Rendering}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {6 Global_Settings_renderingclouds l "Render clouds" +STARTLINE}
+ Global_Settings_renderingclouds true
+ addUserKnob {6 Global_Settings_rendercitylights l "Render city lights" +STARTLINE}
+ Global_Settings_rendercitylights true
+ addUserKnob {6 Global_Settings_hightextures l "Use high resolution textures" t "Default: disabled" +STARTLINE}
+ addUserKnob {7 earthScale l Scale t "Default: 1" R 1 10}
+ earthScale 1
+ addUserKnob {16 edgeBlur l "Edge blur" t "Default: 2"}
+ edgeBlur 3
+ addUserKnob {16 Global_Settings_earthmultisamples l "Multi samples" t "Default: 1"}
+ Global_Settings_earthmultisamples 1
+ addUserKnob {20 earthlightning l "General lighting"}
+ addUserKnob {7 Global_Settings_earthsaturation l "Planet saturation" R 0 2}
+ Global_Settings_earthsaturation 0.9
+ addUserKnob {7 Global_Settings_earthlightblendmatte l "Light softness" R 0 20}
+ Global_Settings_earthlightblendmatte 20
+ addUserKnob {7 nightIntensity l "Light intensity" t "Default: 0.0088" R 0 0.05}
+ nightIntensity 0.006
+ addUserKnob {20 earthcitylights l "City lights"}
+ addUserKnob {6 Global_Settings_citylightanimated l "Animated lights" -STARTLINE}
+ Global_Settings_citylightanimated true
+ addUserKnob {7 Global_Settings_lightspeed l "Flicker speed" t "Default: 1" R 0 20}
+ Global_Settings_lightspeed 0.25
+ addUserKnob {26 earthlightspeedinfo l "" +STARTLINE T "The speed of the light flickering."}
+ addUserKnob {7 Global_Settings_lightintensity l "Light transparency" t "Default 0.25"}
+ Global_Settings_lightintensity 0.2
+ addUserKnob {7 Global_Settings_earthcitylightssaturation l "Light saturation" t "Default: 0.4"}
+ Global_Settings_earthcitylightssaturation 0.4
+ addUserKnob {26 ""}
+ addUserKnob {26 cityLightsNoiseInfo l "Animation noise settings" T "(Not recommended to change)"}
+ addUserKnob {7 Global_Settings_lightlacunarity l Lacunarity t "Default: 1" R 1 10}
+ Global_Settings_lightlacunarity 1
+ addUserKnob {7 Global_Settings_lightgain l Gain t "Default: 1.0"}
+ Global_Settings_lightgain 0.96
+ addUserKnob {7 Global_Settings_lightgamma l Gamma t "Default: 0.605"}
+ Global_Settings_lightgamma 0.94
+ addUserKnob {20 earthclouds l Clouds}
+ addUserKnob {6 cloudAnimatedState l "Animated clouds" -STARTLINE}
+ addUserKnob {7 cloudRotation l Rotation R 0 360}
+ addUserKnob {26 earthcloudrotationinfo l "" +STARTLINE T "This parameter needs to be animated for moving clouds."}
+ addUserKnob {7 Global_Settings_earthcloudsdarkbrightness l "Visibility in non-lightened areas" t "Default: 1.2" R 1 5}
+ Global_Settings_earthcloudsdarkbrightness 1
+ addUserKnob {7 Global_Settings_cloudtransparency l "Cloud transparency" t "Default: 0.8"}
+ Global_Settings_cloudtransparency 0.6
+ addUserKnob {20 earthoutline l Atmosphere}
+ addUserKnob {18 Global_Settings_earthlightingcolor l "Atmosphere color"}
+ Global_Settings_earthlightingcolor {0 0.4 1}
+ addUserKnob {7 atmosphereSaturation l "Atmosphere saturation" t "Default: 0.065"}
+ atmosphereSaturation 0.065
+ addUserKnob {7 Global_Settings_earthoutlinewidth l "Outline width" R 1 50}
+ Global_Settings_earthoutlinewidth 1
+ addUserKnob {7 outlineGlowFeather l "Outline feather" t "Default: 40" R 0 60}
+ outlineGlowFeather 50
+ addUserKnob {7 outlineGlowIntensity l "Outline intensity" t "Default: 0.3"}
+ outlineGlowIntensity 0.3
+ addUserKnob {20 earthoutput l Output}
+ addUserKnob {6 Global_Settings_earthchannellight l "Disable lighting on seperate channels" -STARTLINE}
+ addUserKnob {26 earthdisablelightinfo l "" +STARTLINE T "Check this, if you want no lighting on your seperate channel output."}
+ addUserKnob {20 earthmanual l Manual}
+ addUserKnob {26 eartinfogeneral l General T "Moving:\nPlug an axis node into the moveAxis input and move it around. It is automatically \ncentered to the planet geo.\n\nChannels:\nThe Gizmo outputs the different layers into seperate channels. There also exist alpha, depth and motion channels.\n\n"}
+ addUserKnob {26 earthinfo l Setup T "Step 1:\nThere are two inputs for every texture, one in low resolution \nand one in high resolution.\nIf you don't have different resolutions, use the same image twice.\nPlug the texture images into the specific inputs. \n\nStep 2:\nPlug in your camera into the mainCamera input.\n\nStep 3:\nPlug a light into the mainLight input. Best look comes from a directional light source."}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0x7171c600
+  label "Outline normal\n"
+  note_font_size 42
+  xpos -251
+  ypos -3238
+  bdwidth 323
+  bdheight 526
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x388e8e00
+  label Tint
+  note_font_size 42
+  xpos 160
+  ypos -2694
+  bdwidth 845
+  bdheight 673
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0xaaaaaa00
+  label "Lights\t"
+  note_font_size 42
+  xpos -122
+  ypos -743
+  bdwidth 1364
+  bdheight 953
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x8e388e00
+  label Animation
+  note_font_size 42
+  xpos -76
+  ypos -460
+  bdwidth 252
+  bdheight 315
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0x378e79ff
+  label "Outline Shine"
+  note_font_size 42
+  xpos 159
+  ypos 1823
+  bdwidth 1077
+  bdheight 1154
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0xa071c6ff
+  label FLOW
+  note_font_size 42
+  xpos 1445
+  ypos -4348
+  bdwidth 223
+  bdheight 7648
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  label "Cloud Dropshadow"
+  note_font Verdana
+  note_font_size 42
+  xpos -124
+  ypos 234
+  bdwidth 1365
+  bdheight 674
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x71c67100
+  label "Cloud Atmosphere"
+  note_font_size 42
+  xpos -132
+  ypos 941
+  bdwidth 1361
+  bdheight 858
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0xffffff
+  label Cam
+  note_font_size 40
+  xpos 736
+  ypos -4398
+  bdwidth 77
+  bdheight 6503
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0x8e388e00
+  label "Outline expand"
+  note_font_size 42
+  xpos -726
+  ypos -3238
+  bdwidth 291
+  bdheight 531
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode13
+  tile_color 0x5c4f8eff
+  label "Outline expand inner"
+  note_font_size 42
+  xpos -1265
+  ypos -3240
+  bdwidth 459
+  bdheight 537
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x8e8e3800
+  label "Light Mattes"
+  note_font_size 42
+  xpos 164
+  ypos -4531
+  bdwidth 1178
+  bdheight 1383
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x8e5637ff
+  label "Base Planet Texture"
+  note_font_size 42
+  xpos -42
+  ypos -1934
+  bdwidth 1281
+  bdheight 1158
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  label "Cloud anim"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 30
+  xpos 386
+  ypos 1052
+ }
+ Input {
+  inputs 0
+  name cam
+  xpos 733
+  ypos -4323
+  number 6
+ }
+set N182923d0 [stack 0]
+ Dot {
+  name Dot6
+  xpos 767
+  ypos -3936
+ }
+set N18292740 [stack 0]
+ Dot {
+  name Dot23
+  xpos 767
+  ypos -3335
+ }
+set N18292ab0 [stack 0]
+ Dot {
+  name Dot34
+  xpos 767
+  ypos -2984
+ }
+set N18292e20 [stack 0]
+ Dot {
+  name Dot12
+  xpos 767
+  ypos -2507
+ }
+set N18293190 [stack 0]
+ Dot {
+  name Dot13
+  xpos 767
+  ypos -2442
+ }
+set N18293500 [stack 0]
+push $N18293190
+ Input {
+  inputs 0
+  name moveAxis
+  xpos -2563
+  ypos -1303
+  number 8
+ }
+set N18293870 [stack 0]
+ Constant {
+  inputs 0
+  color {{parent.Global_Settings.earthlightingcolor.r} {parent.Global_Settings.earthlightingcolor.g} {parent.Global_Settings.earthlightingcolor.b} 0}
+  name Constant2
+  xpos 170
+  ypos -2614
+ }
+ Shuffle {
+  alpha white
+  name Shuffle5
+  xpos 170
+  ypos -2534
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale}}
+  rotate {0 -100 0}
+  name Sphere5
+  xpos 170
+  ypos -2510
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans6
+  tile_color 0xff75ff
+  xpos 268
+  ypos -2510
+ }
+ TransformGeo {
+  name TransformGeo1
+  xpos 363
+  ypos -2510
+ }
+ Scene {
+  inputs 2
+  name Scene5
+  xpos 464
+  ypos -2531
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender5
+  xpos 454
+  ypos -2445
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop5
+  xpos 454
+  ypos -2421
+ }
+ Blur {
+  size {{60*parent.Global_Settings.earthscale}}
+  crop false
+  name Blur2
+  xpos 454
+  ypos -2314
+ }
+ Glow2 {
+  channels rgba
+  brightness 4.78
+  name Glow1
+  xpos 454
+  ypos -2277
+ }
+set N182f6970 [stack 0]
+ Dot {
+  name Dot17
+  xpos 748
+  ypos -2274
+ }
+set N182f6ce0 [stack 0]
+ Dot {
+  name Dot72
+  xpos 1978
+  ypos -2274
+ }
+ Dot {
+  name Dot74
+  xpos 1978
+  ypos 2992
+ }
+push $N18293500
+ Dot {
+  name Dot7
+  xpos 766
+  ypos -1473
+ }
+set N182f7730 [stack 0]
+ Dot {
+  name Dot1
+  xpos 766
+  ypos -1367
+ }
+set N182f7aa0 [stack 0]
+ Dot {
+  name Dot5
+  xpos 766
+  ypos -521
+ }
+set N182f7e10 [stack 0]
+ Dot {
+  name Dot4
+  xpos 766
+  ypos -268
+ }
+set N182f8180 [stack 0]
+ Dot {
+  name Dot81
+  xpos 766
+  ypos 740
+ }
+set N182f84f0 [stack 0]
+push $N18293870
+ Input {
+  inputs 0
+  name cloudsHighRes
+  xpos -84
+  ypos 1104
+  number 5
+ }
+ Dot {
+  name Dot77
+  xpos 39
+  ypos 1107
+ }
+set N183c2e10 [stack 0]
+ Dot {
+  name Dot80
+  xpos 39
+  ypos 389
+ }
+ Input {
+  inputs 0
+  name cloudsLowRes
+  xpos 149
+  ypos 1017
+  number 4
+ }
+ Dot {
+  name Dot78
+  xpos 183
+  ypos 1065
+ }
+set N183c3860 [stack 0]
+ Dot {
+  name Dot79
+  xpos 101
+  ypos 1065
+ }
+ Switch {
+  inputs 2
+  which {{parent.Global_Settings.hightextures}}
+  name Switch4
+  xpos 67
+  ypos 386
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha red
+  name Shuffle19
+  xpos 204
+  ypos 386
+ }
+ Premult {
+  name Premult6
+  xpos 204
+  ypos 410
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale}}
+  rotate {0 -125 0}
+  name Sphere2
+  xpos 204
+  ypos 566
+ }
+ set C183c4620 [stack 0]
+ TransformGeo {
+  inputs 2
+  name geoTrans8
+  tile_color 0xff75ff
+  xpos 204
+  ypos 608
+ }
+ set C183c4990 [stack 0]
+ Scene {
+  name Scene16
+  xpos 214
+  ypos 649
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender16
+  xpos 204
+  ypos 737
+ }
+ Dot {
+  name Dot83
+  xpos 238
+  ypos 814
+ }
+ Grade {
+  channels rgba
+  white 1.74
+  name Grade1
+  xpos 348
+  ypos 811
+ }
+push $N182f6ce0
+push $N182f6970
+ Dot {
+  name Dot14
+  xpos 488
+  ypos -2230
+ }
+push $N182f7aa0
+push $N182f7730
+push $N18293870
+ Input {
+  inputs 0
+  name planetHighRes
+  xpos 0
+  ypos -1581
+  number 1
+ }
+ Input {
+  inputs 0
+  name planetLowRes
+  xpos 169
+  ypos -1728
+ }
+ Switch {
+  inputs 2
+  which {{parent.Global_Settings.hightextures}}
+  name Switch1
+  xpos 169
+  ypos -1581
+ }
+ Shuffle {
+  alpha white
+  name Shuffle4
+  xpos 169
+  ypos -1557
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale}}
+  rotate {0 -125 0}
+  name Sphere1
+  xpos 169
+  ypos -1476
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans7
+  tile_color 0xff75ff
+  xpos 270
+  ypos -1476
+ }
+ TransformGeo {
+  name TransformGeo2
+  xpos 367
+  ypos -1476
+ }
+ Scene {
+  inputs 2
+  name Scene1
+  xpos 463
+  ypos -1497
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender1
+  xpos 453
+  ypos -1370
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop1
+  xpos 453
+  ypos -1346
+ }
+ Saturation {
+  name Saturation1
+  xpos 453
+  ypos -1322
+ }
+ EdgeBlur {
+  size {{"parent.Global_Settings.earthedgeblur * parent.Global_Settings.earthscale"}}
+  name EdgeBlur1
+  xpos 453
+  ypos -1270
+ }
+ Dot {
+  name Dot2
+  xpos 487
+  ypos -1196
+ }
+ Dot {
+  name Dot16
+  xpos 626
+  ypos -1196
+ }
+set N1843bc60 [stack 0]
+ ChannelMerge {
+  inputs 2
+  operation out
+  name ChannelMerge1
+  xpos 593
+  ypos -2245
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  from1 rgba.green
+  to1 rgba.green
+  from2 rgba.blue
+  to2 rgba.blue
+  name Copy2
+  xpos 714
+  ypos -2251
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop6
+  xpos 824
+  ypos -2233
+ }
+ Blur {
+  channels alpha
+  size {{8.8*parent.Global_Settings.earthscale}}
+  crop false
+  name Blur3
+  xpos 824
+  ypos -2209
+ }
+ Premult {
+  name Premult2
+  xpos 824
+  ypos -2173
+ }
+ Dot {
+  name Dot18
+  xpos 858
+  ypos -2140
+ }
+ EdgeBlur {
+  size {{"parent.Global_Settings.earthedgeblur * parent.Global_Settings.earthscale"}}
+  name EdgeBlur5
+  xpos 1072
+  ypos -2149
+ }
+push $N18292e20
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant11
+  xpos -1255
+  ypos -3158
+ }
+ Shuffle {
+  alpha white
+  name Shuffle20
+  xpos -1255
+  ypos -3096
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{"parent.Sphere4.radius*1.0005 + (parent.Global_Settings.earthoutlinewidth*0.001)"}}
+  rotate {0 100 0}
+  name Sphere12
+  xpos -1255
+  ypos -3072
+ }
+ TransformGeo {
+  name geoTrans13
+  tile_color 0xff75ff
+  xpos -1255
+  ypos -3033
+ }
+ Scene {
+  name Scene17
+  xpos -1245
+  ypos -3001
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  filter Impulse
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender17
+  xpos -1255
+  ypos -2901
+ }
+push $N18292e20
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant12
+  xpos -1126
+  ypos -3160
+ }
+ Shuffle {
+  alpha white
+  name Shuffle21
+  xpos -1126
+  ypos -3088
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale*0.9999}}
+  rotate {0 100 0}
+  name Sphere13
+  xpos -1126
+  ypos -3064
+ }
+ TransformGeo {
+  name geoTrans14
+  tile_color 0xff75ff
+  xpos -1126
+  ypos -3034
+ }
+ Scene {
+  name Scene18
+  xpos -1116
+  ypos -3003
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  filter Impulse
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender18
+  xpos -1126
+  ypos -2903
+ }
+ ChannelMerge {
+  inputs 2
+  operation minus
+  name ChannelMerge7
+  xpos -1181
+  ypos -2868
+ }
+ Premult {
+  name Premult1
+  xpos -1181
+  ypos -2820
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop24
+  xpos -1181
+  ypos -2788
+ }
+ Dot {
+  name Dot82
+  xpos -1147
+  ypos -2700
+ }
+push $N18292e20
+push $N18293870
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant7
+  xpos -716
+  ypos -3156
+ }
+ Shuffle {
+  alpha white
+  name Shuffle16
+  xpos -716
+  ypos -3094
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Sphere4.radius*1.005}}
+  rotate {0 100 0}
+  name Sphere10
+  xpos -716
+  ypos -3070
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans2
+  tile_color 0xff75ff
+  xpos -716
+  ypos -3031
+ }
+ Scene {
+  name Scene12
+  xpos -706
+  ypos -2999
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  filter Impulse
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender12
+  xpos -716
+  ypos -2899
+ }
+push $N18292e20
+push $N18293870
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant8
+  xpos -587
+  ypos -3158
+ }
+ Shuffle {
+  alpha white
+  name Shuffle17
+  xpos -587
+  ypos -3086
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale}}
+  rotate {0 100 0}
+  name Sphere11
+  xpos -587
+  ypos -3062
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans3
+  tile_color 0xff75ff
+  xpos -587
+  ypos -3032
+ }
+ Scene {
+  name Scene13
+  xpos -577
+  ypos -3001
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  filter Impulse
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender13
+  xpos -587
+  ypos -2901
+ }
+ ChannelMerge {
+  inputs 2
+  operation minus
+  name ChannelMerge5
+  xpos -642
+  ypos -2866
+ }
+ Premult {
+  name Premult5
+  xpos -642
+  ypos -2818
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop18
+  xpos -642
+  ypos -2786
+ }
+ Dot {
+  name Dot35
+  xpos -608
+  ypos -2756
+ }
+push $N18292e20
+push $N18293870
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant4
+  xpos -241
+  ypos -3156
+ }
+ Shuffle {
+  alpha white
+  name Shuffle13
+  xpos -241
+  ypos -3084
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale}}
+  rotate {0 100 0}
+  name Sphere7
+  xpos -241
+  ypos -3060
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans4
+  tile_color 0xff75ff
+  xpos -241
+  ypos -3036
+ }
+ Scene {
+  name Scene10
+  xpos -231
+  ypos -2999
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender10
+  xpos -241
+  ypos -2899
+ }
+push $N18292e20
+push $N18293870
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant6
+  xpos -112
+  ypos -3158
+ }
+ Shuffle {
+  alpha white
+  name Shuffle14
+  xpos -112
+  ypos -3086
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{"parent.Global_Settings.earthscale - (0.004*parent.Global_Settings.earthscale)"}}
+  rotate {0 100 0}
+  name Sphere9
+  selected true
+  xpos -112
+  ypos -3062
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans5
+  tile_color 0xff75ff
+  xpos -112
+  ypos -3038
+ }
+ Scene {
+  name Scene11
+  xpos -102
+  ypos -3001
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender11
+  xpos -112
+  ypos -2901
+ }
+ ChannelMerge {
+  inputs 2
+  operation minus
+  name ChannelMerge4
+  xpos -167
+  ypos -2834
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop19
+  xpos -43
+  ypos -2822
+ }
+push $N18292ab0
+push $N18293870
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant5
+  xpos 177
+  ypos -3577
+ }
+ Shuffle {
+  alpha white
+  name Shuffle10
+  xpos 177
+  ypos -3505
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale}}
+  rotate {0 100 0}
+  name Sphere8
+  xpos 177
+  ypos -3444
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans1
+  tile_color 0xff75ff
+  xpos 275
+  ypos -3444
+ }
+ Scene {
+  name Scene9
+  xpos 385
+  ypos -3465
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender9
+  xpos 375
+  ypos -3338
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop13
+  xpos 375
+  ypos -3314
+ }
+ Multiply {
+  value {{parent.Global_Settings.planetdarkness}}
+  name Multiply5
+  xpos 375
+  ypos -3290
+ }
+ Dot {
+  name Dot22
+  xpos 409
+  ypos -3223
+ }
+push $N18292740
+ Input {
+  inputs 0
+  name light
+  xpos -365
+  ypos -4206
+  number 7
+ }
+set N18829eb0 [stack 0]
+ Dot {
+  name Dot76
+  xpos 1050
+  ypos -3672
+ }
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant10
+  xpos 827
+  ypos -3682
+ }
+ Shuffle {
+  alpha white
+  name Shuffle18
+  xpos 827
+  ypos -3610
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{"parent.Global_Settings.earthscale + (0.003*parent.Global_Settings.earthscale)" x1 1.01}}
+  rotate {0 -125 0}
+  name Sphere4
+  xpos 827
+  ypos -3586
+ }
+ set C1882ac70 [stack 0]
+ TransformGeo {
+  name geoTrans12
+  tile_color 0xff75ff
+  xpos 928
+  ypos -3586
+ }
+ Scene {
+  inputs 2
+  name Scene15
+  xpos 1026
+  ypos -3607
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender15
+  xpos 1016
+  ypos -3461
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop23
+  xpos 1016
+  ypos -3437
+ }
+push $N18292740
+push $N18293870
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant9
+  xpos 838
+  ypos -4163
+ }
+ Shuffle {
+  alpha white
+  name Shuffle12
+  xpos 838
+  ypos -4091
+ }
+clone $C1882ac70 {
+  xpos 838
+  ypos -4067
+  selected false
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans11
+  tile_color 0xff75ff
+  xpos 939
+  ypos -4067
+ }
+ Scene {
+  name Scene14
+  xpos 1037
+  ypos -4088
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender14
+  xpos 1027
+  ypos -3942
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop22
+  xpos 1027
+  ypos -3918
+ }
+ Dot {
+  name Dot75
+  xpos 1061
+  ypos -3746
+ }
+push $N18292740
+ Axis2 {
+  inputs 0
+  name Axis1
+  xpos 646
+  ypos -4066
+ }
+push $N18292740
+push $N18829eb0
+ Dot {
+  name Dot36
+  xpos 492
+  ypos -4203
+ }
+push $N18293870
+ Constant {
+  inputs 0
+  color {1 1 1 0}
+  name Constant1
+  xpos 174
+  ypos -4178
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos 174
+  ypos -4106
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{parent.Global_Settings.earthscale}}
+  rotate {0 100 0}
+  name Sphere3
+  xpos 174
+  ypos -4045
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans
+  tile_color 0xff75ff
+  xpos 318
+  ypos -4045
+ }
+ Scene {
+  inputs 4
+  name Scene3
+  xpos 468
+  ypos -4066
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender3
+  xpos 458
+  ypos -3939
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop3
+  xpos 458
+  ypos -3915
+ }
+ Dot {
+  name Dot8
+  xpos 492
+  ypos -3824
+ }
+push $N182923d0
+ Scene {
+  inputs 0
+  name Scene6
+  xpos 469
+  ypos -4451
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender6
+  xpos 459
+  ypos -4323
+ }
+ Crop {
+  box {0 0 {root.format.r} {root.format.t}}
+  name Crop10
+  xpos 459
+  ypos -4299
+ }
+ Dot {
+  name Dot15
+  xpos 493
+  ypos -4230
+ }
+push 0
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos 1487
+  ypos -4233
+ }
+add_layer {matte matte.light matte.lightinverted matte.clearalpha matte.outline matte.widealpha matte.lightwide}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 matte.light
+  from1 rgba.alpha
+  to1 rgba.alpha
+  name Copy1
+  xpos 1487
+  ypos -3839
+ }
+ Grade {
+  channels {matte.light matte.lightinverted -matte.clearalpha none}
+  white 2.15
+  multiply 1.04
+  name Grade5
+  xpos 1487
+  ypos -3791
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 matte.widealpha
+  name Copy18
+  xpos 1487
+  ypos -3755
+ }
+ Blur {
+  channels {matte.light matte.lightinverted -matte.clearalpha matte.outline}
+  size {{"parent.Global_Settings.earthlightblendmatte * parent.Global_Settings.earthscale"}}
+  maskChannelInput rgba.alpha
+  name Blendmatte
+  xpos 1487
+  ypos -3637
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 matte.lightwide
+  name Copy19
+  xpos 1487
+  ypos -3443
+ }
+ ChannelMerge {
+  inputs 2
+  B matte.light
+  output matte.light
+  name ChannelMerge3
+  xpos 1487
+  ypos -3238
+ }
+set N189bd6b0 [stack 0]
+ Dot {
+  name Dot20
+  xpos 1597
+  ypos -3223
+ }
+ Dot {
+  name Dot21
+  xpos 1597
+  ypos -3093
+ }
+push $N189bd6b0
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 matte.clearalpha
+  name Copy3
+  xpos 1487
+  ypos -3102
+ }
+add_layer {outline outline.normal outline.expand outline.expand_inner}
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 outline.normal
+  name Copy4
+  xpos 1487
+  ypos -2828
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 outline.expand
+  name Copy9
+  xpos 1487
+  ypos -2765
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 outline.expand_inner
+  name Copy20
+  xpos 1487
+  ypos -2709
+ }
+ Blur {
+  channels matte
+  size {{"parent.Global_Settings.earthedgeblur * parent.Global_Settings.earthscale"}}
+  name Blur6
+  xpos 1487
+  ypos -2230
+ }
+ Merge2 {
+  inputs 2
+  maskChannelInput matte.light
+  mix 0.29
+  name Merge4
+  xpos 1487
+  ypos -2173
+  postage_stamp true
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop15
+  xpos 1487
+  ypos -2083
+ }
+set N189bf5a0 [stack 0]
+ Dot {
+  name Dot25
+  xpos 1597
+  ypos -2080
+ }
+push $N1843bc60
+ Dot {
+  name Dot30
+  xpos 909
+  ypos -1196
+ }
+set N189bfc80 [stack 0]
+ Dot {
+  name Dot50
+  xpos 1052
+  ypos -1196
+ }
+set N189bfff0 [stack 0]
+ Dot {
+  name Dot55
+  xpos 1176
+  ypos -1196
+ }
+set N189c0360 [stack 0]
+ Dot {
+  name Dot44
+  xpos 1302
+  ypos -1196
+ }
+set N189c06d0 [stack 0]
+push $N189bf5a0
+ Blur {
+  channels rgba
+  size {{parent.Global_Settings.glowfeather}}
+  name Blur1
+  xpos 1487
+  ypos -2031
+ }
+ Glow2 {
+  brightness 0.42
+  name Glow2
+  xpos 1487
+  ypos -1985
+ }
+ Merge2 {
+  inputs 2
+  maskChannelInput matte.light
+  name Merge1
+  xpos 1486
+  ypos -1229
+  postage_stamp true
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop9
+  xpos 1486
+  ypos -1145
+ }
+ Shuffle {
+  in {matte.light matte.lightinverted -matte.clearalpha -matte.outline}
+  blue green
+  alpha green
+  out {matte.light matte.lightinverted -matte.clearalpha -matte.outline}
+  name Shuffle3
+  xpos 1486
+  ypos -1007
+ }
+ Grade {
+  black {0 0.42 1 0}
+  maskChannelInput matte.light
+  mix 0.21
+  name Blau
+  tile_color 0xffff
+  xpos 1486
+  ypos -971
+  dope_sheet true
+ }
+ Saturation {
+  saturation {{parent.Global_Settings.earthsaturation}}
+  name Saturation3
+  tile_color 0xffffffff
+  xpos 1486
+  ypos -924
+ }
+ Grade {
+  white 0.54
+  multiply 0.72
+  gamma 0.81
+  name Grade8
+  xpos 1486
+  ypos -895
+  dope_sheet true
+ }
+set N189c2250 [stack 0]
+ LightWrap {
+  inputs 2
+  name LightWrap1
+  xpos 1563
+  ypos -814
+  Diffuse 27
+  Intensity 3.5
+  onlywrap true
+  master 1
+  shadows 1
+  midtones 1
+  highlights 1
+ }
+ Dot {
+  name Dot24
+  xpos 1597
+  ypos -766
+ }
+push $N189c2250
+ Merge2 {
+  inputs 2
+  name Merge9
+  xpos 1486
+  ypos -793
+  postage_stamp true
+ }
+set N1f3e6a10 [stack 0]
+push $N189c06d0
+ Multiply {
+  inputs 1+1
+  value {{parent.Global_Settings.earthchannellight}}
+  maskChannelMask matte.light
+  invert_mask true
+  name Multiply7
+  xpos 1268
+  ypos -663
+ }
+push $N1f3e6a10
+add_layer {earth earth.r earth.g earth.b earth.a}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 earth.r
+  from1 rgba.green
+  to1 earth.g
+  from2 rgba.blue
+  to2 earth.b
+  from3 rgba.alpha
+  to3 earth.a
+  name Copy12
+  xpos 1486
+  ypos -681
+ }
+ Dot {
+  name Dot31
+  xpos 1520
+  ypos -204
+ }
+set N1f3e7460 [stack 0]
+push $N182f8180
+push $N182f7e10
+push $N18293870
+ Input {
+  inputs 0
+  name cityLightsHighRes
+  xpos -12
+  ypos -660
+  number 3
+ }
+ Input {
+  inputs 0
+  name cityLightsLowRes
+  xpos 149
+  ypos -715
+  number 2
+ }
+ Switch {
+  inputs 2
+  which {{parent.Global_Settings.hightextures}}
+  name Switch5
+  xpos 149
+  ypos -660
+ }
+ Dot {
+  name Dot60
+  xpos 183
+  ypos -577
+ }
+set N1f3e7eb0 [stack 0]
+clone $C183c4620 {
+  xpos 149
+  ypos -524
+  selected false
+ }
+clone $C183c4990 {
+  inputs 2
+  xpos 300
+  ypos -524
+  selected false
+ }
+ Scene {
+  inputs 2
+  name Scene2
+  xpos 443
+  ypos -545
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender2
+  xpos 433
+  ypos -430
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop2
+  xpos 433
+  ypos -204
+ }
+set N1f3e8fe0 [stack 0]
+ Dot {
+  name Dot65
+  xpos 543
+  ypos -201
+ }
+ Dot {
+  name Dot62
+  xpos 543
+  ypos -4
+ }
+push $N1f3e8fe0
+ Shuffle {
+  alpha red
+  name Shuffle2
+  xpos 433
+  ypos -180
+ }
+ Grade {
+  channels alpha
+  white 0.56
+  gamma 0.68
+  name Grade2
+  xpos 433
+  ypos -156
+ }
+set N1f3e9da0 [stack 0]
+ Dot {
+  name Dot71
+  xpos 282
+  ypos -147
+ }
+push $N182f8180
+ Dot {
+  name Dot64
+  xpos 195
+  ypos -268
+ }
+ Dot {
+  name Dot61
+  xpos 195
+  ypos -218
+ }
+push $N18293870
+push $N1f3e7eb0
+ Dot {
+  name Dot63
+  xpos 73
+  ypos -581
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha white
+  name Shuffle8
+  xpos 39
+  ypos -537
+ }
+ Noise {
+  size {{"1* parent.Global_Settings.earthscale"}}
+  zoffset {{(frame/5)*parent.Global_Settings.lightspeed}}
+  lacunarity {{parent.Global_Settings.lightlacunarity}}
+  gain {{parent.Global_Settings.lightgain}}
+  gamma {{parent.Global_Settings.lightgamma}}
+  center {960 540}
+  name Noise1
+  xpos 39
+  ypos -385
+ }
+clone $C183c4620 {
+  xpos 39
+  ypos -354
+  selected false
+ }
+clone $C183c4990 {
+  inputs 2
+  xpos 39
+  ypos -322
+  selected false
+ }
+ Scene {
+  name Scene7
+  xpos 49
+  ypos -298
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender7
+  xpos 39
+  ypos -221
+ }
+ Glow2 {
+  brightness 0.42
+  size 1
+  name Glow4
+  xpos 39
+  ypos -197
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop20
+  xpos 39
+  ypos -173
+ }
+ Dot {
+  name Dot38
+  xpos 73
+  ypos 120
+ }
+ Dot {
+  name Dot70
+  xpos 282
+  ypos 120
+ }
+ ChannelMerge {
+  inputs 2
+  operation in
+  B rgba.red
+  name ChannelMerge15
+  xpos 248
+  ypos -113
+ }
+push $N1f3e9da0
+ Switch {
+  inputs 2
+  which {{parent.Global_Settings.citylightanimated}}
+  name Switch2
+  xpos 433
+  ypos -101
+ }
+ Glow2 {
+  brightness 0.42
+  size 1
+  name Glow3
+  xpos 433
+  ypos -77
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  from1 rgba.green
+  to1 rgba.green
+  from2 rgba.blue
+  to2 rgba.blue
+  name Copy17
+  xpos 433
+  ypos -25
+ }
+ Grade {
+  channels alpha
+  mix 0.345
+  name Grade3
+  xpos 433
+  ypos 35
+  disable true
+ }
+ Premult {
+  name Premult4
+  xpos 433
+  ypos 75
+ }
+ Dot {
+  name Dot66
+  xpos 467
+  ypos 118
+ }
+ Dot {
+  name Dot67
+  xpos 588
+  ypos 118
+ }
+ Dot {
+  name Dot68
+  xpos 588
+  ypos -204
+ }
+ Copy {
+  inputs 2
+  from0 outline.normal
+  to0 outline.normal
+  name Copy7
+  xpos 625
+  ypos -213
+ }
+ Saturation {
+  saturation {{parent.Global_Settings.earthcitylightssaturation}}
+  name Saturation2
+  xpos 625
+  ypos -177
+ }
+ Multiply {
+  value {{parent.Global_Settings.lightintensity}}
+  name Multiply1
+  xpos 625
+  ypos -153
+ }
+ EdgeBlur {
+  controlchannel outline.normal
+  size {{"parent.Global_Settings.earthedgeblur * parent.Global_Settings.earthscale"}}
+  invert_mask true
+  name EdgeBlur2
+  xpos 625
+  ypos -117
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop21
+  xpos 625
+  ypos -81
+ }
+ Dot {
+  name Dot3
+  xpos 659
+  ypos -35
+ }
+set N1f601e80 [stack 0]
+ Dot {
+  name Dot42
+  xpos 1331
+  ypos -35
+ }
+set N1f6021f0 [stack 0]
+push $N1f3e7460
+ Merge2 {
+  inputs 2
+  maskChannelInput matte.light
+  invert_mask true
+  name Merge2
+  xpos 1486
+  ypos -68
+  disable {{1-parent.Global_Settings.rendercitylights x1 1}}
+  postage_stamp true
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop8
+  xpos 1486
+  ypos 16
+ }
+set N1f6028d0 [stack 0]
+push $N1f6021f0
+ Multiply {
+  inputs 1+1
+  value {{parent.Global_Settings.earthchannellight}}
+  maskChannelMask matte.light
+  name Multiply6
+  xpos 1297
+  ypos 10
+ }
+ Dot {
+  name Dot43
+  xpos 1331
+  ypos 133
+ }
+push $N1f6028d0
+add_layer {citylights citylights.r citylights.g citylights.a}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 citylights.r
+  from1 rgba.green
+  to1 citylights.g
+  from2 rgba.blue
+  to2 citylights.g
+  from3 rgba.alpha
+  to3 citylights.a
+  name Copy10
+  xpos 1486
+  ypos 106
+ }
+ Merge2 {
+  inputs 2
+  maskChannelInput matte.light
+  mix 0.85
+  name Merge8
+  xpos 1486
+  ypos 781
+  disable true
+  postage_stamp true
+ }
+ Dot {
+  name Dot27
+  xpos 1520
+  ypos 1339
+ }
+set N1f603a00 [stack 0]
+push $N182f84f0
+ Dot {
+  name Dot9
+  xpos 766
+  ypos 1182
+ }
+set N1f603d70 [stack 0]
+ Dot {
+  name Dot10
+  xpos 766
+  ypos 1240
+ }
+set N1f6040e0 [stack 0]
+push $N1f603d70
+push 0
+push $N18293870
+push $N183c2e10
+push $N183c3860
+ Switch {
+  inputs 2
+  which {{parent.Global_Settings.hightextures}}
+  name Switch3
+  xpos 149
+  ypos 1104
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha white
+  name Shuffle15
+  xpos 149
+  ypos 1143
+ }
+clone $C1882ac70 {
+  xpos 149
+  ypos 1179
+  selected false
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans9
+  tile_color 0xff75ff
+  xpos 241
+  ypos 1179
+ }
+ TransformGeo {
+  rotate {0 {-1*parent.Global_Settings.earthcloudspeed} 0}
+  name TransformGeo3
+  xpos 340
+  ypos 1179
+  disable {{1-parent.Global_Settings.earthcloudsanimated}}
+ }
+ Scene {
+  inputs 3
+  name Scene4
+  xpos 443
+  ypos 1158
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender4
+  xpos 433
+  ypos 1237
+ }
+ Shuffle {
+  out {matte.light matte.lightinverted matte.clearalpha -matte.outline}
+  name Shuffle6
+  xpos 433
+  ypos 1261
+ }
+ Copy {
+  inputs 2
+  from0 matte.widealpha
+  to0 matte.widealpha
+  from1 outline.expand
+  to1 outline.expand
+  name Copy8
+  xpos 433
+  ypos 1324
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop4
+  xpos 433
+  ypos 1378
+ }
+ Multiply {
+  value 0.46
+  name Multiply2
+  xpos 433
+  ypos 1402
+ }
+ EdgeBlur {
+  controlchannel outline.expand
+  size {{"parent.Global_Settings.earthedgeblur * parent.Global_Settings.earthscale"}}
+  maskChannelMask matte.clearalpha
+  maskChannelInput -matte.outline
+  name EdgeBlur3
+  xpos 433
+  ypos 1438
+ }
+ Dot {
+  name Dot11
+  xpos 467
+  ypos 1474
+ }
+set N1f7c0ea0 [stack 0]
+ Shuffle {
+  alpha red
+  name Shuffle9
+  xpos 1084
+  ypos 1471
+ }
+ Dot {
+  name Dot28
+  xpos 1284
+  ypos 1474
+ }
+set N1f7c1580 [stack 0]
+push $N1f603a00
+ Grade {
+  channels {matte.light -matte.lightinverted -matte.clearalpha -matte.outline}
+  gamma {{parent.Global_Settings.earthcloudsdarkbrightness}}
+  maskChannelInput -rgba.alpha
+  unpremult matte.clearalpha
+  name CloudDarkBright
+  xpos 1486
+  ypos 1387
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  maskChannelInput matte.light
+  mix {{parent.Global_Settings.cloudtransparency}}
+  name Merge3
+  xpos 1486
+  ypos 1441
+  disable {{1-parent.Global_Settings.renderingclouds}}
+  postage_stamp true
+ }
+set N1f7c1c60 [stack 0]
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop7
+  xpos 1486
+  ypos 1525
+ }
+set N1f7c1fd0 [stack 0]
+push $N1f7c1580
+ Multiply {
+  inputs 1+1
+  value {{parent.Global_Settings.earthchannellight}}
+  maskChannelMask matte.light
+  invert_mask true
+  name Multiply4
+  xpos 1250
+  ypos 1519
+ }
+ Dot {
+  name Dot41
+  xpos 1284
+  ypos 1692
+ }
+push $N1f603a00
+ Dot {
+  name Dot39
+  xpos 1745
+  ypos 1339
+ }
+ Dot {
+  name Dot69
+  xpos 1745
+  ypos 1600
+ }
+push $N1f7c1fd0
+ Copy {
+  inputs 2
+  from0 matte.light
+  to0 matte.light
+  from1 matte.lightinverted
+  to1 matte.lightinverted
+  name Copy11
+  xpos 1486
+  ypos 1585
+ }
+add_layer {clouds clouds.r clouds.g clouds.b clouds.a}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 clouds.r
+  from1 rgba.green
+  to1 clouds.g
+  from2 rgba.blue
+  to2 clouds.b
+  from3 rgba.alpha
+  to3 clouds.a
+  name Copy5
+  xpos 1486
+  ypos 1665
+ }
+ Grade {
+  black {0 0.04 0.1 0}
+  maskChannelInput matte.light
+  mix {{parent.Global_Settings.bluesaturation}}
+  name Grade6
+  xpos 1486
+  ypos 1758
+ }
+ Dot {
+  name Dot45
+  xpos 1520
+  ypos 2214
+ }
+set N1f7c3b50 [stack 0]
+push $N1f6040e0
+ Dot {
+  name Dot26
+  xpos 766
+  ypos 2010
+ }
+set N1f7c3ec0 [stack 0]
+ Dot {
+  name Dot29
+  xpos 766
+  ypos 2075
+ }
+push $N1f7c3ec0
+push $N18829eb0
+ Dot {
+  name Dot40
+  xpos -331
+  ypos 1850
+ }
+ Dot {
+  name Dot37
+  xpos 487
+  ypos 1850
+ }
+push $N18293870
+ Constant {
+  inputs 0
+  color {{parent.Global_Settings.earthlightingcolor.r} {parent.Global_Settings.earthlightingcolor.g} {parent.Global_Settings.earthlightingcolor.b} 0}
+  name Constant3
+  xpos 169
+  ypos 1903
+ }
+ Shuffle {
+  alpha white
+  name Shuffle7
+  xpos 169
+  ypos 1983
+ }
+ Sphere {
+  rows 64
+  columns 64
+  radius {{"parent.Global_Settings.earthscale + (0.02*parent.Global_Settings.earthscale)"}}
+  rotate {0 -100 0}
+  name Sphere6
+  xpos 169
+  ypos 2007
+ }
+ TransformGeo {
+  inputs 2
+  name geoTrans10
+  tile_color 0xff75ff
+  xpos 269
+  ypos 2007
+ }
+ TransformGeo {
+  name TransformGeo4
+  xpos 373
+  ypos 2007
+ }
+ Scene {
+  inputs 3
+  name Scene8
+  xpos 463
+  ypos 1986
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  antialiasing low
+  samples {{parent.Global_Settings.earthmultisamples}}
+  motion_vectors_type distance
+  name ScanlineRender8
+  xpos 453
+  ypos 2072
+ }
+ Shuffle {
+  blue alpha
+  out {matte.light matte.lightinverted matte.clearalpha -matte.outline}
+  name Shuffle11
+  xpos 453
+  ypos 2105
+ }
+ Copy {
+  inputs 2
+  from0 outline.expand_inner
+  to0 rgba.alpha
+  name Copy6
+  xpos 453
+  ypos 2205
+ }
+ Glow2 {
+  channels rgba
+  brightness 0.24
+  name Glow5
+  xpos 453
+  ypos 2241
+ }
+ Premult {
+  name Premult3
+  xpos 453
+  ypos 2265
+ }
+ Multiply {
+  value {{parent.Global_Settings.outlineintensity}}
+  name Multiply3
+  xpos 453
+  ypos 2289
+ }
+ Dot {
+  name Dot32
+  xpos 487
+  ypos 2344
+ }
+set N1f9721a0 [stack 0]
+ Dot {
+  name Dot48
+  xpos 487
+  ypos 2441
+ }
+set N1f972510 [stack 0]
+ Dot {
+  name Dot53
+  xpos 487
+  ypos 2541
+ }
+set N1f972880 [stack 0]
+ Dot {
+  name Dot58
+  xpos 487
+  ypos 2809
+ }
+push $N1f7c0ea0
+ Dot {
+  name Dot47
+  xpos 467
+  ypos 1553
+ }
+set N1f972f60 [stack 0]
+ Dot {
+  name Dot52
+  xpos 467
+  ypos 1655
+ }
+set N1f9732d0 [stack 0]
+ Dot {
+  name Dot57
+  xpos 467
+  ypos 1741
+ }
+push $N1f601e80
+ Dot {
+  name Dot51
+  xpos 659
+  ypos 17
+ }
+set N1f9739b0 [stack 0]
+ Dot {
+  name Dot33
+  xpos 659
+  ypos 70
+ }
+set N1f973d20 [stack 0]
+ Dot {
+  name Dot56
+  xpos 659
+  ypos 135
+ }
+push $N189c0360
+ ChannelMerge {
+  inputs 2
+  A forward.v
+  B forward.v
+  output forward.v
+  name ChannelMerge12
+  xpos 1142
+  ypos 120
+ }
+ ChannelMerge {
+  inputs 2
+  A forward.v
+  B forward.v
+  output forward.v
+  name ChannelMerge13
+  xpos 1136
+  ypos 1726
+ }
+ ChannelMerge {
+  inputs 2
+  A forward.v
+  B forward.v
+  output forward.v
+  name ChannelMerge14
+  xpos 1136
+  ypos 2794
+ }
+set N1f974ae0 [stack 0]
+ Dot {
+  name Dot59
+  xpos 1170
+  ypos 2935
+ }
+push $N1f974ae0
+push $N1f972880
+push $N1f9732d0
+push $N1f9739b0
+push $N189bfff0
+ ChannelMerge {
+  inputs 2
+  A forward.u
+  B forward.u
+  output forward.u
+  name ChannelMerge9
+  xpos 1018
+  ypos 2
+ }
+ ChannelMerge {
+  inputs 2
+  A forward.u
+  B forward.u
+  output forward.u
+  name ChannelMerge10
+  xpos 1018
+  ypos 1640
+ }
+ ChannelMerge {
+  inputs 2
+  A forward.u
+  B forward.u
+  output forward.u
+  name ChannelMerge11
+  xpos 1018
+  ypos 2526
+ }
+ Dot {
+  name Dot54
+  xpos 1052
+  ypos 2728
+ }
+push $N1f972510
+push $N1f972f60
+push $N1f973d20
+push $N189bfc80
+ ChannelMerge {
+  inputs 2
+  A depth.Z
+  B depth.Z
+  output depth.Z
+  name ChannelMerge2
+  xpos 875
+  ypos 55
+ }
+ ChannelMerge {
+  inputs 2
+  A depth.Z
+  B depth.Z
+  output depth.Z
+  name ChannelMerge6
+  xpos 875
+  ypos 1538
+ }
+ ChannelMerge {
+  inputs 2
+  A depth.Z
+  B depth.Z
+  output depth.Z
+  name ChannelMerge8
+  xpos 883
+  ypos 2426
+ }
+ Dot {
+  name Dot49
+  xpos 917
+  ypos 2630
+ }
+push $N1f9721a0
+ Blur {
+  size {{8*parent.Global_Settings.earthscale}}
+  name Blur4
+  xpos 644
+  ypos 2335
+ }
+set N1f976d40 [stack 0]
+ Dot {
+  name Dot19
+  xpos 1310
+  ypos 2344
+ }
+set N1f9770b0 [stack 0]
+ Dot {
+  name Dot46
+  xpos 1310
+  ypos 2500
+ }
+push $N1f9770b0
+push $N1f7c3b50
+ Merge2 {
+  inputs 2
+  operation plus
+  maskChannelInput -rgba.alpha
+  name Merge7
+  xpos 1486
+  ypos 2317
+  postage_stamp true
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop11
+  xpos 1486
+  ypos 2389
+ }
+add_layer {outlineshine outlineshine.r outlineshine.g outlineshine.b outlineshine.a}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 outlineshine.r
+  from1 rgba.green
+  to1 outlineshine.g
+  from2 rgba.blue
+  to2 outlineshine.b
+  from3 rgba.alpha
+  to3 outlineshine.a
+  name Copy13
+  xpos 1486
+  ypos 2473
+ }
+ Copy {
+  inputs 2
+  from0 depth.Z
+  to0 depth.Z
+  name Copy14
+  xpos 1486
+  ypos 2621
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop14
+  xpos 1486
+  ypos 2657
+ }
+ Copy {
+  inputs 2
+  from0 forward.u
+  to0 forward.u
+  name Copy15
+  xpos 1486
+  ypos 2719
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop16
+  xpos 1486
+  ypos 2755
+ }
+ Copy {
+  inputs 2
+  from0 forward.v
+  to0 forward.v
+  name Copy16
+  xpos 1486
+  ypos 2800
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop17
+  xpos 1486
+  ypos 2836
+ }
+ ShuffleCopy {
+  inputs 2
+  in forward
+  in2 none
+  red red
+  green green
+  blue black
+  alpha green
+  out motion
+  name ShuffleCopy1
+  xpos 1486
+  ypos 2932
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  maskChannelInput matte.light
+  mix 0.005
+  name Merge6
+  xpos 1486
+  ypos 2983
+ }
+ Remove {
+  channels matte
+  channels2 {outline.normal outline.expand -outline.expand_inner}
+  name Remove1
+  xpos 1486
+  ypos 3025
+ }
+ Crop {
+  box {0 0 {parent.Crop10.box.r} {parent.Crop10.box.t}}
+  name Crop12
+  xpos 1486
+  ypos 3061
+ }
+ Dot {
+  name Dot73
+  xpos 1520
+  ypos 3118
+ }
+ Output {
+  name Output2
+  xpos 1486
+  ypos 3163
+ }
+ Shuffle {
+  inputs 0
+  name Shuffle22
+  xpos 2647
+  ypos 924
+ }
+ NoOp {
+  inputs 0
+  name Global_Settings
+  tile_color 0xff00f4ff
+  gl_color 0xff00f4ff
+  note_font "Verdana Bold Bold Bold"
+  note_font_size 50
+  note_font_color 0xffffffff
+  xpos 2358
+  ypos 272
+  addUserKnob {20 earthrendersettings l Rendering}
+  addUserKnob {6 renderingclouds l "Render clouds" +STARTLINE}
+  renderingclouds {{parent.Global_Settings_renderingclouds}}
+  addUserKnob {6 rendercitylights l "Render city lights" +STARTLINE}
+  rendercitylights {{parent.Global_Settings_rendercitylights}}
+  addUserKnob {6 hightextures l "Use High Resolution Textures" +STARTLINE}
+  hightextures {{parent.Global_Settings_hightextures}}
+  addUserKnob {7 earthscale l Scale R 1 10}
+  earthscale {{parent.earthScale}}
+  addUserKnob {16 earthedgeblur l "Edge blur"}
+  earthedgeblur {{parent.edgeBlur}}
+  addUserKnob {16 earthmultisamples l "Multi samples"}
+  earthmultisamples {{parent.Global_Settings_earthmultisamples}}
+  addUserKnob {20 earthlightning l Lighting}
+  addUserKnob {7 earthsaturation l "Planet saturation" R 0 2}
+  earthsaturation {{parent.Global_Settings_earthsaturation}}
+  addUserKnob {7 earthlightblendmatte l "Light softness" R 0 20}
+  earthlightblendmatte {{parent.Global_Settings_earthlightblendmatte}}
+  addUserKnob {7 planetdarkness l "Night Intensity" R 0 0.05}
+  planetdarkness {{parent.nightIntensity}}
+  addUserKnob {7 bluesaturation l "Blue saturation"}
+  bluesaturation {{parent.atmosphereSaturation}}
+  addUserKnob {18 earthlightingcolor l "Atmosphere color"}
+  earthlightingcolor {{parent.Global_Settings_earthlightingcolor.r} {parent.Global_Settings_earthlightingcolor.g} {parent.Global_Settings_earthlightingcolor.b}}
+  addUserKnob {20 earthoutline l "Outline "}
+  addUserKnob {7 earthoutlinewidth l "Outline width" R 1 50}
+  earthoutlinewidth {{parent.Global_Settings_earthoutlinewidth}}
+  addUserKnob {7 glowfeather l "Glow feather amount" R 0 60}
+  glowfeather {{parent.outlineGlowFeather}}
+  addUserKnob {7 outlineintensity l "Outline intensity"}
+  outlineintensity {{parent.outlineGlowIntensity}}
+  addUserKnob {20 earthcitylights l "City lights"}
+  addUserKnob {6 citylightanimated l "Animated lights" +STARTLINE}
+  citylightanimated {{parent.Global_Settings_citylightanimated}}
+  addUserKnob {7 lightintensity l "Light transparency"}
+  lightintensity {{parent.Global_Settings_lightintensity}}
+  addUserKnob {7 earthcitylightssaturation l "City lights saturation"}
+  earthcitylightssaturation {{parent.Global_Settings_earthcitylightssaturation}}
+  addUserKnob {7 lightspeed l Speed R 0 20}
+  lightspeed {{parent.Global_Settings_lightspeed}}
+  addUserKnob {26 earthlightspeedinfo l "" +STARTLINE T "This parameter needs to be animated for the city lights."}
+  addUserKnob {7 lightlacunarity l Lacunarity R 1 10}
+  lightlacunarity {{parent.Global_Settings_lightlacunarity}}
+  addUserKnob {7 lightgain l Gain}
+  lightgain {{parent.Global_Settings_lightgain}}
+  addUserKnob {7 lightgamma l Gamma}
+  lightgamma {{parent.Global_Settings_lightgamma}}
+  addUserKnob {20 earthclouds l Clouds}
+  addUserKnob {7 cloudtransparency l "Cloud transparency"}
+  cloudtransparency {{parent.Global_Settings_cloudtransparency}}
+  addUserKnob {7 earthcloudsdarkbrightness l "Visibility in non-lightened areas" t "Default: 1" R 1 5}
+  earthcloudsdarkbrightness {{parent.Global_Settings_earthcloudsdarkbrightness}}
+  addUserKnob {6 earthcloudsanimated l "Animated Clouds" +STARTLINE}
+  earthcloudsanimated {{parent.cloudAnimatedState x1 0 x40 1}}
+  addUserKnob {7 earthcloudspeed l Rotation R 0 360}
+  earthcloudspeed {{parent.cloudRotation x40 0}}
+  addUserKnob {20 earthmanual l Manual}
+  addUserKnob {26 earthhelp l "" +STARTLINE T "Step 1:\nThere are two inputs for every texture, one in low resolution and one in high resolution. \nPlug the texture images into the specific inputs. \n\nStep 2:\nPlug in your camera into the mainCamera input.\n\nStep 3:\nPlug a light into the mainLight input. Best look comes from a directional light source.\n\nStep 4: \nFor correct positioning of the earth, plug a transformGeo node into the transform input.\n\nDone!"}
+  addUserKnob {20 earthoutput l Output}
+  addUserKnob {6 earthchannellight l "Disable lighthning on seperate channels" +STARTLINE}
+  earthchannellight {{parent.Global_Settings_earthchannellight}}
+  addUserKnob {26 earthdisablelightinfo l "" +STARTLINE T "Check this, if you want no lighting on your seperate channel output."}
+ }
+ Phong {
+  inputs 0
+  name Phong1
+  xpos 1763
+  ypos -908
+ }
+push $N1f7c1c60
+push $N1f976d40
+ Viewer {
+  inputs 2
+  frame_range 1-100
+  frame_range_lock true
+  roi {-0.1029999852 -0.3000000119 0.7440000176 0.4320000112}
+  input_process false
+  name Viewer1
+  xpos 1918
+  ypos 1666
+ }
+end_group

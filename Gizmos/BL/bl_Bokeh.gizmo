@@ -1,0 +1,243 @@
+#! /s/apps/lin/nuke/Nuke6.2v4/Nuke6.2 -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Bokeh}
+ addUserKnob {7 Size R 0 100}
+ Size 20
+ addUserKnob {7 Intensity R 0.01 1}
+ Intensity 0.05
+ addUserKnob {7 Smoothness}
+ addUserKnob {4 Type M {Circle Sided}}
+ addUserKnob {20 Noise n 1}
+ Noise 0
+ addUserKnob {7 NoiseInt l Intensity}
+ NoiseInt 0.5
+ addUserKnob {41 size l x/ysize T Noise2.size}
+ addUserKnob {41 zoffset l z T Noise2.zoffset}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 Shape n 1}
+ Shape 0
+ addUserKnob {3 Side}
+ Side 8
+ addUserKnob {7 Angle R -180 180}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 Edge n 1}
+ Edge 0
+ addUserKnob {7 EdgeInt l Intensity R 0 5}
+ addUserKnob {7 EdgeSize l Size R 0 10}
+ EdgeSize 2
+ addUserKnob {7 EdgeAngle l Angle R -180 180}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+}
+ Constant {
+  inputs 0
+  channels alpha
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant2
+  xpos -149
+  ypos -584
+  postage_stamp false
+ }
+ Reformat {
+  type "to box"
+  box_width {{"parent.Size * 2 + 1" i}}
+  box_height {{box_width i}}
+  box_fixed true
+  name Reformat2
+  xpos -149
+  ypos -542
+ }
+set N550f390 [stack 0]
+ Noise {
+  output alpha
+  type turbulence
+  size 1.5
+  zoffset 1
+  octaves 5
+  nyquist false
+  center {32 32}
+  name Noise2
+  xpos -259
+  ypos -449
+  postage_stamp true
+ }
+ Camera2 {
+  inputs 0
+  translate {0 2 0}
+  rotate {-90 0 0}
+  projection_mode orthographic
+  name Camera2
+  xpos 141
+  ypos -561
+ }
+ Cylinder {
+  inputs 0
+  rows 1
+  columns {{parent.Side i}}
+  radius 0.24
+  close_top true
+  close_bottom true
+  name Cylinder2
+  xpos 31
+  ypos -636
+ }
+ Scene {
+  name Scene2
+  xpos 41
+  ypos -608
+ }
+push $N550f390
+ ScanlineRender {
+  inputs 3
+  output_motion_vectors_type off
+  MB_channel none
+  name ScanlineRender2
+  xpos 31
+  ypos -542
+ }
+ Transform {
+  rotate {{parent.Angle i}}
+  center {{width/2 i} {height/2 i}}
+  name Transform2
+  xpos 31
+  ypos -448
+ }
+ Dot {
+  name Dot2
+  xpos 63
+  ypos -223
+ }
+push $N550f390
+ Radial {
+  output alpha
+  area {{0 i} {0 i} {width i} {height i}}
+  name Radial2
+  xpos -149
+  ypos -450
+  postage_stamp true
+ }
+set N7766320 [stack 0]
+ Expression {
+  channel0 alpha
+  expr0 "(a>0)? 1 : 0"
+  name Expression3
+  xpos -68
+  ypos -289
+ }
+ Switch {
+  inputs 2
+  which {{parent.Type i}}
+  name Switch2
+  xpos -68
+  ypos -226
+ }
+ BlackOutside {
+  name BlackOutside2
+  xpos -68
+  ypos -165
+ }
+set N684a240 [stack 0]
+ Emboss {
+  channels alpha
+  Angle {{parent.EdgeAngle i}}
+  Width {{parent.EdgeSize i}}
+  name Emboss1
+  xpos 42
+  ypos -172
+ }
+ Expression {
+  channel0 alpha
+  expr0 "(a > 0.7)? 1 : 0"
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression1
+  xpos 42
+  ypos -130
+ }
+push $N684a240
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  name Merge5
+  xpos 42
+  ypos -102
+ }
+ Multiply {
+  channels alpha
+  value 0.5
+  name Multiply1
+  xpos 42
+  ypos -70
+ }
+ Multiply {
+  channels alpha
+  value {{"(parent.EdgeInt >= 1)? parent.EdgeInt : 1" i}}
+  name Multiply2
+  xpos 42
+  ypos -28
+ }
+push $N7766320
+push $N684a240
+ Merge2 {
+  inputs 2
+  operation multiply
+  bbox B
+  mix {{parent.Smoothness i}}
+  name Merge6
+  xpos -149
+  ypos -104
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  mix {{clamp(parent.EdgeInt,0,1) i}}
+  name Merge8
+  xpos -149
+  ypos -21
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  bbox B
+  mix {{parent.NoiseInt i}}
+  name Merge7
+  xpos -259
+  ypos -21
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -410
+  ypos -40
+ }
+ Gamma {
+  channels rgb
+  value {{abs(1-parent.Intensity) i}}
+  name Gamma3
+  xpos -410
+  ypos -12
+ }
+ Convolve {
+  inputs 2
+  channels rgba
+  channel rgba.alpha
+  name Convolve2
+  xpos -259
+  ypos 45
+ }
+ Gamma {
+  channels rgb
+  value {{"1 / parent.Gamma3.value" i}}
+  name Gamma4
+  xpos -410
+  ypos 108
+ }
+ Output {
+  name Output
+  xpos -410
+  ypos 136
+ }
+end_group

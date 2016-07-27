@@ -1,0 +1,197 @@
+set cut_paste_input [stack 0]
+version 6.3 v2
+CheckerBoard2 {
+ inputs 0
+ name CheckerBoard1
+ selected true
+ xpos -109
+ ypos -278
+ postage_stamp false
+}
+set N3f8fbc0 [stack 0]
+Sphere {
+ translate {{(sin(frame/5)*30)*-1 i} {frame*5 i} {(cos(frame/5)*30)*-1 i}}
+ uniform_scale {{parent.Sphere1.uniform_scale i}}
+ name Sphere2
+ selected true
+ xpos -207
+ ypos -224
+}
+set N3f8fef0 [stack 0]
+Dot {
+ name Dot1
+ selected true
+ xpos -173
+ ypos -414
+}
+push $N3f8fbc0
+Sphere {
+ translate {{sin(frame/5)*30 i} {frame*5 i} {cos(frame/5)*30 i}}
+ uniform_scale 3
+ name Sphere1
+ selected true
+ xpos 6
+ ypos -224
+}
+set N3f90550 [stack 0]
+Dot {
+ name Dot2
+ selected true
+ xpos 40
+ ypos -414
+}
+Scene {
+ inputs 2
+ name Scene1
+ selected true
+ xpos -83
+ ypos -438
+}
+push $cut_paste_input
+TargetCam {
+ name TargetCam1
+ note_font Verdana
+ selected true
+ xpos 282
+ ypos 235
+ translate {{curve i x1 940.7233276 x50 633.7459106 x100 0.06523036957} {curve i x1 116.7679291 x50 99.50139618 x100 116.7697449} {curve i x1 0.13763952 x50 -632.1498413 x100 -957.7092896}}
+ translate_1 {{curve i x1 0} {curve i x1 168.5} {curve i x1 0}}
+ file ""
+}
+set N7099320 [stack 0]
+push $N7099320
+Constant {
+ inputs 0
+ color {0.5099999905 0 0 0}
+ format "256 256 0 0 256 256 1 square_256"
+ name Constant1
+ selected true
+ xpos 215
+ ypos -274
+ postage_stamp false
+}
+Radial {
+ opacity 0.495
+ area {94.5 106.5 222.5 234.5}
+ softness 1.4
+ name Radial1
+ selected true
+ xpos 215
+ ypos -250
+}
+Sphere {
+ name Sphere5
+ selected true
+ xpos 215
+ ypos -206
+}
+set N8766990 [stack 0]
+Constant {
+ inputs 0
+ color {0.05610006675 0 0.5099999905 0}
+ format "256 256 0 0 256 256 1 square_256"
+ name Constant2
+ selected true
+ xpos -386
+ ypos -264
+ postage_stamp false
+}
+Radial {
+ opacity 0.495
+ area {94.5 106.5 222.5 234.5}
+ softness 1.4
+ name Radial2
+ selected true
+ xpos -386
+ ypos -240
+}
+Sphere {
+ name Sphere4
+ selected true
+ xpos -386
+ ypos -194
+}
+set N8767320 [stack 0]
+push $N3f90550
+push $N8766990
+push $N8767320
+push $N3f8fef0
+push 0
+ParticleEmitter {
+ inputs 4
+ start_frame -65
+ rate {{curve i x1 10 0}}
+ lifetime 600
+ velocity 0
+ size {{parent.ParticleEmitter1.size i}}
+ size_variation 1
+ name ParticleEmitter2
+ selected true
+ xpos -207
+ ypos -132
+}
+ParticleEmitter {
+ inputs 4
+ start_frame -65
+ rate {{curve i x1 10 0}}
+ lifetime 600
+ velocity 0
+ size 1.5
+ size_variation 0.855
+ name ParticleEmitter1
+ selected true
+ xpos 6
+ ypos -132
+}
+ParticleTurbulence {
+ strength {{curve i x1 5 x4 0} {curve i x1 5 x4 0} {curve i x1 5 x4 0}}
+ name ParticleTurbulence1
+ selected true
+ xpos 6
+ ypos -49
+ disable true
+}
+ParticleSettings {
+ steps_per_frame 25
+ name ParticleSettings1
+ selected true
+ xpos 6
+ ypos 122
+}
+ParticleToGeo {
+ name ParticleToGeo1
+ selected true
+ xpos 6
+ ypos 168
+}
+TransformGeo {
+ translate {0 326 0}
+ name TransformGeo1
+ selected true
+ xpos 6
+ ypos 235
+}
+Scene {
+ inputs 2
+ name Scene2
+ selected true
+ xpos 157
+ ypos 214
+}
+Constant {
+ inputs 0
+ channels rgb
+ format "960 580 0 0 960 580 1 HD_Proxy"
+ name Constant3
+ selected true
+ xpos -18
+ ypos 305
+ postage_stamp false
+}
+ScanlineRender {
+ inputs 3
+ name ScanlineRender1
+ selected true
+ xpos 147
+ ypos 305
+}

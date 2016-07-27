@@ -1,0 +1,212 @@
+set cut_paste_input [stack 0]
+version 8.0 v6
+push $cut_paste_input
+add_layer {P P.red P.green P.blue P.alpha P.x P.y P.z P.R P.G P.B N.red N.green N.blue}
+Group {
+ name Pos_Project3D
+ help "A - Alpha mate to mask the result\nImg - Image to project\nP - Position pass\n\nDoes the same as Project3d but instead of geometry uses position pass.\n"
+ selected true
+ xpos -351
+ ypos 43
+ addUserKnob {20 User l Pos_Project3D}
+ addUserKnob {41 in l "Position Channel" T Shuffle1.in}
+ addUserKnob {41 A l "Alpha Channel" T ChannelMerge1.A}
+ addUserKnob {26 ""}
+ addUserKnob {41 cam l "Projector Cam" T CamInput.cam}
+ addUserKnob {41 filter l Filtering T STMap.filter}
+ addUserKnob {41 disable_1 l "Disable Log<>Lin" T Log2Lin1.disable}
+ addUserKnob {26 ""}
+ addUserKnob {26 a l "" +STARTLINE T "Daniel Velikov  © 2016"}
+}
+ Input {
+  inputs 0
+  name A
+  xpos -968
+  ypos 813
+  number 2
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos -781
+  ypos 813
+ }
+ Input {
+  inputs 0
+  name P
+  xpos -968
+  ypos 293
+ }
+ Shuffle {
+  in {P.red P.green P.blue P.alpha}
+  alpha black
+  out rgb
+  name Shuffle1
+  label "\[value in]"
+  xpos -582
+  ypos 293
+ }
+ Expression {
+  temp_name0 R
+  temp_expr0 "\[value CamInput.cam].world_matrix.3"
+  temp_name1 G
+  temp_expr1 "\[value CamInput.cam].world_matrix.7"
+  temp_name2 B
+  temp_expr2 "\[value CamInput.cam].world_matrix.11"
+  expr0 r-R
+  expr1 g-G
+  expr2 b-B
+  name POSITION
+  xpos -582
+  ypos 392
+ }
+ ColorMatrix {
+  matrix {
+      {{"\[value CamInput.cam].world_matrix.0"} {"\[value CamInput.cam].world_matrix.1"} {"\[value CamInput.cam].world_matrix.2"}}
+      {{"\[value CamInput.cam].world_matrix.4"} {"\[value CamInput.cam].world_matrix.5"} {"\[value CamInput.cam].world_matrix.6"}}
+      {{"\[value CamInput.cam].world_matrix.8"} {"\[value CamInput.cam].world_matrix.9"} {"\[value CamInput.cam].world_matrix.10"}}
+    }
+  invert true
+  name ROTATION
+  xpos -582
+  ypos 418
+ }
+ Expression {
+  temp_name0 ha
+  temp_expr0 "\[value CamInput.cam].haperture"
+  temp_name1 va
+  temp_expr1 "\[value CamInput.cam].vaperture"
+  temp_name2 h
+  temp_expr2 "(ha / \[value CamInput.cam].focal)"
+  temp_name3 v
+  temp_expr3 "(va  / \[value CamInput.cam].focal)"
+  expr0 "((r / h)/-b)-\[value CamInput.cam].win_translate.u*.5"
+  expr1 "((g / v)/-b)/(ha/va)-\[value CamInput.cam].win_translate.v*.5"
+  expr2 -b
+  channel3 none
+  name SCALE_WINTR
+  xpos -582
+  ypos 444
+ }
+ ColorMatrix {
+  matrix {
+      {{"1/\[value CamInput.cam].win_scale.u"} 0 0}
+      {0 {"1/\[value CamInput.cam].win_scale.v"} 0}
+      {0 0 1}
+    }
+  name WIN_SCL
+  xpos -582
+  ypos 470
+ }
+ ColorMatrix {
+  matrix {
+      {{cos(radians(angle))} {-sin(radians(angle))} 0}
+      {{sin(radians(angle))} {cos(radians(angle))} 0}
+      {0 0 1}
+    }
+  name WIN_ROLL
+  xpos -582
+  ypos 496
+  addUserKnob {20 User}
+  addUserKnob {7 angle}
+  angle {{"\[value CamInput.cam].winroll" x1024 29.5}}
+ }
+ Expression {
+  temp_name0 fh
+  temp_expr0 Img.format.height
+  temp_name1 fw
+  temp_expr1 Img.format.width
+  temp_name2 px
+  temp_expr2 Img.format.pixel_aspect
+  temp_name3 ar
+  temp_expr3 (fw/(fh/px))
+  expr0 r+.5
+  expr1 g*ar+.5
+  expr2 +.5
+  channel3 none
+  name Expression1
+  xpos -582
+  ypos 564
+ }
+set N6683400 [stack 0]
+ Expression {
+  expr2 0
+  expr3 "r<0 || r>1 || g<0 || g>1?0:1"
+  name FrustrumMask
+  xpos -414
+  ypos 753
+ }
+push $N6683400
+ Input {
+  inputs 0
+  name Img
+  xpos -971
+  ypos 636
+  number 1
+ }
+ Log2Lin {
+  operation lin2log
+  black 0
+  white 1000
+  gamma 1.8
+  name Log2Lin1
+  xpos -692
+  ypos 642
+  disable true
+ }
+ STMap {
+  inputs 2
+  uv rgb
+  blur -rgba.alpha
+  blur_scale 0
+  maskChannel -rgba.alpha
+  name STMap
+  xpos -582
+  ypos 636
+ }
+ Log2Lin {
+  black {{Pos_Project3D.Log2Lin1.black}}
+  white {{Pos_Project3D.Log2Lin1.white}}
+  gamma {{Pos_Project3D.Log2Lin1.gamma}}
+  name Log2Lin2
+  xpos -582
+  ypos 674
+  disable {{Pos_Project3D.Log2Lin1.disable}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -582
+  ypos 747
+ }
+ ChannelMerge {
+  inputs 2
+  operation from
+  name ChannelMerge1
+  xpos -582
+  ypos 807
+ }
+ Premult {
+  name Premult1
+  xpos -582
+  ypos 879
+ }
+ Output {
+  name Output1
+  xpos -582
+  ypos 930
+ }
+ NoOp {
+  inputs 0
+  name CamInput
+  xpos -973
+  ypos 446
+  hide_input true
+  addUserKnob {20 User}
+  addUserKnob {1 cam l camera}
+  cam "Projection Camera Name Here"
+ }
+end_group
+

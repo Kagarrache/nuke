@@ -1,0 +1,112 @@
+#! /Applications/Nuke6.3v8/Nuke6.3v8.app/Contents/MacOS/Nuke6.3v8 -nx
+version 6.3 v8
+Gizmo {
+ note_font Verdana
+ mapsize {0.15 0.15}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 259
+  ypos 79
+ }
+add_layer {rgba rgba.beta}
+ Colorspace {
+  colorspace_out YCbCr
+  bradford_matrix true
+  name Colorspace3
+  xpos 259
+  ypos 140
+ }
+set N253c5240 [stack 0]
+push $N253c5240
+add_layer {shadow}
+ Shuffle {
+  red green
+  blue green
+  name Cb1
+  xpos 499
+  ypos 167
+ }
+ Transform {
+  translate {0.5 0}
+  scale {2 1}
+  center {960 540}
+  filter Mitchell
+  black_outside false
+  name Transform6
+  xpos 499
+  ypos 191
+ }
+ Transform {
+  translate {-0.5 0}
+  scale {0.5 1}
+  center {960 540}
+  filter Notch
+  black_outside false
+  name Transform7
+  xpos 499
+  ypos 214
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue blue
+  name ShuffleCopy5
+  xpos 259
+  ypos 285
+ }
+push $N253c5240
+ Shuffle {
+  red blue
+  green blue
+  name Cr1
+  xpos 392
+  ypos 230
+ }
+ Transform {
+  translate {0.5 0}
+  scale {2 1}
+  center {960 540}
+  filter Mitchell
+  black_outside false
+  name Transform8
+  xpos 392
+  ypos 275
+ }
+ Transform {
+  translate {-0.5 0}
+  scale {0.5 1}
+  center {960 540}
+  filter Notch
+  black_outside false
+  name Transform9
+  xpos 392
+  ypos 306
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  name ShuffleCopy6
+  xpos 259
+  ypos 348
+ }
+ Colorspace {
+  colorspace_in YCbCr
+  bradford_matrix true
+  name Colorspace4
+  xpos 259
+  ypos 431
+ }
+ Output {
+  name Output1
+  xpos 259
+  ypos 515
+ }
+ Output {
+  name Output2
+  xpos 259
+  ypos 615
+ }
+end_group

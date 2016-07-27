@@ -1,0 +1,68 @@
+#! /vol/apps/nuke-6.2v3_64/Nuke6.2 -nx
+version 6.2 v3
+Gizmo {
+ inputs 2
+ addUserKnob {20 User l biasedSat}
+ addUserKnob {41 source l "bias colour" T targetMult.source}
+ addUserKnob {41 saturation T Saturation1.saturation}
+ addUserKnob {41 mode l "luminance math" T Saturation1.mode}
+ addUserKnob {26 ""}
+ addUserKnob {41 unpremult l "(un)premult by" T Saturation1.unpremult}
+ addUserKnob {41 invert_unpremult l invert -STARTLINE T Saturation1.invert_unpremult}
+ addUserKnob {41 mix T Saturation1.mix}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 549
+  ypos -573
+  number 1
+ }
+ Input {
+  inputs 0
+  name image
+  xpos 367
+  ypos -666
+ }
+set N15f2e8e0 [stack 0]
+push $N15f2e8e0
+ Multiply {
+  channels rgba
+  value {{target/source} {target/source} {target/source} {target/source}}
+  name targetMult
+  xpos 283
+  ypos -586
+  addUserKnob {20 User}
+  addUserKnob {19 source l "bias colour"}
+  source {0.18 0.18 0.18 0.18}
+  addUserKnob {19 target}
+  target {{(source.r*.3)+(source.g*.59)+(source.b*.11) x1 0.66}}
+ }
+ Saturation {
+  unpremult -rgba.alpha
+  name Saturation1
+  xpos 283
+  ypos -551
+ }
+ Multiply {
+  channels rgba
+  value {{1/targetMult.value} {1/targetMult.value} {1/targetMult.value} {1/targetMult.value}}
+  name MultiBack
+  xpos 283
+  ypos -523
+ }
+ Keymix {
+  inputs 3
+  invertMask true
+  name Keymix1
+  selected true
+  xpos 356
+  ypos -445
+  disable {{"\[exists parent.input1] ? 0 : 1" K x53 1}}
+ }
+ Output {
+  name Output1
+  xpos 361
+  ypos -340
+ }
+end_group

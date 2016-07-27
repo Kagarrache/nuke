@@ -1,0 +1,69 @@
+#! C:/Program Files/Nuke7.0v8/Nuke7.0.exe -nx
+version 7.0 v8
+Gizmo {
+ inputs 2
+ help "This gizmo allow you to make simple lighting based on Lambert shading algorithm. At the moment only point light is supported but it should be enough for almost any situation. Connect your World Position and World Normals to inputs, adjust position of light and play with settings. All is pretty fast and interactive.\n-----\nv001\nIvan Kokov. HeShan Media. 2014\nbutafor@inbox.ru "
+ tile_color 0x7f0000ff
+ addUserKnob {20 Light}
+ addUserKnob {41 Shade t "To do shading or not at all." T Lambert_Shader_ik.Shade}
+ addUserKnob {41 Intensity t "Intensity of your light. You can make it with color!" T Lambert_Shader_ik.Intensity}
+ addUserKnob {41 LP l "Light Position" t "Position of light we trying to simualte. Here suppose to be only point light source" T Lambert_Shader_ik.LP}
+ addUserKnob {41 Falloff t "Attenuation of your light. Phisically correct in our world is Quadratic Falloff." T Lambert_Shader_ik.Falloff}
+ addUserKnob {26 ""}
+ addUserKnob {41 Ambient t "add Extra ambient light. It will be simply added to overall brightness values." T Lambert_Shader_ik.Ambient}
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "V001 © Ivan Kokov. Heshan Media. 2014"}
+}
+ Input {
+  inputs 0
+  name WorldNormals
+  xpos 895
+  ypos 443
+  number 1
+ }
+ Input {
+  inputs 0
+  name WorldPos
+  xpos 646
+  ypos 447
+ }
+ MergeExpression {
+  inputs 2
+  temp_name0 L
+  temp_expr0 "sqrt(pow2(Br - LP.r) + pow2(Bg - LP.g) + pow2(Bb - LP.b) )"
+  temp_name1 difA
+  temp_expr1 "acos(clamp((( ( ((Br -LP.r) * Ar) + ((Bg - LP.g) * Ag) + ((Bb - LP.b) * Ab) ) / L )),-1,1 ))/ (pi/2) - 1"
+  temp_name2 FP
+  temp_expr2 "(Falloff==0) ? 1 : ( (Falloff==1) ? L :  ( (Falloff==2) ? pow2 (L) : pow(L, 3) ) )"
+  temp_name3 test
+  temp_expr3 "acos(clamp((( ( ((Br -LP.r) * Ar) + ((Bg - LP.g) * Ag) + ((Bb - LP.b) * Ab) ) / L )),-1,1 ))/ (pi/2) - 1"
+  expr0 "!Shade ? Br :  (max(0, ((difA / FP) * Intensity.r ) )+ Ambient.r) "
+  expr1 "!Shade ? Bg : (max(0, ((difA / FP) * Intensity.g ) )+ Ambient.g)"
+  expr2 "!Shade ? Bb : (max(0, ((difA / FP) * Intensity.b ) )+ Ambient.b)"
+  expr3 a
+  name Lambert_Shader_ik
+  tile_color 0x7f0000ff
+  selected true
+  xpos 818
+  ypos 521
+  addUserKnob {20 Light}
+  addUserKnob {6 Shade +STARTLINE}
+  Shade true
+  addUserKnob {18 Intensity}
+  Intensity 1
+  addUserKnob {18 LP l "Light Position"}
+  LP {0 0 0}
+  addUserKnob {4 Falloff M {"No Falloff" Linear Quadratic Cubic "" ""}}
+  Falloff Quadratic
+  addUserKnob {26 ""}
+  addUserKnob {18 Ambient}
+  Ambient {0 0 0}
+  addUserKnob {26 ""}
+  addUserKnob {26 credits l "" +STARTLINE T "V001 © Ivan Kokov. Heshan Media. 2014"}
+ }
+ Output {
+  name Output1
+  xpos 818
+  ypos 591
+ }
+end_group

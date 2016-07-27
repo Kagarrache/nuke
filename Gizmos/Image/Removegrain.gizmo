@@ -1,0 +1,75 @@
+#! C:/Program Files/Nuke6.0v3/Nuke6.0.exe -nx
+version 6.0 v3
+Gizmo {
+ help "Some basic modification did toF_DENoise to achieve better degrain footage. Very useful for keying, tracking andpaintout work if you are working on Film. Also canhelp reduce the digital artifact. Hope your find it useful."
+ lock_connections true
+ addUserKnob {20 RemoveGrain}
+ addUserKnob {41 colourSpace l "Original Colour Space" T F_DeNoise1.colourSpace}
+ addUserKnob {41 plateSize l "Plate Size" T F_DeNoise1.plateSize}
+ addUserKnob {41 centre l "Analysis Centre" T F_DeNoise1.centre}
+ addUserKnob {41 analyse l Analyse T F_DeNoise1.analyse}
+ addUserKnob {41 amount l "DeNoise Amount" T F_DeNoise1.amount}
+ addUserKnob {41 redAmount l "Red Amount" T F_DeNoise1.redAmount}
+ addUserKnob {41 greenAmount l "Green Amount" T F_DeNoise1.greenAmount}
+ addUserKnob {41 blueAmount l "Blue Amount" T F_DeNoise1.blueAmount}
+ addUserKnob {41 suppRinging l "Suppress Ringing" T F_DeNoise1.suppRinging}
+ addUserKnob {26 l l "" +STARTLINE T "basnetkundan@gmail.com\n"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -49
+  ypos -139
+ }
+ Colorspace {
+  colorspace_out YPbPr
+  name Colorspace1
+  xpos -70
+  ypos -93
+ }
+ DegrainSimple {
+  rVal 0
+  gVal 25
+  bVal 25
+  name DegrainSimple1
+  xpos -65
+  ypos -45
+ }
+ Colorspace {
+  colorspace_in YPbPr
+  name Colorspace2
+  xpos -63
+  ypos 17
+ }
+ OFXuk.co.thefoundry.furnace.f_denoise_v403 {
+  colourSpace Cineon
+  amount 1.9
+  plateSize 2K/HD
+  suppRinging true
+  output Result
+  noise 10
+  "Analysis Region" 0
+  centre {574.000061 486.0000063}
+  frame 4111
+  Advanced 0
+  redAmount 1
+  greenAmount 1
+  blueAmount 1
+  needToAnalyse true
+  sampleFrameHasBeenInitialised true
+  notBeenMoved false
+  beenHereBefore true
+  inputHasChanged false
+  beenHereBefore2 true
+  dontAnalyse false
+  cacheBreaker true
+  name F_DeNoise1
+  xpos -63
+  ypos 92
+ }
+ Output {
+  name Output1
+  xpos -42
+  ypos 186
+ }
+end_group

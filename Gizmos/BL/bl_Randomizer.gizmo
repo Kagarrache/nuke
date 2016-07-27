@@ -1,0 +1,34 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Randomizer}
+ addUserKnob {7 mult R 1 50}
+ mult 10
+ addUserKnob {7 seed R 0 100}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 400
+  ypos -106
+ }
+add_layer {rgba rgba.beta}
+ Expression {
+  temp_name0 val
+  temp_expr0 parent.mult
+  temp_name1 sd
+  temp_expr1 parent.seed
+  expr0 "random( (r+sd) * val )"
+  expr1 "random( (g+sd) * val )"
+  expr2 "random( (b+sd) * val )"
+  expr3 "random( (a+sd) * val)"
+  name Expression5
+  xpos 400
+  ypos -80
+ }
+ Output {
+  name Output
+  xpos 400
+  ypos -54
+ }
+end_group

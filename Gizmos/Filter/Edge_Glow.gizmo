@@ -1,0 +1,135 @@
+#! C:/Program Files/Nuke8.0v1/nuke-8.0.v1.dll -nx
+version 8.0 v1
+Gizmo {
+ inputs 2
+ knobChanged "\n\na = nuke.thisNode().knob('affect_alpha').value()\nif a == 1.0:\n    nuke.thisNode().knob('channels_1').setValue('rgba')\nelif a == 0.0:\n    nuke.thisNode().knob('channels_1').setValue('rgb')\n\n"
+ addUserKnob {20 Edge_Glow}
+ addUserKnob {41 channels T EdgeBlur1.channels}
+ addUserKnob {7 thickness l core_thickness R 0 5}
+ thickness 1
+ addUserKnob {41 threshold l Threshold T EdgeDetect1.threshold}
+ addUserKnob {41 primary_blur T Blur1.size}
+ addUserKnob {41 glow_color l color T Grade1.gamma}
+ addUserKnob {26 ""}
+ addUserKnob {41 channels_1 l INVISIBLE +INVISIBLE T Glow1.channels}
+ addUserKnob {41 glow T Glow1.brightness}
+ addUserKnob {41 glow_size T Glow1.size}
+ addUserKnob {6 affect_alpha +STARTLINE}
+ affect_alpha true
+ addUserKnob {52 test T "nuke.thisNode().knob('knobChanged').setValue('''\n\na = nuke.thisNode().knob('affect_alpha').value()\nif a == 1.0:\n    nuke.thisNode().knob('channels_1').setValue('rgba')\nelif a == 0.0:\n    nuke.thisNode().knob('channels_1').setValue('rgb')\n\n''')" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelInput l mask T Merge2.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T Merge2.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge2.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge2.fringe}
+ addUserKnob {41 mix T Merge2.mix}
+ addUserKnob {26 ""}
+ addUserKnob {22 gauravjaiswal l "Gaurav Jaiswal" T "import webbrowser\n\nwebbrowser.open_new('https://www.linkedin.com/in/gaurav-jaiswal-266835b3?trk=hp-identity-name')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 373
+  ypos 326
+ }
+ Input {
+  inputs 0
+  name source
+  xpos -116
+  ypos -105
+  number 1
+ }
+ Dot {
+  name Dot3
+  xpos -82
+  ypos -44
+ }
+set Nd3db1e0 [stack 0]
+ Dot {
+  name Dot1
+  xpos 67
+  ypos -44
+ }
+set Nd3db550 [stack 0]
+ EdgeDetectWrapper {
+  channels alpha
+  name EdgeDetect1
+  xpos 33
+  ypos 24
+ }
+push $Nd3db1e0
+ Merge2 {
+  inputs 2
+  operation in
+  name Merge1
+  xpos -116
+  ypos 30
+ }
+ Erode {
+  size {{"parent.thickness > 1 ? (-parent.thickness/2):1.25-parent.thickness" x54 -100}}
+  name Erode1
+  xpos -116
+  ypos 79
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -116
+  ypos 130
+ }
+ EdgeBlur {
+  channels rgb
+  name EdgeBlur1
+  xpos -116
+  ypos 178
+ }
+ Blur {
+  channels rgb
+  size 5
+  name Blur1
+  xpos -116
+  ypos 246
+ }
+ Grade {
+  channels rgba
+  name Grade1
+  xpos -116
+  ypos 326
+ }
+ Glow2 {
+  channels rgba
+  tint {1 1 1 1}
+  brightness 0
+  size 0
+  name Glow1
+  xpos 49
+  ypos 326
+ }
+push $Nd3db550
+ Dot {
+  name Dot2
+  xpos 246
+  ypos -44
+ }
+ Merge2 {
+  inputs 2+1
+  operation plus
+  mix 0.2
+  name Merge2
+  xpos 212
+  ypos 326
+ }
+ Output {
+  name Output1
+  xpos 212
+  ypos 426
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -326
+  ypos 99
+ }
+end_group

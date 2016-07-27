@@ -1,0 +1,756 @@
+#! /Applications/Nuke6.3v4/NukeX6.3v4.app/../Nuke6.3v4.app/Contents/MacOS/Nuke6.3v4 -nx
+version 6.3 v4
+Gizmo {
+ tile_color 0x60ba00ff
+ note_font Helvetica
+ note_font_size 10
+ note_font_color 0x1111ff
+ mapsize {0.15 0.15}
+ addUserKnob {20 TAB_Grain l "Grain Master"}
+ addUserKnob {22 add_grain l " add new grain " t "Add a new grain stock footage.<br>\n<br><b>Hint:</b> after adding new grain to the gizmo, you can save the gizmo on top of itself so that you have your added grain by default. As long as you don't move the grain files all should be fine." -STARTLINE T "filepath = nuke.getClipname('Select grain stock footage: ' , '*')\nname = nuke.getInput('Grain name: ', '')\nnewRead = None\n\nif filepath:\n   if name:\n      try:\n         filepath.rindex('-')\n         range = filepath.split()\n         range = range.pop()\n         range = range.split('-')\n         i = filepath.rindex(' ')\n         filepath = filepath\[0:i]\n         newRead = nuke.nodes.Read(file=filepath , label=name , first = range\[0] , last = range \[1], before='loop' , after = 'loop' , origfirst = range\[0] , origlast = range\[1])\n      except: nuke.message('You must select an image sequence')\n   else: nuke.message('Please give the grain a name.')\nelse:\n   nuke.message('There was a problem with your image sequence')\n\ngrainMaster = nuke.thisNode()\ngrainMaster.begin()\n\ngrainControl = nuke.toNode('grain_control')\ngrainControl.setInput (grainControl.inputs() , newRead)\ngrainControl\['update_list'].execute()\ngrainMaster.end()"}
+ addUserKnob {22 remove_grain l "remove grain" t "Remove grain from list and delete internal read node. <br>\n<br><b>Important:</b> must type grain name as listed." -STARTLINE T "grainName = nuke.getInput('Enter grain name: ')\n\nif grainName:\n   grainMaster = nuke.thisNode()\n   grainMaster.begin()\n   grainControl = nuke.toNode('grain_control')\n   readNodes = None\n   count = 0\n   readNodes = nuke.allNodes('Read')\n   for x in readNodes:\n      if (grainName == 'Create Grain'):\n         nuke.message ('You cannot remove Create Grain')\n         break\n      if ( x\['label'].value() == grainName) :\n         nuke.delete(x)\n         nuke.message (\"Grain '\" + grainName + \"' has been removed\")\n         grainControl\['update_list'].execute()\n         break\n      elif ( count < len(readNodes) ):\n         count +=1\n         print count\n      elif ( count == len(readNodes) ):\n         nuke.message('Could not find ' + grainName)\n   grainMaster.end()"}
+ addUserKnob {41 update_list l "update list" t "Update the grain list.\n<br><i>Only need to use this if editing the gizmo internally.</i>" -STARTLINE T grain_control.update_list}
+ addUserKnob {41 grain_list l "Grain: " t "Select previously added grain stock footage or the <b>Create Grain</b> option to create a new grain using the settings bellow and refine it with the other features <i>- specially Luminance.</i>" T grain_control.grain_list}
+ addUserKnob {41 switch_preview_6 l "view grain " t "Check this box to view only the grain." -STARTLINE T SwitchPreview.switch_preview}
+ addUserKnob {26 ""}
+ addUserKnob {41 switch_grade l intensities t "Toggle on / off the effect caused by the Intensity tab." T SwitchGrade.switch_grade}
+ addUserKnob {41 switch_luminance_1 l luminance t "Toggle on / off the effect caused by the Luminance tab." -STARTLINE T SwitchLuminance.switch_luminance}
+ addUserKnob {41 switch_blur_1 l blur t "Toggle on / off the effect caused by the Blur tab." -STARTLINE T SwitchBlur.switch_blur}
+ addUserKnob {41 switch_sharpen_1 l sharpen t "Toggle on / off the effect caused by the Sharpen tab." -STARTLINE T SwitchSharpen.switch_sharpen}
+ addUserKnob {41 switch_clamp_1 l clamp t "Toggle on / off the effect caused by the Clamp tab." -STARTLINE T SwitchClamp.switch_clamp}
+ addUserKnob {41 switch_mask_1 l alpha t "Toggle on / off the effect caused by the Mask tab." -STARTLINE T SwitchMask.switch_mask}
+ addUserKnob {26 ""}
+ addUserKnob {20 create_grain l "@b;Create Grain" n 1}
+ addUserKnob {41 seed T CreatGrain.seed}
+ addUserKnob {41 presets l "" -STARTLINE T CreatGrain.presets}
+ addUserKnob {26 "" l "@b;Size"}
+ addUserKnob {41 red_size l red T CreatGrain.red_size}
+ addUserKnob {41 green_size l green T CreatGrain.green_size}
+ addUserKnob {41 blue_size l blue T CreatGrain.blue_size}
+ addUserKnob {26 "" l "@b;Irregularity"}
+ addUserKnob {41 red_i l red T CreatGrain.red_i}
+ addUserKnob {41 green_i l green T CreatGrain.green_i}
+ addUserKnob {41 blue_i l blue T CreatGrain.blue_i}
+ addUserKnob {26 "" l "@b;Intensity"}
+ addUserKnob {41 red_m l red T CreatGrain.red_m}
+ addUserKnob {41 green_m l green T CreatGrain.green_m}
+ addUserKnob {41 blue_m l blue T CreatGrain.blue_m}
+ addUserKnob {41 black T CreatGrain.black}
+ addUserKnob {41 minimum_3 l minimum T CreatGrain.minimum}
+ addUserKnob {20 endGroup l "endGroup CREATEGRAIN" n -1}
+ addUserKnob {20 TAB_INTENSITIES l Intensity}
+ addUserKnob {41 switch_grade_1 l "intensities on/off " T SwitchGrade.switch_grade}
+ addUserKnob {41 switch_preview_5 l "view grain " t "Check this box to view only the grain." -STARTLINE T SwitchPreview.switch_preview}
+ addUserKnob {26 ""}
+ addUserKnob {41 red l "red intensity" T GradeRed.white}
+ addUserKnob {41 green l "green intensity" T GradeGreen.white}
+ addUserKnob {41 blue l "blue intensity" T GradeBlue.white}
+ addUserKnob {41 mixblacks l "black intensity" T Dissolve1.which}
+ addUserKnob {20 TAB_LUMINANCE l Luminance t "In this tab you can tweak how much of the luminance affects the grain."}
+ addUserKnob {41 switch_luminance l "luminance on/off " T SwitchLuminance.switch_luminance}
+ addUserKnob {41 switch_preview_4 l "view grain " t "Check this box to view only the grain." -STARTLINE T SwitchPreview.switch_preview}
+ addUserKnob {26 ""}
+ addUserKnob {41 range T ColorLookup1.range}
+ addUserKnob {41 lut l "" +STARTLINE T ColorLookup1.lut}
+ addUserKnob {20 TAB_BLUR l Blur}
+ addUserKnob {41 switch_blur l "blur on/off " T SwitchBlur.switch_blur}
+ addUserKnob {41 switch_preview_3 l "view grain " t "Check this box to view only the grain." -STARTLINE T SwitchPreview.switch_preview}
+ addUserKnob {26 ""}
+ addUserKnob {41 red_blur_size l red T RED_blur.size}
+ addUserKnob {41 green_blur_size l green T GREEN_blur.size}
+ addUserKnob {41 blue_blur_size l blue T BLUE_blur.size}
+ addUserKnob {20 TAB_SHARPEN l Sharpen}
+ addUserKnob {41 switch_sharpen l "sharpen on/off " T SwitchSharpen.switch_sharpen}
+ addUserKnob {41 switch_preview_2 l "view grain" t "Check this box to view only the grain." -STARTLINE T SwitchPreview.switch_preview}
+ addUserKnob {26 ""}
+ addUserKnob {26 sharpen_red l "@b;Red"}
+ addUserKnob {41 amount T RED_sharpen.amount}
+ addUserKnob {41 size T RED_sharpen.size}
+ addUserKnob {26 sharpen_green l "@b;Green"}
+ addUserKnob {41 amount_1 l amount T GREEN_sharpen.amount}
+ addUserKnob {41 size_1 l size T GREEN_sharpen.size}
+ addUserKnob {26 sharpen_blue l "@b;Blue"}
+ addUserKnob {41 amount_2 l amount T BLUE_sharpen.amount}
+ addUserKnob {41 size_2 l size T BLUE_sharpen.size}
+ addUserKnob {20 TAB_CLAMP l Clamp}
+ addUserKnob {41 switch_clamp l "clamp on/off " T SwitchClamp.switch_clamp}
+ addUserKnob {41 switch_preview_1 l "view grain " t "Check this box to view only the grain." -STARTLINE T SwitchPreview.switch_preview}
+ addUserKnob {26 ""}
+ addUserKnob {26 clamp_red l "@b;Red"}
+ addUserKnob {41 minimum l blacks T RED_clamp.minimum}
+ addUserKnob {41 minimum_enable l enable -STARTLINE T RED_clamp.minimum_enable}
+ addUserKnob {41 maximum l whites T RED_clamp.maximum}
+ addUserKnob {41 maximum_enable l enable -STARTLINE T RED_clamp.maximum_enable}
+ addUserKnob {26 clamp_green l "@b;Green"}
+ addUserKnob {41 minimum_1 l blacks T GREEN_clamp.minimum}
+ addUserKnob {41 minimum_enable_1 l enable -STARTLINE T GREEN_clamp.minimum_enable}
+ addUserKnob {41 maximum_1 l whites T GREEN_clamp.maximum}
+ addUserKnob {41 maximum_enable_1 l enable -STARTLINE T GREEN_clamp.maximum_enable}
+ addUserKnob {26 clamp_blue l "@b;Blue"}
+ addUserKnob {41 minimum_2 l blacks T BLUE_clamp.minimum}
+ addUserKnob {41 minimum_enable_2 l enable -STARTLINE T BLUE_clamp.minimum_enable}
+ addUserKnob {41 maximum_2 l whites T BLUE_clamp.maximum}
+ addUserKnob {41 maximum_enable_2 l enable -STARTLINE T BLUE_clamp.maximum_enable}
+ addUserKnob {20 TAB_mask l Alpha}
+ addUserKnob {41 switch_mask l "mask on/off " T SwitchMask.switch_mask}
+ addUserKnob {41 switch_preview l "view grain " t "Check this box to view only the grain." -STARTLINE T SwitchPreview.switch_preview}
+ addUserKnob {26 ""}
+ addUserKnob {41 in2 l "mask channel" T ShuffleMatte.in2}
+ addUserKnob {41 size_3 l erode T ErodeAlpha.size}
+ addUserKnob {41 blur l smoothness T ErodeAlpha.blur}
+ addUserKnob {20 help_TAB l Help}
+ addUserKnob {26 copyright l "" +STARTLINE T "GrainMaster - created by Henrique Moser, 2012"}
+ addUserKnob {26 ""}
+ addUserKnob {26 helptext l "" +STARTLINE T "<b>How to use</b> (or at least how I like to use it): \n<br>\n<br>1 - Make sure all the extra tools/features turned off (intensities, luminance, blur, \n<br>sharpen and clamp) \n<br>2 - Select a previoulsy added grain stock or select the Create Grain item and \n<br>adjust its settings to look properly in a dark area of the image. \n<br>\n<br>3 - If necessary, use the Intensity, Blur, Sharpen and Clamp tools to fine tune \n<br>the grain. Finally turn on the Luminance, tweak the curves and \n<br>re-adjust the other grain settings if necessary."}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 764
+  ypos -2068
+ }
+ Dot {
+  name Dot11
+  xpos 449
+  ypos -1528
+ }
+set N17079400 [stack 0]
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name Shuffle6
+  xpos -281
+  ypos -1531
+ }
+ Grade {
+  blackpoint -1
+  black_clamp false
+  name Grade1
+  xpos -281
+  ypos -1488
+ }
+set N170858c0 [stack 0]
+ Grain2 {
+  name CreatGrain
+  label other
+  xpos -281
+  ypos -1428
+  red_size 0.1
+  green_size 1.6
+  blue_size 1.91
+  green_i 0.86
+  blue_i 0.73
+  red_m 0.145
+  green_m 0.145
+  blue_m 0.15
+  black {0 0 0}
+  minimum {0 0 0}
+  maskgrain false
+ }
+push $N170858c0
+ Dot {
+  name Dot9
+  xpos -368
+  ypos -1485
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge6
+  xpos -402
+  ypos -1423
+ }
+ NoOp {
+  name title
+  label "Create Grain"
+  xpos -599
+  ypos -1428
+ }
+ Switch {
+  which {{"\[python -execlocal switch\\ =\\ nuke.thisNode()\\nx\\ =\\ switch\\\['grain_list'\\].values()\\ny\\ =\\ x.index(switch\\\['grain_list'\\].value())\\nret\\ =\\ y\\n]" i}}
+  name grain_control
+  xpos -760
+  ypos -1423
+  addUserKnob {20 User}
+  addUserKnob {4 grain_list l "Grain: " M {"Create Grain"}}
+  addUserKnob {22 update_list l "update list" t "This button updates the grain list, based on the internal input's label.\n<br>'Create Grain' uses the Grain Node to create a new grain, so you should use the Create Grain tab." -STARTLINE T "switch = nuke.thisNode()\ninputList = \[]\n\nx = 0\nwhile (x < switch.inputs() ):\n   name = switch.input(x)\['label'].value()\n   if name == '' : name = 'unlabelled'\n   inputList .append(name)\n   x+=1 \nswitch\['grain_list'].setValues(inputList)\nswitch\['grain_list'].setValue(0)\n\n\n\n"}
+  addUserKnob {41 which_1 l which T grain_control.which}
+ }
+ Reformat {
+  resize none
+  filter Impulse
+  name Reformat1
+  xpos -760
+  ypos -508
+ }
+ Shuffle {
+  alpha black
+  name Shuffle5
+  xpos -760
+  ypos -342
+ }
+ Dot {
+  name Dot20
+  xpos -726
+  ypos -292
+ }
+set N17090b10 [stack 0]
+ Dot {
+  name Dot24
+  xpos -726
+  ypos -208
+ }
+set N17093720 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle2
+  label RED
+  xpos -664
+  ypos -216
+ }
+push $N17079400
+ Dot {
+  name Dot13
+  xpos 449
+  ypos -445
+ }
+set N1709fc80 [stack 0]
+ Log2Lin {
+  operation lin2log
+  name Log2Lin1
+  xpos -257
+  ypos -448
+ }
+ ColorLookup {
+  name ColorLookup1
+  xpos -257
+  ypos -424
+ }
+ SoftClip {
+  conversion "logarithmic compress"
+  softclip_max 1.5
+  name SoftClip1
+  xpos -257
+  ypos -400
+ }
+ Invert {
+  name Invert2
+  xpos -257
+  ypos -356
+ }
+ Dot {
+  name Dot31
+  xpos -223
+  ypos -309
+ }
+ Dot {
+  name Dot29
+  xpos -336
+  ypos -309
+ }
+set N170c23d0 [stack 0]
+ Dot {
+  name Dot28
+  xpos -439
+  ypos -309
+ }
+set N170c50b0 [stack 0]
+ Dot {
+  name Dot27
+  xpos -533
+  ypos -309
+ }
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle9
+  label RED
+  xpos -567
+  ypos -255
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  xpos -567
+  ypos -209
+ }
+push $N17093720
+ Dot {
+  name Dot25
+  xpos -726
+  ypos -130
+ }
+set N170dd270 [stack 0]
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle3
+  label GREEN
+  xpos -664
+  ypos -138
+ }
+push $N170c50b0
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle8
+  label GREEN
+  xpos -473
+  ypos -253
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge4
+  xpos -473
+  ypos -133
+ }
+push $N170dd270
+ Dot {
+  name Dot26
+  xpos -726
+  ypos -68
+ }
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle4
+  label BLUE
+  xpos -664
+  ypos -76
+ }
+push $N170c23d0
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle7
+  label BLUE
+  xpos -370
+  ypos -252
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge7
+  xpos -370
+  ypos -71
+ }
+ Dot {
+  name Dot30
+  xpos -336
+  ypos 5
+ }
+ Copy {
+  inputs 2
+  from0 rgba.green
+  to0 rgba.green
+  name Copy2
+  xpos -473
+  ypos -3
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  name Copy3
+  xpos -567
+  ypos -3
+ }
+ Dot {
+  name Dot32
+  xpos -726
+  ypos 5
+ }
+push $N17090b10
+ Dot {
+  name Dot19
+  xpos -818
+  ypos -292
+ }
+ Dot {
+  name Dot1
+  xpos -818
+  ypos 94
+ }
+ Switch {
+  inputs 2
+  which {{"\[python nuke.thisNode()\\\['switch_luminance'\\].value()]" i}}
+  name SwitchLuminance
+  xpos -760
+  ypos 91
+  addUserKnob {20 User}
+  addUserKnob {6 switch_luminance l "luminance on/off" +STARTLINE}
+  addUserKnob {41 which_1 l which T SwitchLuminance.which}
+ }
+ Dot {
+  name Dot3
+  xpos -726
+  ypos 210
+ }
+set N1553e270 [stack 0]
+ Blur {
+  channels {rgba.red -rgba.green -rgba.blue}
+  name RED_blur
+  xpos -760
+  ypos 251
+ }
+ Blur {
+  channels {-rgba.red rgba.green -rgba.blue}
+  name GREEN_blur
+  xpos -760
+  ypos 285
+ }
+ Blur {
+  channels {-rgba.red -rgba.green rgba.blue}
+  name BLUE_blur
+  xpos -760
+  ypos 319
+ }
+push $N1553e270
+ Dot {
+  name Dot4
+  xpos -849
+  ypos 210
+ }
+ Dot {
+  name Dot5
+  xpos -849
+  ypos 379
+ }
+ Switch {
+  inputs 2
+  which {{"\[python -execlocal ret\\ =\\ nuke.thisNode()\\\['switch_blur'\\].value()]" i}}
+  name SwitchBlur
+  xpos -760
+  ypos 376
+  addUserKnob {20 User}
+  addUserKnob {6 switch_blur l "blur on/off" +STARTLINE}
+  addUserKnob {41 which_1 l which T SwitchBlur.which}
+ }
+ Dot {
+  name Dot6
+  xpos -726
+  ypos 462
+ }
+set N15561680 [stack 0]
+ Sharpen {
+  channels {rgba.red -rgba.green -rgba.blue}
+  amount 0
+  size 0
+  name RED_sharpen
+  xpos -760
+  ypos 492
+ }
+ Sharpen {
+  channels {-rgba.red rgba.green -rgba.blue}
+  amount 0
+  size 0
+  name GREEN_sharpen
+  xpos -760
+  ypos 526
+ }
+ Sharpen {
+  channels {-rgba.red -rgba.green rgba.blue}
+  amount 0
+  size 0
+  name BLUE_sharpen
+  xpos -760
+  ypos 560
+ }
+push $N15561680
+ Dot {
+  name Dot8
+  xpos -849
+  ypos 462
+ }
+ Dot {
+  name Dot10
+  xpos -849
+  ypos 616
+ }
+ Switch {
+  inputs 2
+  which {{"\[python -execlocal ret\\ =\\ nuke.thisNode()\\\['switch_sharpen'\\].value()]" i}}
+  name SwitchSharpen
+  xpos -760
+  ypos 613
+  addUserKnob {20 User}
+  addUserKnob {6 switch_sharpen l "sharpen on/off" +STARTLINE}
+  addUserKnob {41 which_1 l which T SwitchSharpen.which}
+ }
+ Dot {
+  name Dot12
+  xpos -726
+  ypos 696
+ }
+set N155817b0 [stack 0]
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue}
+  white 0.5
+  black_clamp false
+  name GradeRed
+  xpos -760
+  ypos 730
+ }
+ Grade {
+  channels {-rgba.red rgba.green -rgba.blue}
+  white 0.5
+  black_clamp false
+  name GradeGreen
+  xpos -760
+  ypos 764
+ }
+ Grade {
+  channels {-rgba.red -rgba.green rgba.blue}
+  black_clamp false
+  name GradeBlue
+  xpos -760
+  ypos 798
+ }
+push $N155817b0
+ Dot {
+  name Dot14
+  xpos -849
+  ypos 696
+ }
+ Dot {
+  name Dot15
+  xpos -849
+  ypos 856
+ }
+ Switch {
+  inputs 2
+  which {{"\[python -execlocal ret\\ =\\ nuke.thisNode()\\\['switch_grade'\\].value()]" i}}
+  name SwitchGrade
+  xpos -760
+  ypos 853
+  addUserKnob {20 User}
+  addUserKnob {6 switch_grade l "grade on/off" +STARTLINE}
+  addUserKnob {41 which_1 l which T SwitchGrade.which}
+ }
+ Dot {
+  name Dot16
+  xpos -726
+  ypos 926
+ }
+set N155ac290 [stack 0]
+ Clamp {
+  channels {rgba.red -rgba.green -rgba.blue}
+  minimum_enable false
+  maximum 0.15
+  maximum_enable false
+  name RED_clamp
+  xpos -760
+  ypos 958
+ }
+ Clamp {
+  channels {-rgba.red rgba.green -rgba.blue}
+  minimum_enable false
+  maximum 0.15
+  maximum_enable false
+  name GREEN_clamp
+  xpos -760
+  ypos 992
+ }
+ Clamp {
+  channels {-rgba.red -rgba.green rgba.blue}
+  minimum_enable false
+  maximum 0.2
+  maximum_enable false
+  name BLUE_clamp
+  xpos -760
+  ypos 1026
+ }
+push $N155ac290
+ Dot {
+  name Dot17
+  xpos -849
+  ypos 926
+ }
+ Dot {
+  name Dot18
+  xpos -849
+  ypos 1080
+ }
+ Switch {
+  inputs 2
+  which {{"\[python -execlocal ret\\ =\\ nuke.thisNode()\\\['switch_clamp'\\].value()]" i}}
+  name SwitchClamp
+  xpos -760
+  ypos 1077
+  addUserKnob {20 User}
+  addUserKnob {6 switch_clamp l "clamp on/off" +STARTLINE}
+  addUserKnob {41 which_1 l which T SwitchClamp.which}
+ }
+ Dot {
+  name Dot7
+  xpos -726
+  ypos 1336
+ }
+set N155d08c0 [stack 0]
+ Dot {
+  name Dot2
+  xpos -726
+  ypos 1388
+ }
+push $N1709fc80
+ NoOp {
+  name source
+  xpos 404
+  ypos 1281
+ }
+set N155d6230 [stack 0]
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  name Merge1
+  xpos 404
+  ypos 1385
+ }
+ NoOp {
+  name LIN
+  xpos 404
+  ypos 1433
+ }
+push $N155d08c0
+push $N155d6230
+ Log2Lin {
+  operation lin2log
+  name Log2Lin2
+  xpos 277
+  ypos 1281
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  name Merge2
+  xpos 277
+  ypos 1333
+ }
+ Log2Lin {
+  name Log2Lin3
+  xpos 277
+  ypos 1432
+ }
+ NoOp {
+  name LOG
+  xpos 277
+  ypos 1506
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  name Dissolve1
+  label Blacks
+  xpos 404
+  ypos 1501
+ }
+ Dot {
+  name Dot21
+  xpos 438
+  ypos 1756
+ }
+set N1560ae20 [stack 0]
+push $N17079400
+ Dot {
+  name Dot22
+  xpos 541
+  ypos -1528
+ }
+ AddChannels {
+  channels alpha
+  name AddChannels1
+  xpos 507
+  ypos 1594
+ }
+ Shuffle {
+  in2 alpha
+  alpha red2
+  name ShuffleMatte
+  xpos 506
+  ypos 1636
+ }
+ Erode {
+  size -0.5
+  blur 0.04
+  name ErodeAlpha
+  xpos 507
+  ypos 1676
+ }
+ Copy {
+  inputs 2
+  channels rgb
+  maskChannelInput rgba.alpha
+  name Copy1
+  xpos 507
+  ypos 1742
+ }
+ Dot {
+  name Dot23
+  xpos 541
+  ypos 1810
+ }
+set N1562d5b0 [stack 0]
+push $N1560ae20
+ Switch {
+  inputs 2
+  which {{"\[python nuke.thisNode()\\\['switch_mask'\\].value()]" i}}
+  name SwitchMask
+  xpos 404
+  ypos 1807
+  addUserKnob {20 User}
+  addUserKnob {6 switch_mask l "mask on/off" +STARTLINE}
+  addUserKnob {41 which_1 l which T SwitchMask.which}
+ }
+set N15630210 [stack 0]
+push $N1562d5b0
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos 507
+  ypos 1887
+ }
+push $N15630210
+ Switch {
+  inputs 2
+  which {{"\[python nuke.thisNode()\\\['switch_preview'\\].value()]" i}}
+  name SwitchPreview
+  xpos 404
+  ypos 1887
+  addUserKnob {20 User}
+  addUserKnob {6 switch_preview l " view grain " t "Check this box to view only the grain." +STARTLINE}
+  addUserKnob {41 which_1 l which T SwitchPreview.which}
+ }
+set N1563dc10 [stack 0]
+ Crop {
+  box {{Input1.bbox.x i} {Input1.bbox.y i} {Input1.bbox.r i} {Input1.bbox.t i}}
+  name Crop1
+  xpos 404
+  ypos 2063
+ }
+ Output {
+  name Output1
+  xpos 404
+  ypos 2123
+ }
+push $N1563dc10
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 214
+  ypos 1805
+ }
+end_group

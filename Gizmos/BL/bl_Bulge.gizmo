@@ -1,0 +1,176 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l Bulge}
+ addUserKnob {7 value R -100 100}
+ value -50
+ addUserKnob {7 softness}
+ softness 1
+ addUserKnob {14 Scale R 0 100}
+ Scale {0.5 0.5}
+ addUserKnob {12 Center}
+ Center {100 100}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 838
+  ypos 213
+ }
+set N1a255750 [stack 0]
+ Multiply {
+  value 0
+  name Multiply3
+  xpos 1115
+  ypos 247
+ }
+ Reformat {
+  type "to box"
+  box_width 512
+  box_height 512
+  box_fixed true
+  name Reformat3
+  xpos 1115
+  ypos 285
+ }
+set N1b0e03a0 [stack 0]
+ Radial {
+  replace true
+  area {{(width/2)-(parent.NoOp2.Size.w/2) i} {(height/2)-(parent.NoOp2.Size.h/2) i} {(width/2)+(parent.NoOp2.Size.w/2) i} {(height/2)+(parent.NoOp2.Size.h/2) i}}
+  name Radial3
+  xpos 1018
+  ypos 313
+ }
+push $N1b0e03a0
+ Radial {
+  area {0 0 512 512}
+  softness {{parent.NoOp2.softness i}}
+  name Radial4
+  xpos 1115
+  ypos 311
+ }
+ ColorLookup {
+  lut {master {curve C 0 s2.450000048 1 s0.05999999866}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup2
+  xpos 1115
+  ypos 337
+ }
+set N23c00360 [stack 0]
+push $N23c00360
+ Ramp {
+  replace true
+  p0 {0 0}
+  p1 {0 {height i}}
+  name Ramp3
+  xpos 1225
+  ypos 337
+ }
+ Multiply {
+  channels rgb
+  value 2
+  name Multiply4
+  xpos 1225
+  ypos 363
+ }
+ Add {
+  channels rgb
+  value -1
+  name Add2
+  xpos 1225
+  ypos 389
+ }
+set N23c00e20 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  xpos 1046
+  ypos 501
+ }
+push $N23c00e20
+ Reformat {
+  type scale
+  box_width 512
+  box_height 256
+  resize distort
+  center false
+  flip true
+  turn true
+  name Reformat4
+  xpos 1225
+  ypos 455
+ }
+push $N23c00360
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge4
+  xpos 1150
+  ypos 500
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.green
+  name Copy3
+  xpos 1085
+  ypos 554
+ }
+ Transform {
+  translate {{parent.NoOp2.Center.x-(width/2) i} {parent.NoOp2.Center.y-(height/2) i}}
+  scale {{parent.NoOp2.Scale.w i} {parent.NoOp2.Scale.h i}}
+  center {{width/2 i} {height/2 i}}
+  name Transform1
+  xpos 1085
+  ypos 592
+ }
+push $N1a255750
+ Dot {
+  name Dot2
+  xpos 872
+  ypos 596
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.u
+  from1 rgba.green
+  to1 forward.v
+  name Copy4
+  xpos 975
+  ypos 579
+ }
+ IDistort {
+  channels rgb
+  uv forward
+  uv_scale {{parent.NoOp2.value i}}
+  name IDistort2
+  xpos 975
+  ypos 631
+ }
+ Output {
+  name Output1
+  xpos 975
+  ypos 693
+ }
+ NoOp {
+  inputs 0
+  name NoOp2
+  xpos 938
+  ypos 405
+  addUserKnob {20 User}
+  addUserKnob {7 value R -100 100}
+  value {{parent.value i}}
+  addUserKnob {7 softness}
+  softness {{parent.softness i}}
+  addUserKnob {14 Scale R 0 100}
+  Scale {{parent.Scale.w i} {parent.Scale.h i}}
+  addUserKnob {12 Center}
+  Center {{parent.Center.x i} {parent.Center.y i}}
+ }
+end_group

@@ -1,0 +1,964 @@
+#! C:/Program Files/Nuke9.0v6/nuke-9.0.6.dll -nx
+version 9.0 v6
+Gizmo {
+ inputs 0
+ addUserKnob {20 User l particule}
+ addUserKnob {41 rate l "particule rate" T ctrl.rate}
+ addUserKnob {19 Grade2_whitepoint l "opacity random"}
+ Grade2_whitepoint 0.71
+ addUserKnob {6 Grade2_whitepoint_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {41 speed l "turbulence speed" T ctrl.speed}
+ addUserKnob {26 ""}
+ addUserKnob {41 translate_1 l translate T TransformGeneral.translate}
+ addUserKnob {41 rotate_1 l rotate T TransformGeneral.rotate}
+ addUserKnob {41 scaling l scale T TransformGeneral.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T TransformGeneral.uniform_scale}
+ addUserKnob {41 skew T TransformGeneral.skew}
+ addUserKnob {41 pivot T TransformGeneral.pivot}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 a l "" +STARTLINE T "by Simon Moreau | visualprocess.blogspot.com"}
+ addUserKnob {20 card}
+ addUserKnob {41 nbCard l "number of card" T ctrl.nbCard}
+ addUserKnob {22 reload -STARTLINE T "nuke.thisNode().begin()\nsc = nuke.toNode(\"Scene1\")\nctrl = nuke.toNode(\"ctrl\")\ndp = nuke.toNode(\"DisplaceGeo1\")\nfor i in range(sc.inputs()):\n    nuke.delete(sc.input(i))\n    sc.setInput(i, None)\nc = nuke.toNode(\"Card1\")\nxp = c\['xpos'].value()\nyp = c\['ypos'].value()\nnLs = \[]\nfor i in range(int(ctrl\['nbCard'].value())) :\n    sti = str(i)\n    t = nuke.createNode(\"TransformGeo\", inpanel=False)\n    t\['xpos'].setValue(xp + 200*i)\n    t\['ypos'].setValue(yp + 150)\n    for a in \[0,1,2] :\n        for b in \['translate', 'rotate']:\n            t\[b].setExpression(\"ctrl.\" + b + \".\" + str(a) + \"*\" + sti, a)\n    t.setInput(0,dp)\n    nLs.append(t)\ni =0\nfor n in nLs :\n    sc.setInput(i,n)\n    i+=1"}
+ addUserKnob {26 ""}
+ addUserKnob {41 rows l rows/columns T Card1.rows}
+ addUserKnob {41 columns l "" -STARTLINE T Card1.columns}
+ addUserKnob {26 ""}
+ addUserKnob {41 translate T ctrl.translate}
+ addUserKnob {41 rotate T ctrl.rotate}
+ addUserKnob {20 turbulence}
+ addUserKnob {41 scale T DisplaceGeo1.scale}
+ addUserKnob {41 speed_1 l speed T ctrl.speed}
+ addUserKnob {26 ""}
+ addUserKnob {41 type T Noise2.type}
+ addUserKnob {41 size l x/ysize T Noise2.size}
+ addUserKnob {41 octaves T Noise2.octaves}
+ addUserKnob {41 nyquist l "clip at Nyquist limit" T Noise2.nyquist}
+ addUserKnob {41 lacunarity T Noise2.lacunarity}
+ addUserKnob {41 gain T Noise2.gain}
+ addUserKnob {41 gamma T Noise2.gamma}
+}
+ Noise {
+  inputs 0
+  size 134
+  zoffset {{t*ctrl.speed}}
+  lacunarity 1.64
+  gain 0.282
+  gamma 0.52
+  center {960 540}
+  name Noise2
+  xpos 794
+  ypos -153
+ }
+ Noise {
+  inputs 0
+  size 1
+  lacunarity 10
+  center {960 540}
+  name Noise1
+  xpos 1035
+  ypos -335
+ }
+ Expression {
+  channel0 {rgba.red rgba.green rgba.blue -rgba.alpha}
+  expr3 "r>(1-ctrl.rate) ? 1 : 0"
+  name Expression1
+  xpos 1035
+  ypos -291
+ }
+ Grade {
+  blackpoint {{1-parent.ctrl.rate}}
+  name Grade1
+  xpos 1035
+  ypos -244
+ }
+ Grade {
+  whitepoint {{parent.Grade2_whitepoint.r} {parent.Grade2_whitepoint.g} {parent.Grade2_whitepoint.b} {parent.Grade2_whitepoint.a}}
+  name Grade2
+  xpos 1035
+  ypos -194
+ }
+set N587d5800 [stack 0]
+add_layer {partMask partMask.red partMask.green partMask.blue partMask.alpha}
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  out partMask
+  name Shuffle1
+  xpos 1035
+  ypos -136
+ }
+ Card2 {
+  translate {0 22.5 9.835061974e-007}
+  rotate {90 0 0}
+  scaling {1 1.6 1}
+  uniform_scale 400
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card1
+  xpos 1035
+  ypos -82
+ }
+ DisplaceGeo {
+  inputs 2
+  scale 100
+  name DisplaceGeo1
+  xpos 1035
+  ypos -12
+ }
+set N587d4c00 [stack 0]
+ TransformGeo {
+  translate {{ctrl.translate.0*99} {ctrl.translate.1*99} {ctrl.translate.2*99}}
+  rotate {{ctrl.rotate.0*99} {ctrl.rotate.1*99} {ctrl.rotate.2*99}}
+  name TransformGeo100
+  selected true
+  xpos 20835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*98} {ctrl.translate.1*98} {ctrl.translate.2*98}}
+  rotate {{ctrl.rotate.0*98} {ctrl.rotate.1*98} {ctrl.rotate.2*98}}
+  name TransformGeo99
+  xpos 20635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*97} {ctrl.translate.1*97} {ctrl.translate.2*97}}
+  rotate {{ctrl.rotate.0*97} {ctrl.rotate.1*97} {ctrl.rotate.2*97}}
+  name TransformGeo98
+  xpos 20435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*96} {ctrl.translate.1*96} {ctrl.translate.2*96}}
+  rotate {{ctrl.rotate.0*96} {ctrl.rotate.1*96} {ctrl.rotate.2*96}}
+  name TransformGeo97
+  xpos 20235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*95} {ctrl.translate.1*95} {ctrl.translate.2*95}}
+  rotate {{ctrl.rotate.0*95} {ctrl.rotate.1*95} {ctrl.rotate.2*95}}
+  name TransformGeo96
+  xpos 20035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*94} {ctrl.translate.1*94} {ctrl.translate.2*94}}
+  rotate {{ctrl.rotate.0*94} {ctrl.rotate.1*94} {ctrl.rotate.2*94}}
+  name TransformGeo95
+  xpos 19835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*93} {ctrl.translate.1*93} {ctrl.translate.2*93}}
+  rotate {{ctrl.rotate.0*93} {ctrl.rotate.1*93} {ctrl.rotate.2*93}}
+  name TransformGeo94
+  xpos 19635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*92} {ctrl.translate.1*92} {ctrl.translate.2*92}}
+  rotate {{ctrl.rotate.0*92} {ctrl.rotate.1*92} {ctrl.rotate.2*92}}
+  name TransformGeo93
+  xpos 19435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*91} {ctrl.translate.1*91} {ctrl.translate.2*91}}
+  rotate {{ctrl.rotate.0*91} {ctrl.rotate.1*91} {ctrl.rotate.2*91}}
+  name TransformGeo92
+  xpos 19235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*90} {ctrl.translate.1*90} {ctrl.translate.2*90}}
+  rotate {{ctrl.rotate.0*90} {ctrl.rotate.1*90} {ctrl.rotate.2*90}}
+  name TransformGeo91
+  xpos 19035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*89} {ctrl.translate.1*89} {ctrl.translate.2*89}}
+  rotate {{ctrl.rotate.0*89} {ctrl.rotate.1*89} {ctrl.rotate.2*89}}
+  name TransformGeo90
+  xpos 18835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*88} {ctrl.translate.1*88} {ctrl.translate.2*88}}
+  rotate {{ctrl.rotate.0*88} {ctrl.rotate.1*88} {ctrl.rotate.2*88}}
+  name TransformGeo89
+  xpos 18635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*87} {ctrl.translate.1*87} {ctrl.translate.2*87}}
+  rotate {{ctrl.rotate.0*87} {ctrl.rotate.1*87} {ctrl.rotate.2*87}}
+  name TransformGeo88
+  xpos 18435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*86} {ctrl.translate.1*86} {ctrl.translate.2*86}}
+  rotate {{ctrl.rotate.0*86} {ctrl.rotate.1*86} {ctrl.rotate.2*86}}
+  name TransformGeo87
+  xpos 18235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*85} {ctrl.translate.1*85} {ctrl.translate.2*85}}
+  rotate {{ctrl.rotate.0*85} {ctrl.rotate.1*85} {ctrl.rotate.2*85}}
+  name TransformGeo86
+  xpos 18035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*84} {ctrl.translate.1*84} {ctrl.translate.2*84}}
+  rotate {{ctrl.rotate.0*84} {ctrl.rotate.1*84} {ctrl.rotate.2*84}}
+  name TransformGeo85
+  xpos 17835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*83} {ctrl.translate.1*83} {ctrl.translate.2*83}}
+  rotate {{ctrl.rotate.0*83} {ctrl.rotate.1*83} {ctrl.rotate.2*83}}
+  name TransformGeo84
+  xpos 17635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*82} {ctrl.translate.1*82} {ctrl.translate.2*82}}
+  rotate {{ctrl.rotate.0*82} {ctrl.rotate.1*82} {ctrl.rotate.2*82}}
+  name TransformGeo83
+  xpos 17435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*81} {ctrl.translate.1*81} {ctrl.translate.2*81}}
+  rotate {{ctrl.rotate.0*81} {ctrl.rotate.1*81} {ctrl.rotate.2*81}}
+  name TransformGeo82
+  xpos 17235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*80} {ctrl.translate.1*80} {ctrl.translate.2*80}}
+  rotate {{ctrl.rotate.0*80} {ctrl.rotate.1*80} {ctrl.rotate.2*80}}
+  name TransformGeo81
+  xpos 17035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*79} {ctrl.translate.1*79} {ctrl.translate.2*79}}
+  rotate {{ctrl.rotate.0*79} {ctrl.rotate.1*79} {ctrl.rotate.2*79}}
+  name TransformGeo80
+  xpos 16835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*78} {ctrl.translate.1*78} {ctrl.translate.2*78}}
+  rotate {{ctrl.rotate.0*78} {ctrl.rotate.1*78} {ctrl.rotate.2*78}}
+  name TransformGeo79
+  xpos 16635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*77} {ctrl.translate.1*77} {ctrl.translate.2*77}}
+  rotate {{ctrl.rotate.0*77} {ctrl.rotate.1*77} {ctrl.rotate.2*77}}
+  name TransformGeo78
+  xpos 16435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*76} {ctrl.translate.1*76} {ctrl.translate.2*76}}
+  rotate {{ctrl.rotate.0*76} {ctrl.rotate.1*76} {ctrl.rotate.2*76}}
+  name TransformGeo77
+  xpos 16235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*75} {ctrl.translate.1*75} {ctrl.translate.2*75}}
+  rotate {{ctrl.rotate.0*75} {ctrl.rotate.1*75} {ctrl.rotate.2*75}}
+  name TransformGeo76
+  xpos 16035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*74} {ctrl.translate.1*74} {ctrl.translate.2*74}}
+  rotate {{ctrl.rotate.0*74} {ctrl.rotate.1*74} {ctrl.rotate.2*74}}
+  name TransformGeo75
+  xpos 15835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*73} {ctrl.translate.1*73} {ctrl.translate.2*73}}
+  rotate {{ctrl.rotate.0*73} {ctrl.rotate.1*73} {ctrl.rotate.2*73}}
+  name TransformGeo74
+  xpos 15635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*72} {ctrl.translate.1*72} {ctrl.translate.2*72}}
+  rotate {{ctrl.rotate.0*72} {ctrl.rotate.1*72} {ctrl.rotate.2*72}}
+  name TransformGeo73
+  xpos 15435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*71} {ctrl.translate.1*71} {ctrl.translate.2*71}}
+  rotate {{ctrl.rotate.0*71} {ctrl.rotate.1*71} {ctrl.rotate.2*71}}
+  name TransformGeo72
+  xpos 15235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*70} {ctrl.translate.1*70} {ctrl.translate.2*70}}
+  rotate {{ctrl.rotate.0*70} {ctrl.rotate.1*70} {ctrl.rotate.2*70}}
+  name TransformGeo71
+  xpos 15035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*69} {ctrl.translate.1*69} {ctrl.translate.2*69}}
+  rotate {{ctrl.rotate.0*69} {ctrl.rotate.1*69} {ctrl.rotate.2*69}}
+  name TransformGeo70
+  xpos 14835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*68} {ctrl.translate.1*68} {ctrl.translate.2*68}}
+  rotate {{ctrl.rotate.0*68} {ctrl.rotate.1*68} {ctrl.rotate.2*68}}
+  name TransformGeo69
+  xpos 14635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*67} {ctrl.translate.1*67} {ctrl.translate.2*67}}
+  rotate {{ctrl.rotate.0*67} {ctrl.rotate.1*67} {ctrl.rotate.2*67}}
+  name TransformGeo68
+  xpos 14435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*66} {ctrl.translate.1*66} {ctrl.translate.2*66}}
+  rotate {{ctrl.rotate.0*66} {ctrl.rotate.1*66} {ctrl.rotate.2*66}}
+  name TransformGeo67
+  xpos 14235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*65} {ctrl.translate.1*65} {ctrl.translate.2*65}}
+  rotate {{ctrl.rotate.0*65} {ctrl.rotate.1*65} {ctrl.rotate.2*65}}
+  name TransformGeo66
+  xpos 14035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*64} {ctrl.translate.1*64} {ctrl.translate.2*64}}
+  rotate {{ctrl.rotate.0*64} {ctrl.rotate.1*64} {ctrl.rotate.2*64}}
+  name TransformGeo65
+  xpos 13835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*63} {ctrl.translate.1*63} {ctrl.translate.2*63}}
+  rotate {{ctrl.rotate.0*63} {ctrl.rotate.1*63} {ctrl.rotate.2*63}}
+  name TransformGeo64
+  xpos 13635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*62} {ctrl.translate.1*62} {ctrl.translate.2*62}}
+  rotate {{ctrl.rotate.0*62} {ctrl.rotate.1*62} {ctrl.rotate.2*62}}
+  name TransformGeo63
+  xpos 13435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*61} {ctrl.translate.1*61} {ctrl.translate.2*61}}
+  rotate {{ctrl.rotate.0*61} {ctrl.rotate.1*61} {ctrl.rotate.2*61}}
+  name TransformGeo62
+  xpos 13235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*60} {ctrl.translate.1*60} {ctrl.translate.2*60}}
+  rotate {{ctrl.rotate.0*60} {ctrl.rotate.1*60} {ctrl.rotate.2*60}}
+  name TransformGeo61
+  xpos 13035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*59} {ctrl.translate.1*59} {ctrl.translate.2*59}}
+  rotate {{ctrl.rotate.0*59} {ctrl.rotate.1*59} {ctrl.rotate.2*59}}
+  name TransformGeo60
+  xpos 12835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*58} {ctrl.translate.1*58} {ctrl.translate.2*58}}
+  rotate {{ctrl.rotate.0*58} {ctrl.rotate.1*58} {ctrl.rotate.2*58}}
+  name TransformGeo59
+  xpos 12635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*57} {ctrl.translate.1*57} {ctrl.translate.2*57}}
+  rotate {{ctrl.rotate.0*57} {ctrl.rotate.1*57} {ctrl.rotate.2*57}}
+  name TransformGeo58
+  xpos 12435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*56} {ctrl.translate.1*56} {ctrl.translate.2*56}}
+  rotate {{ctrl.rotate.0*56} {ctrl.rotate.1*56} {ctrl.rotate.2*56}}
+  name TransformGeo57
+  xpos 12235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*55} {ctrl.translate.1*55} {ctrl.translate.2*55}}
+  rotate {{ctrl.rotate.0*55} {ctrl.rotate.1*55} {ctrl.rotate.2*55}}
+  name TransformGeo56
+  xpos 12035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*54} {ctrl.translate.1*54} {ctrl.translate.2*54}}
+  rotate {{ctrl.rotate.0*54} {ctrl.rotate.1*54} {ctrl.rotate.2*54}}
+  name TransformGeo55
+  xpos 11835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*53} {ctrl.translate.1*53} {ctrl.translate.2*53}}
+  rotate {{ctrl.rotate.0*53} {ctrl.rotate.1*53} {ctrl.rotate.2*53}}
+  name TransformGeo54
+  xpos 11635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*52} {ctrl.translate.1*52} {ctrl.translate.2*52}}
+  rotate {{ctrl.rotate.0*52} {ctrl.rotate.1*52} {ctrl.rotate.2*52}}
+  name TransformGeo53
+  xpos 11435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*51} {ctrl.translate.1*51} {ctrl.translate.2*51}}
+  rotate {{ctrl.rotate.0*51} {ctrl.rotate.1*51} {ctrl.rotate.2*51}}
+  name TransformGeo52
+  xpos 11235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*50} {ctrl.translate.1*50} {ctrl.translate.2*50}}
+  rotate {{ctrl.rotate.0*50} {ctrl.rotate.1*50} {ctrl.rotate.2*50}}
+  name TransformGeo51
+  xpos 11035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*49} {ctrl.translate.1*49} {ctrl.translate.2*49}}
+  rotate {{ctrl.rotate.0*49} {ctrl.rotate.1*49} {ctrl.rotate.2*49}}
+  name TransformGeo50
+  xpos 10835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*48} {ctrl.translate.1*48} {ctrl.translate.2*48}}
+  rotate {{ctrl.rotate.0*48} {ctrl.rotate.1*48} {ctrl.rotate.2*48}}
+  name TransformGeo49
+  xpos 10635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*47} {ctrl.translate.1*47} {ctrl.translate.2*47}}
+  rotate {{ctrl.rotate.0*47} {ctrl.rotate.1*47} {ctrl.rotate.2*47}}
+  name TransformGeo48
+  xpos 10435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*46} {ctrl.translate.1*46} {ctrl.translate.2*46}}
+  rotate {{ctrl.rotate.0*46} {ctrl.rotate.1*46} {ctrl.rotate.2*46}}
+  name TransformGeo47
+  xpos 10235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*45} {ctrl.translate.1*45} {ctrl.translate.2*45}}
+  rotate {{ctrl.rotate.0*45} {ctrl.rotate.1*45} {ctrl.rotate.2*45}}
+  name TransformGeo46
+  xpos 10035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*44} {ctrl.translate.1*44} {ctrl.translate.2*44}}
+  rotate {{ctrl.rotate.0*44} {ctrl.rotate.1*44} {ctrl.rotate.2*44}}
+  name TransformGeo45
+  xpos 9835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*43} {ctrl.translate.1*43} {ctrl.translate.2*43}}
+  rotate {{ctrl.rotate.0*43} {ctrl.rotate.1*43} {ctrl.rotate.2*43}}
+  name TransformGeo44
+  xpos 9635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*42} {ctrl.translate.1*42} {ctrl.translate.2*42}}
+  rotate {{ctrl.rotate.0*42} {ctrl.rotate.1*42} {ctrl.rotate.2*42}}
+  name TransformGeo43
+  xpos 9435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*41} {ctrl.translate.1*41} {ctrl.translate.2*41}}
+  rotate {{ctrl.rotate.0*41} {ctrl.rotate.1*41} {ctrl.rotate.2*41}}
+  name TransformGeo42
+  xpos 9235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*40} {ctrl.translate.1*40} {ctrl.translate.2*40}}
+  rotate {{ctrl.rotate.0*40} {ctrl.rotate.1*40} {ctrl.rotate.2*40}}
+  name TransformGeo41
+  xpos 9035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*39} {ctrl.translate.1*39} {ctrl.translate.2*39}}
+  rotate {{ctrl.rotate.0*39} {ctrl.rotate.1*39} {ctrl.rotate.2*39}}
+  name TransformGeo40
+  xpos 8835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*38} {ctrl.translate.1*38} {ctrl.translate.2*38}}
+  rotate {{ctrl.rotate.0*38} {ctrl.rotate.1*38} {ctrl.rotate.2*38}}
+  name TransformGeo39
+  xpos 8635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*37} {ctrl.translate.1*37} {ctrl.translate.2*37}}
+  rotate {{ctrl.rotate.0*37} {ctrl.rotate.1*37} {ctrl.rotate.2*37}}
+  name TransformGeo38
+  xpos 8435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*36} {ctrl.translate.1*36} {ctrl.translate.2*36}}
+  rotate {{ctrl.rotate.0*36} {ctrl.rotate.1*36} {ctrl.rotate.2*36}}
+  name TransformGeo37
+  xpos 8235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*35} {ctrl.translate.1*35} {ctrl.translate.2*35}}
+  rotate {{ctrl.rotate.0*35} {ctrl.rotate.1*35} {ctrl.rotate.2*35}}
+  name TransformGeo36
+  xpos 8035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*34} {ctrl.translate.1*34} {ctrl.translate.2*34}}
+  rotate {{ctrl.rotate.0*34} {ctrl.rotate.1*34} {ctrl.rotate.2*34}}
+  name TransformGeo35
+  xpos 7835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*33} {ctrl.translate.1*33} {ctrl.translate.2*33}}
+  rotate {{ctrl.rotate.0*33} {ctrl.rotate.1*33} {ctrl.rotate.2*33}}
+  name TransformGeo34
+  xpos 7635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*32} {ctrl.translate.1*32} {ctrl.translate.2*32}}
+  rotate {{ctrl.rotate.0*32} {ctrl.rotate.1*32} {ctrl.rotate.2*32}}
+  name TransformGeo33
+  xpos 7435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*31} {ctrl.translate.1*31} {ctrl.translate.2*31}}
+  rotate {{ctrl.rotate.0*31} {ctrl.rotate.1*31} {ctrl.rotate.2*31}}
+  name TransformGeo32
+  xpos 7235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*30} {ctrl.translate.1*30} {ctrl.translate.2*30}}
+  rotate {{ctrl.rotate.0*30} {ctrl.rotate.1*30} {ctrl.rotate.2*30}}
+  name TransformGeo31
+  xpos 7035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*29} {ctrl.translate.1*29} {ctrl.translate.2*29}}
+  rotate {{ctrl.rotate.0*29} {ctrl.rotate.1*29} {ctrl.rotate.2*29}}
+  name TransformGeo30
+  xpos 6835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*28} {ctrl.translate.1*28} {ctrl.translate.2*28}}
+  rotate {{ctrl.rotate.0*28} {ctrl.rotate.1*28} {ctrl.rotate.2*28}}
+  name TransformGeo29
+  xpos 6635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*27} {ctrl.translate.1*27} {ctrl.translate.2*27}}
+  rotate {{ctrl.rotate.0*27} {ctrl.rotate.1*27} {ctrl.rotate.2*27}}
+  name TransformGeo28
+  xpos 6435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*26} {ctrl.translate.1*26} {ctrl.translate.2*26}}
+  rotate {{ctrl.rotate.0*26} {ctrl.rotate.1*26} {ctrl.rotate.2*26}}
+  name TransformGeo27
+  xpos 6235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*25} {ctrl.translate.1*25} {ctrl.translate.2*25}}
+  rotate {{ctrl.rotate.0*25} {ctrl.rotate.1*25} {ctrl.rotate.2*25}}
+  name TransformGeo26
+  xpos 6035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*24} {ctrl.translate.1*24} {ctrl.translate.2*24}}
+  rotate {{ctrl.rotate.0*24} {ctrl.rotate.1*24} {ctrl.rotate.2*24}}
+  name TransformGeo25
+  xpos 5835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*23} {ctrl.translate.1*23} {ctrl.translate.2*23}}
+  rotate {{ctrl.rotate.0*23} {ctrl.rotate.1*23} {ctrl.rotate.2*23}}
+  name TransformGeo24
+  xpos 5635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*22} {ctrl.translate.1*22} {ctrl.translate.2*22}}
+  rotate {{ctrl.rotate.0*22} {ctrl.rotate.1*22} {ctrl.rotate.2*22}}
+  name TransformGeo23
+  xpos 5435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*21} {ctrl.translate.1*21} {ctrl.translate.2*21}}
+  rotate {{ctrl.rotate.0*21} {ctrl.rotate.1*21} {ctrl.rotate.2*21}}
+  name TransformGeo22
+  xpos 5235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*20} {ctrl.translate.1*20} {ctrl.translate.2*20}}
+  rotate {{ctrl.rotate.0*20} {ctrl.rotate.1*20} {ctrl.rotate.2*20}}
+  name TransformGeo21
+  xpos 5035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*19} {ctrl.translate.1*19} {ctrl.translate.2*19}}
+  rotate {{ctrl.rotate.0*19} {ctrl.rotate.1*19} {ctrl.rotate.2*19}}
+  name TransformGeo20
+  xpos 4835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*18} {ctrl.translate.1*18} {ctrl.translate.2*18}}
+  rotate {{ctrl.rotate.0*18} {ctrl.rotate.1*18} {ctrl.rotate.2*18}}
+  name TransformGeo19
+  xpos 4635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*17} {ctrl.translate.1*17} {ctrl.translate.2*17}}
+  rotate {{ctrl.rotate.0*17} {ctrl.rotate.1*17} {ctrl.rotate.2*17}}
+  name TransformGeo18
+  xpos 4435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*16} {ctrl.translate.1*16} {ctrl.translate.2*16}}
+  rotate {{ctrl.rotate.0*16} {ctrl.rotate.1*16} {ctrl.rotate.2*16}}
+  name TransformGeo17
+  xpos 4235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*15} {ctrl.translate.1*15} {ctrl.translate.2*15}}
+  rotate {{ctrl.rotate.0*15} {ctrl.rotate.1*15} {ctrl.rotate.2*15}}
+  name TransformGeo16
+  xpos 4035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*14} {ctrl.translate.1*14} {ctrl.translate.2*14}}
+  rotate {{ctrl.rotate.0*14} {ctrl.rotate.1*14} {ctrl.rotate.2*14}}
+  name TransformGeo15
+  xpos 3835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*13} {ctrl.translate.1*13} {ctrl.translate.2*13}}
+  rotate {{ctrl.rotate.0*13} {ctrl.rotate.1*13} {ctrl.rotate.2*13}}
+  name TransformGeo14
+  xpos 3635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*12} {ctrl.translate.1*12} {ctrl.translate.2*12}}
+  rotate {{ctrl.rotate.0*12} {ctrl.rotate.1*12} {ctrl.rotate.2*12}}
+  name TransformGeo13
+  xpos 3435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*11} {ctrl.translate.1*11} {ctrl.translate.2*11}}
+  rotate {{ctrl.rotate.0*11} {ctrl.rotate.1*11} {ctrl.rotate.2*11}}
+  name TransformGeo12
+  xpos 3235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*10} {ctrl.translate.1*10} {ctrl.translate.2*10}}
+  rotate {{ctrl.rotate.0*10} {ctrl.rotate.1*10} {ctrl.rotate.2*10}}
+  name TransformGeo11
+  xpos 3035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*9} {ctrl.translate.1*9} {ctrl.translate.2*9}}
+  rotate {{ctrl.rotate.0*9} {ctrl.rotate.1*9} {ctrl.rotate.2*9}}
+  name TransformGeo10
+  xpos 2835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*8} {ctrl.translate.1*8} {ctrl.translate.2*8}}
+  rotate {{ctrl.rotate.0*8} {ctrl.rotate.1*8} {ctrl.rotate.2*8}}
+  name TransformGeo9
+  xpos 2635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*7} {ctrl.translate.1*7} {ctrl.translate.2*7}}
+  rotate {{ctrl.rotate.0*7} {ctrl.rotate.1*7} {ctrl.rotate.2*7}}
+  name TransformGeo8
+  xpos 2435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*6} {ctrl.translate.1*6} {ctrl.translate.2*6}}
+  rotate {{ctrl.rotate.0*6} {ctrl.rotate.1*6} {ctrl.rotate.2*6}}
+  name TransformGeo7
+  xpos 2235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*5} {ctrl.translate.1*5} {ctrl.translate.2*5}}
+  rotate {{ctrl.rotate.0*5} {ctrl.rotate.1*5} {ctrl.rotate.2*5}}
+  name TransformGeo6
+  xpos 2035
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*4} {ctrl.translate.1*4} {ctrl.translate.2*4}}
+  rotate {{ctrl.rotate.0*4} {ctrl.rotate.1*4} {ctrl.rotate.2*4}}
+  name TransformGeo5
+  xpos 1835
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*3} {ctrl.translate.1*3} {ctrl.translate.2*3}}
+  rotate {{ctrl.rotate.0*3} {ctrl.rotate.1*3} {ctrl.rotate.2*3}}
+  name TransformGeo4
+  xpos 1635
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*2} {ctrl.translate.1*2} {ctrl.translate.2*2}}
+  rotate {{ctrl.rotate.0*2} {ctrl.rotate.1*2} {ctrl.rotate.2*2}}
+  name TransformGeo3
+  xpos 1435
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*1} {ctrl.translate.1*1} {ctrl.translate.2*1}}
+  rotate {{ctrl.rotate.0*1} {ctrl.rotate.1*1} {ctrl.rotate.2*1}}
+  name TransformGeo2
+  xpos 1235
+  ypos 68
+ }
+push $N587d4c00
+ TransformGeo {
+  translate {{ctrl.translate.0*0} {ctrl.translate.1*0} {ctrl.translate.2*0}}
+  rotate {{ctrl.rotate.0*0} {ctrl.rotate.1*0} {ctrl.rotate.2*0}}
+  name TransformGeo1
+  xpos 1035
+  ypos 68
+ }
+ Scene {
+  inputs 100
+  name Scene1
+  xpos 1045
+  ypos 131
+ }
+ TransformGeo {
+  name TransformGeneral
+  xpos 1035
+  ypos 276
+ }
+ Output {
+  name Output1
+  xpos 1035
+  ypos 356
+ }
+ NoOp {
+  inputs 0
+  name ctrl
+  xpos 1237
+  ypos -226
+  addUserKnob {20 User}
+  addUserKnob {13 rotate}
+  rotate {55 55 55}
+  addUserKnob {13 translate}
+  translate {0 20 0}
+  addUserKnob {7 speed l "turbulence speed"}
+  speed 0.01
+  addUserKnob {7 rate l "particule rate"}
+  rate 0.3
+  addUserKnob {20 card}
+  addUserKnob {3 nbCard l "number of card"}
+  nbCard 100
+ }
+push $N587d5800
+ Viewer {
+  colour_sample_bbox {0.05000000075 -0.07708333433 0.05104166642 -0.07604166865}
+  samplepoints {{0.05000000075 -0.07708333433}
+    }
+  input_process false
+  name Viewer1
+  xpos 887
+  ypos 253
+ }
+end_group

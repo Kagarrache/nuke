@@ -1,0 +1,291 @@
+# Breakdown dTools
+#! C:/Program Files/Nuke6.0v1b6/Nuke6.0.exe -nx
+version 6.0 v1b6
+Gizmo {
+ inputs 2
+ tile_color 0x7f7f7fff
+ label "\[knob this.start] - \[expression \[knob this.start]+\[knob this.duration]-1]"
+ addUserKnob {20 wipeit l "Wipe It v1"}
+ addUserKnob {3 duration l Duration}
+ duration 24
+ addUserKnob {3 start l Start -STARTLINE}
+ start 1
+ addUserKnob {32 setFrame l "Set Frame" -STARTLINE T "knob this.start \[value frame]"}
+ addUserKnob {6 soften l Soften +STARTLINE}
+ soften true
+ addUserKnob {6 invert l Invert -STARTLINE}
+ addUserKnob {6 flip l Flip -STARTLINE}
+ addUserKnob {6 flop l Flop -STARTLINE}
+ addUserKnob {7 angle l Angle R -180 180}
+ angle 14
+ addUserKnob {7 line l Line R 1 10}
+ line 1
+ addUserKnob {7 feather l INVISIBLE}
+ addUserKnob {7 falloff l INVISIBLE R 0 2}
+ falloff 1
+ addUserKnob {18 color l Color}
+ color 0.1
+}
+ Input {
+  inputs 0
+  name A
+  xpos -581
+  ypos -305
+  number 1
+ }
+set N1cc0e788 [stack 0]
+ Rectangle {
+  area {0 0 {input.width i} {input.height i}}
+  color {{parent.color.main i} {parent.color.main i} {parent.color.main i} 1}
+  p1 {100 {input.height i}}
+  color0 0.048
+  p0 {100 0}
+  name Rectangle6
+  xpos -345
+  ypos 403
+  hide_input true
+ }
+ Expression {
+  channel0 none
+  channel1 none
+  channel2 none
+  channel3 alpha
+  expr3 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+  name Linear1
+  xpos -345
+  ypos 432
+ }
+set N12905a80 [stack 0]
+ Grade {
+  channels alpha
+  blackpoint {{(Math.wipe-(parent.line/2000))-.5 i}}
+  whitepoint {{this.blackpoint.r-.00001-parent.feather i}}
+  gamma {{parent.falloff i}}
+  white_clamp true
+  name Grade11
+  xpos -398
+  ypos 508
+ }
+ EdgeBlur {
+  name EdgeBlur2
+  xpos -398
+  ypos 553
+ }
+push $N12905a80
+ Grade {
+  channels alpha
+  blackpoint {{(Math.wipe+(parent.line/2000))-.5 i}}
+  whitepoint {{this.blackpoint.r-.00001-parent.feather i}}
+  gamma {{parent.falloff i}}
+  white_clamp true
+  name Grade12
+  xpos -291
+  ypos 505
+ }
+ EdgeBlur {
+  name EdgeBlur3
+  xpos -291
+  ypos 550
+ }
+ ChannelMerge {
+  inputs 2
+  operation stencil
+  name ChannelMerge2
+  xpos -344
+  ypos 635
+ }
+ Grade {
+  channels alpha
+  whitepoint 0.5
+  black_clamp false
+  name Grade13
+  xpos -344
+  ypos 696
+ }
+ Mirror {
+  Horizontal {{parent.flip i}}
+  Vertical {{parent.flop i}}
+  name Mirror2
+  xpos -344
+  ypos 741
+ }
+ Premult {
+  name Premult1
+  xpos -344
+  ypos 829
+ }
+push $N1cc0e788
+ Dot {
+  name Dot6
+  xpos -316
+  ypos -300
+ }
+ NoOp {
+  name Math
+  tile_color 0xff00bfff
+  xpos -350
+  ypos -244
+  addUserKnob {20 User}
+  addUserKnob {7 wipe R 0 2}
+  wipe {{(clamp(frame,parent.start,(parent.start+parent.duration-1))-parent.start)/(parent.duration-1) i}}
+ }
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  expr0 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+  expr1 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+  expr2 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+  expr3 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+  name Linear
+  xpos -350
+  ypos -178
+ }
+ Grade {
+  channels rgba
+  blackpoint {{Math.wipe-.5 i}}
+  whitepoint {{this.blackpoint.r-.00001-parent.feather i}}
+  gamma {{parent.falloff i}}
+  white_clamp true
+  name Grade1
+  xpos -350
+  ypos -149
+ }
+ Invert {
+  name Invert1
+  xpos -350
+  ypos -120
+  disable {{parent.invert i}}
+ }
+ Mirror {
+  Horizontal {{parent.flip i}}
+  Vertical {{parent.flop i}}
+  name Mirror1
+  xpos -350
+  ypos -75
+ }
+ EdgeBlur {
+  name EdgeBlur1
+  xpos -350
+  ypos -46
+  disable {{!parent.soften i x13 0}}
+ }
+ Dot {
+  name Dot7
+  xpos -316
+  ypos 41
+ }
+set N1c6a1458 [stack 0]
+ Dot {
+  name Dot5
+  xpos -426
+  ypos 41
+ }
+set N1c6b3728 [stack 0]
+ Dot {
+  name Dot8
+  xpos -426
+  ypos 299
+ }
+push $N1c6a1458
+push $N1c6a1458
+ Blur {
+  size 100
+  name Blur1
+  xpos -279
+  ypos 103
+ }
+ ChannelMerge {
+  inputs 2
+  operation stencil
+  name ChannelMerge1
+  xpos -350
+  ypos 194
+ }
+push $N1c6b3728
+ Input {
+  inputs 0
+  name B
+  xpos -831
+  ypos -303
+ }
+ Shuffle {
+  alpha white
+  name Shuffle4
+  xpos -831
+  ypos -154
+ }
+set N1c6ca0a8 [stack 0]
+push $N1cc0e788
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos -581
+  ypos -151
+ }
+set N1c6b0868 [stack 0]
+ Merge2 {
+  inputs 2+1
+  metainput A
+  name Merge2
+  xpos -581
+  ypos 36
+ }
+push $N1c6b3728
+push $N1c6b0868
+push $N1c6ca0a8
+ Merge2 {
+  inputs 2+1
+  name Merge1
+  xpos -831
+  ypos 36
+ }
+ Switch {
+  inputs 2
+  which {{!parent.invert i}}
+  name Switch1
+  xpos -697
+  ypos 126
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos -697
+  ypos 210
+ }
+ ZBlur {
+  inputs 1+1
+  channels rgb
+  Zchan rgba.alpha
+  math linear
+  size 10
+  invert_mask true
+  name ZBlur1
+  xpos -697
+  ypos 294
+ }
+ Saturation {
+  saturation 0.5
+  maskChannelInput rgba.alpha
+  name Saturation1
+  xpos -697
+  ypos 323
+ }
+ Multiply {
+  channels rgb
+  value 0
+  maskChannelInput rgba.alpha
+  name Multiply1
+  xpos -697
+  ypos 368
+ }
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos -697
+  ypos 829
+ }
+ Output {
+  name Output1
+  xpos -697
+  ypos 1002
+ }
+end_group

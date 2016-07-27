@@ -1,0 +1,58 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l DirectionalBlur}
+ addUserKnob {41 angle T Control.angle}
+ addUserKnob {41 size T Control.size}
+ addUserKnob {41 Threshold T bl_mf_Binary2.Threshold}
+}
+ NoOp {
+  inputs 0
+  name Control
+  tile_color 0xff0000ff
+  xpos 144
+  ypos 97
+  addUserKnob {20 User}
+  addUserKnob {7 angle R -180 180}
+  addUserKnob {7 size R 0 100}
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 33
+  ypos 88
+ }
+ Transform {
+  rotate {{parent.Control.angle}}
+  center {{width/2} {height/2}}
+  name Transform29
+  xpos 33
+  ypos 114
+ }
+add_layer {rgba rgba.beta}
+ Blur {
+  channels rgba
+  size {{parent.Control.size i} 0}
+  name Blur12
+  xpos 33
+  ypos 140
+ }
+ Transform {
+  rotate {{-parent.Transform29.rotate i}}
+  center {{width/2 i} {height/2 i}}
+  name Transform30
+  xpos 33
+  ypos 166
+ }
+ bl_mf_Binary {
+  name bl_mf_Binary2
+  xpos 33
+  ypos 192
+  Threshold 0.5
+ }
+ Output {
+  name Output
+  xpos 33
+  ypos 218
+ }
+end_group

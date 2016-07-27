@@ -1,0 +1,258 @@
+set cut_paste_input [stack 0]
+version 8.0 v6
+push 0
+push $cut_paste_input
+add_layer {camNormals_samplerInfo2 camNormals_samplerInfo2.red camNormals_samplerInfo2.green camNormals_samplerInfo2.blue}
+Group {
+ inputs 2
+ name Environment_Reflections
+ selected true
+ xpos 2657
+ ypos -3448
+ addUserKnob {20 User l "Env Refl Options"}
+ addUserKnob {41 input l "Environment type" T SphericalTransform2.input}
+ addUserKnob {41 format l "Environment resolution" T Reformat3.format}
+ addUserKnob {41 filter_1 l "Environment filter" T SphericalTransform2.filter}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 in l "Camera Normal layer" T Shuffle13.in}
+ addUserKnob {26 description1 l "" +STARTLINE T "Choose the Camera Normal AOV Pass"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {6 Read_Geo l "Read Geo file" +STARTLINE}
+ addUserKnob {41 file_geo l "Geo file" T ReadGeo1.file}
+ addUserKnob {41 filter l Filter T ScanlineRender1.filter}
+ addUserKnob {41 antialiasing l Antialiasing T ScanlineRender1.antialiasing}
+ addUserKnob {41 format_1 l "Normals resolution" T Reformat2.format}
+ addUserKnob {26 description2 l "" +STARTLINE T "You can optionally read a Geo file\nto generate camera space normals"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 read_from_file_link l "Read Camera file" T SCENE_CAM.read_from_file_link}
+ addUserKnob {41 file l "Camera file" T SCENE_CAM.file}
+ addUserKnob {26 description3 l "" +STARTLINE T "Read the scene camera file\nto properly align the environment"}
+}
+ Camera2 {
+  inputs 0
+  name SCENE_CAM
+  xpos 403
+  ypos -702
+ }
+ CheckerBoard2 {
+  inputs 0
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name CheckerBoard1
+  xpos 408
+  ypos -966
+ }
+ ReadGeo2 {
+  inputs 0
+  name ReadGeo1
+  xpos 588
+  ypos -1024
+ }
+ ApplyMaterial {
+  inputs 2
+  name ApplyMaterial2
+  xpos 588
+  ypos -942
+ }
+ Reformat {
+  inputs 0
+  format "1920 1080 0 0 1920 1080 1 HD"
+  name Reformat2
+  xpos 766
+  ypos -687
+ }
+ ScanlineRender {
+  inputs 3
+  motion_vectors_type distance
+  output_shader_vectors true
+  N_channel rgb
+  name ScanlineRender1
+  xpos 588
+  ypos -681
+ }
+ Input {
+  inputs 0
+  name RenderPass
+  xpos 3
+  ypos -535
+ }
+ Shuffle {
+  in camNormals_samplerInfo2
+  in2 alpha
+  alpha red2
+  name Shuffle13
+  xpos 3
+  ypos -393
+ }
+ Switch {
+  inputs 2
+  which {{parent.Read_Geo}}
+  name Switch1
+  xpos 588
+  ypos -393
+ }
+set N12f237e0 [stack 0]
+ Dot {
+  name Dot29
+  xpos 979
+  ypos -390
+ }
+push $N12f237e0
+ Add {
+  channels rgb
+  value 1
+  name Add2
+  label "\[knob channels],\[knob value]"
+  xpos 588
+  ypos -282
+ }
+ Multiply {
+  channels rgb
+  value 0.5
+  name Multiply2
+  label "\[knob channels],\[knob value]"
+  xpos 588
+  ypos -142
+ }
+ Dot {
+  name Dot30
+  xpos 622
+  ypos -31
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 945
+  ypos -40
+ }
+set N131dacb0 [stack 0]
+ Dot {
+  name Dot34
+  xpos 979
+  ypos 129
+ }
+set N131db020 [stack 0]
+ Dot {
+  name Dot35
+  xpos 979
+  ypos 291
+ }
+set N131db390 [stack 0]
+ Dot {
+  name Dot1
+  xpos 979
+  ypos 419
+ }
+push $N131db390
+push $N131db020
+push $N131dacb0
+ Camera2 {
+  inputs 0
+  rotate {{-parent.SCENE_CAM.rotate} {-parent.SCENE_CAM.rotate} {-parent.SCENE_CAM.rotate}}
+  name ENVIRONMENT_CAM
+  xpos 1167
+  ypos -475
+ }
+ Input {
+  inputs 0
+  name Environment
+  xpos 1564
+  ypos -1083
+  number 1
+ }
+ SphericalTransform {
+  format {{{parent.Reformat3.format}}}
+  filter Mitchell
+  fix true
+  name SphericalTransform2
+  xpos 1564
+  ypos -948
+ }
+ Mirror {
+  Horizontal true
+  name Mirror1
+  xpos 1564
+  ypos -818
+ }
+ Dot {
+  name Dot28
+  xpos 1598
+  ypos -650
+ }
+ Sphere {
+  inputs 0
+  name Sphere1
+  xpos 1349
+  ypos -780
+ }
+ ApplyMaterial {
+  inputs 2
+  name ApplyMaterial1
+  xpos 1349
+  ypos -653
+ }
+ Reformat {
+  inputs 0
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Reformat3
+  xpos 1508
+  ypos -460
+ }
+ ScanlineRender {
+  inputs 3
+  filter Mitchell
+  projection_mode spherical
+  motion_vectors_type distance
+  name ScanlineRender2
+  xpos 1349
+  ypos -454
+ }
+ SphericalTransform {
+  input "Lat Long map"
+  output "Mirror Ball"
+  format {{{parent.Reformat3.format}}}
+  fix true
+  name SphericalTransform3
+  xpos 1349
+  ypos -283
+ }
+ STMap {
+  inputs 2
+  channels rgb
+  uv rgb
+  filter Mitchell
+  name STMap2
+  label "use \[knob uv] as uv coord"
+  xpos 1349
+  ypos -40
+ }
+ Multiply {
+  inputs 1+1
+  channels rgb
+  value 0
+  invert_mask true
+  name Multiply3
+  xpos 1349
+  ypos 126
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 1349
+  ypos 282
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 1349
+  ypos 416
+ }
+ Output {
+  name Output1
+  xpos 1349
+  ypos 756
+ }
+end_group

@@ -1,0 +1,344 @@
+#! /Applications/Nuke7.0v8/NukeX7.0v8.app/../Nuke7.0v8.app/Contents/MacOS/Nuke7.0v8 -nx
+version 7.0 v8
+Gizmo {
+ help "AB SliceTool v1.11 (Mac Version, for Nuke 7.0+) - built: 2013-01-09\n\nThe SliceTool let's you define an arbitrary angle by setting up two point-type on-screen controls. \nThe line formed by connecting those two points is fed into a sampler node to plot a scanline (LUT) of the color values.\n\nUSAGE\n\n1. set correct full size format in the script's Project Settings\n   (you must do this before instantiating a new SliceTool!)\n2. pre-select node to analyse and hit \"SliceTool\"\n3. adjust A-B points to make a slice through the image\n4. either drag the \"sampler\" locator or hit the \"Sample current frame\" button.\n\ntip: if you want the graph to auto-update each time you drag one of the A-B points marquee-select then drag both the A (or B) point and the \"sampler\" locator.\n\nThis way the sample graph updates in real time while you drag.\n\nOPTIONS\n\nGraph\nYou can chose which channels to probe and you can normalize the graph so it displays in a resolution independent 0 to 1 range.\n\nDisplay\nLocated in the Options sub-group you can also show a wallpaper (enabled by default) which shows the scan line's pixels duplicated to fit root.height, you can show a text overlay with the angle and distance information and you can adjust the softness of the graph and finally the brightness of the wallpaper. \n\nUSAGE\n\nPress the 'Sample current frame' button to update the graph or drag the sampler point in the viewer which will do the same thing.\n\nCREDITS\n\nBased on Steve Wright's book Digital Compositing for Film and Video (2nd ed.),\nAndras Szocs's SliceTool Macro v2.0.0 for Shake and Michael Morehouse's SliceTool clone for Nuke v0.0.1\n\n(c)2013 Andre Berg / Iris VFX (irisvfx.com)"
+ note_font "Helvetica Bold Bold"
+ mapsize {0.15 0.15}
+ addUserKnob {20 User l SliceTool}
+ addUserKnob {12 A l "Point A"}
+ addUserKnob {12 B l "Point B"}
+ B {640 480}
+ addUserKnob {26 ""}
+ addUserKnob {41 channels T Sampler1.channels}
+ addUserKnob {26 ""}
+ addUserKnob {41 lut l "" -STARTLINE T Sampler1.lut}
+ addUserKnob {41 sampler T Sampler1.sampler}
+ addUserKnob {26 ""}
+ addUserKnob {6 normalizelut l "Normalize Graph" t "This normalizes the graph so it displays in a 0 to 1 range." +STARTLINE}
+ normalizelut true
+ addUserKnob {41 sample_current l "Sample current frame" -STARTLINE T Sampler1.sample_current}
+ addUserKnob {26 ""}
+ addUserKnob {7 brightness l Brightness t "Adjust the slider to decrease the brightness of the wallpaper." R 0 2}
+ brightness 1
+ addUserKnob {7 softness l Softness t "Softness blurs the slice line prior to feeding it into the sampler and wallpaper branches." R 0 10}
+ softness 5
+ addUserKnob {20 options l Options}
+ addUserKnob {6 wallpaper l "Show Wallpaper" t "Check to show a wallpaper attached to the right which visualizes the 1 pixel tall slice line by reformatting it to the bbox height." +STARTLINE}
+ wallpaper true
+ addUserKnob {6 showoverlay l "Show Text Overlay" t "Displays the angle and distance between Point A and B as text on top of the original image." -STARTLINE}
+ addUserKnob {6 showline l "Show Line" t "This draws a connection line between Point A and Point B." -STARTLINE}
+ showline true
+ addUserKnob {26 div_text l "@b;Text"}
+ addUserKnob {19 textcolor l color: t "The color for the text overlay."}
+ textcolor 1
+ addUserKnob {7 textsize l size: t "Adjust the size of the overlay text." R 5 100}
+ textsize 20
+ addUserKnob {26 div_line l "@b;Line"}
+ addUserKnob {41 linecolor l color: t "Set the color of the connection line." T LineColor.color}
+ addUserKnob {7 thickness l thickness: t "Adjust the thickness of the connection line." R 1 5}
+ thickness 1
+}
+ Constant {
+  inputs 0
+  channels {rgba.red rgba.green rgba.blue rgba.alpha}
+  color 1
+  name LineColor
+  xpos 51
+  ypos -288
+  disable {{!parent.showline}}
+ }
+ Crop {
+  box {{curve i} {curve i} {Point2D.dist i} {parent.thickness<1?1:root.proxy?parent.thickness+1:parent.thickness i}}
+  reformat true
+  crop false
+  name ConnectLine
+  xpos 51
+  ypos -185
+  disable {{!parent.showline i}}
+ }
+ Group {
+  name SuperSampling
+  help "Super sampling is done by blowing up the image to some scale (given by AA Factor), then dividing it by the reciprocal of that factor.\n\nHence 4x4 Super Sampling is a 4 times scale, followed by a 0.25 times scale, which will divide each pixel into 4 quadrants and effectively average them together. \n\nKeep in mind this is very costly if not done by some optimized SIMD pipeline.\n\n© 2011, André Berg (Berg Media)"
+  label "Faux AA \[value factor] x \[value factor]"
+  note_font "Helvetica Bold Bold Bold Bold"
+  xpos 51
+  ypos -161
+  addUserKnob {20 User l AA}
+  addUserKnob {3 factor l Factor}
+  factor 4
+  addUserKnob {6 usematrixfilter l "use matrix filter" t "Uses a different summation of pixel quadrants, resulting in a ring shaped mix, e.g. a bit sharper than blur." +STARTLINE}
+  addUserKnob {6 crop t "Crop borders to retain image size" +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos 13
+   ypos -172
+  }
+  Transform {
+   scale {{"parent.factor > 1 ? parent.factor : 4" i}}
+   center {{Input1.width/2 i} {Input1.height/2 i}}
+   name Transform1
+   xpos 13
+   ypos -129
+  }
+set N3120ea00 [stack 0]
+  MatrixFilter {
+   name MatrixFilter1
+   label "(\[value midvalue], \[value coefficientsvalue])"
+   note_font "Helvetica Bold Bold Bold Bold Bold"
+   xpos 123
+   ypos -134
+   midvalue 1
+   coefficientsvalue -0.1
+   maskChannelInput none
+  }
+  Transform {
+   scale {{1/Transform1.scale i}}
+   center {{width/2 i} {height/2 i}}
+   name Transform2
+   xpos 123
+   ypos -66
+  }
+  Crop {
+   box {0 0 {width i} {height i}}
+   crop false
+   name Crop1
+   xpos 123
+   ypos -42
+   disable {{!parent.crop i}}
+  }
+push $N3120ea00
+  Blur {
+   size {{parent.factor/10 i}}
+   quality 30
+   name Blur1
+   xpos -97
+   ypos -129
+  }
+  Transform {
+   scale {{1/Transform1.scale i}}
+   center {{width/2 i} {height/2 i}}
+   name Transform3
+   xpos -97
+   ypos -66
+  }
+  Crop {
+   box {0 0 {width i} {height i}}
+   crop false
+   name Crop2
+   xpos -97
+   ypos -42
+   disable {{!parent.crop i}}
+  }
+  Switch {
+   inputs 2
+   which {{parent.usematrixfilter i}}
+   name Switch1
+   xpos 13
+   ypos 29
+  }
+  Output {
+   name Output1
+   xpos 13
+   ypos 76
+  }
+ end_group
+ Transform {
+  translate {{Point2D.A.x i} {Point2D.A.y i}}
+  rotate {{Point2D.angledeg i}}
+  scale {{width/Point2D.dist i}}
+  center {{0 i} {0 i}}
+  filter Impulse
+  clamp true
+  name XformCLine
+  xpos 51
+  ypos -127
+ }
+ Dot {
+  name Dot1
+  xpos 85
+  ypos 101
+ }
+push 0
+ Text {
+  inputs 0
+  cliptype bbox
+  message "Angle: \[expression Point2D.angledeg<0?Point2D.angledeg+360:Point2D.angledeg]°\nDistance: \[expression Point2D.dist]"
+  Font 0
+  font /Library/Fonts/Arial.ttf
+  size {{parent.textsize i}}
+  kerning 0.0125
+  leading 0.3
+  yjustify bottom
+  translate {{parent.wallpaper?input.width+40:40 i} {40/(width/height) i}}
+  color {{parent.textcolor i} {parent.textcolor i} {parent.textcolor i} {parent.textcolor i}}
+  name TextOverlay
+  xpos -242
+  ypos -164
+  disable {{!parent.showoverlay i}}
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -328
+  ypos -252
+ }
+set N468c550 [stack 0]
+ NoOp {
+  name Point2D
+  xpos -120
+  ypos -252
+  addUserKnob {20 Point2D t "Calculates basic trigonometry data for two arbitrary points that can be specified with on-screen controls"}
+  addUserKnob {12 A l "Point A"}
+  A {{parent.A.x i} {parent.A.y i}}
+  addUserKnob {12 B l "Point B"}
+  B {{parent.B.x i} {parent.B.y i}}
+  addUserKnob {26 "" l "Calculated Data" t "Do not delete or modify the expressions for the input fields below. Reference them in other nodes"}
+  addUserKnob {7 dx l "Delta X" t "Horizontal Delta of Point A and Point B" R -2048 2048}
+  dx {{(B.x-A.x) i}}
+  addUserKnob {7 dy l "Delta Y" t "Vertical Delta for Point A and Point B" R -2048 2048}
+  dy {{(B.y-A.y) i}}
+  addUserKnob {7 anglerad l "Angle (rad)" t "Angle between Point A and Point B in Radians" R -3.14159 3.14159}
+  anglerad {{atan2(dy,dx) i}}
+  addUserKnob {7 angledeg l "Angle (deg)" t "Angle between Point A and Point B in Degrees." R -180 180}
+  angledeg {{degrees(anglerad) i}}
+  addUserKnob {7 dist l Distance t "Distance between Point A and Point B" R -1000 1000}
+  dist {{(sqrt(pow2(dx)+pow2(dy))) i}}
+ }
+ Transform {
+  translate {{-Point2D.A.x i} {-Point2D.A.y i}}
+  rotate {{-Point2D.angledeg i}}
+  scale {{width/Point2D.dist i}}
+  center {{Point2D.A.x i} {Point2D.A.y i}}
+  name Xform
+  xpos -120
+  ypos -182
+ }
+ Crop {
+  box {0 0 {input.width i} {input.height i}}
+  crop false
+  name CropImage
+  xpos -120
+  ypos -158
+ }
+ Blur {
+  size {{parent.softness i}}
+  name Softness
+  xpos -120
+  ypos -118
+ }
+set N467b060 [stack 0]
+push $N467b060
+ Crop {
+  box {0 0 {input.width*(root.proxy?proxy_scale:1) i} 1}
+  crop false
+  name Wallpaper
+  xpos -230
+  ypos -113
+  disable {{!parent.wallpaper i}}
+ }
+ ColorCorrect {
+  gain {{parent.brightness i}}
+  shadows 0
+  midtones 0
+  highlights 0
+  name ColorCorrect1
+  xpos -230
+  ypos -60
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos -120
+  ypos -60
+  disable {{!parent.wallpaper i}}
+ }
+ Transform {
+  translate {{input.width*(root.proxy?proxy_scale:1) i} 0}
+  filter Impulse
+  name WallpaperPos
+  xpos -120
+  ypos -9
+  disable {{!parent.wallpaper i}}
+ }
+push $N468c550
+ Crop {
+  box {0 0 {"\[python -execlocal import\\ nuke\\nroot\\ =\\ nuke.toNode(\\\"root\\\")\\nw\\ =\\ root\\\[\\\"format\\\"\\].value().width()\\nproxy_scale\\ =\\ root\\\['proxy_scale'\\].value()\\nproxy_enabled\\ =\\ nuke.toNode(\\\"root\\\")\\\[\\\"proxy\\\"\\].value()\\nret\\ =\\ w\\nif\\ proxy_enabled\\ ==\\ True:\\n\\ \\ ret\\ =\\ w*proxy_scale\\n\\ \\ ret\\ +=\\ ret]" i} {"\[python -execlocal import\\ nuke\\nroot\\ =\\ nuke.toNode(\\\"root\\\")\\nh\\ =\\ root\\\[\\\"format\\\"\\].value().height()\\nproxy_scale\\ =\\ root\\\['proxy_scale'\\].value()\\nproxy_enabled\\ =\\ nuke.toNode(\\\"root\\\")\\\[\\\"proxy\\\"\\].value()\\nret\\ =\\ h\\nif\\ proxy_enabled\\ ==\\ True:\\n\\ \\ ret\\ =\\ h*proxy_scale\\n\\ \\ ret\\ +=\\ ret]" i}}
+  name Crop1
+  xpos -328
+  ypos -164
+ }
+ Reformat {
+  type "to box"
+  box_width {{"\[python -execlocal #(root.proxy?width*proxy_scale:width)+(root.proxy?width*proxy_scale:width)\\nimport\\ nuke\\nroot\\ =\\ nuke.toNode(\\\"root\\\")\\nw\\ =\\ root\\\[\\\"format\\\"\\].value().width()\\nret\\ =\\ w\\nif\\ nuke.toNode(\\\"root\\\")\\\[\\\"proxy\\\"\\].value()\\ ==\\ True:\\n\\ \\ proxy_scale\\ =\\ root\\\['proxy_scale'\\].value()\\n\\ \\ ret\\ =\\ w*proxy_scale\\nret\\ +=\\ ret]" i}}
+  box_height {{"\[python -execlocal #(root.proxy?height*proxy_scale:height)\\nimport\\ nuke\\nroot\\ =\\ nuke.toNode(\\\"root\\\")\\nh\\ =\\ root\\\[\\\"format\\\"\\].value().height()\\nret\\ =\\ h\\nif\\ nuke.toNode(\\\"root\\\")\\\[\\\"proxy\\\"\\].value()\\ ==\\ True:\\n\\ \\ proxy_scale\\ =\\ root\\\['proxy_scale'\\].value()\\n\\ \\ ret\\ =\\ h*proxy_scale]" i}}
+  box_fixed true
+  scale 0.78
+  resize height
+  center false
+  filter Impulse
+  black_outside true
+  name PyDoubleWidth
+  xpos -328
+  ypos -93
+  disable {{!parent.wallpaper i}}
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  label wallpaper
+  xpos -328
+  ypos -14
+  disable {{!parent.wallpaper i}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation plus
+  name Merge1
+  label "text + line"
+  xpos -242
+  ypos 93
+ }
+ Crop {
+  box {0 0 {(Input1.width*(root.proxy?proxy_scale:1))*(parent.wallpaper?2:1) i} {(root.proxy?Input1.height*proxy_scale:Input1.height) i}}
+  crop false
+  name FinalCrop
+  xpos -242
+  ypos 128
+ }
+ Clamp {
+  name Clamp1
+  xpos -242
+  ypos 152
+ }
+set N20e62580 [stack 0]
+ Output {
+  name Output1
+  xpos -242
+  ypos 219
+ }
+push $N467b060
+ Crop {
+  box {0 0 {input.width i} 1}
+  reformat true
+  crop false
+  name Scanline
+  xpos -11
+  ypos -59
+ }
+ Sampler {
+  normalize_x {{parent.normalizelut i}}
+  name Sampler1
+  xpos -11
+  ypos -9
+ }
+push $N20e62580
+ Viewer {
+  gain 1.41
+  input_process false
+  name Viewer1
+  xpos 30
+  ypos 165
+ }
+end_group

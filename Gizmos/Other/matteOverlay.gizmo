@@ -1,0 +1,137 @@
+Gizmo {
+ inputs 2
+ tile_color 0xff3d00ff
+ note_font_color 0xffffffff
+ addUserKnob {20 matteOverlay}
+ addUserKnob {4 color l "overlay color" t "pick your overlay color" M {red green blue ""}}
+ addUserKnob {26 divline01 l "" +STARTLINE}
+ addUserKnob {41 mix l opacity T Merge45.mix}
+ addUserKnob {26 divline00 l "" +STARTLINE}
+ addUserKnob {26 info l "" +STARTLINE T "<font color=\"#838383\">This tool is intended for checking matte accuracy.<br />Hook roto or key outputs in the matte input of the node,<br /> then choose your overlay color and opacity.\n</font> "}
+ addUserKnob {26 divline02 l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "<font color='#494949'>// matteOverlay v1.0 © Tor Andreassen - www.fxtor.net \n</font>"}
+}
+ Input {
+  inputs 0
+  name BG
+  label "\[value number]"
+  xpos -289
+  ypos -463
+ }
+ Dot {
+  name Dot3
+  xpos -255
+  ypos -132
+ }
+set N606c2800 [stack 0]
+ Shuffle {
+  alpha white
+  name Shuffle1
+  label solidAlpha
+  xpos -429
+  ypos -142
+ }
+ Input {
+  inputs 0
+  name matte
+  label "\[value number]"
+  xpos -608
+  ypos -355
+  number 1
+ }
+ Switch {
+  inputs 2
+  which {{"!\[exists parent.input1.label]"}}
+  name Switch1
+  label autoInputCheck
+  selected true
+  xpos -608
+  ypos -142
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  name Constant2
+  xpos -891
+  ypos -281
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  name Constant1
+  xpos -997
+  ypos -282
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  name Constant3
+  xpos -1101
+  ypos -278
+ }
+ Switch {
+  inputs 3
+  which {{parent.color}}
+  name colorSwitch
+  xpos -997
+  ypos -146
+ }
+ Crop {
+  box {0 0 {input0.width()} {input0.height()}}
+  reformat true
+  crop false
+  name AutoFormat
+  xpos -997
+  ypos -99
+ }
+ Dot {
+  name Dot2
+  xpos -963
+  ypos -35
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  bbox B
+  name Copy8
+  xpos -608
+  ypos -45
+ }
+ Premult {
+  name Premult7
+  xpos -608
+  ypos 11
+ }
+set N60747c00 [stack 0]
+ Dot {
+  name Dot1
+  xpos -574
+  ypos 152
+ }
+push $N606c2800
+ Merge2 {
+  inputs 2
+  mix 0.4
+  name Merge45
+  xpos -289
+  ypos 148
+  disable {{parent.disable}}
+ }
+ Output {
+  name Output1
+  xpos -289
+  ypos 235
+ }
+push $N60747c00
+ Viewer {
+  frame_range 1-100
+  fps 25
+  name Viewer1
+  xpos -765
+  ypos 133
+ }
+end_group

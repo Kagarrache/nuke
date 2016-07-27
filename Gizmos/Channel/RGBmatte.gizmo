@@ -1,0 +1,210 @@
+#! C:/Program Files/Nuke6.3v3/Nuke6.3.exe -nx
+version 6.3 v3
+Gizmo {
+ inputs 2
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 RGBmatte}
+ addUserKnob {4 channel l Matte_Channel t "select the required channel" M {Red Green Blue Alpha Red+Green Red+Blue Green+Blue Red+Green+Blue "" "" "" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {41 size l Matte_Erode T Erode1.size}
+ addUserKnob {41 blur l Matte_Blur T Erode1.blur}
+ addUserKnob {41 mix l Matte_mix T Erode1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 invert l Matteinvert -STARTLINE}
+ addUserKnob {6 invert_mask l Invertmask -STARTLINE}
+}
+ Input {
+  inputs 0
+  name Matte
+  xpos 180
+  ypos -566
+ }
+ Shuffle {
+  name Shuffle1
+  xpos 180
+  ypos -417
+ }
+set N2746dd20 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color 1
+  name Constant2
+  xpos 400
+  ypos -465
+ }
+set N2746e050 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  red blue
+  green blue
+  blue blue
+  alpha blue
+  name Blue
+  xpos 180
+  ypos -273
+ }
+set N2746e380 [stack 0]
+push 0
+push $N2746dd20
+push $N2746e050
+ ShuffleCopy {
+  inputs 2
+  red green
+  green green
+  blue green
+  alpha green
+  name Green
+  xpos -40
+  ypos -273
+ }
+set N2746e6b0 [stack 0]
+push $N2746dd20
+push $N2746e050
+ ShuffleCopy {
+  inputs 2
+  red red
+  green red
+  blue red
+  alpha red
+  name Red
+  xpos -150
+  ypos -273
+ }
+set N2746e9e0 [stack 0]
+ Merge2 {
+  inputs 3+1
+  operation plus
+  name rplusgplusb
+  xpos -260
+  ypos 111
+ }
+ Keyer {
+  operation "luminance key"
+  range {0 0.42 1 1}
+  name Keyer4
+  xpos -260
+  ypos 129
+ }
+push $N2746e6b0
+push $N2746e380
+ Merge2 {
+  inputs 2
+  operation plus
+  name gplusb
+  xpos -40
+  ypos -33
+ }
+ Keyer {
+  operation "luminance key"
+  range {0 0.42 1 1}
+  name Keyer3
+  xpos -40
+  ypos -15
+ }
+push $N2746e380
+push $N2746e9e0
+ Merge2 {
+  inputs 2
+  operation plus
+  name rplusb
+  xpos -150
+  ypos 15
+ }
+ Keyer {
+  operation "luminance key"
+  range {0 0.42 1 1}
+  name Keyer2
+  xpos -150
+  ypos 33
+ }
+push $N2746e6b0
+push $N2746e9e0
+ Merge2 {
+  inputs 2
+  operation plus
+  name rplusg
+  xpos -260
+  ypos -33
+ }
+ Keyer {
+  operation "luminance key"
+  range {0 0.42 1 1}
+  name Keyer1
+  xpos -260
+  ypos -15
+ }
+push $N2746dd20
+push $N2746e050
+ ShuffleCopy {
+  inputs 2
+  red alpha
+  green alpha
+  blue alpha
+  name alpha
+  xpos 290
+  ypos -273
+ }
+push $N2746e380
+push $N2746e6b0
+push $N2746e9e0
+ Switch {
+  inputs 8
+  which {{parent.channel i}}
+  name Switch1
+  xpos 290
+  ypos 15
+ }
+ Erode {
+  channels rgba
+  size 0
+  name Erode1
+  xpos 290
+  ypos 59
+ }
+ Invert {
+  mix {{parent.invert i}}
+  name Invert1
+  xpos 290
+  ypos 105
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos 653
+  ypos 177
+  number 1
+ }
+ Invert {
+  name Invert2
+  xpos 527
+  ypos 171
+ }
+ Invert {
+  mix {{parent.invert_mask i}}
+  name Invert3
+  xpos 428
+  ypos 171
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos 290
+  ypos 177
+ }
+set N27659a30 [stack 0]
+ Output {
+  name Output1
+  xpos 290
+  ypos 286
+ }
+push $N27659a30
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 551
+  ypos 340
+ }
+end_group

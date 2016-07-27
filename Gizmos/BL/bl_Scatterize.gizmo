@@ -1,0 +1,94 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Scatterize}
+ addUserKnob {41 uv_scale l scale T IDistort2.uv_scale}
+ addUserKnob {7 ratio}
+ ratio 1
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 369
+  ypos 174
+ }
+ Dot {
+  name Dot4
+  xpos 403
+  ypos 226
+ }
+set N24e869e0 [stack 0]
+ Reformat {
+  type scale
+  scale {{parent.ratio}}
+  resize none
+  filter Impulse
+  name Reformat3
+  selected true
+  xpos 479
+  ypos 222
+ }
+ Expression {
+  expr0 random(x,y,0)
+  expr1 random(x,y,100)
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 0
+  name Expression11
+  xpos 479
+  ypos 248
+ }
+ Expression {
+  expr0 "r*2 - 1"
+  expr1 g*2-1
+  channel2 none
+  channel3 none
+  name Expression12
+  xpos 479
+  ypos 274
+ }
+ Reformat {
+  type "to box"
+  box_width {{Reformat3.input.width i}}
+  box_height {{Reformat3.input.height i}}
+  box_fixed true
+  resize distort
+  filter Impulse
+  name Reformat4
+  xpos 479
+  ypos 300
+ }
+push $N24e869e0
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  out motion
+  name ShuffleCopy2
+  xpos 369
+  ypos 300
+ }
+ IDistort {
+  channels rgba
+  uv motion
+  uv_scale 0
+  name IDistort2
+  xpos 369
+  ypos 326
+ }
+push $N24e869e0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix i}}
+  name Dissolve2
+  xpos 259
+  ypos 326
+ }
+ Output {
+  name Output
+  xpos 259
+  ypos 352
+ }
+end_group

@@ -1,0 +1,111 @@
+#! /Applications/Nuke6.2v1/Nuke6.2v1.app/Contents/MacOS/Nuke6.2v1 -nx
+version 6.2 v1
+Gizmo {
+ help "ShowDirtyAlpha\nA tool for displaying areas of the alpha channel that is not completely white or black. Good for cleaning keyed plates to 3D cards.\nRed is close to white (holes in the alpha)\nBlue is close to black (dirt in the transparent areas)\nDark green is below 0, bright green is over 1."
+ addUserKnob {20 User}
+ addUserKnob {41 enhance T dirtyAlphaSwitch.enhance}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -527
+  ypos -405
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle10
+  xpos -527
+  ypos -365
+ }
+set N3151cb40 [stack 0]
+ Expression {
+  expr0 0
+  expr1 "(a>1?0.85:0) + (a<0?0.15:0)"
+  expr2 0
+  expr3 0
+  name Expression6
+  xpos -402
+  ypos -211
+ }
+push 0
+push $N3151cb40
+ ColorLookup {
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {curve L x0.5 0 x1 1}}
+  name ColorLookup1
+  xpos -527
+  ypos -286
+ }
+ Expression {
+  expr0 a>=1?0:a
+  expr1 0
+  expr2 0
+  expr3 0
+  name Expression10
+  xpos -527
+  ypos -213
+ }
+push $N3151cb40
+ ColorLookup {
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {curve L 1 x0.5 0}}
+  name ColorLookup2
+  xpos -639
+  ypos -287
+ }
+ Expression {
+  expr0 0
+  expr1 0
+  expr2 a>=1?0:a
+  expr3 0
+  name Expression13
+  xpos -639
+  ypos -214
+ }
+ Merge2 {
+  inputs 3+1
+  operation plus
+  name Merge4
+  xpos -527
+  ypos -113
+ }
+ Expression {
+  expr3 max(r,b,g)
+  name Expression7
+  xpos -527
+  ypos -32
+ }
+set N31554000 [stack 0]
+ Expression {
+  expr0 r>0?1:0
+  expr2 b>0?1:0
+  expr3 max((r>0?1:0),g,(b>0?1:0))
+  name Expression1
+  selected true
+  xpos -460
+  ypos 22
+ }
+push $N31554000
+ Switch {
+  inputs 2
+  which {{dirtyAlphaSwitch.enhance}}
+  name dirtyAlphaSwitch
+  xpos -527
+  ypos 73
+  addUserKnob {20 User}
+  addUserKnob {6 enhance t "Enhance to solid colors" +STARTLINE}
+ }
+ Output {
+  name Output1
+  xpos -527
+  ypos 173
+ }
+end_group

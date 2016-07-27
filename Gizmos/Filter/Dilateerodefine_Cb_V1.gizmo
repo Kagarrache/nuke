@@ -1,0 +1,196 @@
+Gizmo {
+ inputs 2
+ help "select between the 3 erode/dilate filters.  This gizmo allows you to get finner adjustments."
+ tile_color 0xcc804eff
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 Buehler l Dilate/ErodeFine_CB_V1}
+ addUserKnob {41 channels_1 l channels T FilterErode.channels}
+ addUserKnob {26 ""}
+ addUserKnob {4 choice l "choose to activate" M {Dilate "FilterErode (box)" ""}}
+ addUserKnob {14 DEsize l size R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 mChannel l "alpha mask" +STARTLINE}
+ addUserKnob {6 mInvert l invert -STARTLINE}
+ addUserKnob {41 mix T Keymix1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {32 bugs l " comments / bugs " t "click here to download the latest version, leave a comment/request or a bug." T "start http://www.nukepedia.com/search/chad-buehler/" +STARTLINE}
+ addUserKnob {26 version l "" -STARTLINE T "                                        - by Chad Buehler    v1.0  "}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -59
+  ypos 493
+  number 1
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 158
+  ypos -69
+ }
+set N2193a100 [stack 0]
+push $N2193a100
+push $N2193a100
+ FilterErode {
+  channels rgba
+  size {{xInt i} {yInt i}}
+  name FilterErode
+  xpos 158
+  ypos -13
+  addUserKnob {20 User}
+  addUserKnob {12 Amount}
+  Amount {{DEsize i} {DEsize i}}
+  addUserKnob {7 xInt l INVISIBLE +INVISIBLE R -10 10}
+  xInt {{Amount.x>=0?int(Amount.x):-(int(-Amount.x))}}
+  addUserKnob {7 yInt l INVISIBLE +INVISIBLE R -10 10}
+  yInt {{Amount.y>=0?int(Amount.y):-(int(-Amount.y))}}
+ }
+push $N2193a100
+ Dilate {
+  channels {{{FilterErode.channels}}}
+  size {{FilterErode.xInt} {FilterErode.yInt}}
+  name Dilate
+  xpos 47
+  ypos -11
+ }
+ Switch {
+  inputs 3
+  which {{choice i}}
+  name Sel
+  selected true
+  xpos 158
+  ypos 64
+ }
+set N2194a3f0 [stack 0]
+ Transform {
+  translate {{FilterErode.Amount.x-FilterErode.xInt i} {curve i}}
+  center {960 540}
+  name TransxPos
+  xpos 213
+  ypos 136
+ }
+set N2194e410 [stack 0]
+push $N2194a3f0
+ Transform {
+  translate {{-(FilterErode.Amount.x-FilterErode.xInt)} {curve}}
+  center {960 540}
+  name TransxNeg
+  xpos 350
+  ypos 136
+ }
+set N21954ad0 [stack 0]
+push $N2194a3f0
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge40
+  xpos 350
+  ypos 185
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge41
+  xpos 350
+  ypos 227
+ }
+push $N2194e410
+push $N21954ad0
+push $N2194a3f0
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge38
+  xpos 213
+  ypos 179
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge39
+  xpos 213
+  ypos 217
+ }
+push $N2194a3f0
+ Switch {
+  inputs 3
+  which {{FilterErode.Amount.x==FilterErode.xInt?0:Sel.which<1?FilterErode.Amount.x>0?1:2:FilterErode.Amount.x<0?1:2 i}}
+  name Switch1
+  xpos 158
+  ypos 273
+ }
+set N2197cf80 [stack 0]
+ Transform {
+  translate {{curve} {FilterErode.Amount.y-FilterErode.yInt}}
+  center {960 540}
+  name TransyPos
+  xpos 213
+  ypos 326
+ }
+set N21980b90 [stack 0]
+push $N2197cf80
+ Transform {
+  translate {{curve i} {-(FilterErode.Amount.y-FilterErode.yInt) i}}
+  center {960 540}
+  name TransyNeg
+  xpos 350
+  ypos 324
+ }
+set N21987250 [stack 0]
+push $N2197cf80
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge42
+  xpos 350
+  ypos 379
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge43
+  xpos 350
+  ypos 406
+ }
+push $N21980b90
+push $N21987250
+push $N2197cf80
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge44
+  xpos 213
+  ypos 381
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge45
+  xpos 213
+  ypos 408
+ }
+push $N2197cf80
+ Switch {
+  inputs 3
+  which {{FilterErode.Amount.y==FilterErode.yInt?0:Sel.which<1?FilterErode.Amount.y>0?1:2:FilterErode.Amount.y<0?1:2 i}}
+  name Switch2
+  xpos 158
+  ypos 487
+ }
+ Keymix {
+  inputs 3
+  channels {{{FilterErode.channels}}}
+  invertMask {{!mInvert i}}
+  name Keymix1
+  xpos 30
+  ypos 566
+  disable {{!mChannel i}}
+ }
+ Output {
+  name Output
+  xpos 30
+  ypos 633
+ }
+end_group

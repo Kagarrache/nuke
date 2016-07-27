@@ -1,0 +1,320 @@
+#! C:/Program Files/Nuke8.0v6/nuke-8.0.v6.dll -nx
+version 8.0 v6
+Gizmo {
+ inputs 2
+ addUserKnob {20 User}
+ addUserKnob {26 ""}
+ addUserKnob {4 Switcher M {Aim "LatLong Position/Co-Ordinates" InCamera PipedCamera "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {26 AimControls l "" +STARTLINE T "AimControls\n\nMove onscreen aim controls to  to get x.y,z aim cordinates\n"}
+ addUserKnob {41 Aim T LATLONG_FORMULA_AIM.Aim}
+ addUserKnob {41 Aim_cartesian T LATLONG_FORMULA_AIM.Aim_cartesian}
+ addUserKnob {41 Aim_Latitude l INVISIBLE +INVISIBLE T LATLONG_FORMULA_AIM.Aim_Latitude}
+ addUserKnob {41 Aim_Longitude l INVISIBLE +INVISIBLE T LATLONG_FORMULA_AIM.Aim_Longitude}
+ addUserKnob {26 ""}
+ addUserKnob {26 LatLongPositionControls l "" +STARTLINE T "LatLong Position Controls\n\nInput Tweak Lat / Long to get x.y,z aim cordinates\n\n"}
+ addUserKnob {41 Latitude T LATLONG_FORMULA_POSITON1.Latitude}
+ addUserKnob {41 Longitude T LATLONG_FORMULA_POSITON1.Longitude}
+ addUserKnob {41 Position T LATLONG_FORMULA_POSITON1.Position}
+ addUserKnob {41 cartesian T LATLONG_FORMULA_POSITON1.cartesian}
+ addUserKnob {26 ""}
+ addUserKnob {26 OverlayControls l "" +STARTLINE T "OverlayControls\n"}
+ addUserKnob {7 Opacity}
+ Opacity 0.575
+ addUserKnob {6 Overlay_LatLong +STARTLINE}
+ Overlay_LatLong true
+ addUserKnob {26 ""}
+ addUserKnob {26 SphereRadius l "" +STARTLINE T "Sphere Radius\n"}
+ addUserKnob {41 radius t "Radius of Sphere/earth" T Sphere2.radius}
+ addUserKnob {26 ""}
+ addUserKnob {26 InCameraControls l "" +STARTLINE T "InCamera controls\n"}
+ addUserKnob {13 Translate t "In Camera Translate"}
+ addUserKnob {13 Rotate t "In Camera Rotate"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 near R 0 100}
+ near 0.1
+ addUserKnob {7 far R 0 100000}
+ far 1000
+ addUserKnob {41 focal l "focal length" T InCamera1.focal}
+ addUserKnob {41 haperture l "horiz aperture" T InCamera1.haperture}
+ addUserKnob {41 vaperture l "vert aperture" T InCamera1.vaperture}
+ addUserKnob {26 ""}
+ addUserKnob {26 OutputControls l "" +STARTLINE T "Output Controls\n\n"}
+ addUserKnob {41 format l "output format" T Reformat1.format}
+ addUserKnob {41 overscan T ScanlineRender1.overscan}
+}
+ BackdropNode {
+  inputs 0
+  name TargetCameraRig
+  label "Camera position"
+  note_font_size 38
+  xpos -661
+  ypos -559
+  bdwidth 335
+  bdheight 350
+ }
+ BackdropNode {
+  inputs 0
+  name TargetCameraRig1
+  label "Camera Aim"
+  note_font_size 38
+  xpos -1168
+  ypos -547
+  bdwidth 335
+  bdheight 350
+ }
+ Input {
+  inputs 0
+  name Latlong
+  xpos 277
+  ypos -1199
+ }
+set N10f8afb0 [stack 0]
+ Dot {
+  name Dot7
+  xpos 311
+  ypos -598
+ }
+set Nf4472060 [stack 0]
+ Dot {
+  name Dot5
+  xpos 899
+  ypos -598
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos 865
+  ypos -74
+ }
+ Reformat {
+  format "2000 1000 0 0 2000 1000 1 "
+  box_width 1920
+  box_height 1080
+  box_fixed true
+  resize distort
+  name Reformat1
+  xpos 865
+  ypos -20
+ }
+ set Cf4475080 [stack 0]
+ Multiply {
+  value {{parent.Opacity i}}
+  name Multiply1
+  xpos 865
+  ypos 85
+ }
+ Input {
+  inputs 0
+  name CameraInput
+  xpos 40
+  ypos -257
+  number 1
+ }
+ Camera2 {
+  inputs 0
+  translate {{parent.Translate} {parent.Translate} {parent.Translate}}
+  rotate {{parent.Rotate} {parent.Rotate} {parent.Rotate}}
+  focal 24.576
+  haperture 18.672
+  vaperture 50
+  near {{parent.near}}
+  far {{parent.far}}
+  name InCamera1
+  tile_color 0xff00ff
+  gl_color 0xff00ff
+  xpos -135
+  ypos -440
+ }
+ Camera2 {
+  inputs 0
+  rotate {{degrees(atan((TargetCameraAim.translate.y-translate.y)/sqrt(pow2(sqrt(pow2(TargetCameraAim.translate.x-translate.x)+pow2(TargetCameraAim.translate.z-translate.z))))))} {"TargetCameraAim.translate.x-translate.x >= 0 ? 270-degrees(atan((TargetCameraAim.translate.z-translate.z)/(TargetCameraAim.translate.x-translate.x))): -degrees(atan((TargetCameraAim.translate.z-translate.z)/(TargetCameraAim.translate.x-translate.x)))-270"} {curve}}
+  focal {{parent.InCamera1.focal}}
+  haperture {{parent.InCamera1.haperture}}
+  vaperture {{parent.InCamera1.vaperture}}
+  near {{parent.near}}
+  far {{parent.far}}
+  focal_point {{sqrt(pow2(sqrt(pow2(sqrt(pow2(TargetCameraAim.translate.x-translate.x)+pow2(TargetCameraAim.translate.z-translate.z)))))+pow2(TargetCameraAim.translate.y-translate.y))}}
+  name TargetCamera
+  tile_color 0xff0000ff
+  gl_color 0xffff
+  xpos -574
+  ypos -433
+ }
+ Dot {
+  name Dot1
+  xpos -550
+  ypos -269
+ }
+ Camera2 {
+  inputs 0
+  selectable false
+  rotate {{degrees(atan((CameraAimTarget.translate.y-translate.y)/sqrt(pow2(sqrt(pow2(CameraAimTarget.translate.x-translate.x)+pow2(CameraAimTarget.translate.z-translate.z))))))} {"CameraAimTarget.translate.x-translate.x >= 0 ? 270-degrees(atan((CameraAimTarget.translate.z-translate.z)/(CameraAimTarget.translate.x-translate.x))): -degrees(atan((CameraAimTarget.translate.z-translate.z)/(CameraAimTarget.translate.x-translate.x)))-270"} {curve}}
+  near {{parent.near}}
+  far {{parent.far}}
+  focal_point {{sqrt(pow2(sqrt(pow2(sqrt(pow2(CameraAimTarget.translate.x-translate.x)+pow2(CameraAimTarget.translate.z-translate.z)))))+pow2(CameraAimTarget.translate.y-translate.y))}}
+  name CameraAim
+  tile_color 0xff0000ff
+  gl_color 0xff0000ff
+  xpos -1088
+  ypos -444
+ }
+ Dot {
+  name Dot2
+  xpos -1064
+  ypos -233
+ }
+ Switch {
+  inputs 4
+  which {{parent.Switcher}}
+  name Switch1
+  xpos -145
+  ypos -82
+ }
+set Nee57ce0 [stack 0]
+push $Nee57ce0
+push $Nf4472060
+ Mirror {
+  Horizontal true
+  name Mirror1
+  xpos 277
+  ypos -513
+ }
+ Sphere {
+  radius 1000
+  rotate {0 -90 0}
+  name Sphere2
+  label "offset rotate"
+  xpos 277
+  ypos -434
+ }
+ Scene {
+  inputs 2
+  name Scene1
+  xpos 295
+  ypos -103
+ }
+clone $Cf4475080 {
+  inputs 0
+  xpos 507
+  ypos -20
+  selected false
+ }
+ Dot {
+  name Dot6
+  xpos 541
+  ypos 65
+ }
+ ScanlineRender {
+  inputs 3
+  name ScanlineRender1
+  xpos 285
+  ypos 62
+ }
+set N11224340 [stack 0]
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge1
+  xpos 656
+  ypos 336
+ }
+push $N11224340
+ Switch {
+  inputs 2
+  which {{parent.Overlay_LatLong}}
+  name Switch2
+  xpos 285
+  ypos 336
+ }
+ Output {
+  name Output1
+  xpos 285
+  ypos 718
+ }
+push $Nf4472060
+ Dot {
+  name Dot4
+  xpos -267
+  ypos -442
+ }
+ NoOp {
+  name LATLONG_FORMULA_POSITON1
+  xpos -414
+  ypos -307
+  addUserKnob {20 User}
+  addUserKnob {12 Position}
+  Position {{((width/360)*180)-(Longitude*-1*(width/360)) x1 50} {((height/180)*90)-(Latitude*-1)*(height/180) x1 505}}
+  addUserKnob {7 Height l INVISIBLE +INVISIBLE}
+  Height {{height}}
+  addUserKnob {7 Width l INVISIBLE +INVISIBLE}
+  Width {{width}}
+  addUserKnob {13 cartesian}
+  cartesian {{"R * cos(LAT) * cos(LONG)"} {"R * sin(LAT)"} {"R * cos(LAT) * sin(LONG)"}}
+  addUserKnob {7 LAT l "" +STARTLINE R -90 90}
+  LAT {{"Latitude * pi/180" x1 21.5}}
+  addUserKnob {7 LONG l "" +STARTLINE R -180 180}
+  LONG {{"Longitude * pi/180" x1 28}}
+  addUserKnob {7 R l radius R 0 10000}
+  R 7200
+  addUserKnob {7 Latitude t horizontal R -90 90}
+  addUserKnob {7 Longitude t vertical R -180 180}
+ }
+ Axis2 {
+  inputs 0
+  translate {{parent.LATLONG_FORMULA_AIM.Aim_cartesian} {parent.LATLONG_FORMULA_AIM.Aim_cartesian} {parent.LATLONG_FORMULA_AIM.Aim_cartesian}}
+  name CameraAimTarget
+  xpos -957
+  ypos -444
+ }
+ Axis2 {
+  inputs 0
+  translate {{parent.LATLONG_FORMULA_POSITON1.cartesian} {parent.LATLONG_FORMULA_POSITON1.cartesian} {parent.LATLONG_FORMULA_POSITON1.cartesian+parent.TargetCameraAim.offset}}
+  name TargetCameraAim
+  tile_color 0xffff
+  gl_color 0xffff
+  xpos -449
+  ypos -460
+  addUserKnob {20 User}
+  addUserKnob {13 offset}
+ }
+push $Nf4472060
+ NoOp {
+  name LATLONG_FORMULA_AIM
+  xpos -967
+  ypos -504
+  addUserKnob {20 User}
+  addUserKnob {12 Aim}
+  Aim {826 512}
+  addUserKnob {12 Position l INVISIBLE +INVISIBLE}
+  Position {{((Width/180)*90)-(Latitude*-1)*(Width/180) 1666 978} {((Height/360)*180)-(Longitude*-1*(Height/360)) 846 230}}
+  addUserKnob {7 Height l "" +STARTLINE}
+  Height {{height i}}
+  addUserKnob {7 Width l "" +STARTLINE}
+  Width {{width i}}
+  addUserKnob {13 Aim_cartesian}
+  Aim_cartesian {{"R * cos(LAT) * cos(LONG)" x1 -2020} {"R * sin(LAT)" x1 150} {"R * cos(LAT) * sin(LONG)" x1 4840}}
+  addUserKnob {7 LAT l INVISIBLE +INVISIBLE R -90 90}
+  LAT {{"Aim_Latitude * pi/180" x1 21.5}}
+  addUserKnob {7 LONG l INVISIBLE +INVISIBLE R -180 180}
+  LONG {{"Aim_Longitude * pi/180" x1 28}}
+  addUserKnob {7 R l radius R 0 10000}
+  R 5300
+  addUserKnob {7 Latitude l INVISIBLE t horizontal +INVISIBLE R -90 90}
+  Latitude 9
+  addUserKnob {7 Longitude l INVISIBLE t vertical +INVISIBLE R -180 180}
+  Longitude 23
+  addUserKnob {26 ""}
+  addUserKnob {7 Aim_Latitude R -90 90}
+  Aim_Latitude {{"(Aim.y-(height/2))/(height/180) " x1 -32.5}}
+  addUserKnob {7 Aim_Longitude R -180 180}
+  Aim_Longitude {{(Aim.x-(width/2))/(width/360) x1 -117}}
+ }
+push $N10f8afb0
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 277
+  ypos -398
+ }
+end_group

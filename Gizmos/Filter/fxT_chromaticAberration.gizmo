@@ -1,0 +1,1076 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ inputs 2
+ tile_color 0xf9ff00ff
+ note_font Verdana
+ addUserKnob {20 fxT_chromaticAberration}
+ addUserKnob {7 redScale l "<font  color='#de0000'>Red scale</font>" t "Red channel scale size" R 0 10}
+ redScale 1.0012
+ addUserKnob {7 greenScale l "<font  color='#7ebd64'>Green scale</font>" t "Green channel scale size" R 0 10}
+ greenScale 1.0052
+ addUserKnob {7 blueScale l "<font color='#2279c3'>Blue scale</font>" t "Blue channel scale size" R 0 10}
+ blueScale 1.008
+ addUserKnob {26 divline01 l "" +STARTLINE}
+ addUserKnob {14 blurSize l "Blur Size" t "Global blur size" R 0 100}
+ blurSize 1.5
+ addUserKnob {7 BlurMix l "Blur Mix" t "Mix the blur for a more subtle blur look / glow look"}
+ BlurMix 1
+ addUserKnob {7 sharpen l Sharpen t "Addjust to sharpen the image\n\nINFO:\nThis filter is applied in log colorspace to avoid artifacts" R 0 10}
+ addUserKnob {26 divline02 l "" +STARTLINE}
+ addUserKnob {20 extraOffsetControlsGROUP l "EXTRA OFFSET CONTROLS" n 1}
+ extraOffsetControlsGROUP 0
+ addUserKnob {7 offsetRotation l Rotation t "Rotation offset control" R -10 10}
+ addUserKnob {7 offsetX l X-axis t "X-axis offset control" R -20 20}
+ addUserKnob {7 offsetY l Y-axis t "Y-axis offset control" R -20 20}
+ addUserKnob {7 offsetTop l Top t "Offset control for the top of the frame" R -0.05 0.05}
+ addUserKnob {7 offsetBottom l Bottom t "Offset control for the bottom of the frame" R -0.05 0.05}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 divline03 l "" +STARTLINE}
+ addUserKnob {20 indChannelBlurControlsGROUP l "INDUVIDUAL CHANNEL BLUR CONTROLS" n 1}
+ indChannelBlurControlsGROUP 0
+ addUserKnob {14 redChBlur l "<font color='#de0000'>Red Cannel Blur</font>" t "Red channel blur size" R 0 100}
+ addUserKnob {14 greenChBlur l "<font color='#7ebd64'>Green Cannel Blur</font>" t "Green channel blur size" R 0 100}
+ addUserKnob {14 blueChBlur l "<font color='#2279c3'>Blue Channel Blur</font>" t "Blue channel blur size" R 0 100}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 divline04 l "" +STARTLINE}
+ addUserKnob {6 centerMask t "Enable to remove aberration in the center of the frame.\n\nThis \"mimics\" the real world lense where less aberration is applied to the center of the frame.\n\nYou can addjust the size of the 'centerMask' with the slider below, for convience: turn on the 'displayMask' while addjusting the size" +STARTLINE}
+ centerMask true
+ addUserKnob {7 scaleCenterMask l "|   scale" t "Addjust the scale of the centerMask. This lets you decide how much of the image is affected by the centerMask" -STARTLINE R 0.5 1.5}
+ scaleCenterMask 0.7
+ addUserKnob {6 displayMask t "Enable to display the affect-area of the centerMask" +STARTLINE}
+ addUserKnob {4 switchMaskColor l Color t "Choose what color to display when 'displayMask' in enabled" -STARTLINE M {red green blue "" "" "" "" ""}}
+ switchMaskColor blue
+ addUserKnob {16 centerMaskOpacity l "centerMask opacity" t "Addjust the center mask opacity.\n\nThis allows for controlling the opacity of the aberration showing in the center of the frame when the 'centerMask box' is enabled"}
+ centerMaskOpacity 1
+ addUserKnob {26 divLine05 l "" +STARTLINE}
+ addUserKnob {6 Rbypass l "&nbsp;<font color='#de0000'> Red</font><font color='#717171'>bypass</font>" t "Enable to bypass alteration to the red channel" +STARTLINE}
+ addUserKnob {6 Gbypass l "&nbsp;<font color='#7ebd64'> Green</font><font color='#717171'>bypass</font>" t "Enable to bypass alteration to the green channel" -STARTLINE}
+ addUserKnob {6 Bbypass l "&nbsp;<font color='#2279c3'> Blue</font><font color='#717171'>bypass</font>" t "Enable to bypass alteration to the blue channel" -STARTLINE}
+ addUserKnob {6 outputAlpha l "&nbsp;<font color='#717171'> Output alpha channel</font>" t "Enable if you prefer to output an alpha channel.\n\nINFO:\nThis option will output an alpha channel by  adding the rgb channels together at .33 for each channel" +STARTLINE}
+ addUserKnob {6 bbox l "&nbsp;<font color='#717171'> Keep bounding box</font>" t "Enable to keep the input bounding box.\n\nThis can be useful for limiting the size of the bounding box, but might not always be the desired option." -STARTLINE}
+ bbox true
+ addUserKnob {26 divline06 l "" +STARTLINE}
+ addUserKnob {7 chromaticAberrationMix l Mix t "Dissolve between the original input at 0 and the full chromatic aberration effect at 1.\n\nPS: Global blur is kept seperate from this mix, please addjust on dedicated sliders above."}
+ chromaticAberrationMix 1
+ addUserKnob {26 divline07 l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "<font color='#454545'>// fxT_chromaticAberration v2.0 © Tor Andreassen - www.fxtor.net</font>"}
+}
+ BackdropNode {
+  inputs 0
+  name backdrop01
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "Scale RGB Color"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -1148
+  ypos -842
+  bookmark false
+  bdwidth 3669
+  bdheight 2782
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop02
+  tile_color 0x3f4e69ff
+  gl_color 0x5f7a8701
+  label "RGB channel seperation"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -678
+  ypos -607
+  bookmark false
+  bdwidth 2152
+  bdheight 176
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop03
+  tile_color 0x3f4e69ff
+  gl_color 0x5f7a8701
+  label "RGB channel seperation"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -679
+  ypos -378
+  bookmark false
+  bdwidth 2153
+  bdheight 1067
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop04
+  tile_color 0x3f4e69ff
+  gl_color 0x5f7a8701
+  label "induvidual channel blur"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -685
+  ypos 759
+  bookmark false
+  bdwidth 2162
+  bdheight 115
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop05
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "mask input"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos 2636
+  ypos -847
+  bookmark false
+  bdwidth 350
+  bdheight 3702
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop07
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "blur output"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -1159
+  ypos 2241
+  bookmark false
+  bdwidth 3705
+  bdheight 150
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop08
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "mix between added chromatic abberation and original input"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -1158
+  ypos 2057
+  bookmark false
+  bdwidth 3707
+  bdheight 138
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop09
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "autocrop to input"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -1158
+  ypos 3110
+  bookmark false
+  bdwidth 3705
+  bdheight 233
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop1
+  tile_color 0x3f4e69ff
+  gl_color 0x5f7a8701
+  label "mask off center (more abberation in edges like lenses)"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -685
+  ypos 931
+  bookmark false
+  bdwidth 2166
+  bdheight 632
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop2
+  tile_color 0x3f4e69ff
+  gl_color 0x5f7a8701
+  label "build RGB"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -695
+  ypos 1596
+  bookmark false
+  bdwidth 2177
+  bdheight 277
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop3
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "display CenterMask"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -1162
+  ypos 2437
+  bookmark false
+  bdwidth 3704
+  bdheight 329
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop4
+  tile_color 0x212121ff
+  gl_color 0x44444401
+  label "generate alpha channel"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos 1534
+  ypos 114
+  bookmark false
+  bdwidth 934
+  bdheight 666
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop5
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "display CenterMask"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -462
+  ypos 300
+  bookmark false
+  bdwidth 1901
+  bdheight 247
+ }
+ BackdropNode {
+  inputs 0
+  name backdrop6
+  tile_color 0x343434ff
+  gl_color 0x44444401
+  label "keep alpha channel"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -1157
+  ypos 2820
+  bookmark false
+  bdwidth 3705
+  bdheight 233
+ }
+ NoOp {
+  inputs 0
+  name values
+  xpos 786
+  ypos -312
+  addUserKnob {20 values}
+  addUserKnob {16 base}
+  base 0.1
+  addUserKnob {16 red}
+  red {{-1*blue}}
+  addUserKnob {16 green}
+  green {{base}}
+  addUserKnob {16 blue}
+  blue {{base+(green*2)}}
+ }
+ NoOp {
+  inputs 0
+  name bypassControl
+  xpos -121
+  ypos -310
+  addUserKnob {20 bypassControl}
+  addUserKnob {6 redBypass +STARTLINE}
+  redBypass {{parent.Rbypass}}
+  addUserKnob {6 greenBypass +STARTLINE}
+  greenBypass {{parent.Gbypass}}
+  addUserKnob {6 blueBypass +STARTLINE}
+  blueBypass {{parent.Bbypass}}
+ }
+ Input {
+  inputs 0
+  name rgba
+  label "\[value number]"
+  xpos 463
+  ypos -983
+ }
+set N1d2e3880 [stack 0]
+ Dot {
+  name Dot2
+  tile_color 0x272727ff
+  xpos -1109
+  ypos -988
+ }
+ Dot {
+  name Dot13
+  tile_color 0x272727ff
+  xpos -1109
+  ypos 1237
+ }
+set N1d2ebdc0 [stack 0]
+ Dot {
+  name Dot8
+  tile_color 0x272727ff
+  xpos -1109
+  ypos 2109
+ }
+set N1d2f0080 [stack 0]
+ Dot {
+  name Dot14
+  tile_color 0x272727ff
+  xpos -1109
+  ypos 3221
+ }
+push $N1d2e3880
+ Dot {
+  name Dot5
+  tile_color 0x272727ff
+  xpos 485
+  ypos -707
+ }
+set N1d2f8600 [stack 0]
+ Dot {
+  name Dot6
+  tile_color 0x272727ff
+  xpos 1198
+  ypos -707
+ }
+set Nf2e009a0 [stack 0]
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos 2650
+  ypos -707
+ }
+set Nf2e04c80 [stack 0]
+ Input {
+  inputs 0
+  name mask
+  label 1
+  xpos 2771
+  ypos -789
+  number 1
+ }
+push $Nf2e04c80
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge1
+  xpos 2771
+  ypos -707
+ }
+ Switch {
+  inputs 2
+  which {{"!\[exists parent.input1]"}}
+  name Switch1
+  label AutoMaskCheck
+  xpos 2771
+  ypos -612
+ }
+ Dot {
+  name Dot7
+  tile_color 0x272727ff
+  label mask
+  note_font "Arial Black"
+  note_font_size 25
+  xpos 2793
+  ypos -97
+ }
+set Nf0b61a20 [stack 0]
+ Dot {
+  name Dot4
+  tile_color 0x272727ff
+  label mask
+  note_font "Arial Black"
+  note_font_size 25
+  xpos 1441
+  ypos -97
+ }
+set Nf0b42020 [stack 0]
+push $Nf0b42020
+push $Nf0b42020
+push $Nf2e009a0
+ Shuffle {
+  red blue
+  green blue
+  alpha white
+  name blueShuffle
+  tile_color 0xffff
+  xpos 1176
+  ypos -537
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  translate {{parent.offsetX*values.blue} {parent.offsetY*values.blue}}
+  rotate {{parent.offsetRotation*(values.blue/10)}}
+  scale {{parent.blueScale}}
+  center {{input.width/2} {input.height/2}}
+  name blueTransform1
+  tile_color 0xffff
+  label "x,y, rotate, scale\n\[value filter]"
+  xpos 1176
+  ypos -147
+  disable {{parent.bypassControl.blueBypass}}
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  skewX {{parent.offsetTop*(values.blue)}}
+  center {{input.width/2} 0}
+  name redTransform2
+  tile_color 0xffff
+  label "top offset: skewX\n\[value filter]"
+  xpos 1176
+  ypos -97
+  disable {{parent.bypassControl.blueBypass}}
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  skewX {{parent.offsetBottom*(values.blue)}}
+  center {{input.width/2} {input0.height()}}
+  name redTransform5
+  tile_color 0xffff
+  label "bottom offset: skewY\n\[value filter]"
+  xpos 1176
+  ypos -47
+  disable {{parent.bypassControl.blueBypass}}
+ }
+set Nf0f4c340 [stack 0]
+ Remove {
+  channels alpha
+  name Remove3
+  xpos 2271
+  ypos 241
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha blue
+  name Shuffle8
+  label "alpha to blue"
+  xpos 2271
+  ypos 284
+ }
+ Multiply {
+  channels alpha
+  value 0.33
+  name Multiply3
+  xpos 2271
+  ypos 309
+ }
+push 0
+push $Nf0b61a20
+ Dot {
+  name Dot18
+  tile_color 0x272727ff
+  label "\nmask"
+  note_font "Arial Black"
+  note_font_size 25
+  xpos -197
+  ypos -121
+  hide_input true
+ }
+set Nf0b7bef0 [stack 0]
+push $Nf0b7bef0
+push $Nf0b7bef0
+push $N1d2f8600
+ Dot {
+  name Dot9
+  tile_color 0x272727ff
+  xpos -363
+  ypos -707
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha white
+  name redShuffle
+  tile_color 0xff0000ff
+  xpos -385
+  ypos -524
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  translate {{parent.offsetX*values.red} {parent.offsetY*values.red}}
+  rotate {{parent.offsetRotation*(values.red/10)}}
+  scale {{parent.redScale}}
+  center {{input.width/2} {input.height/2}}
+  name redTransform1
+  tile_color 0xff0000ff
+  label "x,y, rotate, scale\n\[value filter]"
+  xpos -385
+  ypos -179
+  disable {{parent.bypassControl.redBypass}}
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  skewX {{parent.offsetTop*(values.red)}}
+  center {{input.width/2} 0}
+  name redTransform3
+  tile_color 0xff0000ff
+  label "top offset: skewX\n\[value filter]"
+  xpos -385
+  ypos -121
+  disable {{parent.bypassControl.redBypass}}
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  skewX {{parent.offsetBottom*(values.red)}}
+  center {{input.width/2} {input0.height()}}
+  name redTransform4
+  tile_color 0xff0000ff
+  label "bottom offset: skewY\n\[value filter]"
+  xpos -385
+  ypos -38
+  disable {{parent.bypassControl.redBypass}}
+ }
+set Nf0bae1b0 [stack 0]
+ Remove {
+  channels alpha
+  name Remove1
+  xpos 1768
+  ypos 327
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha red
+  name Shuffle7
+  label "alpha to red"
+  xpos 1768
+  ypos 372
+ }
+ Multiply {
+  channels alpha
+  value 0.33
+  name Multiply2
+  label "\[value value]"
+  xpos 1768
+  ypos 414
+ }
+push $Nf0b61a20
+ Dot {
+  name Dot11
+  tile_color 0x272727ff
+  label mask
+  note_font "Arial Black"
+  note_font_size 25
+  xpos 637
+  ypos -105
+  hide_input true
+ }
+set Nf0bdaea0 [stack 0]
+push $Nf0bdaea0
+push $Nf0bdaea0
+push $N1d2f8600
+ Shuffle {
+  red green
+  blue green
+  alpha white
+  name greenShuffle
+  tile_color 0xff00ff
+  xpos 463
+  ypos -517
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  translate {{parent.offsetX*values.green} {parent.offsetY*values.green}}
+  rotate {{parent.offsetRotation*(values.green/10)}}
+  scale {{parent.greenScale}}
+  center {{input.width/2} {input.height/2}}
+  name greenTransform1
+  tile_color 0xff00ff
+  label "x,y, rotate, scale\n\[value filter]"
+  xpos 461
+  ypos -171
+  disable {{parent.bypassControl.greenBypass}}
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  skewX {{parent.offsetTop*(values.green)}}
+  center {{input.width/2} 0}
+  name redTransform8
+  tile_color 0xff00ff
+  label "top offset: skewX\n\[value filter]"
+  xpos 461
+  ypos -109
+  disable {{parent.bypassControl.greenBypass}}
+ }
+ TransformMasked {
+  inputs 1+1
+  channels rgb
+  skewX {{parent.offsetBottom*(values.green)}}
+  center {{input.width/2} {input0.height()}}
+  name redTransform9
+  tile_color 0xff00ff
+  label "bottom offset: skewY\n\[value filter]"
+  xpos 461
+  ypos -49
+  disable {{parent.bypassControl.greenBypass}}
+ }
+set Nf2f0cc00 [stack 0]
+ Remove {
+  channels alpha
+  name Remove2
+  xpos 2040
+  ypos 246
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha green
+  name Shuffle10
+  label "alpha to green"
+  xpos 2040
+  ypos 278
+ }
+ Multiply {
+  channels alpha
+  value 0.33
+  name Multiply1
+  label "\[value value]"
+  xpos 2040
+  ypos 323
+ }
+ Merge2 {
+  inputs 3+1
+  name Merge3
+  xpos 2040
+  ypos 423
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle6
+  label "rgba to alpha"
+  xpos 2040
+  ypos 503
+ }
+ Log2Lin {
+  operation lin2log
+  black 0
+  name Log2Lin7
+  xpos 2040
+  ypos 539
+ }
+ Sharpen {
+  size {{parent.sharpen}}
+  mix 0.5
+  name Sharpen4
+  xpos 2040
+  ypos 565
+ }
+ Log2Lin {
+  black 0
+  name Log2Lin8
+  xpos 2040
+  ypos 603
+ }
+ Blur {
+  size {{parent.blurSize}}
+  mix {{parent.BlurMix}}
+  name BlurOutput1
+  xpos 2040
+  ypos 643
+ }
+ Clamp {
+  channels alpha
+  name Clamp2
+  xpos 2040
+  ypos 713
+ }
+ Dot {
+  name Dot15
+  tile_color 0x272727ff
+  xpos 2062
+  ypos 2940
+ }
+ Radial {
+  inputs 0
+  area {0 0 {input0.width()} {input0.height()}}
+  name Radial1
+  xpos -523
+  ypos 1015
+ }
+ Transform {
+  scale {{parent.scaleCenterMask}}
+  center {{(Radial1.area.r)/2} {(Radial1.area.t)/2}}
+  name Transform1
+  label centerMaskScale
+  xpos -523
+  ypos 1039
+ }
+ Multiply {
+  channels rgba
+  value {{parent.centerMaskOpacity}}
+  name Multiply4
+  xpos -523
+  ypos 1071
+ }
+ Clamp {
+  name Clamp1
+  xpos -523
+  ypos 1114
+ }
+ Dot {
+  name Dot10
+  tile_color 0x272727ff
+  xpos -501
+  ypos 1180
+ }
+set Nf0fb9600 [stack 0]
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green rgba.blue none}
+  color 1
+  name Constant3
+  xpos 594
+  ypos 2500
+  postage_stamp false
+ }
+ Shuffle {
+  alpha white
+  name Shuffle5
+  label A
+  xpos 594
+  ypos 2547
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red rgba.green -rgba.blue none}
+  color 1
+  name Constant2
+  xpos 513
+  ypos 2500
+  postage_stamp false
+ }
+ Shuffle {
+  alpha white
+  name Shuffle4
+  label A
+  xpos 513
+  ypos 2547
+ }
+ Constant {
+  inputs 0
+  channels {rgba.red -rgba.green -rgba.blue none}
+  color 1
+  name Constant1
+  xpos 431
+  ypos 2500
+  postage_stamp false
+ }
+ Shuffle {
+  alpha white
+  name Shuffle3
+  label A
+  xpos 431
+  ypos 2547
+ }
+ Switch {
+  inputs 3
+  which {{parent.switchMaskColor}}
+  name Switch2
+  xpos 513
+  ypos 2624
+ }
+ Crop {
+  box {0 0 {(Radial1.area.r)} {(Radial1.area.t)}}
+  name Crop1
+  xpos 513
+  ypos 2675
+ }
+push $Nf0fb9600
+push $N1d2ebdc0
+ Shuffle {
+  alpha white
+  name Shuffle2
+  label "\[knob in]"
+  xpos -943
+  ypos 1242
+ }
+ Dot {
+  name Dot17
+  tile_color 0x272727ff
+  xpos -642
+  ypos 1237
+ }
+set Nf2f699d0 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha white
+  name redShuffle1
+  tile_color 0xff0000ff
+  xpos -664
+  ypos 1470
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge9
+  xpos -523
+  ypos 1470
+ }
+push $Nf0bae1b0
+ Log2Lin {
+  operation lin2log
+  black 0
+  name Log2Lin1
+  xpos -385
+  ypos 389
+ }
+ Sharpen {
+  size {{parent.sharpen}}
+  mix 0.5
+  name Sharpen1
+  xpos -385
+  ypos 415
+ }
+ Log2Lin {
+  black 0
+  name Log2Lin2
+  xpos -385
+  ypos 453
+ }
+ Blur {
+  channels rgb
+  size {{parent.redChBlur}}
+  name BlurRedCh
+  tile_color 0xff0000ff
+  xpos -385
+  ypos 811
+ }
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos -385
+  ypos 1470
+  disable {{!(parent.centerMask)}}
+ }
+ Dot {
+  name Dot1
+  tile_color 0x272727ff
+  xpos -363
+  ypos 1657
+ }
+push $Nf0fb9600
+ Dot {
+  name Dot20
+  tile_color 0x272727ff
+  xpos 260
+  ypos 1180
+ }
+set Nf2fc8e80 [stack 0]
+push $Nf2f699d0
+ Dot {
+  name Dot12
+  tile_color 0x272727ff
+  xpos 105
+  ypos 1237
+ }
+set Nf2fcd140 [stack 0]
+ Shuffle {
+  red green
+  blue green
+  alpha white
+  name greenShuffle1
+  tile_color 0xff00ff
+  xpos 83
+  ypos 1461
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge11
+  xpos 238
+  ypos 1461
+ }
+push $Nf2f0cc00
+ Log2Lin {
+  operation lin2log
+  black 0
+  name Log2Lin4
+  xpos 461
+  ypos 377
+ }
+ Sharpen {
+  size {{parent.sharpen}}
+  mix 0.5
+  name Sharpen2
+  xpos 461
+  ypos 403
+ }
+ Log2Lin {
+  black 0
+  name Log2Lin3
+  xpos 461
+  ypos 441
+ }
+ Blur {
+  channels rgb
+  size {{parent.greenChBlur}}
+  name BlurGeenCh
+  tile_color 0xff00ff
+  xpos 461
+  ypos 817
+ }
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 461
+  ypos 1461
+  disable {{!(parent.centerMask)}}
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue black
+  alpha black
+  name ShuffleCopy1
+  xpos 461
+  ypos 1666
+ }
+ Dot {
+  name Dot3
+  tile_color 0x272727ff
+  xpos 483
+  ypos 1753
+ }
+push $Nf2fc8e80
+ Dot {
+  name Dot19
+  tile_color 0x272727ff
+  xpos 941
+  ypos 1180
+ }
+push $Nf2fcd140
+ Dot {
+  name Dot16
+  tile_color 0x272727ff
+  xpos 807
+  ypos 1237
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha white
+  name blueShuffle1
+  tile_color 0xffff
+  xpos 785
+  ypos 1461
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge8
+  xpos 919
+  ypos 1461
+ }
+push $Nf0f4c340
+ Log2Lin {
+  operation lin2log
+  black 0
+  name Log2Lin5
+  xpos 1177
+  ypos 385
+ }
+ Sharpen {
+  size {{parent.sharpen}}
+  mix 0.5
+  name Sharpen3
+  xpos 1177
+  ypos 411
+ }
+ Log2Lin {
+  black 0
+  name Log2Lin6
+  xpos 1177
+  ypos 449
+ }
+ Blur {
+  channels rgb
+  size {{parent.blueChBlur}}
+  name BlurBlueCh
+  tile_color 0xffff
+  xpos 1177
+  ypos 810
+ }
+ Merge2 {
+  inputs 2
+  name Merge7
+  xpos 1177
+  ypos 1461
+  disable {{!(parent.centerMask)}}
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  alpha black
+  name ShuffleCopy2
+  xpos 1177
+  ypos 1762
+ }
+push $N1d2f0080
+ Dissolve {
+  inputs 2
+  which {{parent.chromaticAberrationMix}}
+  name Dissolve1
+  xpos 1177
+  ypos 2114
+ }
+ Blur {
+  size {{parent.blurSize}}
+  mix {{parent.BlurMix}}
+  name BlurOutput
+  xpos 1177
+  ypos 2335
+ }
+ Merge2 {
+  inputs 2+1
+  name Merge2
+  xpos 1177
+  ypos 2675
+  disable {{!(parent.displayMask)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 1177
+  ypos 2945
+  disable {{!(parent.outputAlpha)}}
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 1177
+  ypos 3230
+  disable {{!(parent.bbox)}}
+ }
+ Output {
+  name Output1
+  xpos 1177
+  ypos 3448
+ }
+end_group

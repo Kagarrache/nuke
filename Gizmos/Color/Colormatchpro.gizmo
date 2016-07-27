@@ -1,0 +1,86 @@
+#ColorMatchPro v1.0
+#Contact cameron.a.carson@gmail.com with questions
+Gizmo {
+tile_color 0x7aa9ffff
+help "A plate grade matching tool that works based on the idea of normalizing the colorrange before colorcorrecting, allowing for greater control. \n\nAny questions contact cameron.a.carson@gmail.com"
+addUserKnob {20 main l Main}
+addUserKnob {18 bgBlack l "BG Blacks"}
+addUserKnob {18 bgWhite l "BG Highlights"}
+bgWhite 1
+addUserKnob {6 blackClamp l "Clamp Blacks" +STARTLINE}
+addUserKnob {26 Foreground l "" +STARTLINE T " "}
+addUserKnob {18 fgBlack l "FG Blacks"}
+addUserKnob {18 fgWhite l "FG Highlights"}
+fgWhite 1
+addUserKnob {26 break l "" +STARTLINE T " "}
+addUserKnob {20 fineTune l "Fine Tune Controls" n 1}
+fineTune 0
+addUserKnob {26 master l "@b;master"}
+addUserKnob {41 saturation T ColorCorrect.saturation}
+addUserKnob {41 contrast T ColorCorrect.contrast}
+addUserKnob {41 gain T ColorCorrect.gain}
+addUserKnob {41 multiply T Grade1.multiply}
+addUserKnob {41 gamma T Grade1.gamma}
+addUserKnob {41 add l offset T Grade1.add}
+addUserKnob {26 shadows l "@b;shadows"}
+addUserKnob {41 shadows.saturation l saturation T ColorCorrect.shadows.saturation}
+addUserKnob {41 shadows.contrast l contrast T ColorCorrect.shadows.contrast}
+addUserKnob {41 shadows.gamma l gamma T ColorCorrect.shadows.gamma}
+addUserKnob {41 shadows.gain l gain T ColorCorrect.shadows.gain}
+addUserKnob {41 shadows.offset l offset T ColorCorrect.shadows.offset}
+addUserKnob {26 midtones l "@b;midtones"}
+addUserKnob {41 midtones.saturation l saturation T ColorCorrect.midtones.saturation}
+addUserKnob {41 midtones.contrast l contrast T ColorCorrect.midtones.contrast}
+addUserKnob {41 midtones.gamma l gamma T ColorCorrect.midtones.gamma}
+addUserKnob {41 midtones.gain l gain T ColorCorrect.midtones.gain}
+addUserKnob {41 midtones.offset l offset T ColorCorrect.midtones.offset}
+addUserKnob {26 highlights l "@b;highlights"}
+addUserKnob {41 highlights.saturation l saturation T ColorCorrect.highlights.saturation}
+addUserKnob {41 highlights.contrast l contrast T ColorCorrect.highlights.contrast}
+addUserKnob {41 highlights.gamma l gamma T ColorCorrect.highlights.gamma}
+addUserKnob {41 highlights.gain l gain T ColorCorrect.highlights.gain}
+addUserKnob {41 highlights.offset l offset T ColorCorrect.highlights.offset}
+addUserKnob {20 endGroup n -1}
+addUserKnob {20 "" l Ranges}
+addUserKnob {41 test T ColorCorrect.test}
+addUserKnob {41 lookup l "" +STARTLINE T ColorCorrect.lookup}
+}
+Input {
+inputs 0
+name Input1
+xpos 800
+ypos -529
+}
+Grade {
+blackpoint {{fgBlack} {fgBlack} {fgBlack} 1}
+whitepoint {{fgWhite} {fgWhite} {fgWhite} 1}
+black_clamp {{blackClamp}}
+name Grade_Normalize
+xpos 800
+ypos -449
+}
+Grade {
+black_clamp false
+name Grade1
+xpos 800
+ypos -409
+}
+ColorCorrect {
+name ColorCorrect
+xpos 800
+ypos -369
+}
+Grade {
+black {{bgBlack} {bgBlack} {bgBlack} 1}
+white {{bgWhite} {bgWhite} {bgWhite} 1}
+black_clamp false
+name Grade_Match
+xpos 800
+ypos -329
+}
+Output {
+name Output1
+xpos 800
+ypos -249
+}
+end_group

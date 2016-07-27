@@ -1,0 +1,141 @@
+#! C:/Program Files/Nuke6.3v1/Nuke6.3.exe -nx
+version 6.3 v1
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {41 format l "output format" T Reformat2.format}
+ addUserKnob {41 resize l "resize type" T Reformat2.resize}
+ addUserKnob {41 translate T Transform5.translate}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x8e8e3800
+  label Normal
+  note_font_size 42
+  xpos -123
+  ypos -89
+  bdwidth 477
+  bdheight 462
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color 0.5
+  name Constant1
+  xpos 74
+  ypos 96
+ }
+set N580b62f0 [stack 0]
+ Input {
+  inputs 0
+  name Input1
+  xpos 74
+  ypos -52
+ }
+ ColorCorrect {
+  saturation 0
+  name ColorCorrect1
+  xpos 74
+  ypos -12
+ }
+set N580b6950 [stack 0]
+push $N580b6950
+ Transform {
+  translate {0 5}
+  center {1024 778}
+  name Transform5
+  xpos -36
+  ypos -12
+ }
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge4
+  xpos -36
+  ypos 46
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge6
+  xpos -36
+  ypos 120
+ }
+ set Cc611b0a0 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle4
+  xpos -36
+  ypos 144
+ }
+push $N580b62f0
+push $N580b6950
+push $N580b6950
+ Transform {
+  translate {{-parent.Transform5.translate.y i} {-parent.Transform5.translate.x i}}
+  center {1024 778}
+  name Transform6
+  xpos 184
+  ypos -12
+ }
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge5
+  xpos 184
+  ypos 46
+ }
+clone $Cc611b0a0 {
+  inputs 2
+  xpos 184
+  ypos 120
+  selected false
+ }
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle5
+  xpos 184
+  ypos 144
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  name Merge8
+  xpos 74
+  ypos 215
+ }
+ Expression {
+  channel0 {-rgba.red -rgba.green rgba.blue}
+  expr0 "sqrt(1 - (r*r) - (g*g))"
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression2
+  xpos 74
+  ypos 246
+ }
+ Transform {
+  scale {{"1 + (parent.Transform5.translate.y/(width/2))" i}}
+  center {1024 1024}
+  name Transform7
+  selected true
+  xpos 74
+  ypos 287
+ }
+ Reformat {
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  resize distort
+  name Reformat2
+  xpos 74
+  ypos 328
+ }
+ Output {
+  name Output1
+  xpos 74
+  ypos 428
+ }
+end_group

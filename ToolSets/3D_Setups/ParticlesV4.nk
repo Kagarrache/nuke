@@ -1,0 +1,144 @@
+set cut_paste_input [stack 0]
+version 6.3 v2
+push $cut_paste_input
+Radial {
+ area {1231 271.5 1435 455}
+ color {0.2900000215 0.6591999531 1 1}
+ name Radial1
+ selected true
+ xpos -460
+ ypos -521
+}
+Crop {
+ box {1230 272 1434 454}
+ reformat true
+ crop false
+ name Crop1
+ selected true
+ xpos -460
+ ypos -404
+}
+set N3fde8a0 [stack 0]
+Constant {
+ inputs 0
+ channels alpha
+ color 1
+ format "512 512 0 0 512 512 1 square_512"
+ name Constant1
+ selected true
+ xpos -460
+ ypos -614
+ postage_stamp false
+}
+set N3fde570 [stack 0]
+Dot {
+ name Dot2
+ selected true
+ xpos -232
+ ypos -605
+}
+Ramp {
+ p0 {134 212}
+ p1 {134 -8}
+ name Ramp1
+ selected true
+ xpos -266
+ ypos -517
+}
+Sphere {
+ rows 6
+ columns 6
+ translate {0 8.3 0}
+ name Sphere1
+ selected true
+ xpos -266
+ ypos -460
+}
+clone node3fdf230|TransformGeo|3764 TransformGeo {
+ translate {{(frame/10)*-1 i} {cos(frame/15) i} {sin(frame/15) i}}
+ name TransformGeo1
+ selected true
+ xpos -156
+ ypos -460
+}
+set C3fdf230 [stack 0]
+push $N3fde8a0
+Grade {
+ gamma {1.159999967 0.3480000794 -0.8700000048 5}
+ name Grade1
+ selected true
+ xpos -460
+ ypos -380
+}
+push $N3fde570
+Dot {
+ name Dot1
+ selected true
+ xpos -599
+ ypos -605
+}
+Ramp {
+ p0 {134 202}
+ p1 {134 510}
+ name Ramp2
+ selected true
+ xpos -633
+ ypos -520
+}
+Sphere {
+ rows 6
+ columns 6
+ translate {0 7.6 0}
+ rotate {0 0 -90}
+ uniform_scale 0.3
+ name Sphere2
+ selected true
+ xpos -633
+ ypos -463
+}
+clone $C3fdf230 {
+ xpos -739
+ ypos -463
+ selected true
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ start_frame -50
+ emit_from faces
+ rate 200
+ rate_channel rgba.red
+ lifetime 440
+ velocity 0
+ size 0.09
+ name ParticleEmitter2
+ selected true
+ xpos -633
+ ypos -380
+}
+Dot {
+ name Dot3
+ selected true
+ xpos -526
+ ypos -441
+}
+Dot {
+ name Dot4
+ selected true
+ xpos -285
+ ypos -441
+}
+ParticleEmitter {
+ inputs 3
+ start_frame -50
+ emit_from faces
+ rate 300
+ rate_channel rgba.red
+ lifetime 270
+ velocity 0
+ size 0.09
+ name ParticleEmitter1
+ selected true
+ xpos -266
+ ypos -404
+}

@@ -1,0 +1,432 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Heat_Vision_v1\n\nIt provides a heat vision effect using filters on different color spaces (RGB, YpBpR, HSV).  There are options to increase the multiply, glow intesity, dilate effects and blur.\n\nfeel free to contact me at niccolo.barbero@gmail.com"
+ addUserKnob {20 User l DUCK_Heat_Vision_v1}
+ addUserKnob {41 effect_mulitply l Effect_mulitply T Multiply3.value}
+ addUserKnob {41 glow_intesity l Glow_intesity T Glow1.brightness}
+ addUserKnob {41 Color_dilate_size T Dilate3.size}
+ addUserKnob {41 Blur_size T Blur5.size}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 281
+  ypos -24
+ }
+ Dot {
+  name Dot3
+  xpos 315
+  ypos 16
+ }
+set N3adc4950 [stack 0]
+ Dot {
+  name Dot1
+  xpos 1368
+  ypos 50
+ }
+set N3adf3900 [stack 0]
+ Dot {
+  name Dot4
+  xpos 1511
+  ypos 763
+ }
+push $N3adc4950
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name R
+  xpos -225
+  ypos 273
+ }
+ Blur {
+  size 20
+  name Blur4
+  xpos -225
+  ypos 351
+ }
+set N3add8750 [stack 0]
+push $N3adc4950
+ Colorspace {
+  colorspace_in sRGB
+  colorspace_out YPbPr
+  name Colorspace2
+  xpos 83
+  ypos 203
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name PR
+  xpos 83
+  ypos 494
+ }
+ Multiply {
+  value 6
+  name Multiply1
+  xpos 83
+  ypos 534
+ }
+push $N3adc4950
+ Colorspace {
+  colorspace_in sRGB
+  colorspace_out HSV
+  name Colorspace1
+  xpos 277
+  ypos 204
+ }
+set N3b002fa0 [stack 0]
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name SATURATION
+  xpos 277
+  ypos 251
+ }
+ Blur {
+  size 5
+  name Blur1
+  xpos 277
+  ypos 309
+ }
+set N3b02d7c0 [stack 0]
+push $N3b002fa0
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name HUE
+  xpos -66
+  ypos 267
+ }
+ Blur {
+  size 3
+  name Blur2
+  xpos -66
+  ypos 308
+ }
+ Invert {
+  name Invert1
+  xpos -66
+  ypos 357
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name In
+  xpos -66
+  ypos 444
+ }
+push $N3b002fa0
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name VALUE
+  xpos 653
+  ypos 259
+ }
+ Blur {
+  size 3
+  name Blur3
+  xpos 653
+  ypos 315
+ }
+set N3b06d770 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name In1
+  xpos -66
+  ypos 493
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus
+  xpos -66
+  ypos 538
+ }
+set N3b082eb0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name In2
+  xpos -225
+  ypos 538
+ }
+set N3b08f760 [stack 0]
+ Dilate {
+  size 5
+  name Dilate2
+  xpos -113
+  ypos 600
+ }
+ Blur {
+  size 10
+  name Blur6
+  xpos -113
+  ypos 639
+ }
+push $N3b08f760
+ Dilate {
+  size 2
+  name Dilate1
+  xpos -225
+  ypos 562
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  bbox B
+  name Scrn
+  xpos -225
+  ypos 679
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  color_panelDropped true
+  name Constant1
+  xpos -369
+  ypos 675
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  bbox B
+  name In3
+  xpos -225
+  ypos 724
+ }
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle1
+  xpos -225
+  ypos 785
+ }
+ Clamp {
+  name Clamp1
+  xpos -225
+  ypos 842
+ }
+push $N3adc4950
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name g
+  xpos 428
+  ypos 153
+ }
+ Invert {
+  name Invert2
+  xpos 428
+  ypos 307
+ }
+push $N3b02d7c0
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos 392
+  ypos 434
+ }
+push $N3add8750
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge4
+  xpos 398
+  ypos 506
+ }
+set N3c00e700 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  color_panelDropped true
+  name Constant3
+  xpos 427
+  ypos 626
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name In4
+  xpos 279
+  ypos 650
+ }
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle2
+  xpos 279
+  ypos 703
+ }
+ Clamp {
+  name Clamp2
+  xpos 279
+  ypos 750
+ }
+push $N3b06d770
+ Clamp {
+  name Clamp4
+  xpos 653
+  ypos 386
+ }
+push $N3c00e700
+ Clamp {
+  name Clamp3
+  xpos 508
+  ypos 502
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Min1
+  xpos 653
+  ypos 506
+ }
+push $N3adc4950
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name b
+  xpos 859
+  ypos 228
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Multiply
+  xpos 659
+  ypos 581
+ }
+push $N3b082eb0
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos 659
+  ypos 650
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  color_panelDropped true
+  name Constant2
+  xpos 784
+  ypos 694
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name In5
+  xpos 659
+  ypos 726
+ }
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle3
+  xpos 659
+  ypos 769
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 279
+  ypos 803
+ }
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos 279
+  ypos 856
+ }
+ Blur {
+  size 10
+  name Blur5
+  xpos 800
+  ypos 859
+ }
+ Dilate {
+  size 2
+  name Dilate3
+  xpos 900
+  ypos 859
+ }
+ Multiply {
+  value 2
+  name Multiply3
+  xpos 1033
+  ypos 859
+ }
+ Glow2 {
+  brightness 3
+  name Glow1
+  xpos 1165
+  ypos 856
+ }
+push $N3adf3900
+ Dot {
+  name Dot2
+  xpos 1368
+  ypos 473
+ }
+ Blur {
+  size 20
+  name Blur7
+  xpos 1334
+  ypos 568
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Multiply2
+  xpos 1334
+  ypos 856
+ }
+ Clamp {
+  name Clamp5
+  xpos 1334
+  ypos 901
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  selected true
+  xpos 1334
+  ypos 977
+ }
+set N3c10dd80 [stack 0]
+ Dot {
+  name Dot5
+  xpos 1368
+  ypos 1026
+ }
+ Output {
+  name Output1
+  xpos 1334
+  ypos 1082
+ }
+push $N3c10dd80
+ Viewer {
+  colour_sample_bbox {-0.943359375 0.44921875 -0.85546875 0.478515625}
+  input_process false
+  name Viewer1
+  xpos 825
+  ypos 479
+ }
+end_group

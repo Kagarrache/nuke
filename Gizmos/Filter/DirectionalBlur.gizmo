@@ -1,0 +1,156 @@
+Group {
+name DirectionalBlur1
+tile_color 0xff3402ff
+note_font "Verdana Bold"
+note_font_size 15
+selected true
+xpos -520
+ypos 475
+cached true
+addUserKnob {20 DirBlur}
+addUserKnob {3 angle l INVISIBLE +INVISIBLE}
+angle {{-atan(AB/AC)*57.295779513082+90}}
+addUserKnob {3 AB l INVISIBLE +INVISIBLE}
+AB {{"BlurDir.x - triangle.x"}}
+addUserKnob {3 AC l INVISIBLE +INVISIBLE}
+AC {{"BlurCenter.y - triangle.y"}}
+addUserKnob {12 triangle l INVISIBLE +INVISIBLE}
+triangle {{BlurCenter} {BlurDir}}
+addUserKnob {6 RGB +STARTLINE}
+RGB true
+addUserKnob {6 Alpha -STARTLINE}
+Alpha true
+addUserKnob {26 Separation l "" +STARTLINE}
+addUserKnob {12 BlurCenter l "Blur Center"}
+BlurCenter {0 0}
+addUserKnob {12 BlurDir l "Blur Dir"}
+BlurDir {200 0}
+addUserKnob {7 rotate l INVISIBLE +INVISIBLE R 0 360}
+rotate {{angle}}
+addUserKnob {7 size R 0 100}
+size 10
+addUserKnob {26 separation l "" +STARTLINE}
+addUserKnob {41 maskChannelMask l mask -STARTLINE T Blur1.maskChannelMask}
+addUserKnob {26 Copyright l "" +STARTLINE T "\nDirectional Blur v1.0 by Mathieu Vallet "}
+}
+Input {
+inputs 0
+name InputRGB
+xpos -680
+ypos -709
+}
+set N5ecc47e0 [stack 0]
+Dot {
+name Dot2
+xpos -812
+ypos -712
+}
+Dot {
+name Dot1
+xpos -812
+ypos -362
+}
+set N5ecc4ec0 [stack 0]
+Dot {
+name Dot3
+xpos -812
+ypos -292
+}
+push $N5ecc4ec0
+Input {
+inputs 0
+name InputMask
+xpos -360
+ypos -709
+number 1
+}
+Dot {
+name Dot6
+xpos -332
+ypos -502
+}
+Transform {
+rotate {{parent.rotate.main}}
+center {1024 576}
+black_outside false
+name Transform1
+xpos -520
+ypos -499
+}
+set C5eb14880 [stack 0]
+push $N5ecc47e0
+Reformat {
+type "to box"
+box_width {{input.width}}
+box_height {{input.height}}
+box_pixel_aspect {{"\[python nuke.root()\\\['format'\\].value().pixelAspect()]"}}
+resize none
+center false
+filter Lanczos6
+pbb true
+name Reformat1
+xpos -680
+ypos -639
+}
+clone $C5eb14880 {
+xpos -680
+ypos -569
+selected false
+}
+Blur {
+inputs 1+1
+size {{parent.size} 0}
+crop false
+maskChannelMask -rgba.alpha
+maskChannelInput -rgba.alpha
+name Blur1
+xpos -680
+ypos -505
+}
+Transform {
+rotate {{-parent.Transform1.rotate.main x36 -53.64279827}}
+center {1024 576}
+black_outside false
+name Transform2
+xpos -680
+ypos -429
+}
+set N5eb15640 [stack 0]
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos -680
+ypos -365
+disable {{parent.Alpha x180 0}}
+}
+ShuffleCopy {
+inputs 2
+red red
+green green
+blue blue
+alpha alpha2
+name ShuffleCopy1
+xpos -680
+ypos -289
+disable {{parent.RGB x180 0}}
+}
+Output {
+name Output1
+xpos -680
+ypos -213
+}
+push $N5eb15640
+push 0
+push $N5eb15640
+Viewer {
+inputs 3
+frame 19
+gamma 1.96
+input_process false
+name Viewer1
+xpos -469
+ypos -112
+}
+end_group

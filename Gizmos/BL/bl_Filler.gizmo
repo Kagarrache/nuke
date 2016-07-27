@@ -1,0 +1,74 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Filler}
+ addUserKnob {4 mode M {Full Point}}
+ addUserKnob {41 fillpt l "Fill Point" T FloodFill1.fillpt}
+ addUserKnob {41 color T Fill1.color}
+ addUserKnob {19 threshold}
+ threshold {0.1 0.1 0.1 0.1}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 236
+  ypos 171
+ }
+set N24e5a450 [stack 0]
+ FloodFill {
+  channel rgba.red
+  fillcolor {{parent.Fill1.color.r i}}
+  fillpt {100 100}
+  replacerange {{parent.threshold.r i}}
+  name FloodFill1
+  xpos 346
+  ypos 171
+ }
+ FloodFill {
+  channel rgba.green
+  fillcolor {{parent.Fill1.color.g i}}
+  fillpt {{parent.FloodFill1.fillpt.x i} {parent.FloodFill1.fillpt.y i}}
+  replacerange {{parent.threshold.g i}}
+  name FloodFill2
+  xpos 346
+  ypos 197
+ }
+ FloodFill {
+  channel rgba.blue
+  fillcolor {{parent.Fill1.color.b i}}
+  fillpt {{parent.FloodFill1.fillpt.x i x1 603} {parent.FloodFill1.fillpt.y i x1 355}}
+  replacerange {{parent.threshold.b i}}
+  name FloodFill3
+  xpos 346
+  ypos 223
+ }
+add_layer {rgba rgba.beta}
+ FloodFill {
+  fillcolor {{parent.Fill1.color.a i}}
+  fillpt {{parent.FloodFill1.fillpt.x i x1 527} {parent.FloodFill1.fillpt.y i x1 273}}
+  replacerange {{parent.threshold.a i}}
+  name FloodFill4
+  xpos 346
+  ypos 249
+  cached true
+ }
+push $N24e5a450
+ Fill {
+  color {0.5 0.5 0.5 0.5}
+  name Fill1
+  xpos 236
+  ypos 197
+ }
+ Switch {
+  inputs 2
+  which {{parent.mode i}}
+  name Switch1
+  xpos 236
+  ypos 249
+ }
+ Output {
+  name Output
+  xpos 236
+  ypos 275
+ }
+end_group

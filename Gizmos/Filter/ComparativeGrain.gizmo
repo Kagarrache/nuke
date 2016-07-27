@@ -1,0 +1,274 @@
+#! /mnt/RT0/tools/SITE/software/Linux/Nuke9.0v6/libnuke-9.0.6.so -nx
+version 9.0 v6
+Gizmo {
+ inputs 4
+ addUserKnob {20 User}
+ addUserKnob {26 Version l "Comparative Grain" T "Version 1.0 by Daniel Mark Miller 2015\nBased on workflow of Bradley Friedman:\nhttp://www.fie.us/grain-management-101/"}
+ addUserKnob {4 matte_output l "Limit to matte" M {"Limit to Matte" "Grain Whole Comp"}}
+ addUserKnob {4 output l Output M {"Grain Only" "Grain Comparison" "Grained Comp"}}
+ output "Grained Comp"
+ addUserKnob {26 ""}
+ addUserKnob {41 norm_grain l "Grain Normalize" t "Uses a Gamma value to try to remove image edges from sampled grain." T Gamma1.value}
+ addUserKnob {41 mix T PlusGrain.mix}
+ addUserKnob {41 minimum_enable l "Enable Minimum" T Clamp1.minimum_enable}
+ addUserKnob {41 minimum t "Clamps lack values of sampled grain, adjust this to remove nasty artifacts." T Clamp1.minimum}
+ addUserKnob {41 lift l "Lift Sub Blacks" t "Use this to raise any values in plate below 0 to 0" T LIFT.value}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x71c67100
+  label "Normalize Grain"
+  note_font_size 22
+  xpos 596
+  ypos -236
+  bdwidth 214
+  bdheight 205
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x388e8e00
+  label "Denormalize Grain"
+  note_font_size 22
+  xpos 407
+  ypos 26
+  bdwidth 425
+  bdheight 193
+ }
+ Input {
+  inputs 0
+  name Plate
+  xpos 370
+  ypos -496
+  number 2
+ }
+ Dot {
+  name Dot8
+  label "plate\n"
+  xpos 413
+  ypos -416
+ }
+ Add {
+  channels rgb
+  value 0.115
+  name LIFT
+  xpos 368
+  ypos -322
+ }
+ set C368ce730 [stack 0]
+set N368ce730 [stack 0]
+ Input {
+  inputs 0
+  name Denoised
+  xpos -54
+  ypos -233
+  number 1
+ }
+ Dot {
+  name Dot7
+  label denoised
+  xpos -20
+  ypos -167
+ }
+clone $C368ce730 {
+  xpos -54
+  ypos -106
+  selected false
+ }
+set N3d094250 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge31
+  label "Extract Grain"
+  xpos 346
+  ypos -112
+ }
+set N3e3769b0 [stack 0]
+push $N3d094250
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge1
+  xpos 307
+  ypos -10
+ }
+ Input {
+  inputs 0
+  name Comp2Grain
+  xpos -216
+  ypos -10
+ }
+ Dot {
+  name Dot9
+  label comp
+  xpos -182
+  ypos 66
+ }
+clone $C368ce730 {
+  xpos 6
+  ypos 196
+  selected false
+ }
+set N368a6830 [stack 0]
+ Gamma {
+  value 0.85
+  name Gamma1
+  xpos 472
+  ypos 115
+ }
+ set C368cfe80 [stack 0]
+ Dot {
+  name Dot6
+  label "gamma denoised comp or element"
+  xpos 506
+  ypos 153
+ }
+push $N3e3769b0
+clone $C368cfe80 {
+  xpos 491
+  ypos -120
+  selected false
+ }
+ Dot {
+  name Dot5
+  label "Gamma denoised image"
+  xpos 525
+  ypos -62
+ }
+push $N368ce730
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge32
+  xpos 659
+  ypos -66
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge37
+  xpos 644
+  ypos 104
+ }
+set Na73bd260 [stack 0]
+ Clamp {
+  minimum -0.02
+  minimum_enable false
+  maximum_enable false
+  name Clamp1
+  xpos 438
+  ypos 288
+ }
+set Na738c7e0 [stack 0]
+push $N368a6830
+ Dot {
+  name Dot2
+  label footage
+  xpos 260
+  ypos 234
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name PlusGrain
+  xpos 226
+  ypos 294
+ }
+set N18d8f590 [stack 0]
+ Add {
+  value {{-parent.LIFT.value}}
+  name Add1
+  xpos 208
+  ypos 488
+ }
+ Input {
+  inputs 0
+  name Mask
+  xpos -117
+  ypos 542
+  number 3
+ }
+set Nb6cb92e0 [stack 0]
+ Dot {
+  name Dot10
+  label "mask\n"
+  xpos -93
+  ypos 650
+ }
+push $N18d8f590
+push $N368a6830
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -11
+  ypos 680
+ }
+set N18c894b0 [stack 0]
+ Add {
+  value {{-parent.LIFT.value}}
+  name Add2
+  selected true
+  xpos 103
+  ypos 717
+ }
+ Switch {
+  inputs 2
+  which {{parent.matte_output}}
+  name LIMIT_TO_MATTE
+  xpos 208
+  ypos 758
+ }
+ Dot {
+  name Dot3
+  label "Grained Comp"
+  xpos 242
+  ypos 858
+ }
+push $N18c894b0
+push $N368ce730
+ Merge2 {
+  inputs 2
+  operation difference
+  name COMPARE_GRAIN
+  xpos -624
+  ypos 710
+ }
+ Dot {
+  name Dot4
+  label "Grain Comparison"
+  xpos -49
+  ypos 940
+ }
+push $Na73bd260
+ Dot {
+  name Dot1
+  label "Grain Only"
+  xpos 678
+  ypos 987
+ }
+ Switch {
+  inputs 3
+  which {{parent.output}}
+  name OUTPUT_TYPE
+  xpos 208
+  ypos 1022
+ }
+ Output {
+  name Output1
+  xpos 208
+  ypos 1118
+ }
+push $Na738c7e0
+push $Nb6cb92e0
+ Viewer {
+  inputs 2
+  frame_range 37-49
+  fps 25
+  colour_sample_bbox {0.287966162 0.2773933113 0.2918108404 0.2789311707}
+  name Viewer1
+  xpos 438
+  ypos 549
+ }
+end_group

@@ -1,0 +1,39 @@
+#! /usr/local/Nuke6.3v4/Nuke6.3 -nx
+version 6.3 v4
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {41 startFrame T NoOp1.startFrame}
+ addUserKnob {41 Every_frame_of l "Frame plus" T NoOp1.Every_frame_of}
+ name frameByframe_AndorZ
+}
+ Input {
+  inputs 0
+  name img
+  label input
+  xpos -1124
+  ypos 93
+ }
+ TimeWarp {
+  lookup {{parent.NoOp1.expression i C x1 1 x36 36}}
+  name TimeWarp1
+  xpos -1124
+  ypos 182
+ }
+ NoOp {
+  name NoOp1
+  xpos -1124
+  ypos 271
+  addUserKnob {20 User}
+  addUserKnob {3 expression}
+  expression {{frame*Every_frame_of+startFrame-(Every_frame_of) i x1 0}}
+  addUserKnob {3 startFrame}
+  startFrame 1
+  addUserKnob {3 Every_frame_of l "Frame by"}
+  Every_frame_of 2
+ }
+ Output {
+  name Output1
+  xpos -1124
+  ypos 326
+ }
+end_group

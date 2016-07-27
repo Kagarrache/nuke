@@ -1,0 +1,147 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ lock_connections {{curve x1 0}}
+ addUserKnob {20 User l Slice}
+ addUserKnob {41 from0 l "Copy channel" T Copy1.from0}
+ addUserKnob {7 center}
+ center 0.5
+ addUserKnob {7 lo}
+ lo {0}
+ addUserKnob {7 hi}
+ hi 1
+ addUserKnob {4 mode M {Fill "Grad in" "Grad out"}}
+ addUserKnob {6 matteMult +STARTLINE}
+}
+ Input {
+  inputs 0
+  name In
+  xpos 378
+  ypos 159
+ }
+set N15e686d0 [stack 0]
+push $N15e686d0
+add_layer {rgba rgba.beta}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.alpha
+  name Copy1
+  xpos 378
+  ypos 185
+ }
+ Dot {
+  name Dot1
+  xpos 412
+  ypos 238
+ }
+set N160122c0 [stack 0]
+ Dot {
+  name Dot3
+  xpos 354
+  ypos 238
+ }
+ Expression {
+  temp_name0 center
+  temp_expr0 parent.center
+  temp_name1 lo
+  temp_expr1 parent.lo+center
+  temp_name2 hi
+  temp_expr2 parent.hi+center
+  channel0 alpha
+  expr0 "(a<hi && a>lo)? 1 : 0"
+  channel1 none
+  channel2 none
+  name Expression1
+  xpos 320
+  ypos 290
+ }
+push $N160122c0
+ Dot {
+  name Dot4
+  xpos 469
+  ypos 238
+ }
+set N16004200 [stack 0]
+ Expression {
+  temp_name0 center
+  temp_expr0 parent.center
+  temp_name1 lo
+  temp_expr1 parent.lo+center
+  temp_name2 hi
+  temp_expr2 parent.hi+center
+  channel0 alpha
+  expr0 "(a<lo && a>hi)? 1 : 0"
+  channel1 none
+  channel2 none
+  name Expression3
+  xpos 435
+  ypos 291
+ }
+ Switch {
+  inputs 2
+  which {{"(parent.hi<parent.lo)? 0 : 1" i}}
+  name Switch2
+  xpos 377
+  ypos 337
+ }
+set N646f3c0 [stack 0]
+push $N16004200
+ Dot {
+  name Dot2
+  xpos 649
+  ypos 238
+ }
+ Grade {
+  channels alpha
+  blackpoint {{parent.lo+parent.center i}}
+  whitepoint {{parent.hi+parent.center i}}
+  white_clamp true
+  name Grade2
+  xpos 615
+  ypos 261
+ }
+set N15e640f0 [stack 0]
+ Invert {
+  channels alpha
+  name Invert1
+  xpos 725
+  ypos 261
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge1
+  selected true
+  xpos 725
+  ypos 337
+ }
+push $N646f3c0
+push $N15e640f0
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  xpos 615
+  ypos 337
+ }
+push $N646f3c0
+ Switch {
+  inputs 3
+  which {{parent.mode}}
+  name Switch3
+  xpos 377
+  ypos 384
+ }
+ Premult {
+  name Premult1
+  xpos 377
+  ypos 410
+  disable {{1-parent.matteMult}}
+ }
+ Output {
+  name Output
+  xpos 377
+  ypos 436
+ }
+end_group

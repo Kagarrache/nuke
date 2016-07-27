@@ -1,0 +1,455 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Smart_Blur_v1\n\nSmart Blur isn’t a common blur, it helps to blur images with heavy grain, surface imperfections, noises, render problems, etc. mainting the boundary and the edges, and restoring details in highlights and dark regions of the image.\n\nfeel free to contact me at niccolo.barbero@gmail.com"
+ addUserKnob {20 User l "DUCK_Smart Blur v1"}
+ addUserKnob {26 ""}
+ addUserKnob {26 RED_channel_blur}
+ addUserKnob {41 size T R_Blur.size}
+ addUserKnob {26 GREEN_channel_blur}
+ addUserKnob {41 size_1 l size T G_Blur.size}
+ addUserKnob {26 BLU_channel_blur}
+ addUserKnob {41 size_2 l size T B_blur.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 detail l "Detail Restoration"}
+ addUserKnob {41 choose l amount T Dissolve1.which}
+ addUserKnob {26 ""}
+ addUserKnob {26 space l "" +STARTLINE T "\n\n\n\n\n"}
+ addUserKnob {26 credits l INVISIBLE -STARTLINE +INVISIBLE T "Natural Born  Pixel v1.0    \n\nby Niccolo' Barbero 2015"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 186
+  ypos -12
+ }
+set N38a67cf0 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle6
+  xpos -387
+  ypos -20
+ }
+set N38a6b330 [stack 0]
+push $N38a6b330
+ Blur {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  size 3
+  name R_Blur
+  xpos -765
+  ypos 49
+ }
+ set C38a76bc0 [stack 0]
+set N38a76bc0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation min
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Min4
+  xpos -595
+  ypos 167
+ }
+set N38a81770 [stack 0]
+push $N38a6b330
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge1
+  xpos -420
+  ypos 208
+ }
+ Blur {
+  size 2
+  name Blur2
+  xpos -420
+  ypos 232
+ }
+push $N38a76bc0
+push $N38a6b330
+ Merge2 {
+  inputs 2
+  operation max
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Max4
+  xpos -765
+  ypos 144
+ }
+set N38a9e940 [stack 0]
+push $N38a6b330
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge3
+  xpos -765
+  ypos 211
+ }
+ Blur {
+  size 2
+  name Blur1
+  xpos -765
+  ypos 235
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha red
+  name Shuffle1
+  xpos -765
+  ypos 312
+ }
+ Multiply {
+  channels alpha
+  value 2
+  name Multiply1
+  xpos -765
+  ypos 354
+ }
+push $N38a6b330
+push $N38a81770
+push $N38a9e940
+ Merge2 {
+  inputs 2
+  operation average
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Merge6
+  xpos -593
+  ypos 288
+ }
+ Merge2 {
+  inputs 2+1
+  operation multiply
+  name Merge4
+  xpos -593
+  ypos 358
+ }
+set N38ae7810 [stack 0]
+ Merge2 {
+  inputs 2
+  operation exclusion
+  mix 0.5
+  name Plus
+  xpos -593
+  ypos 494
+ }
+set N38af1880 [stack 0]
+push $N38a67cf0
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle5
+  xpos 186
+  ypos 59
+ }
+set N3d0034d0 [stack 0]
+push $N3d0034d0
+ Blur {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  size 3
+  name G_Blur
+  xpos 224
+  ypos 216
+ }
+ set C3d00f0f0 [stack 0]
+set N3d00f0f0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation min
+  Achannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  output {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  name Min5
+  xpos 315
+  ypos 272
+ }
+set N3d018f80 [stack 0]
+push $N3d0034d0
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge11
+  xpos 431
+  ypos 318
+ }
+ Blur {
+  size 2
+  name Blur3
+  xpos 382
+  ypos 362
+ }
+push $N3d0034d0
+push $N3d00f0f0
+push $N3d0034d0
+ Merge2 {
+  inputs 2
+  operation max
+  Achannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  output {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  name Max5
+  xpos 51
+  ypos 271
+ }
+set N3d039f90 [stack 0]
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge2
+  xpos -80
+  ypos 271
+ }
+ Blur {
+  size 2
+  name Blur4
+  xpos -81
+  ypos 325
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha green
+  name Shuffle2
+  xpos -80
+  ypos 382
+ }
+ Multiply {
+  channels alpha
+  value 2
+  name Multiply2
+  xpos -80
+  ypos 431
+ }
+push $N3d0034d0
+push $N3d018f80
+push $N3d039f90
+ Merge2 {
+  inputs 2
+  operation average
+  name Merge7
+  xpos 212
+  ypos 339
+ }
+ Merge2 {
+  inputs 2+1
+  operation multiply
+  name Merge5
+  xpos 186
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation exclusion
+  mix 0.5
+  name Plus1
+  xpos 187
+  ypos 547
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green -rgba.blue rgba.alpha}
+  name Merge8
+  xpos 186
+  ypos 636
+ }
+push $N38a67cf0
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle4
+  xpos 932
+  ypos 49
+ }
+set N3d09da30 [stack 0]
+push $N3d09da30
+ Blur {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  size 3
+  name B_blur
+  xpos 945
+  ypos 279
+ }
+ set C3d0a0730 [stack 0]
+set N3d0a0730 [stack 0]
+ Merge2 {
+  inputs 2
+  operation min
+  Achannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  name Min3
+  xpos 1034
+  ypos 331
+ }
+set N3d0b1030 [stack 0]
+push $N3d09da30
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge14
+  xpos 1177
+  ypos 420
+ }
+ Blur {
+  size 2
+  name Blur6
+  selected true
+  xpos 1177
+  ypos 469
+ }
+push $N3d09da30
+push $N3d0a0730
+push $N3d09da30
+ Merge2 {
+  inputs 2
+  operation max
+  Achannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  name Max3
+  xpos 819
+  ypos 317
+ }
+set N3d0ccd70 [stack 0]
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge12
+  xpos 638
+  ypos 337
+ }
+ Blur {
+  size 2
+  name Blur5
+  xpos 642
+  ypos 374
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha blue
+  name Shuffle3
+  xpos 642
+  ypos 437
+ }
+ Multiply {
+  channels alpha
+  value 2
+  name Multiply3
+  xpos 642
+  ypos 500
+ }
+push $N3d09da30
+push $N3d0b1030
+push $N3d0ccd70
+ Merge2 {
+  inputs 2
+  operation average
+  Achannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  name Merge9
+  xpos 954
+  ypos 419
+ }
+ Merge2 {
+  inputs 2+1
+  operation multiply
+  name Merge13
+  xpos 912
+  ypos 541
+ }
+ Merge2 {
+  inputs 2
+  operation exclusion
+  mix 0.5
+  name Plus2
+  xpos 902
+  ypos 619
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge10
+  xpos 186
+  ypos 699
+ }
+set N3d132290 [stack 0]
+push $N38a6b330
+clone $C38a76bc0 {
+  xpos -285
+  ypos 727
+  selected false
+ }
+push $N3d0034d0
+clone $C3d00f0f0 {
+  xpos -109
+  ypos 705
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green -rgba.blue rgba.alpha}
+  name Merge15
+  xpos -180
+  ypos 789
+ }
+push $N3d09da30
+clone $C3d0a0730 {
+  xpos 767
+  ypos 718
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green -rgba.blue -rgba.alpha}
+  Bchannels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge16
+  xpos -180
+  ypos 896
+ }
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve1
+  xpos 186
+  ypos 892
+ }
+ Output {
+  name Output1
+  xpos 186
+  ypos 1077
+ }
+push $N38ae7810
+push $N3d132290
+push $N38af1880
+ Viewer {
+  inputs 3
+  input_process false
+  name Viewer1
+  xpos -275
+  ypos 904
+ }
+end_group

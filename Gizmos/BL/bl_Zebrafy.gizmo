@@ -1,0 +1,48 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Zebrafy}
+ addUserKnob {7 zebra R 1 10}
+ zebra 1
+ addUserKnob {7 smooth R 0 100}
+ addUserKnob {7 center R 0.0001 0.99999}
+ center 0.5
+ addUserKnob {41 thresholdType T bl_Solarize1.thresholdType}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -150
+  ypos 38
+ }
+ Blur {
+  channels rgba
+  size {{smooth i}}
+  name Blur1
+  xpos -150
+  ypos 64
+ }
+ Expression {
+  temp_name0 val
+  temp_expr0 parent.zebra
+  expr0 "fmod(r*val, 1)"
+  expr1 "fmod(g*val, 1)"
+  expr2 "fmod(b*val, 1)"
+  expr3 "fmod(a*val, 1)"
+  name Expression1
+  xpos -150
+  ypos 90
+ }
+ bl_Solarize {
+  name bl_Solarize1
+  selected true
+  xpos -150
+  ypos 116
+  value {{parent.center x1 0.5}}
+ }
+ Output {
+  name Output
+  xpos -150
+  ypos 142
+ }
+end_group

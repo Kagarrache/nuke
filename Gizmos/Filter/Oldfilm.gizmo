@@ -1,0 +1,329 @@
+#! C:/Program Files/Nuke6.3v1/Nuke6.3.exe -nx
+version 6.3 v1
+Gizmo {
+ inputs 2
+ tile_color 0x777777ff
+ note_font "Bitstream Vera Sans"
+ addUserKnob {20 User l Color}
+ addUserKnob {26 Hue l "@b;Hue"}
+ addUserKnob {41 outgray l Graypoint T HueShift1.outgray}
+ addUserKnob {41 color_saturation l "Saturation Along Axis" T HueShift1.color_saturation}
+ addUserKnob {41 hue_rotation l "Hue Rotation" T HueShift1.hue_rotation}
+ addUserKnob {41 mix l Mix T HueShift1.mix}
+ addUserKnob {26 Exposure l "@b;Exposure"}
+ addUserKnob {41 blackpoint l Blackpoint T EXPTool1.blackpoint}
+ addUserKnob {41 mode l "Adjust in" T EXPTool1.mode}
+ addUserKnob {41 gang l Gang -STARTLINE T EXPTool1.gang}
+ addUserKnob {41 red l Red T EXPTool1.red}
+ addUserKnob {41 green l Green T EXPTool1.green}
+ addUserKnob {41 blue l Blue T EXPTool1.blue}
+ addUserKnob {41 mix_1 l Mix T EXPTool1.mix}
+ addUserKnob {26 Saturation l "@b;Saturation"}
+ addUserKnob {41 saturation l Saturation T Saturation1.saturation}
+ addUserKnob {41 mode_1 l "Luminance Math" T Saturation1.mode}
+ addUserKnob {41 mix_2 l Mix T Saturation1.mix}
+ addUserKnob {26 Glow l "@b;Glow"}
+ addUserKnob {41 tint l Tint T Glow1.tint}
+ addUserKnob {41 tolerance l Tolerance T Glow1.tolerance}
+ addUserKnob {41 brightness l Brightness T Glow1.brightness}
+ addUserKnob {41 size l Size T Glow1.size}
+ addUserKnob {41 filter_2 l Filter T Glow1.filter}
+ addUserKnob {41 quality l Quality -STARTLINE T Glow1.quality}
+ addUserKnob {41 mix_10 l Mix T Glow1.mix}
+ addUserKnob {20 ColorLookup l "Color Lookup"}
+ addUserKnob {41 lut l "" -STARTLINE T ColorLookup1.lut}
+ addUserKnob {41 source T ColorLookup1.source}
+ addUserKnob {41 target T ColorLookup1.target}
+ addUserKnob {26 "" l " "}
+ addUserKnob {41 setRGB l "Set RGB" T ColorLookup1.setRGB}
+ addUserKnob {41 setRGBA l "Set RGBA" -STARTLINE T ColorLookup1.setRGBA}
+ addUserKnob {41 setA l "Set A" -STARTLINE T ColorLookup1.setA}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix_3 l mix T ColorLookup1.mix}
+ addUserKnob {20 Distortion}
+ addUserKnob {26 FilmDisgortion l "@b;Film Distortion"}
+ addUserKnob {41 rotate l Rotate T Transform1.rotate}
+ addUserKnob {41 translate l "Translate 1" T Transform1.translate}
+ addUserKnob {41 translate_1 l "Translate 2" T Transform2.translate}
+ addUserKnob {41 scale l Scale T Transform1.scale}
+ addUserKnob {41 center l Center T Transform1.center}
+ addUserKnob {41 filter l Filter T Transform1.filter}
+ addUserKnob {4 ImageInput l "Image Input" M {File "Distortion Input"}}
+ addUserKnob {41 file l "Image Input" T Distortion1.file}
+ addUserKnob {41 file_1 l INVISIBLE +INVISIBLE T Read563.file}
+ addUserKnob {41 disable_1 l "Disable Image" T Distortion1.disable}
+ addUserKnob {41 mix_4 l "Input Opacity" T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 Selector l "" +STARTLINE T "Use the above file selector to select the film\ndistortion or scratchlines of your choice. \nIf you chose not to use distortion images, go to the \ncontrol center and disable \"Input Images\"."}
+ addUserKnob {26 CameraShake l "@b;Camera Shake"}
+ addUserKnob {41 amplitude l Amplitude T CameraShake1.amplitude}
+ addUserKnob {41 rotation l Rotation T CameraShake1.rotation}
+ addUserKnob {41 scaling l Scaling T CameraShake1.scaling}
+ addUserKnob {41 frequency l Frequency T CameraShake1.frequency}
+ addUserKnob {41 shutter l Shutter T CameraShake1.shutter}
+ addUserKnob {41 scale_1 l "Fixed Scale" T CameraShake1.scale}
+ addUserKnob {41 filter_1 l Filter -STARTLINE T CameraShake1.filter}
+ addUserKnob {20 Vignette}
+ addUserKnob {41 output l Output T Rectangle1.output}
+ addUserKnob {41 opacity_1 l Opacity T Rectangle1.opacity}
+ addUserKnob {41 color l Color T Rectangle1.color}
+ addUserKnob {41 area l Area T Rectangle1.area}
+ addUserKnob {41 softness l Softness T Rectangle1.softness}
+ addUserKnob {26 ""}
+ addUserKnob {41 translate_2 l Translate T Transform3.translate}
+ addUserKnob {41 rotate_1 l Rotate T Transform3.rotate}
+ addUserKnob {41 scale_3 l Scale T Transform3.scale}
+ addUserKnob {41 center_1 l Center T Transform3.center}
+ addUserKnob {26 ""}
+ addUserKnob {41 amplitude_2 l Amplitude T CameraShake2.amplitude}
+ addUserKnob {41 rotation_1 l Rotation T CameraShake2.rotation}
+ addUserKnob {41 scaling_1 l Scaling T CameraShake2.scaling}
+ addUserKnob {41 frequency_1 l Frequency T CameraShake2.frequency}
+ addUserKnob {41 shutter_1 l Shutter T CameraShake2.shutter}
+ addUserKnob {41 scale_2 l "Fixed Scale" T CameraShake2.scale}
+ addUserKnob {41 filter_3 l Filter -STARTLINE T CameraShake2.filter}
+ addUserKnob {20 ControlCenter l "Control Center"}
+ addUserKnob {6 DisableHue l "Disable Hue" +STARTLINE}
+ addUserKnob {41 mix_5 l "Hue Mix" T HueShift1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 Disable_Exposure l "Disable Exposure" +STARTLINE}
+ addUserKnob {41 mix_6 l "Exposure Mix" T EXPTool1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 Disable_Saturation l "Disable Saturation" +STARTLINE}
+ addUserKnob {41 mix_7 l "Saturation Mix" T Saturation1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 Disable_ColorLookup l "Disable Color Lookup" +STARTLINE}
+ addUserKnob {41 mix_8 l "Color Lookup Mix" T ColorLookup1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 DisableGlow l "Disable Glow" +STARTLINE}
+ addUserKnob {41 mix_11 l mix T Glow1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {41 disable_2 l "Disable Image" T Distortion1.disable}
+ addUserKnob {41 mix_9 l "Input Opacity" T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 Disable_Camera_Shake l "Disable Camera Shake" +STARTLINE}
+ addUserKnob {41 amplitude_1 l Amplitude T CameraShake1.amplitude}
+ addUserKnob {26 ""}
+ addUserKnob {20 Vignette_1 l Vignette n 1}
+ Vignette_1 0
+ addUserKnob {6 Disable_Vignette l "Disable Vignette" +STARTLINE}
+ addUserKnob {41 opacity l Opacity T Rectangle1.opacity}
+ addUserKnob {26 ""}
+ addUserKnob {6 DisableVignetteCameraShake l "Disable Vignette Camerashake" +STARTLINE}
+ addUserKnob {41 amplitude_3 l amplitude T CameraShake2.amplitude}
+ addUserKnob {26 ""}
+ addUserKnob {6 DisableVignetteDistortion l "Disable Vignette Distortion" +STARTLINE}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 which l "@b;Overall Mix" T Dissolve1.which}
+}
+ Rectangle {
+  inputs 0
+  area {{Input1.format.w/6} 0 {0-Input1.format.w/-1.2} {Input1.format.h}}
+  softness 75
+  color {1 1 1 1}
+  name Rectangle1
+  note_font "Bitstream Vera Sans"
+  xpos -40
+  ypos 38
+  disable {{parent.Disable_Vignette i}}
+ }
+ CameraShake2 {
+  name CameraShake2
+  label "\[value amplitude] px at \[value frequency]"
+  xpos -160
+  ypos 56
+  amplitude {0 100}
+  frequency 1
+  cs_center {{"\[value input.width 0]/2" i} {"\[value input.height 0]/2" i}}
+  motionblur 0
+  shutter 0
+ }
+ Transform {
+  center {640 360}
+  name Transform3
+  note_font "Bitstream Vera Sans"
+  xpos -40
+  ypos 86
+ }
+ Input {
+  inputs 0
+  name Distortion
+  xpos -280
+  ypos -250
+  number 1
+ }
+ Read {
+  inputs 0
+  format "3488 2616 0 0 3488 2616 1 "
+  before black
+  after black
+  origset true
+  name Distortion1
+  note_font "Bitstream Vera Sans"
+  xpos -520
+  ypos -250
+  postage_stamp false
+ }
+ Switch {
+  inputs 2
+  which {{parent.ImageInput i}}
+  name Switch1
+  xpos -400
+  ypos -202
+ }
+set N124d4b00 [stack 0]
+ Transform {
+  translate {-1484 -1244}
+  rotate {{-360+720*random()}}
+  scale 0.7
+  center {{Distortion1.format.w/2} {Distortion1.format.h/2}}
+  black_outside false
+  shutter 0
+  name Transform1
+  note_font "Bitstream Vera Sans"
+  xpos -520
+  ypos -154
+  disable {{DisableRandomRotation i}}
+ }
+ Dot {
+  name Dot2
+  note_font "Bitstream Vera Sans"
+  xpos -486
+  ypos -102
+ }
+push $N124d4b00
+ Transform {
+  translate {-804 -714}
+  rotate {{parent.Transform1.rotate i}}
+  scale {{parent.Transform1.scale i}}
+  center {{parent.Transform1.center.x i} {parent.Transform1.center.y i}}
+  shutter 0
+  name Transform2
+  note_font "Bitstream Vera Sans"
+  xpos -280
+  ypos -154
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  note_font "Bitstream Vera Sans"
+  xpos -280
+  ypos -106
+ }
+ CameraShake2 {
+  name CameraShake1
+  label "\[value amplitude] px at \[value frequency]"
+  xpos -280
+  ypos -64
+  frequency 0
+  cs_center {{"\[value input.width 0]/2" i} {"\[value input.height 0]/2" i}}
+  shutter 0
+ }
+ Input {
+  inputs 0
+  name Input1
+  note_font "Bitstream Vera Sans"
+  xpos -520
+  ypos -10
+ }
+set N1287c8f0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation exclusion
+  bbox B
+  name Merge1
+  xpos -400
+  ypos -10
+ }
+ HueShift {
+  ingray 0.085
+  color {0 1 0}
+  hue_rotation -28
+  name HueShift1
+  note_font "Bitstream Vera Sans"
+  xpos -280
+  ypos -10
+  disable {{parent.DisableHue i}}
+ }
+ Saturation {
+  saturation 0.5
+  name Saturation1
+  note_font "Bitstream Vera Sans"
+  xpos -160
+  ypos -10
+  disable {{parent.Disable_Saturation i}}
+ }
+ ColorLookup {
+  lut {master {}
+    red {curve C 0 1.33731341}
+    green {curve C 0 1.14436769}
+    blue {curve C x-0.03999999911 0 x0.8999999762 1}
+    alpha {}}
+  mix 0.405
+  name ColorLookup1
+  note_font "Bitstream Vera Sans"
+  xpos -40
+  ypos -10
+  disable {{parent.Disable_ColorLookup i}}
+ }
+ EXPTool {
+  red 0.1
+  green 0.1
+  blue 0.1
+  name EXPTool1
+  note_font "Bitstream Vera Sans"
+  xpos 80
+  ypos -10
+  disable {{parent.Disable_Exposure i}}
+ }
+ Glow {
+  tint {1 0.2450000048 0.008999999613}
+  brightness 0.3
+  size 7.5
+  name Glow1
+  note_font "Bitstream Vera Sans"
+  xpos 80
+  ypos 38
+  disable {{parent.DisableGlow i}}
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge3
+  note_font "Bitstream Vera Sans"
+  xpos 80
+  ypos 86
+  disable {{parent.Disable_Vignette i}}
+ }
+push $N1287c8f0
+ Dot {
+  name Dot1
+  note_font "Bitstream Vera Sans"
+  xpos -486
+  ypos 138
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which 1
+  name Dissolve1
+  note_font "Bitstream Vera Sans"
+  xpos 80
+  ypos 134
+ }
+ Output {
+  name Output1
+  note_font "Bitstream Vera Sans"
+  xpos 200
+  ypos 134
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label "Diabling the overlay will significantly speed up playback.\nPress \"o\" while hovering over the viewer to disable\nthe overlay, then press \"o\" again to enable it. "
+  note_font "Bitstream Vera Sans"
+  xpos -136
+  ypos -95
+ }
+end_group

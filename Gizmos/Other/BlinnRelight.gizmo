@@ -1,0 +1,1113 @@
+#! /Applications/Nuke9.0v7/Nuke9.0v7.app/Contents/MacOS//libnuke-9.0.7.dylib -nx
+
+Gizmo {
+
+onCreate "
+n = nuke.thisNode()
+
+# check light type
+k = n.knob('light_type')
+if k.value() == 'directional':
+    n.knob('light_position').setEnabled(False)
+    n.knob('translate').setEnabled(False)
+    n.knob('light_direction').setEnabled(True)
+    n.knob('rotate').setEnabled(True)
+    n.knob('cone_angle').setEnabled(False)
+    n.knob('cone_edge_softness').setEnabled(False)
+    n.knob('distance_falloff').setEnabled(False)
+elif k.value() == 'point':
+    n.knob('light_position').setEnabled(True)
+    n.knob('translate').setEnabled(True)
+    n.knob('light_direction').setEnabled(False)
+    n.knob('rotate').setEnabled(False)
+    n.knob('cone_angle').setEnabled(False)
+    n.knob('cone_edge_softness').setEnabled(False)
+    n.knob('distance_falloff').setEnabled(True)
+elif k.value() == 'spot':
+    n.knob('light_position').setEnabled(True)
+    n.knob('translate').setEnabled(True)
+    n.knob('light_direction').setEnabled(False)
+    n.knob('rotate').setEnabled(True)
+    n.knob('cone_angle').setEnabled(True)
+    n.knob('cone_edge_softness').setEnabled(True)
+    n.knob('distance_falloff').setEnabled(True)
+
+# check camera input and light intensity for specular shading 
+if n.input(1) and not n.knob('intensity').value() < 0:
+    n.knob('specular').setEnabled(True)
+    n.knob('shininess').setEnabled(True)
+else:
+    n.knob('specular').setEnabled(False)
+    n.knob('shininess').setEnabled(False)
+
+# check ambient occlusion 
+k = n.knob('ao_enable')
+if k.value():
+    n.knob('ao_hardness').setEnabled(True)
+    n.knob('ao_intensity').setEnabled(True)
+else:
+    n.knob('ao_hardness').setEnabled(False)
+    n.knob('ao_intensity').setEnabled(False)
+
+# check negative light
+k = n.knob('negative_enable')
+if k.value():
+    n.knob('negative_hardness').setEnabled(True)
+    n.knob('negative_intensity').setEnabled(True)
+else:
+    n.knob('negative_hardness').setEnabled(False)
+    n.knob('negative_intensity').setEnabled(False)
+
+# check mask input
+if n.input(2):
+    n.knob('mask_channel').setEnabled(False)
+    n.knob('invert').setEnabled(False)
+else:
+    n.knob('mask_channel').setEnabled(True)
+    n.knob('invert').setEnabled(True)"
+
+knobChanged "
+n = nuke.thisNode()
+k = nuke.thisKnob()
+
+if k.name() == 'light_type':
+
+    # check light type
+    if k.value() == 'directional':
+        n.knob('light_position').setEnabled(False)
+        n.knob('translate').setEnabled(False)
+        n.knob('light_direction').setEnabled(True)
+        n.knob('rotate').setEnabled(True)
+        n.knob('cone_angle').setEnabled(False)
+        n.knob('cone_edge_softness').setEnabled(False)
+        n.knob('distance_falloff').setEnabled(False)
+    elif k.value() == 'point':
+        n.knob('light_position').setEnabled(True)
+        n.knob('translate').setEnabled(True)
+        n.knob('light_direction').setEnabled(False)
+        n.knob('rotate').setEnabled(False)
+        n.knob('cone_angle').setEnabled(False)
+        n.knob('cone_edge_softness').setEnabled(False)
+        n.knob('distance_falloff').setEnabled(True)
+    elif k.value() == 'spot':
+        n.knob('light_position').setEnabled(True)
+        n.knob('translate').setEnabled(True)
+        n.knob('light_direction').setEnabled(False)
+        n.knob('rotate').setEnabled(True)
+        n.knob('cone_angle').setEnabled(True)
+        n.knob('cone_edge_softness').setEnabled(True)
+        n.knob('distance_falloff').setEnabled(True)
+        
+elif k.name() == 'inputChange':
+    
+    # check camera input and light intensity for specular shading 
+    if n.input(1) and not n.knob('intensity').value() < 0:
+        n.knob('specular').setEnabled(True)
+        n.knob('shininess').setEnabled(True)
+    else:
+        n.knob('specular').setEnabled(False)
+        n.knob('shininess').setEnabled(False)
+        
+    # check mask input
+    if n.input(2):
+        n.knob('mask_channel').setEnabled(False)
+        n.knob('invert').setEnabled(False)
+    else:
+        n.knob('mask_channel').setEnabled(True)
+        n.knob('invert').setEnabled(True)
+        
+elif k.name() == 'intensity':
+
+    # check camera input and light intensity for specular shading
+    if n.input(1) and not n.knob('intensity').value() < 0:
+        n.knob('specular').setEnabled(True)
+        n.knob('shininess').setEnabled(True)
+    else:
+        n.knob('specular').setEnabled(False)
+        n.knob('shininess').setEnabled(False)
+        
+elif k.name() == 'ao_enable':
+
+    # check ambient occlusion
+    if k.value():
+        n.knob('ao_hardness').setEnabled(True)
+        n.knob('ao_intensity').setEnabled(True)
+    else:
+        n.knob('ao_hardness').setEnabled(False)
+        n.knob('ao_intensity').setEnabled(False)
+    
+elif k.name() == 'negative_enable':
+
+    # check negative light
+    if k.value():
+        n.knob('negative_hardness').setEnabled(True)
+        n.knob('negative_intensity').setEnabled(True)
+    else:
+        n.knob('negative_hardness').setEnabled(False)
+        n.knob('negative_intensity').setEnabled(False)"
+        
+ inputs 3
+ help "Relighting with Lambertian and normalized Blinn-Phong reflection model.\n\nCTRL+ALT or CMD+ALT (Mac) to pick a position or direction in viewer.\n\n<b>texture</b> the relighted geometry with the color, diffuse or beauty pass\n\n<b>ambient occlusion</b> dims surfaces which shouldn't receive much light\n\n<b>negative light</b> dims surfaces that faces away from light to increase contrast\n\n<b>antialiasing</b> smooths sharp edges\n\nThanks to The Foundry and dve advanced systems for license sponsoring.\n\nv1.1 Adrian Herr 2016"
+ addUserKnob {20 BlinnRelight}
+ addUserKnob {41 normal l "world normal vectors" T Shuffle2.in}
+ addUserKnob {41 position l "world point positions" T Shuffle1.in}
+ addUserKnob {26 ""}
+ addUserKnob {4 light_type l "light type" M {directional point spot "" "" "" "" ""}}
+ addUserKnob {26 info l "" +STARTLINE T "CTRL+ALT to pick a position or direction in viewer"}
+ addUserKnob {41 light_position l "light position" T Expression18.light_position}
+ addUserKnob {13 translate t "Directional lights are independent of the position."}
+ addUserKnob {41 light_direction l "light direction" T Expression15.light_direction}
+ addUserKnob {13 rotate t "Point lights emit in every direction."}
+ addUserKnob {7 cone_angle l "cone angle" t "Spread of the spot light cone." R 0 180}
+ cone_angle 40
+ addUserKnob {7 cone_edge_softness l "cone edge softness" R -60 60}
+ addUserKnob {26 ""}
+ addUserKnob {7 intensity R 0 50}
+ intensity 1
+ addUserKnob {18 color}
+ color 1
+ addUserKnob {6 color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 distance_falloff l "distance falloff" t "1 = linear falloff\n2 = inverse of the distance squared (real world)\nDirectional lights never have falloff." R 0 3}
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "v1.1 Adrian Herr 2016"}
+ addUserKnob {20 shading l Shading}
+ addUserKnob {18 ambient}
+ ambient {0 0 0}
+ addUserKnob {6 ambient_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 diffuse R 0 4}
+ diffuse 0.18
+ addUserKnob {6 diffuse_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 specular t "Without a connected camera or with negative light intensities specular hightlights can't be computed." R 0 4}
+ specular 0.4
+ addUserKnob {6 specular_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 shininess t "Without a connected camera or with negative light intensities specular hightlights can't be computed." R 2 100}
+ shininess 20
+ addUserKnob {26 ""}
+ addUserKnob {26 texture -STARTLINE T ""}
+ addUserKnob {6 texture_enable l "" -STARTLINE}
+ addUserKnob {41 texture_channel l "" t "Choose a channel like color, diffuse or beauty to texture diffuse and ambient light." -STARTLINE T Shuffle4.in}
+ addUserKnob {41 texture_mix l mix T Merge5.mix}
+ addUserKnob {20 tweak l Tweak}
+ addUserKnob {26 ambient_occlusion l "ambient occlusion" T ""}
+ addUserKnob {6 ao_enable l "" -STARTLINE}
+ addUserKnob {41 ao_channel l "" -STARTLINE T Shuffle3.in}
+ addUserKnob {7 ao_hardness l hardness t "Adjusts the appearance of the occlusion with Ken Perlin's gain function. Values above 0.5 results in harder occlusion and below 0.5 makes it softer." R 0.01 0.99}
+ ao_hardness 0.5
+ addUserKnob {7 ao_intensity l intensity R 0.01 4}
+ ao_intensity 1
+ addUserKnob {26 ""}
+ addUserKnob {26 negative_light l "negative light" T ""}
+ addUserKnob {6 negative_enable l "" t "Dims surfaces that faces away from light. It's physically incorrect but increases the contrast of light." -STARTLINE}
+ addUserKnob {7 negative_hardness l hardness}
+ negative_hardness 0.5
+ addUserKnob {7 negative_intensity l intensity R 0 4}
+ negative_intensity 1
+ addUserKnob {26 ""}
+ addUserKnob {26 mask -STARTLINE T ""}
+ addUserKnob {41 mask_channel l "" t "This mask is disabled if the external mask input is connected." -STARTLINE T Premult1.alpha}
+ addUserKnob {41 invert -STARTLINE T Premult1.invert}
+ addUserKnob {7 antialiasing}
+ addUserKnob {7 blur R 0 20}
+ addUserKnob {26 ""}
+ addUserKnob {26 merge -STARTLINE T ""}
+ addUserKnob {6 merge_enable l "" -STARTLINE}
+ addUserKnob {41 operation l "" -STARTLINE T Merge1.operation}
+ addUserKnob {41 merge_mix l mix T Merge1.mix}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x656565ff
+  label "light source"
+  note_font_size 42
+  xpos 1266
+  ypos 818
+  bdwidth 677
+  bdheight 751
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x656565ff
+  label occlusion
+  note_font_size 42
+  xpos 1357
+  ypos 4643
+  bdwidth 234
+  bdheight 250
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x656565ff
+  label diffuse
+  note_font_size 42
+  xpos 1324
+  ypos 1921
+  bdwidth 267
+  bdheight 1711
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x656565ff
+  label "negative light"
+  note_font_size 42
+  xpos 1740
+  ypos 2269
+  bdwidth 267
+  bdheight 1363
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x656565ff
+  label specular
+  note_font_size 42
+  xpos 2157
+  ypos 1922
+  bdwidth 267
+  bdheight 1711
+ }
+ Input {
+  inputs 0
+  name mask
+  label "input\[value number]"
+  xpos 1276
+  ypos 4237
+  number 2
+ }
+ Dot {
+  name Dot4
+  xpos 1310
+  ypos 4338
+ }
+set N6c4c76e0 [stack 0]
+ Dot {
+  name Dot8
+  xpos 1310
+  ypos 4428
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 776
+  ypos 309
+ }
+ Dot {
+  name Dot38
+  xpos 810
+  ypos 415
+ }
+set N6c4d3ec0 [stack 0]
+ Dot {
+  name Dot28
+  xpos 1084
+  ypos 415
+ }
+set N6c4d81a0 [stack 0]
+ Dot {
+  name Dot16
+  xpos 1535
+  ypos 415
+ }
+ Shuffle {
+  in none
+  alpha black
+  out rgb
+  name Shuffle1
+  label "\[value in]"
+  xpos 1501
+  ypos 508
+ }
+ Dot {
+  name Dot17
+  xpos 1535
+  ypos 613
+ }
+set N6c4ed5e0 [stack 0]
+ Dot {
+  name Dot26
+  xpos 1535
+  ypos 922
+ }
+set N6c4f17e0 [stack 0]
+ Expression {
+  expr0 light_position.r
+  expr1 light_position.g
+  expr2 light_position.b
+  name Expression18
+  label "light position"
+  xpos 1686
+  ypos 915
+  addUserKnob {20 User}
+  addUserKnob {18 light_position l "light position" t "Directional lights are independent of the position."}
+  light_position {0 0 0}
+  addUserKnob {6 light_position_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+ Add {
+  channels rgb
+  value {{parent.Axis2.translate} {parent.Axis2.translate} {parent.Axis2.translate} 0}
+  name Add2
+  label translate
+  xpos 1686
+  ypos 1037
+ }
+push $N6c4f17e0
+ Merge2 {
+  inputs 2
+  operation minus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge7
+  label "Vector L\nlight to surface"
+  xpos 1501
+  ypos 1032
+ }
+ Dot {
+  name Dot41
+  xpos 1535
+  ypos 1142
+ }
+set N6c51e0b0 [stack 0]
+ Expression {
+  temp_name0 magnitude
+  temp_expr0 "sqrt( r*r + g*g + b*b )"
+  expr0 "r / magnitude"
+  expr1 "g / magnitude"
+  expr2 "b / magnitude"
+  name Expression9
+  label normalize
+  xpos 1501
+  ypos 1229
+ }
+ Dot {
+  name Dot3
+  xpos 1535
+  ypos 1318
+ }
+set N6c52eaa0 [stack 0]
+ Dot {
+  name Dot18
+  xpos 1887
+  ypos 1318
+ }
+ Expression {
+  temp_name0 dir.r
+  temp_expr0 parent.Axis2.world_matrix.2
+  temp_name1 dir.g
+  temp_expr1 parent.Axis2.world_matrix.6
+  temp_name2 dir.b
+  temp_expr2 parent.Axis2.world_matrix.10
+  temp_name3 dotProduct
+  temp_expr3 "r*dir.r + g*dir.g + b*dir.b"
+  channel0 rgb
+  expr0 dotProduct
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  name Expression19
+  label "cosTheta = L . cone direction"
+  xpos 1853
+  ypos 1428
+ }
+ Expression {
+  temp_name0 inner_angle
+  temp_expr0 "clamp(parent.cone_edge_softness <= 0 ? parent.cone_angle + parent.cone_edge_softness : parent.cone_angle , 0, 180)"
+  temp_name1 outer_angle
+  temp_expr1 "clamp(parent.cone_edge_softness <= 0 ? parent.cone_angle : parent.cone_angle + parent.cone_edge_softness, 0, 180)"
+  temp_name2 in
+  temp_expr2 "cos( radians(inner_angle/2))"
+  temp_name3 out
+  temp_expr3 "cos( radians(outer_angle/2))"
+  channel0 rgba
+  expr0 smoothstep(out,in,r)
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  name Expression16
+  label "smooth Hermit interpolation"
+  xpos 1853
+  ypos 1532
+ }
+ Dot {
+  name Dot14
+  xpos 2897
+  ypos 1539
+ }
+ Dot {
+  name Dot42
+  xpos 2897
+  ypos 3009
+ }
+set N6c554530 [stack 0]
+ Dot {
+  name Dot43
+  xpos 2897
+  ypos 3109
+ }
+set N6c5587f0 [stack 0]
+push $N6c4d81a0
+ Shuffle {
+  in none
+  alpha black
+  out rgb
+  name Shuffle2
+  label "\[value in]"
+  xpos 1050
+  ypos 508
+ }
+ Dot {
+  name Dot12
+  xpos 1084
+  ypos 922
+ }
+set N6c5699a0 [stack 0]
+ Expression {
+  temp_name0 dir.r
+  temp_expr0 light_direction.r
+  temp_name1 dir.g
+  temp_expr1 light_direction.g
+  temp_name2 dir.b
+  temp_expr2 light_direction.b
+  temp_name3 magnitude
+  temp_expr3 "sqrt( dir.r*dir.r + dir.g*dir.g + dir.b*dir.b )"
+  expr0 "magnitude ? light_direction.r : 0"
+  expr1 "magnitude ? light_direction.g : 0"
+  expr2 "magnitude ? light_direction.b : 1"
+  name Expression15
+  label "light direction"
+  xpos 1276
+  ypos 915
+  addUserKnob {20 User}
+  addUserKnob {18 light_direction l "light direction" t "Point lights emit in every direction."}
+  light_direction {0 0 1}
+  addUserKnob {6 light_direction_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+ ColorMatrix {
+  matrix {
+      {{parent.Axis2.world_matrix.0} {parent.Axis2.world_matrix.1} {parent.Axis2.world_matrix.2}}
+      {{parent.Axis2.world_matrix.4} {parent.Axis2.world_matrix.5} {parent.Axis2.world_matrix.6}}
+      {{parent.Axis2.world_matrix.8} {parent.Axis2.world_matrix.9} {parent.Axis2.world_matrix.10}}
+    }
+  name ColorMatrix1
+  label rotate
+  xpos 1276
+  ypos 1039
+ }
+ Expression {
+  temp_name0 magnitude
+  temp_expr0 "sqrt( r*r + g*g + b*b )"
+  expr0 "r / magnitude"
+  expr1 "g / magnitude"
+  expr2 "b / magnitude"
+  name Expression17
+  label normalize
+  xpos 1276
+  ypos 1230
+ }
+ Dot {
+  name Dot7
+  xpos 1310
+  ypos 1540
+ }
+push $N6c52eaa0
+ Switch {
+  inputs 2
+  which {{!parent.light_type}}
+  name Switch2
+  label "light type/ Vector L"
+  xpos 1501
+  ypos 1533
+ }
+ Dot {
+  name Dot35
+  xpos 1535
+  ypos 2001
+ }
+set N6c59e1b0 [stack 0]
+push $N6c5699a0
+ Expression {
+  temp_name0 magnitude
+  temp_expr0 "sqrt( r*r + g*g + b*b )"
+  expr0 "r / magnitude"
+  expr1 "g / magnitude"
+  expr2 "b / magnitude"
+  name Expression1
+  label normalize
+  xpos 1050
+  ypos 1232
+ }
+ Dot {
+  name Dot30
+  xpos 1084
+  ypos 2152
+ }
+set N6c5aec00 [stack 0]
+ MergeExpression {
+  inputs 2
+  temp_name0 dotProduct
+  temp_expr0 "Ar*Br + Ag*Bg + Ab*Bb"
+  channel0 rgb
+  expr0 dotProduct
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  name MergeExpression1
+  label "Lambert / diffuse\nL . N"
+  xpos 1501
+  ypos 2140
+ }
+ Expression {
+  expr0 "isnan(r) ? 0 : r"
+  expr1 "isnan(g) ? 0 : g"
+  expr2 "isnan(b) ? 0 : b"
+  name Expression3
+  label "delete NaN"
+  xpos 1501
+  ypos 2213
+ }
+ Dot {
+  name Dot20
+  xpos 1535
+  ypos 2359
+ }
+set N6c5cb5b0 [stack 0]
+ Dot {
+  name Dot21
+  xpos 1869
+  ypos 2359
+ }
+ Expression {
+  channel0 rgb
+  expr0 -min(0,r)
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  name Expression13
+  label "negative light"
+  xpos 1835
+  ypos 2435
+ }
+ Multiply {
+  channels rgb
+  value {{"max(0, parent.negative_intensity)"}}
+  name Multiply1
+  label "negative light intensity"
+  xpos 1835
+  ypos 2633
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge4
+  label "spotlight cone"
+  xpos 1835
+  ypos 3102
+  disable {{!(parent.light_type==2)}}
+ }
+ set C6c5ea6f0 [stack 0]
+ SoftClip {
+  softclip_min {{"clamp(parent.negative_hardness, 0, 0.99)"}}
+  softclip_max 16
+  name SoftClip2
+  label hardness
+  xpos 1835
+  ypos 3313
+ }
+ Matrix {
+  channels rgb
+  matrix {
+      {1 2 1}
+      {2 4 2}
+      {1 2 1}
+    }
+  normalize true
+  mix {{parent.antialiasing}}
+  name Matrix7
+  label antialiasing
+  xpos 1835
+  ypos 3390
+ }
+ set C6c604030 [stack 0]
+ Blur {
+  channels rgb
+  size {{parent.blur}}
+  name Blur1
+  xpos 1835
+  ypos 4053
+  disable {{!size}}
+ }
+ set C6c60e340 [stack 0]
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge2
+  xpos 1835
+  ypos 4425
+  disable {{"!\[exists parent.input2]"}}
+ }
+ set C6c619b60 [stack 0]
+ Premult {
+  name Premult1
+  xpos 1835
+  ypos 4486
+  disable {{"\[exists parent.input2]"}}
+ }
+ set C6c6270d0 [stack 0]
+ Invert {
+  channels rgb
+  name Invert1
+  xpos 1835
+  ypos 4552
+ }
+ Dot {
+  name Dot11
+  xpos 1869
+  ypos 5202
+ }
+push $N6c4c76e0
+push $N6c554530
+push $N6c51e0b0
+ Expression {
+  temp_name0 k
+  temp_expr0 "max(0, parent.distance_falloff)"
+  temp_name1 magnitude
+  temp_expr1 "sqrt( r*r + g*g + b*b )"
+  temp_name2 falloff
+  temp_expr2 "magnitude != 0? 1 / (pow(magnitude, k)) : 1"
+  channel0 rgba
+  expr0 falloff
+  name Expression6
+  label attenuation
+  xpos 1853
+  ypos 1135
+ }
+ Dot {
+  name Dot9
+  xpos 2661
+  ypos 1142
+ }
+ Dot {
+  name Dot19
+  xpos 2661
+  ypos 2805
+ }
+set N6c64d7e0 [stack 0]
+push $N6c59e1b0
+push $N6c4ed5e0
+ Dot {
+  name Dot36
+  xpos 2284
+  ypos 613
+ }
+ Dot {
+  name Dot10
+  xpos 2284
+  ypos 930
+ }
+set N6c655d70 [stack 0]
+ Expression {
+  temp_name0 x
+  temp_expr0 parent.Axis1.world_matrix.3
+  temp_name1 y
+  temp_expr1 parent.Axis1.world_matrix.7
+  temp_name2 z
+  temp_expr2 parent.Axis1.world_matrix.11
+  expr0 x
+  expr1 y
+  expr2 z
+  name Expression2
+  label "camera position"
+  xpos 2368
+  ypos 923
+ }
+ Dot {
+  name Dot2
+  xpos 2402
+  ypos 1044
+ }
+push $N6c655d70
+ Merge2 {
+  inputs 2
+  operation minus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge6
+  label "Vector V\ncamera to surface"
+  xpos 2250
+  ypos 1032
+ }
+ Expression {
+  temp_name0 magnitude
+  temp_expr0 "sqrt( r*r + g*g + b*b )"
+  expr0 "r / magnitude"
+  expr1 "g / magnitude"
+  expr2 "b / magnitude"
+  name Expression11
+  label normalize
+  xpos 2250
+  ypos 1245
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Plus1
+  label "H = L + V"
+  xpos 2250
+  ypos 1994
+ }
+ Expression {
+  temp_name0 magnitude
+  temp_expr0 "sqrt( r*r + g*g + b*b )"
+  expr0 "r / magnitude"
+  expr1 "g / magnitude"
+  expr2 "b / magnitude"
+  name Expression7
+  label normalize
+  xpos 2250
+  ypos 2043
+ }
+push $N6c5aec00
+ Dot {
+  name Dot33
+  xpos 1084
+  ypos 2252
+ }
+ MergeExpression {
+  inputs 2
+  temp_name0 dotProduct
+  temp_expr0 "Ar*Br + Ag*Bg + Ab*Bb"
+  channel0 rgb
+  expr0 max(0,dotProduct)
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  name MergeExpression6
+  label "Blinn-Phong / specular\nH . N"
+  xpos 2250
+  ypos 2240
+ }
+ Expression {
+  expr0 "isnan(r) ? 0 : r"
+  expr1 "isnan(g) ? 0 : g"
+  expr2 "isnan(b) ? 0 : b"
+  name Expression5
+  label "delete NaN"
+  xpos 2250
+  ypos 2315
+ }
+ Expression {
+  temp_name0 n
+  temp_expr0 "max(2, parent.shininess)"
+  temp_name1 normalization_factor
+  temp_expr1 "(n + 8) / (8 * pi)"
+  channel0 rgb
+  expr0 "pow(r, n) * normalization_factor"
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  name Expression12
+  label "surface shininess"
+  xpos 2250
+  ypos 2427
+ }
+ Multiply {
+  channels rgb
+  value {{parent.specular} {parent.specular} {parent.specular} 1}
+  name Multiply6
+  label "surface specular reflectance"
+  xpos 2250
+  ypos 2499
+ }
+ Multiply {
+  channels rgb
+  value {{parent.intensity}}
+  name Multiply3
+  label "light intensity"
+  xpos 2250
+  ypos 2585
+ }
+ set C6c6d1570 [stack 0]
+ Merge2 {
+  inputs 2
+  operation mask
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge3
+  label "distance attenuation"
+  xpos 2250
+  ypos 2798
+  disable {{!parent.light_type}}
+ }
+ set C6c6db970 [stack 0]
+clone $C6c5ea6f0 {
+  inputs 2
+  xpos 2250
+  ypos 3002
+  selected false
+ }
+clone $C6c604030 {
+  xpos 2250
+  ypos 3387
+  selected false
+ }
+ Dot {
+  name Dot13
+  xpos 2284
+  ypos 3778
+ }
+push $N6c4d3ec0
+ Dot {
+  name Dot1
+  xpos 810
+  ypos 3603
+ }
+set N6c708460 [stack 0]
+ Shuffle {
+  in rgb
+  alpha black
+  out rgb
+  name Shuffle4
+  label "\[value in]"
+  xpos 1334
+  ypos 3596
+ }
+push $N6c5587f0
+ Dot {
+  name Dot24
+  xpos 2897
+  ypos 3210
+ }
+push $N6c64d7e0
+ Dot {
+  name Dot23
+  xpos 2661
+  ypos 2907
+ }
+push $N6c5cb5b0
+ Expression {
+  channel0 rgb
+  expr0 max(0,r)
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  name Expression10
+  label "diffuse light"
+  xpos 1501
+  ypos 2433
+ }
+ Multiply {
+  channels rgb
+  value {{parent.diffuse} {parent.diffuse} {parent.diffuse} 1}
+  name Multiply2
+  label "surface diffuse reflectance"
+  xpos 1501
+  ypos 2501
+ }
+clone $C6c6d1570 {
+  xpos 1501
+  ypos 2584
+  selected false
+ }
+clone $C6c6db970 {
+  inputs 2
+  xpos 1501
+  ypos 2900
+  selected false
+ }
+clone $C6c5ea6f0 {
+  inputs 2
+  xpos 1501
+  ypos 3203
+  selected false
+ }
+clone $C6c604030 {
+  xpos 1501
+  ypos 3388
+  selected false
+ }
+ Add {
+  channels rgb
+  value {{parent.ambient} {parent.ambient} {parent.ambient} 0}
+  name Add1
+  label ambient
+  xpos 1501
+  ypos 3493
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge5
+  label texture
+  xpos 1501
+  ypos 3596
+  disable {{"!(parent.texture_enable && parent.Shuffle4.in)"}}
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge8
+  label "diffuse + specular"
+  xpos 1501
+  ypos 3771
+  disable {{"!(\[exists parent.input1] && clamp(parent.intensity) && clamp(parent.specular))"}}
+ }
+clone $C6c60e340 {
+  xpos 1501
+  ypos 4053
+  selected false
+ }
+ Multiply {
+  channels rgb
+  value {{parent.color} {parent.color} {parent.color} 1}
+  name Multiply4
+  label "light color"
+  xpos 1501
+  ypos 4133
+ }
+clone $C6c619b60 {
+  inputs 2
+  xpos 1501
+  ypos 4335
+  selected false
+ }
+clone $C6c6270d0 {
+  xpos 1501
+  ypos 4486
+  selected false
+ }
+ Dot {
+  name Dot40
+  xpos 1535
+  ypos 4730
+ }
+set N6c7b6a10 [stack 0]
+ Shuffle {
+  in none
+  alpha black
+  out rgb
+  name Shuffle3
+  label "\[value in]"
+  xpos 1367
+  ypos 4723
+ }
+ Expression {
+  temp_name0 gain
+  temp_expr0 parent.ao_hardness
+  temp_name1 lum
+  temp_expr1 "0.2125*Br + 0.7154*Bg + 0.0721*Bb"
+  temp_name2 val
+  temp_expr2 .5*((lum<.5)?((1-gain)>0?pow(2*lum,log(1-gain)/log(0.5)):0):2-((1-gain)>0?pow(2-2*lum,log(1-gain)/log(0.5)):0))
+  expr0 r>1?r:r*(val/(lum+0.00001))
+  expr1 g>1?g:g*(val/(lum+0.00001))
+  expr2 b>1?b:b*(val/(lum+0.00001))
+  name Expression14
+  label "perlin gain"
+  xpos 1367
+  ypos 4790
+ }
+ Gamma {
+  channels rgb
+  value {{1/parent.ao_intensity}}
+  name Gamma3
+  label intensity
+  xpos 1367
+  ypos 4857
+ }
+push $N6c7b6a10
+ Merge2 {
+  inputs 2
+  operation multiply
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge9
+  xpos 1501
+  ypos 4861
+  disable {{"!(parent.ao_enable && parent.Shuffle3.in)"}}
+ }
+ Dot {
+  name Dot5
+  xpos 1535
+  ypos 5001
+ }
+set N6c7ebbd0 [stack 0]
+push $N6c708460
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge1
+  xpos 776
+  ypos 4998
+  disable {{!parent.merge_enable}}
+ }
+ Dot {
+  name Dot6
+  xpos 810
+  ypos 5082
+ }
+push $N6c7ebbd0
+ Switch {
+  inputs 2
+  which {{parent.merge_enable}}
+  name Switch1
+  xpos 1501
+  ypos 5079
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge10
+  label "negative light"
+  xpos 1501
+  ypos 5195
+  disable {{"!(parent.negative_enable && parent.negative_intensity)"}}
+ }
+ Output {
+  name Output1
+  xpos 1501
+  ypos 5322
+ }
+ Input {
+  inputs 0
+  name cam
+  label "input\[value number]"
+  xpos 2573
+  ypos 798
+  number 1
+ }
+ Axis2 {
+  name Axis1
+  label camera
+  xpos 2583
+  ypos 906
+ }
+ Axis2 {
+  inputs 0
+  translate {{parent.translate} {parent.translate} {parent.translate}}
+  rotate {{parent.rotate} {parent.rotate} {parent.rotate}}
+  name Axis2
+  label light
+  selected true
+  xpos 1846
+  ypos 898
+  addUserKnob {20 Calculations}
+  addUserKnob {13 direction_translate}
+  addUserKnob {13 vector}
+  addUserKnob {7 magnitude}
+  addUserKnob {13 angle}
+ }
+end_group

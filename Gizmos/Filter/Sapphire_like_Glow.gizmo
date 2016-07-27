@@ -1,0 +1,90 @@
+#! C:/Program Files/Nuke9.0v4/nuke-9.0.4.dll -nx
+version 9.0 v4
+Gizmo {
+ tile_color 0x7f00ffff
+ note_font "Segoe UI Bold"
+ addUserKnob {20 User}
+ addUserKnob {41 channels T Glow_RED.channels}
+ addUserKnob {41 tint T Glow_RED.tint}
+ addUserKnob {41 tint_panelDropped l "panel dropped state" T Glow_RED.tint_panelDropped}
+ addUserKnob {41 tolerance T Glow_RED.tolerance}
+ addUserKnob {41 brightness T Glow_RED.brightness}
+ addUserKnob {41 saturation T Glow_RED.saturation}
+ addUserKnob {41 W l "width channel" T Glow_RED.W}
+ addUserKnob {41 nonlinear l "non linear" T Glow_RED.nonlinear}
+ addUserKnob {41 effect_only l "effect only" T Glow_RED.effect_only}
+ addUserKnob {26 ""}
+ addUserKnob {41 size T Glow_RED.size}
+ addUserKnob {41 filter T Glow_RED.filter}
+ addUserKnob {41 quality l "" -STARTLINE T Glow_RED.quality}
+ addUserKnob {41 crop l "crop to format" T Glow_RED.crop}
+ addUserKnob {26 "" l mask}
+ addUserKnob {41 maskChannelMask l "" -STARTLINE T Glow_RED.maskChannelMask}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Glow_RED.maskChannelInput}
+ addUserKnob {41 inject T Glow_RED.inject}
+ addUserKnob {41 invert_mask l invert T Glow_RED.invert_mask}
+ addUserKnob {41 fringe T Glow_RED.fringe}
+ addUserKnob {41 mix T Glow_RED.mix}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 347
+  ypos 401
+ }
+ Glow2 {
+  channels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  size 100
+  name Glow_RED
+  label controller
+  xpos 347
+  ypos 490
+ }
+ Glow2 {
+  channels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  tint {{parent.Glow_RED.tint}}
+  tolerance {{parent.Glow_RED.tolerance}}
+  brightness {{parent.Glow_RED.brightness}}
+  saturation {{parent.Glow_RED.saturation}}
+  W {{{parent.Glow_RED.W}}}
+  nonlinear {{parent.Glow_RED.nonlinear}}
+  effect_only {{parent.Glow_RED.effect_only}}
+  size {{parent.Glow_RED.size*1.2}}
+  quality {{parent.Glow_RED.quality}}
+  crop {{parent.Glow_RED.crop}}
+  maskChannelInput {{{parent.Glow_RED.maskChannelInput}}}
+  inject {{parent.Glow_RED.inject}}
+  invert_mask {{parent.Glow_RED.invert_mask}}
+  fringe {{parent.Glow_RED.fringe}}
+  mix {{parent.Glow_RED.mix}}
+  name Glow_GREEN
+  xpos 347
+  ypos 584
+ }
+ Glow2 {
+  channels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  tint {{parent.Glow_RED.tint}}
+  tolerance {{parent.Glow_RED.tolerance}}
+  brightness {{parent.Glow_RED.brightness}}
+  saturation {{parent.Glow_RED.saturation}}
+  W {{{parent.Glow_RED.W}}}
+  nonlinear {{parent.Glow_RED.nonlinear}}
+  effect_only {{parent.Glow_RED.effect_only}}
+  size {{parent.Glow_RED.size*1.4}}
+  quality {{parent.Glow_RED.quality}}
+  crop {{parent.Glow_RED.crop}}
+  maskChannelInput {{{parent.Glow_RED.maskChannelInput}}}
+  inject {{parent.Glow_RED.inject}}
+  invert_mask {{parent.Glow_RED.invert_mask}}
+  fringe {{parent.Glow_RED.fringe}}
+  mix {{parent.Glow_RED.mix}}
+  name Glow_BLUE
+  xpos 347
+  ypos 672
+ }
+ Output {
+  name Output1
+  xpos 347
+  ypos 800
+ }
+end_group

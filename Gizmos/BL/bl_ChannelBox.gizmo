@@ -1,0 +1,354 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ inputs 4
+ addUserKnob {20 User l ChannelBox}
+ addUserKnob {4 method l Method M {Select "All Red input Red" "All Green input Red" "All Blue input Red" "All Alpha input Red" "All Black" "All White" "" "" ""}}
+ addUserKnob {4 setbbox l "set bbox to" M {"R input" "G input" "B input" "A input" ""}}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {4 Red M {R G B A 0 1}}
+ addUserKnob {4 Green M {R G B A 0 1}}
+ Green G
+ addUserKnob {4 Blue M {R G B A 0 1}}
+ Blue B
+ addUserKnob {4 Alpha M {R G B A 0 1}}
+ Alpha A
+}
+ Input {
+  inputs 0
+  name A
+  xpos 367
+  ypos 413
+ }
+ Dot {
+  name Dot5
+  xpos 401
+  ypos 462
+ }
+set N28dbddb0 [stack 0]
+ Input {
+  inputs 0
+  name B
+  xpos -57
+  ypos 418
+  number 1
+ }
+ Dot {
+  name Dot6
+  xpos -23
+  ypos 464
+ }
+set N28dbdb00 [stack 0]
+ Input {
+  inputs 0
+  name G
+  xpos -495
+  ypos 406
+  number 2
+ }
+ Dot {
+  name Dot7
+  xpos -461
+  ypos 466
+ }
+set N28dbd850 [stack 0]
+ Input {
+  inputs 0
+  name R
+  xpos -916
+  ypos 418
+  number 3
+ }
+ Dot {
+  name Dot8
+  xpos -882
+  ypos 467
+ }
+set N28dbd5a0 [stack 0]
+ Switch {
+  inputs 4
+  which {{parent.setbbox i}}
+  name Switch7
+  xpos -761
+  ypos 920
+ }
+push $N28dbd5a0
+ Fill {
+  name FillOne1
+  xpos -613
+  ypos 463
+ }
+set N28dbd2f0 [stack 0]
+push $N28dbd5a0
+ Fill {
+  color 0
+  name FillZero1
+  xpos -724
+  ypos 463
+ }
+set N28dbd040 [stack 0]
+push $N28dbd5a0
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle29
+  xpos -721
+  ypos 502
+ }
+set N7c0f5f0 [stack 0]
+push $N28dbd5a0
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle30
+  xpos -819
+  ypos 502
+ }
+set N7c32f50 [stack 0]
+push $N28dbd5a0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle31
+  xpos -916
+  ypos 502
+ }
+set N7c311c0 [stack 0]
+push $N28dbd5a0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle32
+  xpos -1018
+  ypos 501
+ }
+set N28be9a50 [stack 0]
+push $N28dbd2f0
+push $N28dbd040
+push $N28dbddb0
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle17
+  xpos 562
+  ypos 497
+ }
+push $N28dbddb0
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle18
+  xpos 464
+  ypos 497
+ }
+push $N28dbddb0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle19
+  xpos 367
+  ypos 497
+ }
+push $N28dbddb0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle20
+  xpos 265
+  ypos 496
+ }
+ Switch {
+  inputs 6
+  which {{parent.Alpha i}}
+  name Switch8
+  xpos 367
+  ypos 554
+ }
+ Switch {
+  inputs 7
+  which {{parent.method}}
+  name Switch1
+  xpos 367
+  ypos 652
+ }
+ set C291f32a0 [stack 0]
+push $N28dbd2f0
+push $N28dbd040
+push $N7c0f5f0
+push $N7c32f50
+push $N7c311c0
+push $N28be9a50
+push $N28dbd2f0
+push $N28dbd040
+push $N28dbdb00
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle21
+  xpos 138
+  ypos 499
+ }
+push $N28dbdb00
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle22
+  xpos 40
+  ypos 499
+ }
+push $N28dbdb00
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle23
+  xpos -57
+  ypos 499
+ }
+push $N28dbdb00
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle24
+  xpos -159
+  ypos 498
+ }
+ Switch {
+  inputs 6
+  which {{parent.Blue i}}
+  name Switch9
+  xpos -57
+  ypos 556
+ }
+clone $C291f32a0 {
+  inputs 7
+  xpos -57
+  ypos 657
+  selected false
+ }
+push $N28dbd2f0
+push $N28dbd040
+push $N7c0f5f0
+push $N7c32f50
+push $N7c311c0
+push $N28be9a50
+push $N28dbd2f0
+push $N28dbd040
+push $N28dbd850
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle25
+  xpos -300
+  ypos 501
+ }
+push $N28dbd850
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle26
+  xpos -398
+  ypos 501
+ }
+push $N28dbd850
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle27
+  xpos -495
+  ypos 501
+ }
+push $N28dbd850
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle28
+  xpos -597
+  ypos 500
+ }
+ Switch {
+  inputs 6
+  which {{parent.Green i}}
+  name Switch10
+  xpos -495
+  ypos 558
+ }
+clone $C291f32a0 {
+  inputs 7
+  xpos -495
+  ypos 657
+  selected false
+ }
+push $N28dbd2f0
+push $N28dbd040
+push $N7c0f5f0
+push $N7c32f50
+push $N7c311c0
+push $N28be9a50
+push $N28dbd2f0
+push $N28dbd040
+push $N7c0f5f0
+push $N7c32f50
+push $N7c311c0
+push $N28be9a50
+ Switch {
+  inputs 6
+  which {{parent.Red i}}
+  name Switch11
+  xpos -916
+  ypos 559
+ }
+clone $C291f32a0 {
+  inputs 7
+  xpos -916
+  ypos 658
+  selected false
+ }
+ ShuffleCopy {
+  inputs 2
+  green green
+  name ShuffleCopy4
+  xpos -916
+  ypos 782
+ }
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  alpha alpha2
+  name ShuffleCopy5
+  xpos -916
+  ypos 808
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy6
+  xpos -916
+  ypos 834
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox2
+  xpos -916
+  ypos 920
+ }
+ Output {
+  name Output
+  xpos -916
+  ypos 946
+ }
+end_group

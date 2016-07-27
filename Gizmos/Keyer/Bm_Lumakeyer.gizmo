@@ -1,0 +1,178 @@
+#! C:/Program Files/Nuke6.2v1/Nuke6.2.exe -nx
+version 6.2 v1
+Gizmo {
+ inputs 2
+ help "This keyer lets you use the red, green or blue channel as a basis for a luma key.\n\nFirst, click the 'Range Select' checkbox to enable the graph. Use the graph to define your foreground (white) and background (black). Uncheck the 'Range Select' checkbox, then use the sliders in the 'Key' tab to refine your matte.\n\nThis Luma Keyer was designed to tackle the difficulties of keying hair.\n\n\nCopyright:\nBen McEwan, 2011"
+ tile_color 0x232323ff
+ gl_color 0xffffffff
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 ranges l Ranges}
+ addUserKnob {26 warning l "" +STARTLINE T "WARNING: The \"garbage\" input expects\nsomething to be plugged into it. Just use a\nconstant if you don't need to garbage matte"}
+ addUserKnob {26 ""}
+ addUserKnob {41 from0 l "Copy channel" t "Pick the channel that has the most contrast between your foreground and background" T Copy1.from0}
+ addUserKnob {26 ""}
+ addUserKnob {41 ranges_checkbox l "FG/MG Range Select (enable to use graph)" t "Enable this checkbox to use the graph below" T ColorCorrect1.test}
+ addUserKnob {26 ""}
+ addUserKnob {41 lookup l "" t "Use this graph to define which part of your image is the foreground (white), and which part is the background (black)" -STARTLINE T ColorCorrect1.lookup}
+ addUserKnob {20 key l Key}
+ addUserKnob {26 foreground l Foreground t "Adjusts the foreground"}
+ addUserKnob {41 highlights.contrast l contrast t "Adjusts the foreground contrast" T ColorCorrect1.highlights.contrast}
+ addUserKnob {41 highlights.gamma l gamma t "Adjusts the foreground gamma" T ColorCorrect1.highlights.gamma}
+ addUserKnob {41 highlights.gain l gain t "Adjusts the foreground gain" T ColorCorrect1.highlights.gain}
+ addUserKnob {41 highlights.offset l offset t "Adjusts the foreground offset" T ColorCorrect1.highlights.offset}
+ addUserKnob {26 background l Background t "Adjusts the background"}
+ addUserKnob {41 shadows.contrast l contrast t "Adjusts the background contrast" T ColorCorrect1.shadows.contrast}
+ addUserKnob {41 shadows.gamma l gamma t "Adjusts the background gamma" T ColorCorrect1.shadows.gamma}
+ addUserKnob {41 shadows.gain l gain t "Adjusts the background gain" T ColorCorrect1.shadows.gain}
+ addUserKnob {41 shadows.offset l offset t "Adjusts the background offset" T ColorCorrect1.shadows.offset}
+ addUserKnob {26 ""}
+ addUserKnob {41 value l Multiply t "If your alpha channel doesn't reach 1, use this to boost it up. Values over 1 are ok, as they get clamped internally." T Multiply1.value}
+ addUserKnob {26 ""}
+ addUserKnob {6 premult_checkbox l "Premultiply Alpha" t "Outputs a premultiplied alpha channel" +STARTLINE}
+ addUserKnob {6 invert_checkbox l "Invert Alpha" t "Outputs an inverted alpha channel" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {20 refine l Refine t "Refine the matte"}
+ addUserKnob {26 erode l Erode}
+ addUserKnob {41 size t "Erode size" T Erode1.size}
+ addUserKnob {41 blur l Blur t "Erode blur" T Erode1.blur}
+ addUserKnob {41 quality t "Erode quality" T Erode1.quality}
+ addUserKnob {26 blur_1 l Blur}
+ addUserKnob {41 size_1 l size t "Blur size" T Blur1.size}
+ addUserKnob {41 filter t "Blur filter type" T Blur1.filter}
+ addUserKnob {41 quality_1 l quality t "Blur quality" T Blur1.quality}
+ addUserKnob {26 ""}
+}
+ Input {
+  inputs 0
+  name garbage
+  xpos -396
+  ypos 43
+  number 1
+ }
+set N1c33fdc0 [stack 0]
+ AddChannels {
+  inputs 0
+  channels alpha
+  name AddChannels2
+  xpos -515
+  ypos 95
+ }
+ Switch {
+  inputs 2
+  which {{parent.invert_checkbox i x1 0}}
+  name Switch1
+  xpos -396
+  ypos 101
+ }
+push $N1c33fdc0
+ Input {
+  inputs 0
+  name Input1
+  xpos -178
+  ypos -239
+ }
+set N1c340320 [stack 0]
+ Dot {
+  name Dot3
+  xpos -68
+  ypos -235
+ }
+ Dot {
+  name Dot2
+  xpos -68
+  ypos -112
+ }
+push $N1c340320
+ Copy {
+  inputs 2
+  from0 rgba.green
+  to0 rgba.alpha
+  name Copy1
+  xpos -178
+  ypos -122
+ }
+ ColorCorrect {
+  channels alpha
+  name ColorCorrect1
+  xpos -178
+  ypos -77
+ }
+set N1c340de0 [stack 0]
+push $N1c340de0
+ Merge2 {
+  inputs 2
+  operation multiply
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name Merge1
+  xpos -178
+  ypos -39
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name Merge2
+  xpos -178
+  ypos 37
+ }
+ Invert {
+  inputs 1+1
+  channels alpha
+  name Invert2
+  xpos -178
+  ypos 95
+  disable {{!parent.invert_checkbox i}}
+ }
+ Multiply {
+  channels alpha
+  name Multiply1
+  xpos -178
+  ypos 145
+ }
+ Clamp {
+  channels alpha
+  name Clamp1
+  xpos -178
+  ypos 217
+ }
+ Erode {
+  size 0
+  name Erode1
+  xpos -178
+  ypos 271
+ }
+ Blur {
+  channels alpha
+  name Blur1
+  xpos -178
+  ypos 309
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop1
+  selected true
+  xpos -178
+  ypos 347
+ }
+ Premult {
+  name Premult1
+  xpos -178
+  ypos 407
+  disable {{!parent.premult_checkbox i}}
+ }
+ Output {
+  name Output1
+  xpos -178
+  ypos 507
+ }
+push $N1c340de0
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 123
+  ypos 129
+ }
+end_group

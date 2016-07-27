@@ -1,0 +1,762 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ label "\n"
+ addUserKnob {20 MoreDots}
+ addUserKnob {41 format t "this sets your output format to choosen \nresolution, what ever the format of your input is!\n\nif you want to keep your input resolution, make \nsure that this format matches, otherwise your\noptional input will be resized. this might be a loss\nof quality." T Format.format}
+ addUserKnob {7 scaleMatrix t "this effects the amount of dots u see.\nthe more u scale it down the more dots you see."}
+ scaleMatrix 0.5
+ addUserKnob {7 scaleDOT t "this slider controls the dot size but not the amount of dots."}
+ scaleDOT 1
+ addUserKnob {26 ""}
+ addUserKnob {26 Distortion l "3D Space" T "enables distortion"}
+ addUserKnob {26 blank l " " T "                                                                                                        "}
+ addUserKnob {4 World t "if you want your dot matrix to be distorted choose the 3D space, if not leave it in 2D space and you will get a perfectly flat dot matrix.\n\nif you choose the 3D space this enables the bump controls but this option will increase your rendering time." M {"2D Space" "3D Space" "" "" ""}}
+ addUserKnob {7 BumpPositionX R -990 990}
+ addUserKnob {7 BumpPositionY R -540 540}
+ addUserKnob {7 BumpScale t "this effects the radius of the bump \nit does not effect the z value" R 0 10}
+ BumpScale 2
+ addUserKnob {7 BumpDepth t "this effects the z value"}
+ BumpDepth 0.5
+ addUserKnob {41 BumpSoft t "this effects the shape of the curve how the \nbump increases.\n\nthis is not a bump blur so it will not change the size." T BumpDistorsion.BumpSoft}
+ addUserKnob {26 bank2 l " " T " "}
+ addUserKnob {4 Grid l "3D Output" t "this pulldown only works if 3D space is choosen!\n\nthe grid option is only to make it easy to match a\ngiven distortion.\n\nif you choose Optional Image then you will get the same distortion on your image and your incomming alpha channel but without any dots or\ngrid.\n\nthe dots option delivers dots of course :-)" M {Dots Grid "Optional Image" "" "" "" "" "" "" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {4 RGBswitch l Render t "the default setup delivers an RGB image with a solid alpha channel. \n\nif you like it more to have your dots in your alpha choose RGB2ALF and you get a solid white RGB with the dots or grid in the alpha channel.\n\nif you use your optional image leave it \nin RGB mode and you recive your distorted image and matching alpha." M {RGB RGB2ALF "" "" ""}}
+ addUserKnob {6 Premult t "one name, better than 1000 words" -STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name dot_multiplyer
+  tile_color 0x253331ff
+  xpos -1180
+  ypos -557
+  bdwidth 1313
+  bdheight 665
+ }
+ Constant {
+  inputs 0
+  format "1920 1080 0 0 1920 1080 1 HD"
+  name Format
+  xpos -1349
+  ypos -366
+ }
+set N19b5a500 [stack 0]
+ Dot {
+  name Dot9
+  xpos -1546
+  ypos -339
+ }
+set N19b5a7b0 [stack 0]
+ Dot {
+  name Dot10
+  xpos -1546
+  ypos 117
+ }
+set N19b5aa60 [stack 0]
+ Invert {
+  name Invert1
+  xpos -1323
+  ypos 389
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant3
+  xpos -560
+  ypos -498
+ }
+ Radial {
+  area {0 0 1000 1000}
+  softness 0
+  name Radial6
+  xpos -560
+  ypos -426
+ }
+ Transform {
+  scale {{parent.scaleDOT}}
+  center {500 500}
+  name scale_dot
+  xpos -560
+  ypos -399
+ }
+ Transform {
+  scale {{parent.scaleMatrix}}
+  name scale_matrix
+  xpos -560
+  ypos -343
+ }
+push $N19b5a500
+ Merge2 {
+  inputs 2
+  name Merge12
+  xpos -1114
+  ypos -343
+ }
+set N19cc6080 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*1000 i} 0}
+  center {1024 778}
+  name Transform13
+  xpos -1033
+  ypos -178
+ }
+push $N19cc6080
+ Dot {
+  name Dot1
+  xpos -1080
+  ypos -148
+ }
+ Merge2 {
+  inputs 2
+  name Merge13
+  xpos -1033
+  ypos -152
+ }
+set N19cc6df0 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*2000 i x1 2000} 0}
+  center {1024 778}
+  name Transform14
+  xpos -923
+  ypos -178
+ }
+push $N19cc6df0
+ Merge2 {
+  inputs 2
+  name Merge14
+  xpos -923
+  ypos -152
+ }
+set N19cc78b0 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*4000 i x1 2000} 0}
+  center {1024 778}
+  name Transform1
+  xpos -813
+  ypos -178
+ }
+push $N19cc78b0
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -813
+  ypos -152
+ }
+set N19cc8370 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*8000 i x1 2000} 0}
+  center {1024 778}
+  name Transform2
+  xpos -703
+  ypos -178
+ }
+push $N19cc8370
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos -703
+  ypos -152
+ }
+set N19cc8e30 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*16000 i x1 2000} 0}
+  center {1024 778}
+  name Transform3
+  xpos -607
+  ypos -178
+ }
+push $N19cc8e30
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos -607
+  ypos -152
+ }
+set N19d16a20 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*32000 i x1 2000} 0}
+  center {1024 778}
+  name Transform4
+  xpos -497
+  ypos -178
+ }
+push $N19d16a20
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos -497
+  ypos -152
+ }
+set N19d174e0 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*64000 i x1 2000} 0}
+  center {1024 778}
+  name Transform5
+  xpos -394
+  ypos -178
+ }
+push $N19d174e0
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos -394
+  ypos -152
+ }
+set N19d17fa0 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*128000 i x1 2000} 0}
+  center {1024 778}
+  name Transform6
+  xpos -295
+  ypos -178
+ }
+push $N19d17fa0
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos -295
+  ypos -152
+ }
+set N19d18a60 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*256000 i x1 2000} 0}
+  center {1024 778}
+  name Transform7
+  xpos -202
+  ypos -178
+ }
+push $N19d18a60
+ Merge2 {
+  inputs 2
+  name Merge7
+  xpos -202
+  ypos -152
+ }
+set N19d19520 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*512000 i x1 2000} 0}
+  center {1024 778}
+  name Transform8
+  xpos -104
+  ypos -178
+ }
+push $N19d19520
+ Merge2 {
+  inputs 2
+  name Merge8
+  xpos -104
+  ypos -152
+ }
+set N19d19fe0 [stack 0]
+ Transform {
+  translate {{parent.scale_matrix.scale*1024000 i x1 2000} 0}
+  center {1024 778}
+  name Transform9
+  xpos -5
+  ypos -178
+ }
+push $N19d19fe0
+ Merge2 {
+  inputs 2
+  name Merge9
+  xpos -5
+  ypos -152
+ }
+set N19d66cd0 [stack 0]
+ Dot {
+  name Dot2
+  xpos -4
+  ypos -94
+ }
+ Dot {
+  name Dot4
+  xpos -955
+  ypos -94
+ }
+ Transform {
+  translate {0 {parent.Transform13.translate.x i}}
+  center {1024 778}
+  name Transform10
+  xpos -1031
+  ypos 11
+ }
+push $N19d66cd0
+ Dot {
+  name Dot3
+  xpos 29
+  ypos -61
+ }
+ Dot {
+  name Dot6
+  xpos -1081
+  ypos -61
+ }
+ Dot {
+  name Dot5
+  xpos -1081
+  ypos 41
+ }
+ Merge2 {
+  inputs 2
+  name Merge10
+  xpos -1031
+  ypos 37
+ }
+set N19d68500 [stack 0]
+ Transform {
+  translate {0 {parent.Transform14.translate.x i}}
+  center {1024 778}
+  name Transform11
+  xpos -923
+  ypos 12
+ }
+push $N19d68500
+ Merge2 {
+  inputs 2
+  name Merge11
+  xpos -923
+  ypos 37
+ }
+set N19d69270 [stack 0]
+ Transform {
+  translate {0 {parent.Transform1.translate.x i}}
+  center {1024 778}
+  name Transform12
+  xpos -811
+  ypos 13
+ }
+push $N19d69270
+ Merge2 {
+  inputs 2
+  name Merge15
+  xpos -811
+  ypos 39
+ }
+set N19d69a80 [stack 0]
+ Transform {
+  translate {0 {parent.Transform2.translate.x i}}
+  center {1024 778}
+  name Transform15
+  xpos -700
+  ypos 14
+ }
+push $N19d69a80
+ Merge2 {
+  inputs 2
+  name Merge16
+  xpos -700
+  ypos 40
+ }
+set N19e7d940 [stack 0]
+ Transform {
+  translate {0 {parent.Transform3.translate.x i}}
+  center {1024 778}
+  name Transform16
+  xpos -602
+  ypos 14
+ }
+push $N19e7d940
+ Merge2 {
+  inputs 2
+  name Merge17
+  xpos -602
+  ypos 40
+ }
+set N19e7e400 [stack 0]
+ Transform {
+  translate {0 {parent.Transform4.translate.x i}}
+  center {1024 778}
+  name Transform17
+  xpos -493
+  ypos 14
+ }
+push $N19e7e400
+ Merge2 {
+  inputs 2
+  name Merge18
+  xpos -492
+  ypos 40
+ }
+set N19e7eec0 [stack 0]
+ Transform {
+  translate {0 {parent.Transform5.translate.x i}}
+  center {1024 778}
+  name Transform18
+  xpos -390
+  ypos 14
+ }
+push $N19e7eec0
+ Merge2 {
+  inputs 2
+  name Merge19
+  xpos -390
+  ypos 40
+ }
+set N19e7f980 [stack 0]
+ Transform {
+  translate {0 {parent.Transform6.translate.x i}}
+  center {1024 778}
+  name Transform19
+  xpos -292
+  ypos 14
+ }
+push $N19e7f980
+ Merge2 {
+  inputs 2
+  name Merge20
+  xpos -292
+  ypos 40
+ }
+set N19e80440 [stack 0]
+ Transform {
+  translate {0 {parent.Transform7.translate.x i}}
+  center {1024 778}
+  name Transform20
+  xpos -197
+  ypos 14
+ }
+push $N19e80440
+ Merge2 {
+  inputs 2
+  name Merge21
+  xpos -197
+  ypos 40
+ }
+set N19e80f00 [stack 0]
+ Transform {
+  translate {0 {parent.Transform8.translate.x i}}
+  center {1024 778}
+  name Transform21
+  xpos -101
+  ypos 15
+ }
+push $N19e80f00
+ Merge2 {
+  inputs 2
+  name Merge22
+  xpos -101
+  ypos 41
+ }
+ Dot {
+  name Dot7
+  xpos -67
+  ypos 226
+ }
+ Transform {
+  scale {{1/parent.Format.format.pixel_aspect i} 1}
+  name auto_aspect_correction
+  xpos -1283
+  ypos 222
+ }
+ Crop {
+  box {0 0 {parent.Format.format.width i} {parent.Format.format.height i}}
+  reformat true
+  crop false
+  name Crop1
+  xpos -1393
+  ypos 222
+ }
+push $N19b5aa60
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  alpha white
+  name ShuffleCopy1
+  xpos -1580
+  ypos 222
+ }
+set N19f14c10 [stack 0]
+push 0
+push $N19b5a7b0
+ Dot {
+  name Dot11
+  xpos -1656
+  ypos -339
+ }
+set N19f14ec0 [stack 0]
+ Input {
+  inputs 0
+  name optional
+  xpos -1690
+  ypos -562
+ }
+ Group {
+  inputs 2
+  name ref_opt_img
+  xpos -1690
+  ypos -496
+ }
+  Input {
+   inputs 0
+   name opt_img
+   xpos -498
+   ypos -243
+  }
+  Dot {
+   name Dot13
+   xpos -652
+   ypos -239
+  }
+  Transform {
+   translate {{-center.x+Crop1.box.r/2} {-center.y+Crop1.box.t/2}}
+   scale {{1/(opt_img.format.width/Format.format.width)} {1/(opt_img.format.height/Format.format.height)}}
+   center {{parent.opt_img.format.width/2 0} {parent.opt_img.format.height/2 0}}
+   name Transform22
+   xpos -686
+   ypos -156
+  }
+  Dot {
+   name Dot18
+   xpos -745
+   ypos -152
+  }
+  Crop {
+   box {0 0 {parent.Input1.format.width i} {parent.Input1.format.height i}}
+   reformat true
+   crop false
+   name Crop1
+   xpos -779
+   ypos -96
+  }
+set N19f16190 [stack 0]
+  Output {
+   name Output1
+   xpos -779
+   ypos 4
+  }
+push $N19f16190
+  Input {
+   inputs 0
+   name Input1
+   xpos -895
+   ypos -244
+   number 1
+  }
+  Merge2 {
+   inputs 2
+   name Merge23
+   xpos -895
+   ypos -96
+  }
+  Viewer {
+   input_process false
+   name Viewer1
+   xpos -895
+   ypos -2
+  }
+ end_group
+ Dot {
+  name Dot14
+  xpos -1800
+  ypos -492
+ }
+ Dot {
+  name Dot8
+  xpos -1800
+  ypos 287
+ }
+push $N19f14ec0
+push 0
+ Group {
+  inputs 5
+  name BumpDistorsion
+  xpos -1690
+  ypos 325
+  addUserKnob {20 User}
+  addUserKnob {41 BumpScale T BumpSize.scale}
+  addUserKnob {41 BumpDepth T DisplaceGeo_Control.scale}
+  addUserKnob {41 BumpSoft T BumpSoftness.softness}
+  addUserKnob {41 which T SwitchGrid.which}
+  addUserKnob {41 translate T BumpSize.translate}
+ }
+  Input {
+   inputs 0
+   name opt_img_resized
+   xpos -400
+   ypos 137
+   number 2
+  }
+  Input {
+   inputs 0
+   name dot_matrix_plane
+   xpos 89
+   ypos 62
+   number 4
+  }
+set N19fbd940 [stack 0]
+  Input {
+   inputs 0
+   name back
+   xpos -224
+   ypos 62
+   number 1
+  }
+set N19fbdbf0 [stack 0]
+  Grid {
+   size 2
+   name Grid1
+   xpos -77
+   ypos 62
+  }
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos -77
+   ypos 88
+  }
+push $N19fbd940
+  Switch {
+   inputs 3
+   which {{Grid i}}
+   name SwitchGrid
+   xpos 89
+   ypos 137
+  }
+set N19fc3c10 [stack 0]
+  Viewer {
+   input_process false
+   name Viewer1
+   xpos 723
+   ypos 137
+  }
+  Camera2 {
+   inputs 0
+   name Camera1
+   xpos 280
+   ypos 251
+  }
+set N19fbe400 [stack 0]
+push $N19fbe400
+push $N19fbdbf0
+  Dot {
+   name Dot10
+   xpos -190
+   ypos 401
+  }
+set N19fbe6b0 [stack 0]
+  Radial {
+   area {0 0 {parent.back.format.width i} {parent.back.format.height i}}
+   name BumpSoftness
+   xpos -153
+   ypos 337
+  }
+  Transform {
+   translate {{parent.parent.BumpPositionX i} {parent.parent.BumpPositionY i}}
+   scale {{parent.parent.BumpScale i}}
+   center {{back.format.width/2 i} {back.format.height/2 i}}
+   name BumpSize
+   xpos -43
+   ypos 337
+  }
+push $N19fc3c10
+  Card2 {
+   rows {{parent.back.format.width/10 i}}
+   columns {{parent.back.format.height/10 i}}
+   translate {0 0 -2}
+   control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+   name Card1
+   xpos 89
+   ypos 280
+  }
+  DisplaceGeo {
+   inputs 2
+   scale {{parent.parent.BumpDepth i}}
+   filter_size 10
+   name DisplaceGeo_Control
+   xpos 89
+   ypos 337
+  }
+  Scene {
+   inputs 2
+   name Scene1
+   xpos 280
+   ypos 317
+  }
+push $N19fbe6b0
+  Dot {
+   name Dot8
+   xpos 416
+   ypos 401
+  }
+  ScanlineRender {
+   inputs 3
+   output_motion_vectors_type accurate
+   name ScanlineRender1
+   xpos 382
+   ypos 337
+  }
+  Dot {
+   name Dot1
+   xpos 520
+   ypos 341
+  }
+  Output {
+   name Output2
+   xpos 630
+   ypos 337
+  }
+ end_group
+ Dot {
+  name Dot20
+  xpos -1656
+  ypos 380
+ }
+push $N19f14c10
+ Switch {
+  inputs 2
+  which {{parent.World i}}
+  name Switch23D
+  xpos -1491
+  ypos 376
+ }
+set N19fc3ee0 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  alpha red2
+  name ShuffleCopy2
+  xpos -1323
+  ypos 449
+ }
+push $N19fc3ee0
+ Switch {
+  inputs 2
+  which {{RGBswitch i}}
+  name rgb_switch
+  xpos -1491
+  ypos 516
+ }
+ Premult {
+  name Premult1
+  xpos -1491
+  ypos 572
+  disable {{!parent.Premult i}}
+ }
+ Output {
+  name Dots_out
+  xpos -1082
+  ypos 572
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -910
+  ypos 572
+ }
+end_group

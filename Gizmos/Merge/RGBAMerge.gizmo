@@ -1,0 +1,168 @@
+#! C:/Program Files/Nuke8.0v5/nuke-8.0.v5.dll -nx
+version 8.0 v5
+Gizmo {
+ addUserKnob {20 User l "Colour Selection"}
+ addUserKnob {41 operation T Merge7.operation}
+ addUserKnob {6 redt l red +STARTLINE}
+ redt true
+ addUserKnob {6 greent l green +STARTLINE}
+ greent true
+ addUserKnob {6 bluet l blue +STARTLINE}
+ bluet true
+}
+ Shuffle {
+  inputs 0
+  red green
+  blue green
+  alpha green
+  name Shuffle1
+  xpos 33
+  ypos 391
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -542
+  ypos 391
+ }
+ Dot {
+  name Dot1
+  xpos -508
+  ypos 490
+ }
+set Nc1a9d510 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle13
+  tile_color 0xffff
+  xpos -337
+  ypos 667
+  disable {{1-bluet}}
+ }
+set Nc1a9e9b0 [stack 0]
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  black black
+  white black
+  red2 black
+  green2 black
+  out2 rgba
+  name Shuffle3
+  xpos -240
+  ypos 737
+ }
+push $Nc1a9e9b0
+ Switch {
+  inputs 2
+  which {{1-bluet}}
+  name Switch2
+  xpos -337
+  ypos 801
+ }
+push 0
+push $Nc1a9d510
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle10
+  tile_color 0xff0000ff
+  xpos -742
+  ypos 672
+  disable {{1-redt}}
+ }
+set N8f571110 [stack 0]
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  black black
+  white black
+  red2 black
+  green2 black
+  out2 rgba
+  name Shuffle4
+  xpos -640
+  ypos 713
+ }
+push $N8f571110
+ Switch {
+  inputs 2
+  which {{1-redt}}
+  name Switch3
+  xpos -742
+  ypos 777
+ }
+push $Nc1a9d510
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle12
+  tile_color 0xff00ff
+  xpos -542
+  ypos 672
+  disable {{"1- greent" x1001 0}}
+ }
+set N8f574130 [stack 0]
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  black black
+  white black
+  red2 black
+  green2 black
+  out2 rgba
+  name Shuffle2
+  xpos -440
+  ypos 726
+ }
+push $N8f574130
+ Switch {
+  inputs 2
+  which {{1-greent}}
+  name Switch1
+  xpos -542
+  ypos 791
+ }
+ Merge2 {
+  inputs 3+1
+  operation plus
+  name Merge7
+  selected true
+  xpos -542
+  ypos 991
+ }
+set N8f5736e0 [stack 0]
+ Output {
+  name Output2
+  xpos -542
+  ypos 1191
+ }
+ Read {
+  inputs 0
+  file L:/Floogals/publish/ep016_toothbrush/ep016_sh1120/lighting_renders/ep016_sh1120_lighting_v002/ep016_sh1120_lighting_v002_char_prop_multimatte/ep016_sh1120_lighting_v002_char_prop_multimatte.####.exr
+  format "1280 720 0 0 1280 720 1 "
+  first 1001
+  last 1041
+  origfirst 1001
+  origlast 1041
+  origset true
+  name Read1
+  xpos -536
+  ypos 283
+ }
+push $N8f5736e0
+ Viewer {
+  viewerProcess rec709
+  input_process false
+  name Viewer1
+  xpos -840
+  ypos 1191
+ }
+end_group

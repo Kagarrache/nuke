@@ -1,0 +1,147 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 Wave}
+ addUserKnob {4 type M {Sin Cos Noise "" ""}}
+ addUserKnob {4 direction M {Both Horizontal Vertical ""}}
+ addUserKnob {7 frequency R -50 50}
+ frequency 1.5
+ addUserKnob {7 amplitude R -50 50}
+ amplitude 1.5
+ addUserKnob {7 seed R 1 100}
+ seed 1
+ addUserKnob {41 filter T IDistort4.filter}
+}
+ Input {
+  inputs 0
+  name in
+  xpos 885
+  ypos -118
+ }
+set N90e4d70 [stack 0]
+push $N90e4d70
+ Dot {
+  name Dot3
+  xpos 1234
+  ypos -114
+ }
+ Expression {
+  temp_name0 amplitude
+  temp_expr0 parent.amplitude
+  temp_name1 frequency
+  temp_expr1 parent.frequency
+  temp_name2 seed
+  temp_expr2 parent.seed
+  expr0 "noise(cx*frequency, seed, 0) * amplitude"
+  expr1 "noise(cy*frequency, seed, 0) * amplitude"
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 0
+  name Noise3D
+  xpos 1200
+  ypos -33
+  postage_stamp true
+ }
+push $N90e4d70
+ Dot {
+  name Dot2
+  xpos 1116
+  ypos -114
+ }
+ Expression {
+  temp_name0 amplitude
+  temp_expr0 parent.amplitude
+  temp_name1 frequency
+  temp_expr1 parent.frequency
+  temp_name2 seed
+  temp_expr2 1
+  expr0 "cos(cx*frequency * seed) * amplitude"
+  expr1 "cos(cy*frequency * seed) * amplitude"
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 0
+  name Cos
+  xpos 1082
+  ypos -36
+  postage_stamp true
+ }
+push $N90e4d70
+ Dot {
+  name Dot1
+  xpos 1007
+  ypos -114
+ }
+ Expression {
+  temp_name0 amplitude
+  temp_expr0 parent.amplitude
+  temp_name1 frequency
+  temp_expr1 parent.frequency
+  temp_name2 seed
+  temp_expr2 1
+  expr0 "sin(cx*frequency * seed) * amplitude"
+  expr1 "sin(cy*frequency * seed) * amplitude"
+  channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  expr2 0
+  name Sin
+  xpos 973
+  ypos -34
+  postage_stamp true
+ }
+ Switch {
+  inputs 4
+  which {{parent.type i}}
+  name Switch2
+  xpos 1082
+  ypos 115
+ }
+set N1a1ba0e0 [stack 0]
+ Shuffle {
+  green red
+  blue black
+  alpha black
+  name Shuffle3
+  xpos 1164
+  ypos 186
+ }
+push $N1a1ba0e0
+ Shuffle {
+  red green
+  blue black
+  alpha black
+  name Shuffle4
+  xpos 1266
+  ypos 186
+ }
+push $N1a1ba0e0
+ Switch {
+  inputs 3
+  which {{parent.direction i}}
+  name Switch1
+  xpos 1082
+  ypos 261
+ }
+push $N90e4d70
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.v
+  from1 rgba.green
+  to1 forward.u
+  name Copy5
+  xpos 885
+  ypos 248
+ }
+ IDistort {
+  channels rgba
+  uv forward
+  uv_scale 66
+  name IDistort4
+  selected true
+  xpos 885
+  ypos 300
+ }
+ Output {
+  name Output1
+  xpos 885
+  ypos 353
+ }
+end_group

@@ -1,0 +1,304 @@
+# Time dTools
+#! C:/Program Files/Nuke5.2v1b17/Nuke5.2.exe -nx
+# Created by Diogo Girondi
+# diogogirondi@gmail.com
+version 5.2117
+Gizmo {
+ help "@b;dTC v1@n; for Nuke 5.2v1\n\nTimecode and Keycode burnin for Nuke.\n\nCreated by Diogo Girondi\ndiogogirondi@gmail.com"
+ tile_color 0x8c34ffff
+ addUserKnob {20 dtc l "dTC v1"}
+ addUserKnob {26 txStart l "@b;Start and Offset"}
+ addUserKnob {3 hh l Timecode}
+ addUserKnob {3 mm l ": " -STARTLINE}
+ addUserKnob {3 ss l ": " -STARTLINE}
+ addUserKnob {3 ff l ": " -STARTLINE}
+ addUserKnob {3 tc_offset l "Start at frame" t "Timecode will zero (start) from this frame."}
+ tc_offset 1
+ addUserKnob {32 set_tc_offset l "  set current  " -STARTLINE T "knob this.tc_offset \[value frame]"}
+ addUserKnob {26 ""}
+ addUserKnob {4 kc_type l Keycode M {"   16mm  " "   35mm  " "" "" ""}}
+ kc_type "   35mm  "
+ addUserKnob {3 kc_key l " " -STARTLINE}
+ addUserKnob {3 kc_frames l "+ " -STARTLINE}
+ addUserKnob {3 kc_offset l "Start at frame" t "Keycode will zero (start) from this frame."}
+ kc_offset 1
+ addUserKnob {32 set_kc_offset l "  set current  " -STARTLINE T "knob this.kc_offset \[value frame]"}
+ addUserKnob {26 ""}
+ addUserKnob {3 frame_start l Frame}
+ addUserKnob {3 frame_offset l "Start at frame" t "Frame will zero (start) from this frame.\nIf you want to start the count from 0 (zero) instead of 1 (one) use number of the desired first frame + 1."}
+ frame_offset 1
+ addUserKnob {32 set_frame_offset l "  set current  " -STARTLINE T "knob this.frame_offset \[value frame]"}
+ addUserKnob {26 ""}
+ addUserKnob {32 start_all l "  start all at the current frame  " T "knob this.tc_offset \[value frame]\nknob this.kc_offset \[value frame]\nknob this.frame_offset \[value frame]\n" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {3 handles_in l "Handles In"}
+ addUserKnob {3 handles_out l " Out  " -STARTLINE}
+ addUserKnob {26 txBurnin l "@b;Burn-In"}
+ addUserKnob {6 use_frame l Frames -STARTLINE}
+ use_frame true
+ addUserKnob {6 use_tc l Timecode -STARTLINE}
+ use_tc true
+ addUserKnob {6 use_kc l Keycode -STARTLINE}
+ use_kc true
+ addUserKnob {6 use_date l Date -STARTLINE}
+ use_date true
+ addUserKnob {6 use_time l Time -STARTLINE}
+ use_time true
+ addUserKnob {6 use_filename l File -STARTLINE}
+ use_filename true
+ addUserKnob {6 draw_timeline l Timeline -STARTLINE}
+ draw_timeline true
+ addUserKnob {20 options l Options}
+ addUserKnob {26 txOptions l "@b;Options"}
+ addUserKnob {7 xp l "X Pos" R -1 1}
+ addUserKnob {7 yp l "Y Pos" R -1 1}
+ yp -0.75
+ addUserKnob {7 tcscale l Scale R 1 2}
+ tcscale 1
+ addUserKnob {26 ""}
+ addUserKnob {2 font l Font}
+ font "\[python nuke.defaultFontPathname()]"
+ addUserKnob {18 textcolor l "Text Color"}
+ textcolor 0.8
+ addUserKnob {19 bgcolor l "BG Color"}
+ bgcolor {0 0 0 0.8}
+ addUserKnob {4 date_format l "Date Format" M {DD/MM/YY MM/DD/YY}}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 942
+  ypos -873
+ }
+ NoOp {
+  name Calc
+  xpos 942
+  ypos -794
+  addUserKnob {20 User}
+  addUserKnob {26 "" l <b>Keycode</b>}
+  addUserKnob {3 kc_type_value}
+  kc_type_value {{parent.kc_type==0?20:16 i}}
+  addUserKnob {3 kc_key_value}
+  kc_key_value {{"int(fmod((((frame-parent.kc_offset)+parent.kc_frames)/this.kc_type_value), kc_type_value)+parent.kc_key)" i}}
+  addUserKnob {3 kc_frames_value}
+  kc_frames_value {{"int(fmod(((frame-parent.kc_offset)+parent.kc_frames), this.kc_type_value))" i}}
+  addUserKnob {26 "" l <b>Timecode</b>}
+  addUserKnob {3 tc_hh_value}
+  tc_hh_value {{"fmod(int(floor(int(floor((floor(((frame-parent.tc_offset)+parent.ff)/root.fps)+parent.ss)/60)+parent.mm)/60)+parent.hh), root.fps)" i}}
+  addUserKnob {3 tc_mm_value}
+  tc_mm_value {{"fmod(int(floor((floor(((frame-parent.tc_offset)+parent.ff)/root.fps)+parent.ss)/60)+parent.mm), 60)" i}}
+  addUserKnob {3 tc_ss_value}
+  tc_ss_value {{"fmod(int(floor(((frame-parent.tc_offset)+parent.ff)/root.fps)+parent.ss), 60)" i}}
+  addUserKnob {3 tc_ff_value}
+  tc_ff_value {{"int(fmod((((frame-parent.tc_offset))+parent.ff), root.fps))" i}}
+  addUserKnob {26 "" l <b>Frame</b>}
+  addUserKnob {3 frame_value}
+  frame_value {{((frame-parent.frame_offset)+1)+parent.frame_start i}}
+ }
+set N3631cdb0 [stack 0]
+ Remove {
+  operation keep
+  channels rgb
+  name Remove1
+  xpos 1029
+  ypos -705
+ }
+ Crop {
+  box {0 0 {input.format.w*2 i} 30}
+  reformat true
+  crop false
+  name Crop2
+  xpos 1029
+  ypos -676
+ }
+ Rectangle {
+  replace true
+  area {0 0 1 30}
+  color 0
+  name Null_BBox
+  xpos 1029
+  ypos -647
+ }
+ Text {
+  message "F \[format %04d \[value Calc.frame_value]]"
+  font "\[value parent.font]"
+  size 24
+  translate {{input.bbox.w+15 i} 5}
+  color {{"Calc.frame_value < 0?1:parent.textcolor.r" i} {"Calc.frame_value < 0?0:parent.textcolor.g" i} {"Calc.frame_value < 0?0:parent.textcolor.b" i} 1}
+  name Frames
+  xpos 1029
+  ypos -618
+  disable {{!parent.use_frame i}}
+ }
+ Text {
+  message "TC \[format %02d:%02d:%02d:%02d \[value Calc.tc_hh_value] \[value Calc.tc_mm_value] \[value Calc.tc_ss_value] \[value Calc.tc_ff_value]]"
+  font "\[value parent.font]"
+  size 24
+  translate {{input.bbox.w+15 i} 5}
+  color {{"Calc.tc_ff_value < 0?1:parent.textcolor.r" i} {"Calc.tc_ff_value < 0?0:parent.textcolor.g" i} {"Calc.tc_ff_value < 0?0:parent.textcolor.b" i} 1}
+  name TC
+  xpos 1029
+  ypos -589
+  disable {{!parent.use_tc i}}
+ }
+ Text {
+  message "KC \[format %04d+%02d \[value Calc.kc_key_value] \[value Calc.kc_frames_value]]"
+  font "\[value parent.font]"
+  size 24
+  translate {{input.bbox.w+15 i} 5}
+  color {{"Calc.kc_frames_value < 0?1:parent.textcolor.r" i} {"Calc.kc_frames_value < 0?0:parent.textcolor.g" i} {"Calc.kc_frames_value < 0?0:parent.textcolor.b" i} 1}
+  name KC
+  xpos 1029
+  ypos -560
+  disable {{!parent.use_kc i}}
+ }
+ Text {
+  message "\[if \{\[numvalue parent.date_format] == 0\} \{return \[date %d/%m/%y]\} else \{return \[date %m/%d/%y]\}]"
+  font "\[value parent.font]"
+  size 24
+  translate {{input.bbox.w+15 i} 5}
+  color {{"clamp((parent.textcolor.r*0.6), 0, 1)" i} {"clamp((parent.textcolor.g*0.6), 0, 1)" i} {"clamp((parent.textcolor.b*0.6), 0, 1)" i} 1}
+  name DATA
+  xpos 1029
+  ypos -531
+  disable {{!parent.use_date i}}
+ }
+ Text {
+  message "\[date %H:%M]"
+  font "\[value parent.font]"
+  size 24
+  translate {{input.bbox.w+15 i} 5}
+  color {{"clamp((parent.textcolor.r*0.6), 0, 1)" i} {"clamp((parent.textcolor.g*0.6), 0, 1)" i} {"clamp((parent.textcolor.b*0.6), 0, 1)" i} 1}
+  name Hora
+  xpos 1029
+  ypos -502
+  disable {{!parent.use_time i}}
+ }
+ Text {
+  message "\[file tail \[value root.name]]"
+  font "\[value parent.font]"
+  size 24
+  kerning -0.086
+  translate {{input.bbox.w+15 i} 5}
+  color {{"clamp((parent.textcolor.r*0.6), 0, 1)" i} {"clamp((parent.textcolor.g*0.6), 0, 1)" i} {"clamp((parent.textcolor.b*0.6), 0, 1)" i} 1}
+  name File
+  xpos 1029
+  ypos -473
+  disable {{!parent.use_filename i}}
+ }
+ Crop {
+  box {5 -5 {input.bbox.w+10 i} 35}
+  reformat true
+  crop false
+  name Crop3
+  xpos 1029
+  ypos -444
+ }
+set Nf3c1e80 [stack 0]
+push $Nf3c1e80
+ Rectangle {
+  replace true
+  area {0 0 {input.format.w i} {input.format.h i}}
+  color {{parent.bgcolor.r i} {parent.bgcolor.g i} {parent.bgcolor.b i} {parent.bgcolor.a i}}
+  name Rectangle1
+  xpos 1161
+  ypos -444
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 1029
+  ypos -343
+ }
+set N556cf80 [stack 0]
+push $N556cf80
+ Crop {
+  box {0 -5 {input.format.w i} {input.format.h i}}
+  reformat true
+  crop false
+  name Crop4
+  xpos 1158
+  ypos -343
+ }
+ Rectangle {
+  area {0 0 {input.format.r i} 5}
+  color {0.18 0.18 0.18 1}
+  name Bottom_Line
+  xpos 1158
+  ypos -314
+ }
+ Rectangle {
+  area {0 0 {int(input.format.w*((frame-1)/(input.last_frame-1))) i} 5}
+  color {0.12 0.16 0.2 1}
+  name Timebar
+  xpos 1158
+  ypos -285
+ }
+ Rectangle {
+  area {{int(input.format.w*((frame-1)/(input.last_frame-1)))-30 i} 0 {int(input.format.w*((frame-1)/(input.last_frame-1))) i} 5}
+  ramp smooth0
+  color {0.46 0.5 0.54 1}
+  p1 {{int(input.format.w*((frame-1)/(input.last_frame-1))) i} 0}
+  color0 {0.12 0.16 0.2 1}
+  p0 {{int(input.format.w*((frame-1)/(input.last_frame-1)))-30 i} 0}
+  name Timebar_head
+  xpos 1158
+  ypos -256
+ }
+ Rectangle {
+  area {0 0 {int(input.format.w*((parent.handles_in)/(input.last_frame-1))) i} 5}
+  color {0.79 0.537516 0.0474 1}
+  name Handles_In
+  xpos 1158
+  ypos -227
+  disable {{"parent.handles_in == 0?1:0" i}}
+ }
+ Rectangle {
+  area {{input.format.r-int(input.format.w*((parent.handles_out)/(input.last_frame-1))) i} 0 {input.format.w i} 5}
+  color {0.79 0.537516 0.0474 1}
+  name Handles_Out
+  xpos 1158
+  ypos -198
+  disable {{"parent.handles_out == 0?1:0" i}}
+ }
+ Rectangle {
+  area {{int(input.format.w*((frame-1)/(input.last_frame-1)))-2 i} 0 {int(input.format.w*((frame-1)/(input.last_frame-1)))+2 i} 5}
+  color {1 0 0.04 1}
+  p1 {{int(input.format.w*((frame-1)/(input.last_frame-1))) i} 0}
+  color0 {0.12 0.16 0.2 0.2}
+  p0 {{int(input.format.w*((frame-1)/(input.last_frame-1)))-30 i} 0}
+  name current
+  xpos 1158
+  ypos -169
+ }
+ Switch {
+  inputs 2
+  which {{!parent.draw_timeline i}}
+  name Switch1
+  xpos 1029
+  ypos -94
+ }
+ Transform {
+  translate {{((Calc.format.w/2)-(input.format.w/2))+((Calc.format.w/2)*parent.xp) i} {((Calc.format.h/2)-(input.format.h/2))+((Calc.format.h/2)*parent.yp) i}}
+  scale {{parent.tcscale i}}
+  center {{input.format.w/2 i} {input.format.h/2 i}}
+  name Transform1
+  xpos 1029
+  ypos -37
+ }
+push $N3631cdb0
+ Merge2 {
+  inputs 2
+  bbox B
+  output rgb
+  name Merge1
+  xpos 942
+  ypos 53
+  disable {{!(parent.use_tc||parent.use_kc||parent.use_frame||parent.use_date||parent.use_time||parent.use_filename) i}}
+ }
+ Output {
+  name Output1
+  xpos 942
+  ypos 152
+ }
+end_group

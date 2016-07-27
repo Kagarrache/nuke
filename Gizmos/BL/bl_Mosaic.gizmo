@@ -1,0 +1,49 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Mosaic}
+ addUserKnob {14 size R 0 100}
+ size 50
+ addUserKnob {41 filter T Reformat1.filter}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -265
+  ypos 110
+ }
+ Reformat {
+  type "to box"
+  box_width {{"int(parent.size.w) > 0 ? int(parent.size.w) : 1" i}}
+  box_height {{"int(parent.size.h) > 0 ? int(parent.size.h)  : 1" i}}
+  box_fixed true
+  scale {0.2 1}
+  resize distort
+  name Reformat1
+  selected true
+  xpos -265
+  ypos 136
+ }
+ Multiply {
+  channels rgba
+  name Multiply1
+  xpos -265
+  ypos 162
+ }
+ Reformat {
+  type "to box"
+  format "256 256 0 0 256 256 1 square_256"
+  box_width {{Input.width i}}
+  box_height {{Input.height i}}
+  resize distort
+  filter Impulse
+  name Reformat2
+  xpos -265
+  ypos 188
+ }
+ Output {
+  name Output
+  xpos -265
+  ypos 214
+ }
+end_group

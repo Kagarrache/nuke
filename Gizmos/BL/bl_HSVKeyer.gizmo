@@ -1,0 +1,195 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l HSVKeyer}
+ addUserKnob {4 mode M {Source Result Mask Hue Saturation Brightness ""}}
+ mode Result
+ addUserKnob {4 method M {Multiply Minimum}}
+ addUserKnob {41 srccolor T HSVTool1.srccolor}
+ addUserKnob {26 ""}
+ addUserKnob {20 hue n 1}
+ hue 0
+ addUserKnob {41 huesrcs l Range T HSVTool1.huesrcs}
+ addUserKnob {41 huerolloffrange l "Range Rolloff" T HSVTool1.huerolloffrange}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 saturation n 1}
+ saturation 0
+ addUserKnob {41 satsrcs l Range T HSVTool1.satsrcs}
+ addUserKnob {41 satrolloffrange l "Range Rolloff" T HSVTool1.satrolloffrange}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 brightness n 1}
+ brightness 0
+ addUserKnob {41 brtsrcs l Range T HSVTool1.brtsrcs}
+ addUserKnob {41 brtrolloffrange l "Range Rolloff" T HSVTool1.brtrolloffrange}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 202
+  ypos 67
+ }
+ Dot {
+  name Dot1
+  xpos 236
+  ypos 107
+ }
+set N1a006d10 [stack 0]
+add_layer {rgba rgba.beta}
+ HSVTool {
+  srccolor {{parent.HSVTool1.srccolor} {parent.HSVTool1.srccolor} {parent.HSVTool1.srccolor}}
+  huesrcs {122.0924377 122.0924377}
+  huerotation -94
+  huerolloffrange 50
+  satsrcs {0.8932054043 0.8932054043}
+  saturation -0.77
+  satrolloffrange 0.3
+  brtsrcs {{parent.HSVTool1.brtsrcs} {parent.HSVTool1.brtsrcs}}
+  brightness -1
+  brtrolloffrange {{parent.HSVTool1.brtrolloffrange}}
+  Conversion brightness
+  name HSVTool3
+  selected true
+  xpos 392
+  ypos 158
+ }
+add_layer {shadow}
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle3
+  xpos 392
+  ypos 196
+ }
+set N1a007270 [stack 0]
+push $N1a006d10
+ HSVTool {
+  srccolor {{parent.HSVTool1.srccolor} {parent.HSVTool1.srccolor} {parent.HSVTool1.srccolor}}
+  huesrcs {122.0924377 122.0924377}
+  huerotation -94
+  huerolloffrange 50
+  satsrcs {{parent.HSVTool1.satsrcs} {parent.HSVTool1.satsrcs}}
+  saturation -0.77
+  satrolloffrange {{parent.HSVTool1.satrolloffrange}}
+  brtsrcs {1 1}
+  brightness -1
+  brtrolloffrange 0.3
+  Conversion saturation
+  name HSVTool2
+  xpos 294
+  ypos 158
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  xpos 294
+  ypos 196
+ }
+set N1a0d1950 [stack 0]
+push $N1a006d10
+ HSVTool {
+  srccolor {0 1 0}
+  huesrcs {120 120}
+  huerotation -94
+  huerolloffrange 50
+  satsrcs {1 1}
+  saturation -0.77
+  satrolloffrange 0.3
+  brtsrcs {1 1}
+  brightness -1
+  brtrolloffrange 0.3
+  name HSVTool1
+  xpos 202
+  ypos 158
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos 202
+  ypos 196
+ }
+set N1a0d3430 [stack 0]
+push $N1a007270
+push 0
+push $N1a0d3430
+push $N1a0d1950
+ Merge2 {
+  inputs 3+1
+  operation min
+  name Merge2
+  xpos 392
+  ypos 256
+ }
+push $N1a007270
+push 0
+push $N1a0d3430
+push $N1a0d1950
+ Merge2 {
+  inputs 3+1
+  operation multiply
+  name Merge1
+  xpos 294
+  ypos 257
+ }
+ Switch {
+  inputs 2
+  which {{parent.method i}}
+  name Switch2
+  xpos 392
+  ypos 313
+ }
+set N65ab730 [stack 0]
+push $N65ab730
+ Invert {
+  channels alpha
+  name Invert1
+  xpos 392
+  ypos 339
+ }
+push $N1a006d10
+ Dot {
+  name Dot2
+  xpos 40
+  ypos 107
+ }
+ Dot {
+  name Dot5
+  xpos 40
+  ypos 381
+ }
+set N1a10f950 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 392
+  ypos 377
+ }
+ Premult {
+  name Premult1
+  xpos 392
+  ypos 403
+ }
+push $N1a10f950
+ Dot {
+  name Dot3
+  xpos 40
+  ypos 407
+ }
+ Switch {
+  inputs 6
+  which {{parent.mode i}}
+  name Switch1
+  xpos 202
+  ypos 403
+ }
+ Output {
+  name Output
+  xpos 202
+  ypos 429
+ }
+end_group

@@ -1,0 +1,311 @@
+#! C:/Program Files/Nuke6.3v6/Nuke6.3.exe -nx
+version 6.3 v6
+Gizmo {
+ addUserKnob {20 User l ColorSupress}
+ addUserKnob {41 value T ctrl1.value}
+ addUserKnob {26 ""}
+ addUserKnob {41 red T ctrl1.red}
+ addUserKnob {41 green T ctrl1.green}
+ addUserKnob {41 blue T ctrl1.blue}
+ addUserKnob {41 cyan T ctrl1.cyan}
+ addUserKnob {41 magenta T ctrl1.magenta}
+ addUserKnob {41 yellow T ctrl1.yellow}
+}
+ NoOp {
+  inputs 0
+  name ctrl1
+  xpos -463
+  ypos 167
+  addUserKnob {20 User}
+  addUserKnob {7 value R 0 180}
+  value 90
+  addUserKnob {26 ""}
+  addUserKnob {7 red}
+  addUserKnob {7 green}
+  addUserKnob {7 blue}
+  addUserKnob {7 cyan}
+  addUserKnob {7 magenta}
+  addUserKnob {7 yellow}
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -596
+  ypos 77
+ }
+ Dot {
+  name Dot28
+  xpos -568
+  ypos 121
+ }
+set N5e19fc10 [stack 0]
+ Dot {
+  name Dot29
+  xpos -774
+  ypos 121
+ }
+ Dot {
+  name Dot30
+  xpos -774
+  ypos 249
+ }
+set N5e1a0270 [stack 0]
+ Dot {
+  name Dot31
+  xpos -774
+  ypos 362
+ }
+set N5e1a05a0 [stack 0]
+ Dot {
+  name Dot32
+  xpos -774
+  ypos 473
+ }
+set N5e439660 [stack 0]
+ Dot {
+  name Dot33
+  xpos -774
+  ypos 658
+ }
+set N5e439990 [stack 0]
+ Dot {
+  name Dot34
+  xpos -774
+  ypos 770
+ }
+set N5e439cc0 [stack 0]
+ Dot {
+  name Dot35
+  xpos -774
+  ypos 883
+ }
+add_layer {rgba rgba.beta}
+ HSVTool {
+  srccolor {0 0 1}
+  huesrcs {240 240}
+  huerolloffrange {{parent.ctrl1.value x2 50}}
+  satsrcs {1 1}
+  saturation -0.594651103
+  satrolloffrange 0.3
+  brtsrcs {1 1}
+  brightness -1
+  brtrolloffrange 0.3
+  name HSVTool17
+  selected true
+  xpos -706
+  ypos 880
+ }
+ Invert {
+  channels alpha
+  name Invert15
+  xpos -706
+  ypos 916
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle19
+  xpos -706
+  ypos 952
+ }
+push $N5e439cc0
+ HSVTool {
+  srccolor {0 1 0}
+  huesrcs {120 479.9}
+  huerolloffrange {{parent.ctrl1.value i x2 50}}
+  satsrcs {1 1}
+  saturation -0.594651103
+  satrolloffrange 0.3
+  brtsrcs {1 1}
+  brightness -1
+  brtrolloffrange 0.3
+  name HSVTool18
+  xpos -706
+  ypos 767
+ }
+ Invert {
+  channels alpha
+  name Invert16
+  xpos -706
+  ypos 803
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle20
+  xpos -706
+  ypos 839
+ }
+push $N5e439990
+ HSVTool {
+  srccolor {1 0 0}
+  huesrcs {0 359}
+  huerolloffrange {{parent.ctrl1.value i x2 50}}
+  satsrcs {1 1}
+  saturation -0.594651103
+  satrolloffrange 0.3
+  brtsrcs {1 1}
+  brightness -1
+  brtrolloffrange 0.3
+  name HSVTool19
+  xpos -706
+  ypos 655
+ }
+ Invert {
+  channels alpha
+  name Invert17
+  xpos -706
+  ypos 691
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle21
+  xpos -706
+  ypos 727
+ }
+push $N5e439660
+ HSVTool {
+  srccolor {1 1 0}
+  huesrcs {60 419.9}
+  huerolloffrange {{parent.ctrl1.value x2 50}}
+  satsrcs {1 1}
+  saturation 0.06
+  satrolloffrange 0.3
+  brtsrcs {1 1}
+  brightness -0.32
+  brtrolloffrange 0.3
+  name HSVTool20
+  xpos -706
+  ypos 470
+ }
+ Invert {
+  channels alpha
+  name Invert18
+  xpos -706
+  ypos 506
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle22
+  xpos -706
+  ypos 542
+ }
+push $N5e1a05a0
+ HSVTool {
+  srccolor {0 1 1}
+  huesrcs {180 180}
+  huerolloffrange {{parent.ctrl1.value i}}
+  satsrcs {1 1}
+  saturation -0.594651103
+  satrolloffrange 0.3
+  brtsrcs {1 1}
+  brightness -1
+  brtrolloffrange 0.3
+  name HSVTool21
+  xpos -706
+  ypos 359
+ }
+ Invert {
+  channels alpha
+  name Invert19
+  xpos -706
+  ypos 395
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle23
+  xpos -706
+  ypos 431
+ }
+push $N5e1a0270
+ HSVTool {
+  srccolor {1 0 1}
+  huesrcs {300 300}
+  huerolloffrange {{parent.ctrl1.value i}}
+  satsrcs {1 1}
+  saturation -0.594651103
+  satrolloffrange 0.3
+  brtsrcs {1 1}
+  brightness -1
+  brtrolloffrange 0.3
+  name HSVTool22
+  xpos -706
+  ypos 246
+ }
+ Invert {
+  channels alpha
+  name Invert20
+  xpos -706
+  ypos 282
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle24
+  xpos -706
+  ypos 318
+ }
+push $N5e19fc10
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.ctrl1.magenta i}}
+  name Merge27
+  xpos -596
+  ypos 318
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.ctrl1.cyan i}}
+  name Merge28
+  xpos -596
+  ypos 431
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.ctrl1.yellow i}}
+  name Merge29
+  xpos -596
+  ypos 542
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.ctrl1.red i}}
+  name Merge30
+  xpos -596
+  ypos 727
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.ctrl1.green i}}
+  name Merge31
+  xpos -596
+  ypos 839
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.ctrl1.blue i}}
+  name Merge32
+  xpos -596
+  ypos 952
+ }
+ Output {
+  name Output
+  xpos -596
+  ypos 1054
+ }
+end_group

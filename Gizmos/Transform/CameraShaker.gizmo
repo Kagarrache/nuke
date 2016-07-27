@@ -1,0 +1,75 @@
+#! C:/Program Files/Nuke8.0v7/nuke-8.0.v7.dll -nx
+version 8.0 v7
+Gizmo {
+ help "Add random camera shake, including motion blur."
+ tile_color 0xff0000ff
+ label "\[value amplitude] px at \[value frequency]"
+ addUserKnob {20 CameraShake}
+ addUserKnob {14 amplitude t "Size of the shake, in pixels." R 0 100}
+ amplitude 10
+ addUserKnob {7 rotation t "Maximum rotation about the center, in degrees." R 0 15}
+ addUserKnob {7 scaling t "Maximum scale fluctuation." R 0 0.2}
+ addUserKnob {7 frequency t "Lowest frequency of the shake, in cycles per frame."}
+ frequency 0.5
+ addUserKnob {3 octaves t "Add higher frequency shaking to the basic shake (make it more like Brownian motion)."}
+ octaves 2
+ addUserKnob {3 seed t "Choose a different seed value to produce a different sequence of random numbers for the camera shake transform." -STARTLINE}
+ addUserKnob {22 randomize_seed l "Randomize Seed" t "Press this button to set a random seed value." -STARTLINE T "import random\nnuke.thisNode().knob('seed').setValue( random.randint(1,16384) )"}
+ addUserKnob {7 scale l "fixed scale" t "Extra scale to prevent the edges of the image from entering frame." R 1 1.2}
+ scale 1
+ addUserKnob {12 cs_center l center t "The center of the scale/rotation."}
+ cs_center {{"\[value input.width 0]/2"} {"\[value input.height 0]/2"}}
+ addUserKnob {41 filter T CameraShaker.filter}
+ addUserKnob {41 clamp -STARTLINE T CameraShaker.clamp}
+ addUserKnob {41 black_outside l "black outside" t "Crop the image to have black outside of the frame." -STARTLINE T CameraShaker.black_outside}
+ addUserKnob {41 motionblur T CameraShaker.motionblur}
+ addUserKnob {41 shutter T CameraShaker.shutter}
+ addUserKnob {41 shutteroffset T CameraShaker.shutteroffset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T CameraShaker.shuttercustomoffset}
+ addUserKnob {26 divider l "" +STARTLINE}
+ addUserKnob {4 CameraShakerOutput l output M {Checkerboard Sequence "" "" "" "" "" ""}}
+}
+ Input {
+  inputs 0
+  name SRC
+  selected true
+  xpos -7
+  ypos -28
+ }
+ Transform {
+  translate {{fBm((seed+frame)*frequency,2.5,3.5,octaves,2,.5)*amplitude.w} {fBm(frame*frequency+100,10.5,11.5,octaves,2,.5)*amplitude.h}}
+  rotate {{fBm((seed+frame)*frequency,20.5,21.5,octaves,2,.5)*parent.rotation}}
+  scale {{(fBm((seed+frame)*frequency,30.5,31.5,octaves,2,.5)*parent.scaling+parent.scale)}}
+  center {{parent.cs_center} {parent.cs_center}}
+  black_outside false
+  motionblur 1
+  shutteroffset centred
+  name CameraShaker
+  xpos -7
+  ypos 36
+ }
+ set C2b816e00 [stack 0]
+ CheckerBoard2 {
+  inputs 0
+  name CheckerBoard1
+  xpos -265
+  ypos -18
+ }
+clone $C2b816e00 {
+  xpos -265
+  ypos 54
+  selected false
+ }
+ Switch {
+  inputs 2
+  which {{CameraShakerOutput}}
+  name CameraShaker_Switch
+  xpos -7
+  ypos 105
+ }
+ Output {
+  name Output1
+  xpos -7
+  ypos 165
+ }
+end_group

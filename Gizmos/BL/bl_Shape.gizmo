@@ -1,0 +1,229 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Shape}
+ addUserKnob {4 Shape M {"Horizontal Ramp" "Vertical Ramp" Radial Concentric "Horizontal Dent" "Vertical Dent" Pyramide}}
+ addUserKnob {7 cycles R 0.01 10}
+ cycles 1
+ addUserKnob {7 phase}
+ addUserKnob {6 invert +STARTLINE}
+ addUserKnob {6 smooth +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -285
+  ypos 37
+ }
+set N14596e60 [stack 0]
+add_layer {rgba rgba.beta}
+ Expression {
+  expr0 "1-abs(((x/width) - 0.5) * 2)"
+  expr1 "1-abs(((y/height) - 0.5) * 2)"
+  expr2 "1+(-(1-abs(((x/width) - 0.5) * 2) * 1-abs(((y/height) - 0.5) * 2)) ) "
+  name Expression3
+  xpos 114
+  ypos 109
+ }
+set N272400b0 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle7
+  xpos 320
+  ypos 159
+ }
+push $N272400b0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle6
+  xpos 214
+  ypos 156
+ }
+push $N272400b0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle5
+  xpos 114
+  ypos 156
+ }
+push $N14596e60
+ Expression {
+  expr0 x/width
+  expr1 y/height
+  expr2 "cx*cx + cy*cy"
+  expr3 "((atan2(cx,cy) ) / (2*pi)) +0.5"
+  name Expression1
+  xpos -285
+  ypos 109
+ }
+set N27246420 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle4
+  xpos 15
+  ypos 159
+ }
+push $N27246420
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle3
+  xpos -89
+  ypos 156
+ }
+push $N27246420
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle2
+  xpos -184
+  ypos 159
+ }
+push $N27246420
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  xpos -285
+  ypos 160
+ }
+ Switch {
+  inputs 7
+  which {{parent.Shape i}}
+  name Switch1
+  xpos -285
+  ypos 224
+ }
+ Expression {
+  temp_name0 cycle
+  temp_expr0 parent.cycles
+  temp_name1 phase
+  temp_expr1 parent.phase
+  channel0 rgba
+  expr0 "fmod(r*cycle+phase, 1)"
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression2
+  xpos -285
+  ypos 250
+ }
+ Group {
+  name Group2
+  tile_color 0x6aff55ff
+  xpos -285
+  ypos 289
+  disable {{1-parent.smooth i}}
+  addUserKnob {20 User l Solarize}
+  addUserKnob {7 value R 0.0001 0.9999}
+  value 0.5
+  addUserKnob {4 thresholdType M {high low ""}}
+ }
+  Input {
+   inputs 0
+   name In
+   xpos -220
+   ypos 212
+  }
+set N2724ca40 [stack 0]
+push $N2724ca40
+  Multiply {
+   channels rgba
+   value 0
+   name Multiply17
+   xpos -91
+   ypos 212
+  }
+  Add {
+   channels rgba
+   value {{parent.value i}}
+   name sol_value
+   xpos -91
+   ypos 238
+  }
+set N2724cfa0 [stack 0]
+  Merge2 {
+   inputs 2
+   operation divide
+   name Merge7
+   xpos -220
+   ypos 406
+  }
+  Clamp {
+   channels rgba
+   name Clamp4
+   xpos -220
+   ypos 432
+  }
+push $N2724ca40
+  Invert {
+   channels rgba
+   name Invert19
+   xpos -102
+   ypos 364
+  }
+push $N2724cfa0
+  Invert {
+   channels rgba
+   name Invert20
+   xpos -10
+   ypos 365
+  }
+  Merge2 {
+   inputs 2
+   operation divide
+   name Merge8
+   xpos -60
+   ypos 406
+  }
+  Clamp {
+   channels rgba
+   name Clamp5
+   xpos -60
+   ypos 432
+  }
+  Merge2 {
+   inputs 2
+   operation multiply
+   name Merge9
+   xpos -141
+   ypos 497
+  }
+  Invert {
+   channels rgba
+   name type
+   selected true
+   xpos -141
+   ypos 523
+   disable {{!parent.thresholdType}}
+  }
+  Output {
+   name Output1
+   xpos -141
+   ypos 590
+  }
+ end_group
+ Invert {
+  channels rgba
+  name Invert1
+  xpos -285
+  ypos 315
+  disable {{1-parent.invert i}}
+ }
+ Output {
+  name Output
+  xpos -285
+  ypos 341
+ }
+end_group

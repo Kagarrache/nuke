@@ -1,0 +1,464 @@
+Group {
+ name Soft_Keyer
+ help "SoftKeyer 1.00   Simon Lehembre / Luc Julien\n\n\n"
+ tile_color 0xe1ffff
+ gl_color 0xff
+ selected true
+ addUserKnob {20 User l softKeyer}
+ addUserKnob {26 ""}
+ addUserKnob {4 type l "screen type" M {green blue "" "" "" "" ""}}
+ addUserKnob {4 outputmode l "    output mode" -STARTLINE M {"black screen" "white screen" "spill supress" composite ""}}
+ outputmode composite
+ addUserKnob {26 ""}
+ addUserKnob {41 add l "screen color" T constant_sk.add}
+ addUserKnob {41 red_weight l "red weight" T IBK_sk.red_weight}
+ addUserKnob {41 blue_green_weight l "blue/green weight" T IBK_sk.blue_green_weight}
+ addUserKnob {26 ""}
+ addUserKnob {7 edgetune l "edge tune" R -2 2}
+ addUserKnob {26 ""}
+ addUserKnob {6 Fgsuperwhite l "clamp blend" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "               SoftKeyer 1.00     ©    "}
+ addUserKnob {22 lucjulien_linkedin l "Luc Julien" -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.linkedin.com/in/lucjulien')\n"}
+ addUserKnob {26 divider l "" -STARTLINE T "     "}
+ addUserKnob {22 Simonlehembre l "Simon Lehembre" -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://ca.linkedin.com/pub/simon-lehembre/8/217/BB5')\n"}
+}
+ Input {
+  inputs 0
+  name out
+  xpos 1055
+  ypos -396
+ }
+add_layer {rgba rgba.beta rgba.eyes rgba.test}
+ Expression {
+  expr0 0
+  expr1 0
+  expr2 0
+  expr3 a==0?0:a
+  name Expression4
+  xpos 1055
+  ypos 950
+ }
+ Input {
+  inputs 0
+  name bg
+  xpos 760
+  ypos -393
+  number 1
+ }
+ Dot {
+  name Dot17
+  xpos 794
+  ypos 46
+ }
+set N250ee390 [stack 0]
+ Dot {
+  name Dot74
+  xpos 794
+  ypos 378
+ }
+set N25076770 [stack 0]
+ Dot {
+  name Dot14
+  xpos 894
+  ypos 378
+ }
+ Dot {
+  name Dot15
+  xpos 894
+  ypos 848
+ }
+ Dot {
+  name Dot16
+  xpos 494
+  ypos 848
+ }
+ Input {
+  inputs 0
+  name in
+  xpos -545
+  ypos -394
+  number 3
+ }
+ Dot {
+  name Dot6
+  xpos -506
+  ypos 714
+ }
+ Input {
+  inputs 0
+  name fg
+  xpos -240
+  ypos -394
+  number 2
+ }
+ Dot {
+  name Dot12
+  xpos -206
+  ypos -246
+ }
+set N250097e0 [stack 0]
+ Dot {
+  name Dot8
+  xpos -206
+  ypos -150
+ }
+set N230e0e20 [stack 0]
+ Keyer {
+  operation "luminance key"
+  name Keyer2
+  xpos -445
+  ypos -160
+ }
+ Dot {
+  name Dot3
+  xpos -406
+  ypos 330
+ }
+push $N230e0e20
+ Dot {
+  name Dot4
+  xpos -106
+  ypos -150
+ }
+set N17ca88f0 [stack 0]
+ Dot {
+  name Dot9
+  xpos 94
+  ypos -150
+ }
+ Expression {
+  expr2 min(b,(r+g)*(colortune-.5))
+  expr3 b-r*colortune
+  name Expression2
+  xpos 60
+  ypos -105
+  addUserKnob {20 Tune}
+  addUserKnob {7 colortune l "color Tune" R 0.5 1.5}
+  colortune {{parent.IBK_sk.blue_green_weight+.5 i}}
+ }
+push $N17ca88f0
+ Expression {
+  expr1 min(g,(r+b)*(colortune-.5))
+  expr3 g-r*colortune
+  name Expression1
+  xpos -140
+  ypos -105
+  addUserKnob {20 Tune}
+  addUserKnob {7 colortune l "color Tune" R 0.5 1.5}
+  colortune {{parent.IBK_sk.blue_green_weight+.5 i}}
+ }
+ Switch {
+  inputs 2
+  which {{parent.type i}}
+  name Switch_screen_type
+  xpos -45
+  ypos -56
+ }
+ Dot {
+  name Dot11
+  xpos -11
+  ypos -13
+ }
+set N2306f5e0 [stack 0]
+push $N230e0e20
+push $N2306f5e0
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos -240
+  ypos -16
+ }
+ Saturation {
+  saturation 0
+  mode Maximum
+  name Saturation2
+  xpos -240
+  ypos 42
+ }
+ Dot {
+  name Dot5
+  xpos -206
+  ypos 95
+ }
+set N25002360 [stack 0]
+ Grade {
+  white {{parent.edgetune+1 i}}
+  multiply {{"1/(constant_sk.add.b-(min(constant_sk.add.b,(constant_sk.add.r+constant_sk.add.g)*.5)))\n\n\n" i}}
+  black_clamp false
+  white_clamp {{parent.Fgsuperwhite i}}
+  name TuneBlue
+  xpos -189
+  ypos 131
+ }
+push $N25002360
+ Grade {
+  white {{parent.edgetune+1 i}}
+  multiply {{"1/(constant_sk.add.g-(min(constant_sk.add.g,(constant_sk.add.r+constant_sk.add.b)*.5)))\n" i}}
+  black_clamp false
+  white_clamp {{parent.Fgsuperwhite i}}
+  name TuneGreen
+  xpos -290
+  ypos 132
+ }
+ Switch {
+  inputs 2
+  which {{parent.type i}}
+  name Switch_screen_type2
+  xpos -237
+  ypos 182
+ }
+set N2c626b00 [stack 0]
+ Merge2 {
+  inputs 2
+  operation screen
+  name Merge47
+  xpos -45
+  ypos 182
+ }
+set N1c9bab20 [stack 0]
+push $N250097e0
+ Dot {
+  name Dot20
+  xpos 294
+  ypos -246
+ }
+set N1c9d8fc0 [stack 0]
+ Dot {
+  name Dot10
+  xpos 494
+  ypos -246
+ }
+ Grade {
+  multiply 0
+  add {0.0583210215 0.8171392083 0.01170932781 0}
+  black_clamp false
+  name constant_sk
+  xpos 460
+  ypos -182
+ }
+set N2508c0d0 [stack 0]
+push $N1c9d8fc0
+push $N1c9d8fc0
+ IBK {
+  inputs 3
+  name IBK1
+  note_font_color 0xff00
+  xpos 460
+  ypos -106
+ }
+push $N2508c0d0
+push $N1c9d8fc0
+push $N1c9d8fc0
+ IBK {
+  inputs 3
+  screen_type green
+  red_weight 0.5
+  blue_green_weight 0.5
+  name IBK_sk
+  note_font_color 0xff0000
+  xpos 260
+  ypos -107
+ }
+ Switch {
+  inputs 2
+  which {{parent.type i}}
+  name Switch_screen_type1
+  xpos 360
+  ypos -58
+ }
+set N25062db0 [stack 0]
+ Dot {
+  name Dot23
+  xpos 394
+  ypos 330
+ }
+set N250e2e90 [stack 0]
+ Keymix {
+  inputs 3
+  channels rgba
+  bbox B
+  name Keymix1
+  xpos -245
+  ypos 326
+ }
+set N1c9d9e30 [stack 0]
+ MergeExpression {
+  inputs 2
+  temp_name0 x
+  temp_expr0 Aa==0?0:Aa
+  expr0 r*x
+  expr1 g*x
+  expr2 b*x
+  expr3 x
+  name MergeExpression1
+  xpos -245
+  ypos 711
+ }
+push $N25076770
+push $N25002360
+ Grade {
+  channels {rgba.red rgba.green rgba.blue rgba.alpha}
+  white 4
+  white_clamp true
+  name Grade1
+  xpos 56
+  ypos 92
+ }
+push $N250ee390
+ Clamp {
+  channels rgba
+  minimum 1
+  maximum_enable false
+  MinClampTo 1
+  MinClampTo_enable true
+  maskChannelMask rgba.red
+  name Clamp1
+  xpos 256
+  ypos 43
+ }
+ Clamp {
+  inputs 1+1
+  channels rgba
+  maskChannelMask rgba.red
+  invert_mask true
+  name Clamp2
+  xpos 256
+  ypos 92
+ }
+push $N1c9bab20
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge5
+  xpos -45
+  ypos 239
+ }
+ Dot {
+  name Dot13
+  xpos -11
+  ypos 382
+ }
+set N1c95c990 [stack 0]
+push $N250e2e90
+ Keymix {
+  inputs 3
+  channels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  maskChannel rgba.blue
+  name Keymix11
+  xpos 760
+  ypos 462
+ }
+ Dot {
+  name Dot2
+  xpos 794
+  ypos 605
+ }
+push $N25076770
+push $N1c95c990
+push $N250e2e90
+ Keymix {
+  inputs 3
+  channels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  maskChannel rgba.red
+  name Keymix9
+  xpos -45
+  ypos 464
+ }
+ Dot {
+  name Dot1
+  xpos -11
+  ypos 526
+ }
+push $N25076770
+push $N1c95c990
+push $N250e2e90
+ Keymix {
+  inputs 3
+  channels {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  maskChannel rgba.green
+  name Keymix10
+  xpos 360
+  ypos 464
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue black
+  alpha alpha2
+  name ShuffleCopy1
+  xpos 360
+  ypos 523
+ }
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  alpha alpha2
+  name ShuffleCopy2
+  xpos 360
+  ypos 602
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 360
+  ypos 711
+ }
+set N1b289b40 [stack 0]
+ Keymix {
+  inputs 3
+  channels rgba
+  name Keymix2
+  xpos 360
+  ypos 950
+ }
+ NoOp {
+  name composite
+  xpos 504
+  ypos 1094
+ }
+push $N1c9d9e30
+ NoOp {
+  name spill_supress
+  xpos 404
+  ypos 1094
+  hide_input true
+ }
+push $N1c9bab20
+ NoOp {
+  name white_screen
+  xpos 304
+  ypos 1094
+  hide_input true
+ }
+push $N25062db0
+ NoOp {
+  name black_screen
+  xpos 204
+  ypos 1094
+  hide_input true
+ }
+ Switch {
+  inputs 4
+  which {{outputmode i}}
+  name Switch1
+  xpos 355
+  ypos 1286
+ }
+ Output {
+  name Output1
+  xpos 355
+  ypos 1430
+ }
+push $N1b289b40
+push $N2c626b00
+ Viewer {
+  inputs 2
+  center_fstop 0
+  input_process false
+  name Viewer1
+  xpos 121
+  ypos 232
+ }
+end_group

@@ -1,0 +1,44 @@
+#! /Applications/Nuke6.3v4/NukeX6.3v4.app/../Nuke6.3v4.app/Contents/MacOS/Nuke6.3v4 -nx
+version 6.3 v4
+Gizmo {
+ inputs 2
+ tile_color 0xff4e00ff
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 constraint_TAB l "Parent Constraint"}
+ addUserKnob {22 parent_constraint l " parent constraint " t "When you click this button a duplicate of the input child will be created and constrained (parented) to the input parent.\\nThis is like a parent-child relation in which you can animate the parent and affect the child based on the relative position between both objects at the frame you clicked the button. \n\nPS.: After the constrained child is created you may delete this node and plug the parent axis straight into the parented child. However you can keep this setup and if you need to change the reference frame of your parenting you just need to delete the created child and click this button one more time.\n\n" T "import math\n\ncontrol = nuke.thisNode()\n\nchild = control.input(0)\nparent = control.input(1)\ncurrent_frame = nuke.frame()\ncurveTool = nuke.toNode('CurveTool')\n\ndef getMatrixAt ( obj , frame = current_frame ):\n   ret = nuke.math.Matrix4()\n   i = 0\n   while i < 16:\n      value = obj\['world_matrix'].getValueAt( frame , i )\n      ret\[i] = value\n      i+=1\n   return ret\n\ndef setMatrixAt( obj , matrix , frame = current_frame ):\n   i = 0\n   while i < 16:\n      obj\['matrix'].setValueAt( matrix\[i] , frame , i )\n      i+=1\n\ndef bakeConstrainedAnimation( old_child , new_child , inv_parent_matrix ):\n   if (new_child\['matrix'].isAnimated() == False): new_child\['matrix'].setAnimated()\n   old_matrix = getMatrixAt( old_child , nuke.frame() )\n   result_matrix = old_matrix * inv_parent_matrix\n   setMatrixAt( new_child , result_matrix , nuke.frame() )\n   return new_child\n\n\ntry:\n   child_matrix = getMatrixAt( child )\n   parent_matrix = getMatrixAt( parent )\n   inv_parent_matrix = parent_matrix.inverse()\n   result_matrix = child_matrix * inv_parent_matrix\n\n   nuke.root().begin()\n   for node in nuke.selectedNodes():\n      node\['selected'].setValue(False)\n   control\['selected'].setValue(True)\n   new_child = nuke.createNode(child.Class())\n   content = child.writeKnobs( nuke.WRITE_NON_DEFAULT_ONLY | nuke.TO_SCRIPT)\n   new_child.readKnobs( content )\n   new_child\['label'].setValue ( 'CONSTRAINT\\nx%s' % current_frame )\n   new_child\['tile_color'].setValue ( 4285071615 )\n   new_child\['useMatrix'].setValue ( True )\n   new_child.setInput( 0 , control )\n\n\n   if ( control\['c_anim'].value() == False ):\n      setMatrixAt ( new_child , result_matrix )\n   elif ( control\['c_anim'].value() == True ):\n      curveTool\['afterFrameRender'].setValue( 'bakeConstrainedAnimation( child , new_child , inv_parent_matrix)' )\n      curveTool\['go'].execute()\n\nexcept:\n   nuke.message('Sorry, an error occurred. \\n\\nCheck if both inputs are connected and \\nmake sure that they are Cameras or Axis \\n(or objects with \\'world_matrix\\' knob).')" +STARTLINE}
+ addUserKnob {6 c_anim l " keep animation " t "<br><b>Checking this ON</b> will cause the new constraint camera to keep it's rotation, translation and scalling animation. <br><br><b>Checking this OFF</b> will cause the new camera to lose its animation but keep the exact position of the current frame." -STARTLINE}
+ c_anim true
+ addUserKnob {20 help_TAB l Help t "ParentConstraint - created by Henrique Moser, 2012"}
+ addUserKnob {26 copy l "" +STARTLINE T "<b>ParentConstraint</b> - created by Henrique Moser, 2012"}
+ addUserKnob {26 ""}
+ addUserKnob {26 text l "" +STARTLINE T "IMPORTANT:<br>Child input can only be Cameras or Axis (or objects with 'world_matrix'<br>knobs) and the parent input must <b>always</b> be an Axis node."}
+}
+ Input {
+  inputs 0
+  name parent
+  xpos 0
+  ypos -3
+  number 1
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 300
+ }
+ Input {
+  inputs 0
+  name child
+  xpos -171
+  ypos -2
+ }
+ CurveTool {
+  ROI {0 0 2048 1556}
+  autocropdata {512 389 1536 1167}
+  intensitydata {{curve i}}
+  afterFrameRender "bakeConstrainedAnimation( child , new_child , inv_parent_matrix)"
+  name CurveTool
+  xpos -171
+  ypos 64
+ }
+end_group

@@ -1,0 +1,453 @@
+Gizmo {
+ inputs 2
+ tile_color 0xf8ff00ff
+ note_font Verdana
+ note_font_color 0xffffffff
+ addUserKnob {20 fxT_matteQC}
+ addUserKnob {4 mode t "pick your display mode" M {"red overlay" "green overlay" "blue overlay" "premult over grey " "premult over checkerboard" "premult over custom color" "stencil from plate" "" ""}}
+ mode "blue overlay"
+ addUserKnob {26 divline01 l "" +STARTLINE}
+ addUserKnob {7 colorOpacity l "color opacity" t "this will change the overlay opacity when the mode is set to red, green, or blue overlay."}
+ colorOpacity 0.3
+ addUserKnob {41 color l "custom BG color" T AddCustom.value}
+ addUserKnob {6 keepAlpha l "keep matte in alpha channel" t "when a matte is hooked into the node, this gives you the option to keep the matte in the alpha channel.\n\nIf the box is uncheked, the alpha channel will replaced with a solid alpha." +STARTLINE}
+ keepAlpha true
+ addUserKnob {26 divline00 l "" +STARTLINE}
+ addUserKnob {26 info l "" +STARTLINE T "<font color='grey'>This tool is intended for checking matte accuracy.<br />\nThe format will default to the rgb's input format.<br /><br /> \n1) Hook your scan/bg/etc. into the rgb input<br />\n2) Hook roto or key output in the matte input<br />\n3) Choose mode</font>"}
+ addUserKnob {26 divline02 l "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "<font color='#454545'>/// fxT_matteQC v1.9 © Tor Andreassen - www.fxtor.net </font>"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x505a6101
+  label "BG COLOR OVERLAY defined by user"
+  note_font "Arial Black"
+  note_font_size 35
+  note_font_color 0xffffff01
+  xpos -1196
+  ypos -978
+  bdwidth 774
+  bdheight 512
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x505a6101
+  label "when premulted against BG, use this BG (based on dropdown)"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos 230
+  ypos -1167
+  bdwidth 1196
+  bdheight 757
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x505a6101
+  label "premulted againt matte or solid depending on mode"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos -792
+  ypos -374
+  bdwidth 569
+  bdheight 506
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x505a6101
+  label "merge type (with mix, without mix, or stencil) depending on mode"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos -1161
+  ypos 188
+  bdwidth 1399
+  bdheight 432
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x505a6101
+  label "BG Input"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos -89
+  ypos -1600
+  bdwidth 365
+  bdheight 314
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x434b51ff
+  label "0.33 grey"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos 301
+  ypos -1051
+  bdwidth 301
+  bdheight 463
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0x434b51ff
+  label "custom color"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos 1047
+  ypos -1061
+  bdwidth 301
+  bdheight 463
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0x505a6101
+  label "keep alpha (based on checkerboard value in gizmo)"
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos -1157
+  ypos 646
+  bdwidth 1393
+  bdheight 231
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0x434b51ff
+  label checkerboard
+  note_font "Arial Black"
+  note_font_size 20
+  note_font_color 0xffffff01
+  xpos 673
+  ypos -1056
+  bdwidth 301
+  bdheight 463
+ }
+ Input {
+  inputs 0
+  name rgb
+  label "\[value number]"
+  xpos 61
+  ypos -1426
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  label solidAlpha
+  xpos 61
+  ypos -1345
+ }
+ Dot {
+  name Dot9
+  xpos 83
+  ypos -877
+ }
+set N1f97ca80 [stack 0]
+push $N1f97ca80
+ Remove {
+  name Remove2
+  xpos 437
+  ypos -869
+ }
+set N1f981000 [stack 0]
+ Shuffle {
+  name Shuffle6
+  label "add rgba"
+  xpos 437
+  ypos -806
+ }
+set N1f988ab0 [stack 0]
+ Add {
+  value 0.02
+  name AddCustom
+  tile_color 0x191919ff
+  label custom
+  xpos 1183
+  ypos -811
+ }
+ Shuffle {
+  alpha white
+  name Shuffle4
+  label "add solid alpha"
+  xpos 1183
+  ypos -747
+ }
+ Dot {
+  name Dot7
+  xpos 1205
+  ypos -496
+ }
+push $N1f981000
+ Expression {
+  channel0 rgb
+  expr0 "(floor(x/64)+floor(y/64)) % 2 == 0 ? 0.1 : 0.5"
+  channel1 none
+  channel2 none
+  name checkerBoard
+  xpos 797
+  ypos -865
+ }
+ Shuffle {
+  alpha white
+  name Shuffle3
+  label a
+  xpos 797
+  ypos -843
+ }
+ Dot {
+  name Dot5
+  xpos 819
+  ypos -668
+ }
+push $N1f988ab0
+ Add {
+  channels rgba
+  value {0.33 0.33 0.33 1}
+  name Add
+  tile_color 0x8e8e8eff
+  label "grey: .33"
+  xpos 437
+  ypos -759
+ }
+ Dot {
+  name Dot4
+  xpos 459
+  ypos -697
+ }
+push $N1f97ca80
+push $N1f97ca80
+push $N1f97ca80
+ Switch {
+  inputs 7
+  which {{parent.mode}}
+  name modeSwitch3
+  tile_color 0x262626ff
+  xpos 61
+  ypos -487
+ }
+ Dot {
+  name Dot3
+  xpos 83
+  ypos -147
+ }
+set N1f9e2e00 [stack 0]
+ Shuffle {
+  alpha white
+  name Shuffle2
+  label solidAlpha
+  xpos -424
+  ypos -142
+ }
+ Input {
+  inputs 0
+  name matte
+  label "\[value number]"
+  xpos -669
+  ypos -274
+  number 1
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle7
+  xpos -669
+  ypos -222
+ }
+ Switch {
+  inputs 2
+  which {{"!\[exists parent.input1.label]"}}
+  name Switch1
+  tile_color 0x242424ff
+  label autoInputCheck
+  xpos -669
+  ypos -142
+ }
+push $N1f97ca80
+push $N1f97ca80
+push $N1f97ca80
+push $N1f97ca80
+push $N1f97ca80
+ Dot {
+  name Dot10
+  xpos -965
+  ypos -877
+ }
+ Remove {
+  name Remove1
+  xpos -987
+  ypos -733
+ }
+ Shuffle {
+  name Shuffle5
+  label "add rgba"
+  xpos -987
+  ypos -701
+ }
+set N2991c120 [stack 0]
+ Add {
+  value {0 0 1 1}
+  name Add3
+  tile_color 0xffff
+  xpos -890
+  ypos -650
+ }
+push $N2991c120
+ Add {
+  value {0 1 0 1}
+  name Add2
+  tile_color 0xff00ff
+  xpos -987
+  ypos -654
+ }
+push $N2991c120
+ Add {
+  value {1 0 0 1}
+  name Add1
+  tile_color 0xff0000ff
+  xpos -1084
+  ypos -654
+ }
+ Switch {
+  inputs 7
+  which {{parent.mode}}
+  name modeSwitch01
+  tile_color 0x262626ff
+  xpos -987
+  ypos -517
+ }
+ Dot {
+  name Dot2
+  xpos -965
+  ypos -50
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  bbox B
+  name Copy8
+  xpos -669
+  ypos -45
+ }
+set N29923460 [stack 0]
+ Dot {
+  name Dot12
+  xpos -769
+  ypos 35
+ }
+ Dot {
+  name Dot13
+  xpos -769
+  ypos 758
+ }
+set N254aa580 [stack 0]
+ Shuffle {
+  alpha white
+  name Shuffle8
+  label "solid alpha"
+  xpos -77
+  ypos 685
+ }
+push $N254aa580
+ Switch {
+  inputs 2
+  which {{!parent.keepAlpha}}
+  name keepAlphaSwitch
+  xpos -77
+  ypos 764
+ }
+push $N29923460
+ Premult {
+  name Premult7
+  xpos -669
+  ypos 36
+ }
+ Dot {
+  name Dot1
+  xpos -647
+  ypos 294
+ }
+set N2994f5e0 [stack 0]
+ Dot {
+  name Dot6
+  xpos -647
+  ypos 372
+ }
+set N29953800 [stack 0]
+ Dot {
+  name Dot11
+  xpos -647
+  ypos 456
+ }
+push $N1f9e2e00
+ Dot {
+  name Dot8
+  xpos -71
+  ypos 115
+ }
+set N2995bdc0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge2
+  xpos -243
+  ypos 464
+ }
+push $N29953800
+push $N2995bdc0
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -93
+  ypos 380
+ }
+set N2996d670 [stack 0]
+push $N2996d670
+push $N2996d670
+push $N2994f5e0
+push $N1f9e2e00
+ Merge2 {
+  inputs 2
+  mix {{parent.colorOpacity}}
+  name Merge45
+  xpos 61
+  ypos 303
+  disable {{parent.disable}}
+ }
+set N2997a9d0 [stack 0]
+push $N2997a9d0
+push $N2997a9d0
+ Switch {
+  inputs 7
+  which {{parent.mode}}
+  name modeSwitch1
+  tile_color 0x262626ff
+  xpos 61
+  ypos 464
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 61
+  ypos 758
+ }
+ Output {
+  name Output1
+  xpos 61
+  ypos 941
+ }
+end_group

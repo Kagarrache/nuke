@@ -1,0 +1,131 @@
+set cut_paste_input [stack 0]
+version 7.0 v9
+push $cut_paste_input
+push 0
+Gizmo {
+ inputs 2
+ name Wiper
+ help "Wipe between 2 images.\nCan be used on renders.\n\n�Copyright:\nJonas Almeida.\n jgadpp.com \n2014"
+ selected true
+ addUserKnob {20 User l Wiper}
+ addUserKnob {7 slider l Wipe R 0 3000}
+ slider 140
+ addUserKnob {7 opacity l Opacity}
+ opacity 1
+ addUserKnob {26 ""}
+ addUserKnob {26 Divider l INVISIBLE +INVISIBLE}
+ addUserKnob {6 divider l Divider +STARTLINE}
+ divider true
+ addUserKnob {7 divthick l Weight R 1 10}
+ divthick 5
+ addUserKnob {19 divcolor l Color}
+ divcolor {1 0 0 1}
+ addUserKnob {7 divopacity l Opacity}
+ divopacity 1
+ addUserKnob {6 divcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 Feather l INVISIBLE +INVISIBLE}
+ addUserKnob {7 blurw l Feather R 0 10}
+}
+ Constant {
+  inputs 0
+  color {{divcolor} {divcolor} {divcolor} {divcolor}}
+  name Constant1
+  xpos -737
+  ypos -334
+ }
+ Reformat {
+  type "to box"
+  box_width {{bbox.h}}
+  box_height {{Crop1.box.t}}
+  box_fixed true
+  resize none
+  pbb true
+  name Reformat1
+  xpos -737
+  ypos -262
+ }
+ Crop {
+  box {0 0 {divthick} {input.bbox.h}}
+  name Crop3
+  xpos -737
+  ypos -238
+ }
+ Position {
+  translate {{slider} 0}
+  name Position1
+  xpos -737
+  ypos -214
+ }
+ Blur {
+  channels rgba
+  size {{blurw} 0}
+  name Blur1
+  xpos -737
+  ypos -190
+ }
+ Multiply {
+  channels rgba
+  value {{divopacity}}
+  name Multiply2
+  xpos -737
+  ypos -144
+ }
+ Dot {
+  name Dot1
+  xpos -703
+  ypos -104
+ }
+ Input {
+  inputs 0
+  name B
+  xpos -590
+  ypos -273
+ }
+ Crop {
+  box {{input.bbox.r x1 2050} 0 {slider} {input.bbox.h}}
+  name Crop1
+  xpos -590
+  ypos -249
+  addUserKnob {20 User}
+ }
+ Multiply {
+  channels rgba
+  value {{opacity}}
+  name Multiply1
+  xpos -590
+  ypos -225
+ }
+ Dot {
+  name Dot2
+  xpos -556
+  ypos -195
+ }
+ Input {
+  inputs 0
+  name A
+  xpos -370
+  ypos -225
+  number 1
+ }
+ Merge2 {
+  inputs 2
+  operation xor
+  bbox B
+  name Merge1
+  xpos -370
+  ypos -198
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge2
+  xpos -370
+  ypos -104
+  disable {{1+(divider*-1) x1 0}}
+ }
+ Output {
+  name Output1
+  xpos -370
+  ypos -80
+ }
+end_group

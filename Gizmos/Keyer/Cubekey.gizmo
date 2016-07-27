@@ -1,0 +1,499 @@
+Gizmo {
+ tile_color 0x421010ff
+ addUserKnob {20 user l cubeKey}
+ addUserKnob {41 in l "input channel" T Shuffle4.in}
+ addUserKnob {41 size_1 l "pre blur" T Blur1.size}
+ addUserKnob {6 preLog l log -STARTLINE}
+ addUserKnob {41 cube T Cube1.cube}
+ addUserKnob {4 colorspacer l "color space" M {HSV L*a*b* Position CIE-LCH ""}}
+ colorspacer CIE-LCH
+ addUserKnob {7 softenx l "soften x"}
+ softenx 0.3
+ addUserKnob {4 rampx l "" -STARTLINE M {linear plinear smooth0 smooth1 smooth "" "" "" ""}}
+ rampx plinear
+ addUserKnob {7 softeny l "soften y"}
+ softeny 0.3
+ addUserKnob {4 rampy l "" -STARTLINE M {linear plinear smooth0 smooth1 smooth ""}}
+ rampy plinear
+ addUserKnob {7 softenz l "soften z"}
+ softenz 0.3
+ addUserKnob {4 rampz l "" -STARTLINE M {linear plinear smooth0 smooth1 smooth "" ""}}
+ rampz plinear
+ addUserKnob {7 gamma R 0 4}
+ gamma 1
+ addUserKnob {41 size l blur T Blur6.size}
+ addUserKnob {6 invertMask l invert +STARTLINE}
+ invertMask true
+ addUserKnob {6 outputColorSpace l "out color space" +STARTLINE}
+ addUserKnob {6 zebra l "zebra stripes" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {6 renderCube l "Render Cube" +STARTLINE}
+ addUserKnob {41 detail l "point detail" T PositionToPoints3.detail}
+ addUserKnob {41 pointSize l "point size" T PositionToPoints3.pointSize}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Cube Key v1.5"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Axis2 {
+  inputs 0
+  translate {0.5 0 0.5}
+  rotate {0 45 0}
+  name Axis1
+  xpos -43
+  ypos 554
+ }
+ Camera2 {
+  translate {0 2.81999989 2.859999895}
+  rotate {-45 0 0}
+  focal 30.2
+  name Camera1
+  xpos -43
+  ypos 647
+ }
+ Dot {
+  name Dot1
+  xpos -19
+  ypos 763
+ }
+ Cube {
+  inputs 0
+  display wireframe
+  selectable false
+  render_mode off
+  cast_shadow false
+  receive_shadow false
+  rows 1
+  columns 1
+  cube {{"(parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)+abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2-(abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2)*(1-softenx)"} {"(parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)+abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2-(abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2)*(1-softeny)"} {"(parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)+abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2-(abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2)*(1-softenz)"} {"(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2+(abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2)*(1-softenx)"} {"(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2+(abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2)*(1-softeny)"} {"(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2+(abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2)*(1-softenz)"}}
+  name Cube2
+  tile_color 0xd7fa9ff
+  gl_color 0xd7fa9ff
+  xpos 1130
+  ypos -356
+ }
+ Cube {
+  inputs 0
+  display wireframe
+  render_mode off
+  rows 1
+  columns 1
+  cube {0 0.2720000148 0 1 1 1}
+  name Cube1
+  xpos 1006
+  ypos -300
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 258
+  ypos -1173
+ }
+set Nb6b5de0 [stack 0]
+ Shuffle {
+  name Shuffle4
+  xpos 345
+  ypos -1113
+ }
+push $Nb6b5de0
+ Copy {
+  inputs 2
+  channels rgb
+  name Copy2
+  xpos 258
+  ypos -1063
+ }
+set Nca335c0 [stack 0]
+ Dot {
+  name Dot4
+  xpos 1272
+  ypos -1047
+ }
+ Colorspace {
+  colorspace_out SLog
+  name Colorspace2
+  xpos 1238
+  ypos -964
+  disable {{"parent.preLog != 1"}}
+ }
+set Nb6bdd80 [stack 0]
+ Blur {
+  channels rgb
+  name Blur1
+  xpos 804
+  ypos -801
+  disable {{"size == 0"}}
+ }
+set Nb6cd3b0 [stack 0]
+ Colorspace {
+  colorspace_out CIE-LCH
+  name Colorspace5
+  xpos 1095
+  ypos -687
+ }
+ Shuffle {
+  red blue
+  blue red
+  name Shuffle3
+  xpos 1095
+  ypos -661
+ }
+push $Nb6cd3b0
+ Colorspace {
+  name Colorspace4
+  xpos 996
+  ypos -683
+ }
+push $Nb6cd3b0
+ Colorspace {
+  colorspace_out CIE-Lab
+  name Colorspace3
+  xpos 899
+  ypos -682
+ }
+ Shuffle {
+  red blue
+  blue red
+  name Shuffle2
+  xpos 899
+  ypos -656
+ }
+push $Nb6cd3b0
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace1
+  xpos 804
+  ypos -678
+ }
+ Switch {
+  inputs 4
+  which {{parent.colorspacer}}
+  name Switch1
+  xpos 804
+  ypos -569
+ }
+set Nb733c30 [stack 0]
+push $Nb6bdd80
+ PositionToPoints2 {
+  inputs 2
+  display textured
+  render_mode textured
+  N_channel rgba
+  detail 0.017
+  pointSize 2
+  name PositionToPoints3
+  xpos 1238
+  ypos -569
+ }
+ Scene {
+  inputs 3
+  name Scene1
+  xpos 1248
+  ypos -320
+ }
+ Dot {
+  name Dot3
+  xpos 1272
+  ypos 763
+ }
+push $Nb733c30
+ Dot {
+  name Dot2
+  xpos 838
+  ypos -285
+ }
+set Nb752dd0 [stack 0]
+ Keyer {
+  input {-rgba.red -rgba.green rgba.blue}
+  operation "blue keyer"
+  range {{"parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f" x1083 0.05799999833} {"(parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)+abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2-(abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2)*(1-softenz)"} {"(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2+(abs((parent.Cube1.cube.n < parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f)-(parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f))/2)*(1-softenz)"} {"parent.Cube1.cube.n > parent.Cube1.cube.f ? parent.Cube1.cube.n : parent.Cube1.cube.f" x1083 0.4699999988}}
+  name Keyer3
+  xpos 1006
+  ypos -192
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {plinear.lut.alpha}}
+  name plinear2
+  xpos 1006
+  ypos -154
+  disable {{"parent.rampz != 1"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {smooth0.lut.alpha}}
+  name smooth5
+  xpos 1006
+  ypos -116
+  disable {{"parent.rampz != 2"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {smooth1.lut.alpha}}
+  name smooth6
+  xpos 1006
+  ypos -78
+  disable {{"parent.rampz != 3"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {smooth.lut.alpha}}
+  name smooth7
+  xpos 1006
+  ypos -40
+  disable {{"parent.rampz != 4"}}
+ }
+push 0
+push $Nb752dd0
+ Keyer {
+  input {-rgba.red rgba.green -rgba.blue}
+  operation "green keyer"
+  range {{"parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t" x1083 0.05999999866} {"(parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)+abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2-(abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2)*(1-softeny)"} {"(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2+(abs((parent.Cube1.cube.y < parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t)-(parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t))/2)*(1-softeny)"} {"parent.Cube1.cube.y > parent.Cube1.cube.t ? parent.Cube1.cube.y : parent.Cube1.cube.t" x1083 0.6259999871}}
+  name Keyer2
+  xpos 901
+  ypos -189
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {plinear.lut.alpha}}
+  name plinear1
+  xpos 901
+  ypos -151
+  disable {{"parent.rampy != 1"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {smooth0.lut.alpha}}
+  name smooth2
+  xpos 901
+  ypos -113
+  disable {{"parent.rampy != 2"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {smooth1.lut.alpha}}
+  name smooth3
+  xpos 901
+  ypos -75
+  disable {{"parent.rampy != 3"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {smooth.lut.alpha}}
+  name smooth4
+  xpos 901
+  ypos -37
+  disable {{"parent.rampy != 4"}}
+ }
+push $Nb752dd0
+ Keyer {
+  input {rgba.red -rgba.green -rgba.blue}
+  operation "red keyer"
+  range {{"parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r" x1083 0.336499989} {"(parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)+abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2-(abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2)*(1-softenx)"} {"(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2+(abs((parent.Cube1.cube.x < parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r)-(parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r))/2)*(1-softenx)"} {"parent.Cube1.cube.x > parent.Cube1.cube.r ? parent.Cube1.cube.x : parent.Cube1.cube.r" x1083 0.4524999857}}
+  name Keyer1
+  xpos 804
+  ypos -188
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {curve R k 0 s0 l x0.003921568859 6.022699495e-08 x0.007843137719 4.817964623e-07 x0.01176470611 1.626091716e-06 x0.01568627544 3.854631814e-06 x0.01960784383 7.528858987e-06 x0.02352941036 1.300865097e-05 2.065794615e-05 x0.03137255087 3.083708361e-05 x0.03529411927 4.390754475e-05 x0.03921569139 6.023073001e-05 8.016809443e-05 0.000104069084 0.000132317 0.0001652632345 0.0002032691846 x0.06274510175 0.0002466964652 x0.06666667014 0.0002959061821 x0.07058824599 0.0003512600088 0.0004131192691 0.0004818454618 0.0005577999982 0.0006413442898 0.0007327482454 0.0008325265371 0.0009409749764 0.001058454392 0.001185326488 0.001321952092 0.001468692673 0.001625909354 0.001793963136 x0.1254902035 0.001973216189 x0.1294117719 0.002164031146 x0.1333333552 0.002366767731 0.00258178683 0.002809449565 0.003050117521 0.003304151352 0.003571912879 0.003853762988 0.004150062799 0.004461173899 0.00478745671 0.005129273515 0.005486985203 0.005862131715 0.006252844818 0.006660544779 0.007085591555 0.007528347429 0.007989174686 0.008468433283 0.00896648597 0.009483692236 0.01002041437 0.01057701465 0.01115385443 0.01175129414 0.01236969698 0.01300942153 0.01367083192 0.01435428858 0.01506015193 x0.250980407 0.01578786224 x0.2549019754 0.01653958671 x0.2588235736 0.0173145961 0.01811365597 0.01893693022 0.0197845567 0.02065733261 0.0215554107 0.02247890271 0.02342865057 0.0244047828 0.02540738881 0.02643736452 0.02749480307 0.02858006954 0.02969322912 0.03083522618 0.03200612962 0.03320600092 0.03443581238 0.03569561243 0.03698543832 0.03830631077 0.03965825588 0.04104129225 0.04245647788 0.04390382022 0.04538331181 0.04689607024 0.04844206572 0.05002152547 0.05163484067 0.05328274518 0.05496534705 0.05668255314 0.05843561888 0.0602244623 0.06204896793 0.06391043216 0.06580877304 0.06774383038 0.06971696019 0.07172803581 0.07377688587 0.07586493343 0.07799201459 0.08015812188 0.08236411959 0.08461045474 0.08689725399 0.08922428638 0.09159311652 0.09400349855 0.09645516425 0.09894975275 0.101486966 0.1040665358 0.1066901237 0.1093574315 0.112068139 0.1148239821 0.1176246256 0.1204698235 0.1233610809 x0.501960814 0.1262983978 x0.5058823824 0.1292819977 x0.5098038912 0.1323116571 0.1353889853 0.1385136396 0.1416851878 0.1449056268 0.1481744945 0.151491195 0.1548579931 0.1582743078 0.1617395878 0.1652560532 0.1688230634 0.1724391431 0.1761094332 0.179830417 0.1836030632 0.187427789 0.1913059801 0.1952372938 0.1992211342 0.2032598108 0.2073525488 0.2114989609 0.2157013416 0.2199590355 0.2242712677 0.228640601 0.2330663204 0.2375476211 0.2420871705 0.2466842234 0.2513383329 0.2560509443 0.2608225644 0.2656531036 0.2705416381 0.2754910588 0.2805005014 0.2855688632 0.2906993628 0.2958909571 0.3011426032 0.3064574003 0.3118344247 0.3172725141 0.3227749169 0.32834059 0.3339699209 0.3396614194 0.3454190493 0.351241231 0.3571270406 0.3630796373 0.3690981269 0.3751811385 0.3813322484 0.3875502646 0.3938339949 0.4001867175 0.4066074491 0.413094759 0.419652462 0.4262791872 0.4329752624 0.4397394955 0.4465754926 0.4534814358 0.4604575634 0.4675060809 0.4746261835 0.4818162322 0.4890804887 0.4964174032 0.5038254261 0.5113087893 0.5188658237 0.5264949799 0.5342006087 0.5419809818 0.5498318672 0.5577657223 0.5657726526 0.5738544464 0.5820134878 0.5902503133 0.5985645056 0.606954217 0.6154241562 0.6239725947 0.6325976253 0.6413040161 0.6500898004 0.6589531898 0.6678991914 0.6769256592 0.6860307455 0.6952195168 0.7044900656 0.7138405442 0.7232752442 0.7327929735 0.7423938513 0.7520756721 0.7618437409 0.7716960907 0.7816304564 0.7916523814 0.8017596006 0.8119498491 0.8222287893 0.8325940371 0.8430433869 0.8535824418 0.8642088175 0.8749204874 0.8857229948 0.8966140747 0.9075940847 0.9186604619 0.9298192859 0.9410682321 0.9524045587 0.9638345242 0.9753556252 0.986965239 k 1 s0}}
+  name plinear
+  xpos 804
+  ypos -150
+  disable {{"parent.rampx != 1"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {curve R k 0 s0 x0.003921568859 3.066859063e-05 s0 l x0.007843137719 0.0001224346488 x0.01176470611 0.0002749357081 x0.01568627544 0.0004878292675 x0.01960784383 0.0007607445004 x0.02352941036 0.001093237312 0.001485098153 x0.03137255087 0.00193589658 x0.03529411927 0.002445271006 x0.03921569139 0.003012860194 0.003638302675 0.004320909269 0.005060947035 0.005857754499 0.006710969843 x0.06274510175 0.007620232645 x0.06666667014 0.008585179225 x0.07058824599 0.009605448693 0.01068068016 0.01181051135 0.01299458276 0.01423253119 0.01552273426 0.01686701551 0.01826407202 0.01971353777 0.02121505141 0.0227682516 0.0243727807 0.02602827549 0.02773437649 x0.1254902035 0.02949072234 x0.1294117719 0.03129697591 x0.1333333552 0.03315275162 0.03505768999 0.03701142967 0.03901360556 0.04106386006 0.0431618318 0.0453071557 0.04749947414 0.04973842576 0.05202364922 0.05435478315 0.0567314662 0.05916087329 0.06162818149 0.0641399771 0.06669589877 0.0692955628 0.07193864137 0.07462473959 0.07735352963 0.08012461662 0.08293766528 0.08579229563 0.0886881575 0.0916248858 0.0946021229 0.09761949629 0.1006766558 0.1037732363 0.1069088802 x0.250980407 0.1100792438 x0.2549019754 0.1132918224 x0.2588235736 0.1165415347 0.1198296845 0.1231550947 0.126516521 0.1299153417 0.1333503425 0.136820212 0.1403264403 0.1438677758 0.1474428624 0.1510532796 0.1546976715 0.1583756804 0.16208601 0.1658302248 0.1696069837 0.1734149605 0.1772557497 0.1811279953 0.1850303262 0.1889644414 0.1929289103 0.1969223768 0.2009465396 0.2049999833 0.2090813369 0.2131923139 0.2173314691 0.2214981467 0.2256919891 0.2299136519 0.2341620922 0.2384358197 0.242736727 0.2470633239 0.2514141202 0.2557909787 0.2601924241 0.2646169662 0.2690665424 0.2735396624 0.2780347764 0.282553792 0.2870952785 0.2916581035 0.2962429821 0.3008495569 0.3054771721 0.3101242185 0.3147926927 0.3194811046 0.324187845 0.3289149702 0.3336609006 0.3384240866 0.3432065845 0.3480067849 0.352823168 0.3576577902 0.362509042 0.3673755229 0.372258842 x0.501960814 0.377158016 x0.5058823824 0.3820724785 x0.5098038912 0.3870007992 0.3919447362 0.3969027698 0.4018733203 0.4068585336 0.4118567705 0.4168662727 0.4218895435 0.4269247353 0.4319702089 0.4370282888 0.442097187 0.4471739531 0.4522648752 0.4573642313 0.4624724388 0.4675893188 0.4727158546 0.4778507054 0.4829922915 0.4881427884 0.4933003485 0.4984636605 0.5036348104 0.5088121891 0.5139939785 0.5191825628 0.5243761539 0.5295732617 0.5347759724 0.5399827361 0.5451923013 0.5504055023 0.5556221008 0.5608413219 0.5660613179 0.5712845922 0.5765092373 0.5817335844 0.5869601369 0.592187047 0.5974126458 0.6026393175 0.607865274 0.6130887866 0.6183122396 0.6235339642 0.6287536025 0.6339690089 0.6391832232 0.6443941593 0.6496001482 0.6548035741 0.6600025892 0.6651957035 0.6703851223 0.6755691171 0.6807460785 0.6859182119 0.6910838485 0.6962413192 0.701392889 0.7065368891 0.7116730213 0.7167995572 0.7219188213 0.7270285487 0.7321285009 0.7372196317 0.7423006296 0.7473698258 0.7524295449 0.7574780583 0.7625137568 0.7675389051 0.772551775 0.7775507569 0.7825379968 0.7875119448 0.7924692035 0.7974170446 0.8023487329 0.8072648048 0.8121660948 0.8170523047 0.8219226599 0.8267754912 0.8316130042 0.8364335895 0.8412356973 0.8460212946 0.8507887721 0.8555366993 0.8602670431 0.8649782538 0.8696687818 0.8743406534 0.8789923191 0.8836224079 0.8882324696 0.8928213716 0.8973886371 0.9019325972 0.9064554572 0.9109554887 0.9154313207 0.9198848605 0.9243145585 0.9287189245 0.9330999255 0.9374559522 0.941785574 0.9460907578 0.9503698349 0.9546215534 0.9588475823 0.9630465508 0.9672180414 0.971360743 0.9754763246 0.9795633554 0.9836205244 0.9876493812 0.9916487336 0.9956170917 k 1 s0}}
+  name smooth0
+  xpos 804
+  ypos -112
+  disable {{"parent.rampx != 2"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {curve R k 0 s0 l x0.003921568859 0.003935050219 x0.007843137719 0.007900506258 x0.01176470611 0.01189594436 x0.01568627544 0.01592133567 x0.01960784383 0.01997601241 x0.02352941036 0.02405868098 0.02817084268 x0.03137255087 0.03231121227 x0.03529411927 0.03647941723 x0.03921569139 0.04067511111 0.04489791766 0.04914552346 0.05342147127 0.05772346258 0.06205112487 x0.06274510175 0.06640410423 x0.06666667014 0.07078202814 x0.07058824599 0.07518454641 0.07961128652 0.08406189829 0.08853601664 0.09303326905 0.09754897654 0.1020904705 0.1066540107 0.1112392396 0.1158457994 0.1204733327 0.1251214743 0.1297898293 0.1344781071 x0.1254902035 0.1391859055 x0.1294117719 0.1439129263 x0.1333333552 0.1486587524 0.1534229964 0.1582053453 0.1630054116 0.167822808 0.1726572216 0.1775082499 0.1823755652 0.1872587949 0.1921575665 0.1970715076 0.2020003051 0.2069588304 0.2119171917 0.216889292 0.2218747884 0.2268732935 0.2318844646 0.236907959 0.2419433743 0.2469903827 0.2520485818 0.2571176589 0.2621972561 0.2672869265 0.2723864019 0.2774953246 0.2826132476 0.2877398431 0.2928747833 x0.250980407 0.2980112731 x0.2549019754 0.3031617105 x0.2588235736 0.3083180487 0.3134825826 0.3186536729 0.3238295615 0.3290125728 0.3342010379 0.3393931985 0.3445914686 0.3497940302 0.354999274 0.3602094948 0.3654229343 0.3706393242 0.3758568764 0.3810780048 0.3863009214 0.3915239871 0.3967494667 0.4019756913 0.4072009325 0.4124275446 0.4176537991 0.4228779674 0.4281024933 0.4333254993 0.4385454357 0.4437645376 0.4489811361 0.4541943073 0.4594039321 0.464610815 0.4698137343 0.4750109911 0.4802048802 0.4853937626 0.4905759096 0.4957535565 0.5009251237 0.5060888529 0.5112470984 0.5163981318 0.5215401649 0.5266757011 0.5318029523 0.5369206071 0.5420296788 0.5471297503 0.5522202253 0.5572991967 0.562368989 0.5674279928 0.5724745989 0.5775107741 0.5825352073 0.5875459909 0.5925454497 0.5975319147 0.6025036573 0.6074630618 0.6124083996 0.6173381209 0.6222540736 x0.501960814 0.6271550059 x0.5058823824 0.6320406199 x0.5098038912 0.636909306 0.6417628527 0.6465998292 0.6514186263 0.6562212706 0.6610061526 0.6657717824 0.6705201864 0.6752499342 0.6799592376 0.6846503019 0.6893215179 0.6939700842 0.6986017823 0.7032111287 0.707798779 0.7123644352 0.7169088721 0.7214308381 0.7259290218 0.7304052114 0.734857738 0.7392854095 0.7436901331 0.7480701804 0.7524241805 0.7567540407 0.7610582709 0.765335381 0.7695872188 0.773812294 0.7780095935 0.7821797729 0.7863225937 0.7904371619 0.7945221663 0.7985793352 0.8026072383 0.8066043258 0.8105726242 0.8145105839 0.8184167743 0.8222929239 0.8261376619 0.8299496174 0.8337303996 0.8374786973 0.8411941528 0.8448752165 0.8485237956 0.8521384001 0.8557177782 0.8592633605 0.8627738953 0.8662481308 0.8696875572 0.8730908036 0.8764567375 0.8797867298 0.88307935 0.886333704 0.8895508051 0.8927296996 0.8958699107 0.8989704251 0.9020322561 0.905054152 0.9080355763 0.9109771252 0.9138779044 0.9167366624 0.9195545912 0.9223306179 0.9250637293 0.927754879 0.9304030538 0.9330071807 0.9355682731 0.9380853176 0.940556407 0.9429850578 0.9453676343 0.9477043152 0.9499952793 0.952240169 0.9544385672 0.9565893412 0.9586933851 0.9607497454 0.9627575278 0.9647174478 0.9666284919 0.9684898853 0.970302403 0.9720650315 0.9737769365 0.9754386544 0.9770494699 0.9786087275 0.9801165462 0.9815723896 0.9829758406 0.9843261242 0.9856237173 0.9868678451 0.9880577326 0.9891938567 0.9902753234 0.9913016558 0.9922729135 0.9931886196 0.994048059 0.9948512912 0.995597899 0.9962871075 0.9969191551 0.9974933267 0.9980093241 0.9984667301 0.9988653064 0.9992046356 0.9994843006 0.9997040033 0.9998633265 0.9999619722 k 0.9999995828 s0}}
+  name smooth1
+  xpos 804
+  ypos -74
+  disable {{"parent.rampx != 3"}}
+ }
+ ColorLookup {
+  channels alpha
+  lut {master {}
+    red {}
+    green {}
+    blue {}
+    alpha {curve R k 0 s0 l x0.003921568859 4.597276711e-05 x0.007843137719 0.0001834110881 x0.01176470611 0.000411590474 x0.01568627544 0.0007298165583 x0.01960784383 0.001137352316 x0.02352941036 0.001633351669 0.002217318397 x0.03137255087 0.00288842665 x0.03529411927 0.003645953024 x0.03921569139 0.004489175044 0.005417369772 0.006429329049 0.007525262423 0.008704001084 0.009964819998 x0.06274510175 0.01130700111 x0.06666667014 0.01272981428 x0.07058824599 0.0142325433 0.01581445895 0.01747484505 0.0192129761 0.0210281238 0.02291772701 0.02488426119 0.02692561783 0.02904107608 0.03122991323 0.03349140286 0.0358248204 0.03822946176 0.04070457816 x0.1254902035 0.0432494767 x0.1294117719 0.04586344957 x0.1333333552 0.04854574427 0.05129564553 0.05411241576 0.05699535087 0.05994370952 0.06295678765 0.06603384763 0.0691741854 0.07237705588 0.07564174384 0.07896754146 0.08235370368 0.08581023663 0.08931586146 0.09287969768 0.09650105238 0.1001791805 0.1039133817 0.107702896 0.111547038 0.1154450849 0.1193962917 0.1233999208 0.127455309 0.1315616816 0.1357183158 0.1399245411 0.1441795826 0.148482725 0.1528332382 x0.250980407 0.1572249383 x0.2549019754 0.1616679281 x0.2588235736 0.1661549807 0.1706876904 0.1752641648 0.1798824966 0.1845443547 0.1892478019 0.1939908862 0.198775351 0.2035992742 0.2084605992 0.2133612186 0.2182991058 0.2232734859 0.2282824218 0.2333277315 0.2384074181 0.2435194403 0.2486657053 0.2538441718 0.2590527534 0.2642934918 0.2695642114 0.2748629749 0.2801915705 0.2855480909 0.2909303308 0.2963404357 0.3017762005 0.3072364628 0.3127205372 0.318229109 0.3237604499 0.3293124735 0.334887296 0.3404827416 0.3460966647 0.3517311811 0.3573842347 0.3630535603 0.3687413931 0.3744455278 0.3801637292 0.3858982623 0.3916469216 0.397408098 0.4031823874 0.4089691043 0.4147671759 0.4205741286 0.4263924658 0.4322198927 0.4380541742 0.4438975751 0.4497478306 0.4556027949 0.4614647925 0.4673314691 0.4732007086 0.4790747464 0.4849512875 0.4908283949 0.4967077374 x0.501960814 0.5025877953 x0.5058823824 0.5084676147 x0.5098038912 0.5143453479 0.5202226639 0.5260973573 0.5319674015 0.5378350019 0.5436979532 0.5495538116 0.5554053187 0.5612499118 0.5670855641 0.5729144216 0.5787342787 0.5845413208 0.5903425813 0.5961310863 0.6019070745 0.6076701283 0.6134207845 0.6191573739 0.6248778701 0.6305842996 0.6362742782 0.6419460773 0.6476015449 0.6532387137 0.6588552594 0.6644534469 0.6700310707 0.6755861044 0.6811203957 0.6866320372 0.69211936 0.6975828409 0.703021884 0.7084354162 0.7138211727 0.7191812992 0.7245136499 0.7298160195 0.7350904942 0.7403351068 0.7455477118 0.7507301569 0.7558806539 0.7609968781 0.7660809159 0.771130681 0.7761454582 0.7811228633 0.7860653996 0.7909705639 0.7958367467 0.8006653786 0.8054548502 0.8102028966 0.8149114847 0.8195785284 0.8242022395 0.8287839293 0.8333220482 0.8378145099 0.8422629833 0.8466656804 0.8510219455 0.8553296328 0.8595904708 0.863802135 0.8679640293 0.8720763922 0.8761377931 0.8801465034 0.8841040134 0.8880084157 0.8918579817 0.8956540823 0.8993948102 0.9030786753 0.9067066908 0.9102773666 0.9137877822 0.9172426462 0.9206367731 0.9239700437 0.9272423983 0.9304533005 0.9336016774 0.9366860986 0.9397073388 0.9426640868 0.9455547333 0.9483799338 0.9511383772 0.9538285136 0.9564509988 0.959004581 0.9614877701 0.9639011025 0.9662434459 0.9685133696 0.9707111716 0.97283566 0.9748861194 0.9768611789 0.9787613153 0.9805850983 0.982331574 0.9840009809 0.985591948 0.9871034622 0.9885355234 0.9898869395 0.9911566973 0.9923449159 0.9934502244 0.9944719076 0.9954097867 0.9962628484 0.997030139 0.9977110028 0.9983049035 0.9988109469 0.9992284179 0.9995567799 0.9997951984 0.9999428988 k 0.9999994636 s0}}
+  name smooth
+  xpos 806
+  ypos -36
+  disable {{"parent.rampx != 4"}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation mask
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name Merge17
+  xpos 806
+  ypos 70
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos 806
+  ypos 121
+  disable {{"parent.invertMask != 1"}}
+ }
+ Gamma {
+  channels alpha
+  value {{parent.gamma}}
+  name Gamma1
+  xpos 806
+  ypos 180
+ }
+ Blur {
+  channels alpha
+  name Blur6
+  xpos 806
+  ypos 447
+ }
+ Dot {
+  name Dot5
+  xpos 545
+  ypos 457
+ }
+set Nf0433a0 [stack 0]
+ Dot {
+  name Dot6
+  xpos 545
+  ypos 573
+ }
+set Nb88faf0 [stack 0]
+ Dot {
+  name Dot7
+  xpos 545
+  ypos 662
+ }
+push $Nf0433a0
+push $Nca335c0
+ AddChannels {
+  channels alpha
+  name AddChannels1
+  xpos 258
+  ypos -754
+ }
+ Multiply {
+  channels alpha
+  value 0
+  name Multiply1
+  xpos 258
+  ypos -716
+ }
+ Add {
+  channels alpha
+  value 1
+  name Add1
+  xpos 258
+  ypos -678
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge18
+  xpos 258
+  ypos 453
+ }
+set Nb917350 [stack 0]
+ Remove {
+  name Remove1
+  xpos 119
+  ypos 519
+ }
+ Expression {
+  expr0 "(sin((x-y)/2)+1)/2 > .5 ? .5 : .05"
+  expr1 "(sin((x-y)/2)+1)/2 > .5 ? .5 : .05"
+  expr2 "(sin((x-y)/2)+1)/2 > .5 ? .5 : .05"
+  expr3 1
+  name Expression4
+  xpos 119
+  ypos 612
+ }
+push $Nb88faf0
+push $Nb917350
+ Switch {
+  inputs 2
+  which {{parent.outputColorSpace}}
+  name Switch2
+  xpos 258
+  ypos 569
+ }
+ Merge2 {
+  inputs 2+1
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  invert_mask true
+  name Merge2
+  selected true
+  xpos 258
+  ypos 658
+  disable {{"parent.zebra == 0"}}
+ }
+ ScanlineRender {
+  inputs 3
+  overscan 50
+  motion_vectors_type off
+  MB_channel none
+  name ScanlineRender1
+  xpos 258
+  ypos 759
+  disable {{"parent.renderCube == 0"}}
+ }
+ Output {
+  name Output1
+  xpos 258
+  ypos 903
+ }
+end_group

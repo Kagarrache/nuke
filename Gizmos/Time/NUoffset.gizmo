@@ -1,0 +1,84 @@
+#! /opt/nuke/7.0v5/Nuke7.0 -nx
+version 7.0 v5
+Group {
+ name NUoffset
+ inputs 2
+ help "NUoffset - a tool for non-uniform offset, allowing you to change time offset in different parts of the picture depending on the map provided. \nYou need 2 inputs - source sequence and the one with the map(a single channel is enough). \nMap channel to use - you can specify in which channel the map is located.\nYou need to set the amount for the offset - for black (0) and for white (1) pixels of the map, for other ones it will be done depending on your choice. \nMixing of map levels is used for smoother results when you don't have enough map levels.\nNumber of map levels defines number of sequences with different offsets which are going to be merged for the result. The higher this number - the better result you are going to get, but remember, 100 levels means 100 retime operations and 100 merges.\nMethod consists of standard Nuke retime nodes - TimeOffset, Timewarp, OFlow and Kronos. First 2 are faster, better for adjustment of the offset and OFlow/Kronos are better for the final result.\nCalculate needs to be used when you change Number of levels or the method in order to rebuild the inner structure of this gizmo. Also when you reopen the script, Nuke forgets the structure, so you'll need to hit this button again.\nOFlow/Kronos parameters are standard ones, like in the original node."
+ addUserKnob {20 User l "NU offset settings"}
+ addUserKnob {41 mapChannel l "Map channel to use" t "Defines the channel of the \"map\" input used as the map" T UseChannel.from0}
+ addUserKnob {3 whiteOffset l "Offset for white" t "Defines the frame offset for white pixels of the map"}
+ addUserKnob {3 blackOffset l "Offset for black" t "Defines the frame offset for black pixels of the map"}
+ blackOffset 20
+ addUserKnob {7 lmix l "Mixing of map levels" t "Amouth of smoothing between map levels" R 0 10}
+ lmix 2
+ addUserKnob {26 ""}
+ addUserKnob {3 maplimit l "Number of map levels" t "Discretisation parameter of the map, how many different time stages can be used."}
+ maplimit 100
+ addUserKnob {4 method l Method t "Affects quality of the offset\nTimeOffset - draft, faster\nTimeWarp - more accurate, slower result\nOFlow - serious business\nKronos - also serious business, with the GPU support" M {TimeOffset TimeWarp OFlow Kronos "" ""}}
+ method Kronos
+ addUserKnob {6 rowUse l "Region of work usage" t "Check to activate region of work usage, it allows you to apply the effect only to selected area." +STARTLINE}
+ addUserKnob {15 row l "Region of work" t "If you opt to choose a region, changes will be made only to the area you set."}
+ row {0 0 512 512}
+ addUserKnob {22 rowSetInput l "Set to input size" t "Sets the region of work size to input one" -STARTLINE T "src = nuke.thisNode().node('src')\nrow_cells = \[0,0,src.width(),src.height()]\nnuke.thisNode()\['row'].setValue(row_cells)"}
+ addUserKnob {22 calculate l Calculate t "Create structure for the retime" T "nu = nuke.thisGroup()\n\nall = nuke.thisNode().nodes()\nsou = nuke.thisNode().node('src')\nmap = nuke.thisNode().node('map')\noutp = nuke.thisNode().node('Output')\ninitc = nuke.thisNode().node('UseChannel')\n\nall.remove(sou)\nall.remove(map)\nall.remove(outp)\nall.remove(initc)\nfor i in all:\n    nuke.delete(i)\n\nsou = nuke.thisNode().node('src')\nOmap = nuke.thisNode().node('UseChannel')\n\n\nif nuke.thisNode()\['rowUse'].value():\n     Omap_tmp = nuke.nodes.Crop(inputs = \[Omap])\n     repl=nuke.thisNode()\['row'].value()\n     lrepl=\[round(repl\[0]-1),round(repl\[1]-1),round(repl\[2]+1),round(repl\[3]+1)]\n     Omap_tmp\['box'].setValue(lrepl)\n     Omap_tmp\['reformat'].setValue(True)\n     Omap = Omap_tmp\n     sou_tmp = nuke.nodes.Crop(inputs = \[sou])\n     sou_tmp\['box'].setValue(lrepl)\n     sou_tmp\['reformat'].setValue(True)\n     sou_orig = sou\n     sou = sou_tmp\n          \n     \nmaplimit = nuke.thisNode()\['maplimit'].value()\nfract = 1.0/maplimit\nmethod = nuke.thisNode()\['method'].value()\nwhex = nuke.thisNode().fullName()+'.whiteOffset'\nblex = nuke.thisNode().fullName()+'.blackOffset'\nminstr = 'min('+whex+','+blex+')'\nlenstr = 'abs('+whex+'-'+blex+')'\neps = '0.01'\n\nw = sou.width()\nh = sou.height()\n\nwith nu:\n    i=0\n    while i<=maplimit:\n        pix = nuke.nodes.Expression()\n        pix.setInput(0,Omap)\n        pix\['channel0'].setValue('alpha')\n        pix\['expr0'].setValue('(a>='+str(fract*i)+')?1:0')\n        bl = nuke.nodes.Blur()\n        bl\['channel'].setValue('alpha')\n        bl\['size'].setExpression(nuke.thisNode().fullName()+'.lmix')\n        bl.setInput(0,pix)\n        if method == 'TimeOffset':\n            ctime = nuke.nodes.TimeOffset()\n            ctime\['time_offset'].setExpression('-1*(('+whex+'<'+blex+'?'+str(1-fract*i)+':'+str(fract*i)+')*'+lenstr+'+'+minstr+')')          \n        elif method == 'TimeWarp':\n            ctime = nuke.nodes.TimeWarp() \n            ctime\['lookup'].setExpression('\[frame]+('+whex+'<'+blex+'?'+str(1-fract*i)+':'+str(fract*i)+')*'+lenstr+'+'+minstr)\n        elif method == 'OFlow':\n            ctime = nuke.nodes.OFlow()\n            ctime\['timing'].setValue('Source Frame')\n            ctime\['timingFrame'].setExpression('\[frame]+('+whex+'<'+blex+'?'+str(1-fract*i)+':'+str(fract*i)+')*'+lenstr+'+'+minstr+'+'+eps)\n            ctime\['filtering'].setExpression(nuke.thisNode().fullName()+'.filtering')\n            ctime\['warpMode'].setExpression(nuke.thisNode().fullName()+'.warpMode')\n            ctime\['vectorDetail'].setExpression(nuke.thisNode().fullName()+'.vectorDetail')\n            ctime\['smoothness'].setExpression(nuke.thisNode().fullName()+'.smoothness')\n            ctime\['blockSize'].setExpression(nuke.thisNode().fullName()+'.blockSize')\n        elif method == 'Kronos':\n            ctime = nuke.nodes.Kronos()\n            ctime\['useGPUIfAvailable'].setExpression(nuke.thisNode().fullName()+'.kronosGPU')\n            ctime\['input.first'].setExpression(nuke.thisNode().fullName()+'.kFirst')\n            ctime\['input.last'].setExpression(nuke.thisNode().fullName()+'.kLast')\n            ctime\['timing'].setValue('Frame')\n            ctime\['timingFrame'].setExpression('\[frame]+('+whex+'<'+blex+'?'+str(1-fract*i)+':'+str(fract*i)+')*'+lenstr+'+'+minstr)\n            ctime\['vectorDetail'].setExpression(nuke.thisNode().fullName()+'.kronosVD')\n            ctime\['smoothness'].setExpression(nuke.thisNode().fullName()+'.kronosS')\n        ctime.setInput(0,sou)\n        cop = nuke.nodes.Copy()\n        cop\['from0'].setValue('alpha')\n        cop\['to0'].setValue('alpha')\n        cop.setInput(0,ctime)\n        cop.setInput(1,bl)\n        if i==0:\n            tomerge = cop\n        else:\n            nodemerge = nuke.nodes.Merge2(operation = 'matte')\n            nodemerge.setInput(0,tomerge)\n            nodemerge.setInput(1,cop)\n            tomerge = nodemerge\n        i+=1\n    if nuke.thisNode()\['rowUse'].value():\n       crp_res = nuke.nodes.Crop(inputs = \[tomerge])\n       crp_res\['box'].setValue(\[1,1,w-1,h-1])\n       move_res = nuke.nodes.Transform(inputs = \[crp_res])\n       move_res\['translate'].setValue(\[round(nuke.thisNode()\['row'].value(0)-1), round(nuke.thisNode()\['row'].value(1)-1)])\n       merg_res = nuke.nodes.Merge2(operation = 'over')\n       merg_res.setInput(1,move_res)\n       merg_res.setInput(0,sou_orig)\n       tomerge = merg_res\n    outp.setInput(0,tomerge)" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {20 grp1 l "OFlow parameters" n 1}
+ grp1 0
+ addUserKnob {4 filtering l Filtering M {Extreme Normal ""}}
+ filtering Normal
+ addUserKnob {4 warpMode l "Warp Mode" M {Simple Normal Occlusions}}
+ warpMode Normal
+ addUserKnob {7 vectorDetail l "Vector Detail" R 0.01 1}
+ vectorDetail 0.2
+ addUserKnob {7 smoothness l Smoothness}
+ smoothness 0.5
+ addUserKnob {7 blockSize l "Block Size" R 1 100}
+ blockSize 6
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 grp2 l "Kronos parameters" n 1}
+ grp2 0
+ addUserKnob {6 kronosGPU l "Use GPU if available" +STARTLINE}
+ kronosGPU true
+ addUserKnob {3 kFirst l "Input Range"}
+ kFirst 1
+ addUserKnob {3 kLast l "" -STARTLINE}
+ kLast 100
+ addUserKnob {7 kronosVD l "Vector Detail"}
+ kronosVD 0.2
+ addUserKnob {7 kronosS l Smoothness}
+ kronosS 0.5
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {22 about l About T "nuke.message('NU_Offset v1.2'+chr(10)+chr(10)+'A tool for non-uniform time offset'+chr(10)+chr(10)+'©'+chr(10)+'Kulikov A.G.'+chr(10)+'onemoreuser@yandex.ru'+chr(10))" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name map
+  label "\n"
+  xpos 327
+  ypos 13
+  number 1
+ }
+set N7e2afe0 [stack 0]
+push $N7e2afe0
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name UseChannel
+  xpos 327
+  ypos 52
+ }
+ Input {
+  inputs 0
+  name src
+  selected true
+  xpos 145
+  ypos 12
+ }
+ Output {
+  name Output
+  xpos 321
+  ypos 487
+ }
+end_group

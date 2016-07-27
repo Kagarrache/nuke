@@ -1,0 +1,27 @@
+#! /Applications/Nuke6.1v2-32/NukeX6.1v2.app/../Nuke6.1v2.app/Contents/MacOS/Nuke6.1v2 -nx
+version 6.1 v2
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {22 snap T "import time\n\nfirstF=nuke.thisNode()\['FirstFrame'].value()-1\nlastF=nuke.thisNode()\['LastFrame'].value()+1\n\nlocators=\[]\nGeometry=nuke.thisNode().input(0)\nfor i in nukescripts.snap3d.selectedPoints():\n    nuke.Root().begin()\n    locator=nuke.createNode(\"Axis\", inpanel=False)\n    locator.knob('translate').setAnimated()\n    locator.knob('rotate').setAnimated()\n    locator\['selected'].setValue(False) \n    locators.append(locator)\n    \n\ncurve1=nuke.createNode('CurveTool')\ncurve1\['name'].setValue('Locometry Curve')\ncurve1\['afterFrameRender'].setValue('for i,v in enumerate(nukescripts.snap3d.selectedPoints()):\\n Axis=nuke.toNode(locators\[i].knob(\"name\").value())\\n Axis.knob(\"translate\").setValueAt(v\[0],nuke.frame(),0)\\n Axis.knob(\"translate\").setValueAt(v\[1],nuke.frame(),1)\\n Axis.knob(\"translate\").setValueAt(v\[2],nuke.frame(),2)\\n for k in range(3):\\n  if nuke.toNode(Geometry.name())\[\"rotate\"].isAnimated(k)==True:\\n   nuke.toNode(Axis.name()).knob(\"rotate\").animation(k).setKey(nuke.frame(),Geometry.knob(\"rotate\").animation(k).evaluate(nuke.frame()))\\n  else:\\n   pass')\nnuke.execute('Locometry Curve',firstF,lastF,1)\n\n\n\n\n\n\nnuke.delete(curve1)" +STARTLINE}
+ addUserKnob {3 FirstFrame}
+ addUserKnob {3 LastFrame}
+ LastFrame 100
+}
+ Input {
+  inputs 0
+  name Geometry
+  xpos -90
+  ypos -287
+ }
+ NoOp {
+  name NoOp1
+  xpos -90
+  ypos -208
+  addUserKnob {20 User}
+ }
+ Output {
+  name Output1
+  xpos -88
+  ypos -95
+ }
+end_group

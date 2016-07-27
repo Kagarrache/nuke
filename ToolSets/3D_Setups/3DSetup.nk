@@ -1,0 +1,469 @@
+set cut_paste_input [stack 0]
+version 6.3 v1b34
+StickyNote {
+ inputs 0
+ name Lights
+ label Lights
+ note_font "Verdana Bold"
+ note_font_size 51
+ selected true
+ xpos -892
+ ypos -97
+ addUserKnob {20 User}
+ addUserKnob {6 directional +STARTLINE}
+ addUserKnob {6 spot +STARTLINE}
+ addUserKnob {6 target +STARTLINE}
+}
+StickyNote {
+ inputs 0
+ name Anim_Controller
+ label "Animation \nControll"
+ note_font "Verdana Bold"
+ note_font_size 35
+ selected true
+ xpos 251
+ ypos -196
+ addUserKnob {20 anim}
+ addUserKnob {6 Enable +STARTLINE}
+ addUserKnob {20 rotation n 1}
+ addUserKnob {7 speedx l speedX R 0 10}
+ addUserKnob {7 rotationspeed l speedY R 0 10}
+ addUserKnob {7 speedZ R 0 10}
+ addUserKnob {20 endGroup n -1}
+}
+Group {
+ inputs 0
+ name TargetCam
+ gl_color 0xff5f00ff
+ note_font Verdana
+ selected true
+ xpos 224
+ ypos 94
+ mapsize {0.15 0.15}
+ addUserKnob {20 Camera}
+ addUserKnob {41 read_from_file l "read from file" T Cam.read_from_file}
+ addUserKnob {41 display T Cam.display}
+ addUserKnob {41 selectable -STARTLINE T Cam.selectable}
+ addUserKnob {41 transform T Cam.transform}
+ addUserKnob {41 xform_order l "transform order" T Cam.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T Cam.rot_order}
+ addUserKnob {41 translate T Cam.translate}
+ addUserKnob {41 uniform_scale l "uniform scale" T Cam.uniform_scale}
+ addUserKnob {20 "" l "Local matrix" n 2}
+ addUserKnob {41 useMatrix l "specify matrix" T Cam.useMatrix}
+ addUserKnob {41 matrix l "" -STARTLINE T Cam.matrix}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 "" l "World matrix" n 2}
+ addUserKnob {41 world_matrix l "" -STARTLINE T Cam.world_matrix}
+ addUserKnob {20 "" n -1}
+ addUserKnob {26 txt1 l "" +STARTLINE T "                                        Target"}
+ addUserKnob {41 translate_1 l translate T Target1.translate}
+ addUserKnob {41 uniform_scale_1 l "uniform scale" T Target1.uniform_scale}
+ addUserKnob {26 txt2 l "" +STARTLINE T "                                     Transform"}
+ addUserKnob {41 translate_2 l translate T Transform.translate}
+ addUserKnob {41 rotate T Transform.rotate}
+ addUserKnob {41 pivot_1 l pivot T Transform.pivot}
+ addUserKnob {41 uniform_scale_2 l "uniform scale" T Transform.uniform_scale}
+ addUserKnob {20 projtab l Projection}
+ addUserKnob {41 projection_mode l projection T Cam.projection_mode}
+ addUserKnob {41 focal l "focal length" T Cam.focal}
+ addUserKnob {41 haperture l "horiz aperture" T Cam.haperture}
+ addUserKnob {41 vaperture l "vert aperture" T Cam.vaperture}
+ addUserKnob {41 near T Cam.near}
+ addUserKnob {41 far T Cam.far}
+ addUserKnob {41 win_translate l "window translate" T Cam.win_translate}
+ addUserKnob {41 win_scale l "window scale" T Cam.win_scale}
+ addUserKnob {41 winroll l "window roll" T Cam.winroll}
+ addUserKnob {41 focal_point l "focal distance" T Cam.focal_point}
+ addUserKnob {41 fstop T Cam.fstop}
+ addUserKnob {20 filetab l File}
+ addUserKnob {41 file T Cam.file}
+ addUserKnob {41 reload -STARTLINE T Cam.reload}
+ addUserKnob {41 fbx_take_name l "take name" T Cam.fbx_take_name}
+ addUserKnob {41 fbx_node_name l "node name" T Cam.fbx_node_name}
+ addUserKnob {41 fbx_load_take_node_names l "load take node names" T Cam.fbx_load_take_node_names}
+ addUserKnob {41 frame_rate l "frame rate" T Cam.frame_rate}
+ addUserKnob {41 use_frame_rate l "use frame rate" -STARTLINE T Cam.use_frame_rate}
+ addUserKnob {41 compute_rotation l "compute rotation" T Cam.compute_rotation}
+}
+ Input {
+  inputs 0
+  name axis
+  xpos 493
+  ypos -446
+ }
+ Axis2 {
+  name Transform
+  xpos 503
+  ypos -391
+ }
+set N272f3c50 [stack 0]
+ Axis2 {
+  translate {0 2 -3}
+  name Target1
+  xpos 503
+  ypos -315
+ }
+push $N272f3c50
+ Camera2 {
+  translate {{curve i x1 -14.10087395 x100 34.10087395} {curve i x1 7.96652489 x100 8.04652489} {curve i x1 -41.22808838 x100 22.22808838}}
+  rotate {{"-degrees(atan2 ((Cam.translate.y-Target1.translate.y),sqrt(pow2(Cam.translate.z-Target1.translate.z)+pow2(Cam.translate.x-Target1.translate.x))))"} {"(Cam.translate.z-Target1.translate.z)<=0?180-degrees(atan2 ((Cam.translate.x-Target1.translate.x),abs(Cam.translate.z-Target1.translate.z))):-degrees(atan2 ((Target1.translate.x-Cam.translate.x),abs(Cam.translate.z-Target1.translate.z)))"} {curve}}
+  name Cam
+  selected true
+  xpos 603
+  ypos -315
+ }
+ Output {
+  name Output1
+  xpos 593
+  ypos -227
+ }
+end_group
+Camera2 {
+ inputs 0
+ translate {27.35617447 9.10000005 -13.22037983}
+ rotate {-15 120.6862314 0}
+ name Cam2
+ selected true
+ xpos 328
+ ypos 47
+}
+Camera2 {
+ inputs 0
+ translate {-5 4.55 -26.10000038}
+ rotate {-9.69168366 192.3318722 0}
+ name Cam1
+ selected true
+ xpos 405
+ ypos 15
+}
+Spotlight {
+ inputs 0
+ translate {0 19.35000038 0}
+ rotate {-85.99945825 0 0}
+ name Spotlight4
+ selected true
+ xpos -292
+ ypos 229
+ disable {{parent.Lights.spot+-1 i}}
+}
+Spotlight {
+ inputs 0
+ translate {15.82940483 13.57805252 -18.07757378}
+ rotate {-31.3267924 135.49105 -7.726581489}
+ name Spotlight3
+ selected true
+ xpos -385
+ ypos 237
+ disable {{parent.Lights.spot+-1 i}}
+}
+Spotlight {
+ inputs 0
+ translate {15.82940483 13.57805252 -18.07757378}
+ rotate {-31.75404806 110.5755239 5.457680159}
+ name Spotlight2
+ selected true
+ xpos -473
+ ypos 237
+ disable {{parent.Lights.spot+-1 i}}
+}
+Spotlight {
+ inputs 0
+ translate {15.82940483 13.57805252 -18.07757378}
+ rotate {-26.98845432 156.8075103 -18.2119037}
+ name Spotlight1
+ selected true
+ xpos -552
+ ypos 231
+ disable {{parent.Lights.spot+-1 i}}
+}
+MergeGeo {
+ inputs 4
+ name SceneLights
+ selected true
+ xpos -439
+ ypos 43
+}
+DirectLight {
+ inputs 0
+ translate {20.63414192 8.785264969 -21.6157093}
+ rotate {-46.87152773 -34.64846366 168.2366981}
+ name DirectLight1
+ selected true
+ xpos -567
+ ypos -93
+ disable {{parent.Lights.directional+-1 i}}
+}
+MergeGeo {
+ inputs 2
+ name LightsSetup
+ selected true
+ xpos -439
+ ypos -72
+}
+TransformGeo {
+ name LightsTransform
+ tile_color 0xffbe00ff
+ note_font "Verdana Bold"
+ note_font_size 21
+ selected true
+ xpos -193
+ ypos -79
+}
+CheckerBoard2 {
+ inputs 0
+ format "2048 2048 0 0 2048 2048 1 square_2K"
+ name CheckerBoard1
+ selected true
+ xpos -171
+ ypos -542
+ postage_stamp false
+}
+set N8a72ec0 [stack 0]
+Grade {
+ white 1.8
+ multiply 1.82
+ gamma {0.06120000407 0.3400000036 0.07235199213 1}
+ name Grade1
+ tile_color 0xff000001
+ label Grade
+ selected true
+ xpos -171
+ ypos -518
+ icon Grade.png
+}
+Card2 {
+ rotate {-90 0 0}
+ uniform_scale 33
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Floor
+ selected true
+ xpos -171
+ ypos -411
+}
+set N8a72530 [stack 0]
+Dot {
+ name Dot2
+ selected true
+ xpos -137
+ ypos -238
+}
+push $N8a72530
+TransformGeo {
+ translate {-16.5 13.2 0}
+ rotate {-90 90 0}
+ scaling {1 1 0.8}
+ name Wall1
+ selected true
+ xpos -321
+ ypos -411
+}
+set N8d4fc80 [stack 0]
+push $N8d4fc80
+TransformGeo {
+ translate {16.5 13.2 0}
+ rotate {-90 90 0}
+ scaling {1 1.25 0.8}
+ name Wall2
+ selected true
+ xpos -462
+ ypos -411
+}
+MergeGeo {
+ inputs 2
+ name Walls
+ selected true
+ xpos -389
+ ypos -349
+}
+TransformGeo {
+ scaling {1 0.5 1}
+ name WallTransform
+ tile_color 0xffbe00ff
+ note_font "Verdana Bold"
+ note_font_size 21
+ selected true
+ xpos -389
+ ypos -308
+}
+MergeGeo {
+ inputs 2
+ name Room
+ selected true
+ xpos -389
+ ypos -170
+}
+TransformGeo {
+ name RoomTransform
+ tile_color 0xffbe00ff
+ note_font "Verdana Bold"
+ selected true
+ xpos -176
+ ypos -170
+}
+push $N8a72ec0
+Grade {
+ gamma {-0.2399999946 1.112400174 2.700000048 1}
+ name Grade2
+ tile_color 0xffff01
+ label Grade
+ selected true
+ xpos -84
+ ypos -542
+ icon Grade.png
+}
+Sphere {
+ name Sphere1
+ selected true
+ xpos 152
+ ypos -536
+}
+set N8a72b90 [stack 0]
+TransformGeo {
+ translate {-5 0 0}
+ name TransformGeo2
+ selected true
+ xpos 301
+ ypos -401
+}
+set N8a74840 [stack 0]
+TransformGeo {
+ translate {-5 0 0}
+ name TransformGeo6
+ selected true
+ xpos 440
+ ypos -401
+}
+set N8b2ff20 [stack 0]
+TransformGeo {
+ translate {-5 0 0}
+ name TransformGeo7
+ selected true
+ xpos 577
+ ypos -401
+}
+set N8b30250 [stack 0]
+TransformGeo {
+ translate {30 0 0}
+ name TransformGeo8
+ selected true
+ xpos 577
+ ypos -281
+}
+set N8b30580 [stack 0]
+TransformGeo {
+ translate {-5 0 0}
+ name TransformGeo9
+ selected true
+ xpos 726
+ ypos -281
+}
+Dot {
+ name Dot1
+ tile_color 0xff
+ note_font_size 20
+ selected true
+ xpos 760
+ ypos -208
+}
+push $N8b30580
+push $N8b30250
+push $N8b2ff20
+MergeGeo {
+ inputs 4
+ name MergeGeo3
+ selected true
+ xpos 440
+ ypos -211
+}
+push $N8a74840
+push $N8a72b90
+push $N8a72b90
+TransformGeo {
+ translate {5 0 0}
+ name TransformGeo1
+ selected true
+ xpos 8
+ ypos -401
+ icon TransformGeo.png
+}
+MergeGeo {
+ inputs 3
+ name MergeGeo1
+ selected true
+ xpos 152
+ ypos -401
+}
+set N8a74510 [stack 0]
+TransformGeo {
+ translate {0 0 -9}
+ rotate {0 90 0}
+ name TransformGeo4
+ selected true
+ xpos 300
+ ypos -302
+}
+push $N8a74510
+push $N8a74510
+TransformGeo {
+ translate {0 0 9}
+ rotate {0 90 0}
+ name TransformGeo3
+ selected true
+ xpos 12
+ ypos -302
+}
+MergeGeo {
+ inputs 4
+ name MergeGeo2
+ selected true
+ xpos 152
+ ypos -302
+}
+TransformGeo {
+ translate {0 1 0}
+ name Obj_Transform
+ tile_color 0xffbe00ff
+ note_font "Verdana Bold"
+ note_font_size 21
+ selected true
+ xpos 152
+ ypos -233
+}
+TransformGeo {
+ rotate {{(frame-1)*parent.Anim_Controller.speedx i} {(frame-1)*parent.Anim_Controller.rotationspeed i} {(frame-1)*parent.Anim_Controller.speedZ i}}
+ name Animation
+ selected true
+ xpos 152
+ ypos -170
+ disable {{parent.Anim_Controller.Enable+-1 i x1 0}}
+}
+Scene {
+ inputs 6
+ name Scene1
+ selected true
+ xpos -74
+ ypos -191
+}
+Dot {
+ name RenderMe
+ tile_color 0x2ffff
+ label 2D
+ note_font "Verdana Bold"
+ note_font_size 20
+ selected true
+ xpos -50
+ ypos 358
+ addUserKnob {20 User}
+ addUserKnob {22 ScanlineRender T "dot=nuke.toNode('RenderMe')\nrend=nuke.createNode('ScanlineRender')\nrend.setName('RenderMe')\nrend.setInput(1, dot)" +STARTLINE}
+}

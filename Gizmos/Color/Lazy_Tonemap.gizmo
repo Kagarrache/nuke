@@ -1,0 +1,149 @@
+#! C:/Program Files/Nuke6.3v1/Nuke6.3.exe -nx
+version 6.3 v1
+Gizmo {
+ mapsize {0.1159793814 0.7559055118}
+ addUserKnob {20 Tonemapper l TONEMAPPER}
+ addUserKnob {4 tonemap l "Choose tonemapper" M {"Simple *automatic*" "Whitepoint Tonemap" "Key Value Tonemap" "Key Value + Simple Tonemap" "Key Value + Whitepoint Tonemap" "" "" ""}}
+ tonemap "Whitepoint Tonemap"
+ addUserKnob {7 wp l Whitepoint R 1 50}
+ wp 4
+ addUserKnob {7 key l "Key Value" R 0.001 0.25}
+ key 0.18
+ addUserKnob {7 gain l Gain R 0 25}
+ gain 1
+ addUserKnob {7 gamma l Gamma R 0 5}
+ gamma 1
+ addUserKnob {26 usage l Usage: T " Global tone mappin:\n\n Simple global just puts all values in image\n between 0-1.\n\n Whitepoint tonemapper uses white point to\n limit the effect of the tone mapping. The\n higher the whitepoint, the closer it gets to the\n simple global. The values above whitepoint \n are preserved.\n\n Key Value represents a \"grey point\" weighted\n tone mapping. It will affect\n dark areas more the closer it gets to 00001.\n This is quite strong effect on the image.\n\n Key value + Simple is key value and\n followed with the simple tonemapper. \n\n Key Value + Whitepoint use also the\n Whitepoint mapper after the key value\n mapper to fix the image, the key value can\n wash the image out if used extensively.\n\n Use Gain 1 and over to brighten the image,\n Gamma can be used to fine-tune the gamma.\n\n Avoid high values. Gain can have high values.\n\n-Lazy Laszlo"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -330
+  ypos -143
+ }
+ Grade {
+  white {{parent.knob.gain i}}
+  gamma {{parent.knob.gamma i}}
+  name Grade1
+  xpos -330
+  ypos -55
+ }
+ Dot {
+  name Dot1
+  xpos -296
+  ypos 40
+ }
+ Colorspace {
+  colorspace_out CIE-Yxy
+  name Colorspace4
+  xpos -330
+  ypos 78
+ }
+set N9e1a8b0 [stack 0]
+push $N9e1a8b0
+ Expression {
+  expr0 (r/parent.knob.key)*r
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  expr1 (g/parent.knob.key)*g
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  expr2 (b/parent.knob.key)*b
+  expr3 a
+  name Tonemap_key_value2
+  xpos 99
+  ypos 204
+ }
+ Expression {
+  expr0 "(r*(1+(r/(parent.knob.wp**2))) ) / (1+r)"
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  expr1 "(g*(1+(g/(parent.knob.wp**2))) ) / (1+g)"
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  expr2 "(b*(1+(b/(parent.knob.wp**2))) ) / (1+b)"
+  expr3 a
+  name Tonemap_complex1
+  selected true
+  xpos 99
+  ypos 249
+ }
+push $N9e1a8b0
+ Expression {
+  expr0 (r/parent.knob.key)*r
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  expr1 (g/parent.knob.key)*g
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  expr2 (b/parent.knob.key)*b
+  expr3 a
+  name Tonemap_key_value1
+  xpos -57
+  ypos 215
+ }
+ Expression {
+  expr0 r/(r+1)
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  expr1 g/(g+1)
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  expr2 b/(b+1)
+  expr3 a
+  name Tonemap_global1
+  xpos -57
+  ypos 239
+ }
+push $N9e1a8b0
+ Expression {
+  expr0 (r/parent.knob.key)*r
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  expr1 (g/parent.knob.key)*g
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  expr2 (b/parent.knob.key)*b
+  expr3 a
+  name Tonemap_key_value
+  xpos -209
+  ypos 217
+ }
+push $N9e1a8b0
+ Expression {
+  expr0 "(r*(1+(r/(parent.knob.wp**2))) ) / (1+r)"
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  expr1 "(g*(1+(g/(parent.knob.wp**2))) ) / (1+g)"
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  expr2 "(b*(1+(b/(parent.knob.wp**2))) ) / (1+b)"
+  expr3 a
+  name Tonemap_whitepoint
+  xpos -341
+  ypos 215
+ }
+push $N9e1a8b0
+ Expression {
+  expr0 r/(r+1)
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  expr1 g/(g+1)
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  expr2 b/(b+1)
+  expr3 a
+  name Tonemap_global
+  xpos -463
+  ypos 216
+ }
+ Switch {
+  inputs 6
+  which {{parent.knob.tonemap i}}
+  name Switch1
+  xpos -336
+  ypos 349
+ }
+ Colorspace {
+  colorspace_in CIE-Yxy
+  name Colorspace3
+  xpos -336
+  ypos 408
+ }
+ Dot {
+  name Dot2
+  xpos -302
+  ypos 515
+ }
+ Output {
+  name Output1
+  xpos -336
+  ypos 756
+ }
+end_group

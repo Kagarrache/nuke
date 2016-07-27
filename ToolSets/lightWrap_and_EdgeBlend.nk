@@ -1,0 +1,405 @@
+set cut_paste_input [stack 0]
+version 8.0 v1
+push $cut_paste_input
+Group {
+ name EdgeBlend
+ tile_color 0xe08701ff
+ selected true
+ xpos 513
+ ypos 81
+ addUserKnob {20 User}
+ addUserKnob {41 sizeErodeLare l "<font color=\"orange\">Erode Size (large Erode)" T ErodeLarge.size}
+ addUserKnob {41 erodelSmall l "<font color=\"orange\">Erode Size (Small Erode)" T ErodeSmall.size}
+ addUserKnob {41 blendAmount l "<font color=\"orange\">EdgeBlend Amount" T BlendAmount.size}
+ addUserKnob {26 divline l "" +STARTLINE}
+ addUserKnob {41 mixValue l "Mix Value" t "Dissuse between original at value 0 and full blend at value 1" T comp_edgeBlend.mix}
+ addUserKnob {6 disableEB l "disable EdgeBlend" +STARTLINE}
+ addUserKnob {26 divline02 l "" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode14
+  tile_color 0xd87417ff
+  gl_color 0xff0000ff
+  label EdgeBlend
+  note_font_size 42
+  xpos -1002
+  ypos -201
+  bdwidth 791
+  bdheight 981
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote6
+  tile_color 0xff0000ff
+  label 2)
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 80
+  xpos -534
+  ypos 132
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote8
+  tile_color 0xff0000ff
+  label 1)
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 80
+  xpos -781
+  ypos -99
+ }
+ Input {
+  inputs 0
+  name comp
+  label (Input2)
+  xpos -532
+  ypos 244
+  number 1
+ }
+set Nef147710 [stack 0]
+ Dot {
+  name Dot2
+  xpos -328
+  ypos 247
+ }
+ Dot {
+  name Dot1
+  xpos -328
+  ypos 610
+ }
+ Input {
+  inputs 0
+  name matte
+  label Input1
+  xpos -781
+  ypos 6
+ }
+ NoOp {
+  name Blend_Input3
+  label "\n(input final matte here)"
+  xpos -781
+  ypos 64
+ }
+ Dot {
+  name Dot35
+  xpos -753
+  ypos 149
+ }
+set Nef0e8c40 [stack 0]
+ Erode {
+  name ErodeSmall
+  label "SMALLER MATTE (FG)"
+  xpos -685
+  ypos 197
+ }
+ Dot {
+  name Dot36
+  xpos -657
+  ypos 269
+ }
+push $Nef0e8c40
+ Erode {
+  size 1
+  name ErodeLarge
+  label "LARGER MATTE (BG)"
+  xpos -870
+  ypos 199
+ }
+ Dot {
+  name Dot37
+  xpos -842
+  ypos 269
+ }
+ Merge2 {
+  inputs 2
+  operation out
+  name Merge14
+  xpos -788
+  ypos 272
+ }
+push $Nef147710
+ NoOp {
+  name Blend_Input4
+  label "\n(input final comp before blend here)"
+  xpos -532
+  ypos 325
+ }
+ Dot {
+  name Dot38
+  xpos -656
+  ypos 334
+ }
+set Nef0ea450 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  label "JOIN EDGE MATTE WITH COMP"
+  xpos -788
+  ypos 325
+ }
+ Premult {
+  name Premult6
+  xpos -788
+  ypos 386
+ }
+ Blur {
+  size 3.5
+  name BlendAmount
+  label "Amount of Blend of FG and BG"
+  xpos -788
+  ypos 428
+ }
+push $Nef0ea450
+ Dot {
+  name Dot39
+  xpos -656
+  ypos 512
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  name comp_edgeBlend
+  label "comp EdgeBlend"
+  xpos -788
+  ypos 509
+  disable {{parent.disable}}
+ }
+ Switch {
+  inputs 2
+  which {{parent.disableEB}}
+  name Switch1
+  label "diable node"
+  xpos -788
+  ypos 607
+ }
+ Output {
+  name Output1
+  xpos -788
+  ypos 738
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -787
+  ypos 817
+ }
+end_group
+push $cut_paste_input
+Group {
+ name LightWrap
+ tile_color 0xff8300ff
+ selected true
+ xpos 407
+ ypos 79
+ addUserKnob {20 LightWrap}
+ addUserKnob {20 bgDetails l "BG Details" n 1}
+ bgDetails 0
+ addUserKnob {41 bgCetails l "Level of BG Details" T Blur13.size}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 divline2 l "" +STARTLINE}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {41 size l "<font color=\"orange\">Softness and Size of LightWrap" T Blur12.size}
+ addUserKnob {26 divLine1 l "<font color=\"orange\">Opacity and look of lightwrap"}
+ addUserKnob {41 black l lift T Grade4.black}
+ addUserKnob {41 white l gain T Grade4.white}
+ addUserKnob {41 multiply T Grade4.multiply}
+ addUserKnob {41 add l offset T Grade4.add}
+ addUserKnob {41 gamma T Grade4.gamma}
+ addUserKnob {26 divline3 l "" +STARTLINE}
+ addUserKnob {41 mix l "LightWrap Mix" T Merge10.mix}
+ addUserKnob {6 disable_1 l "Disable LightWrap" +STARTLINE}
+ addUserKnob {26 divline4 l "" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode15
+  tile_color 0xce631eff
+  gl_color 0xff0000ff
+  label LightWrap
+  note_font_size 42
+  xpos -1226
+  ypos -194
+  bdwidth 1029
+  bdheight 918
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote4
+  tile_color 0xff0000ff
+  label 1)
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 80
+  xpos -951
+  ypos -97
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  tile_color 0xff0000ff
+  label 2)
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 80
+  xpos -684
+  ypos -101
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  tile_color 0xff0000ff
+  label 3)
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 80
+  xpos -405
+  ypos -91
+ }
+ Input {
+  inputs 0
+  name comp
+  label Input3
+  xpos -399
+  ypos 21
+  number 2
+ }
+set N2d833790 [stack 0]
+ Dot {
+  name Dot1
+  xpos -273
+  ypos 24
+ }
+ Dot {
+  name Dot2
+  xpos -273
+  ypos 653
+ }
+ Input {
+  inputs 0
+  name matte
+  label Input1
+  xpos -943
+  ypos 15
+ }
+ NoOp {
+  name wrap_Input1
+  label "(input final alpha Ch here)"
+  xpos -943
+  ypos 58
+ }
+ Invert {
+  channels alpha
+  name Invert2
+  label "(inverted alpha CH)"
+  xpos -943
+  ypos 115
+ }
+set Neff96ca0 [stack 0]
+ Blur {
+  size 25
+  name Blur12
+  label "(Softness and size of LightWrap)"
+  xpos -1078
+  ypos 167
+ }
+push $Neff96ca0
+ Merge2 {
+  inputs 2
+  operation out
+  name Merge8
+  label "(final wrap matte)"
+  xpos -943
+  ypos 236
+ }
+ Dot {
+  name Dot32
+  xpos -915
+  ypos 320
+ }
+ Input {
+  inputs 0
+  name BG
+  label Input2
+  xpos -673
+  ypos 7
+  number 1
+ }
+ NoOp {
+  name wrap_Input2
+  label "(input final BG here)"
+  xpos -673
+  ypos 52
+ }
+ Blur {
+  size 21
+  name Blur13
+  label "(knock out BG details)"
+  selected true
+  xpos -673
+  ypos 127
+ }
+ Dot {
+  name Dot33
+  xpos -645
+  ypos 320
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  label "(join wrap alpha with wrap FG)"
+  xpos -789
+  ypos 311
+ }
+ Grade {
+  name Grade4
+  label "(look of wrap)"
+  xpos -789
+  ypos 404
+ }
+ Premult {
+  name Premult5
+  label "whipe out pixels not in the wrap to black"
+  xpos -789
+  ypos 469
+ }
+push $N2d833790
+ NoOp {
+  name wrap_Input3
+  label "(input final comp here)"
+  xpos -399
+  ypos 84
+ }
+ Dot {
+  name Dot34
+  xpos -371
+  ypos 543
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  name Merge10
+  xpos -789
+  ypos 546
+ }
+ Switch {
+  inputs 2
+  which {{parent.disable_1}}
+  name Switch1
+  label "link to turn onn and off the lightwrap"
+  xpos -789
+  ypos 650
+ }
+ Output {
+  name Output1
+  xpos -789
+  ypos 792
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -789
+  ypos 870
+ }
+end_group

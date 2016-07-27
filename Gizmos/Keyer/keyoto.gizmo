@@ -1,0 +1,76 @@
+#! /method/ext/nuke/9.0.4.r.1/Linux/x86_64/libnuke-9.0.4.so -nx
+version 9.0 v4
+
+Gizmo {
+ name Keyoto
+ inputs 2
+ tile_color 0xaf00ff
+ gl_color 0xff
+ note_font_size 20
+ note_font_color 0xffffffff
+ addUserKnob {20 User}
+ addUserKnob {7 innerblur l "Inner Blur" R 0 100}
+ addUserKnob {7 innererode l "Inner Erode" R -100 100}
+ addUserKnob {6 corematte l "Core Matte Off" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name ROTO
+  xpos 160
+  ypos -209
+ }
+ Dot {
+  name Dot2
+  xpos 194
+  ypos -109
+ }
+set N2ac8790 [stack 0]
+ Grade {
+  channels alpha
+  blackpoint 0.99
+  name Grade1
+  xpos 160
+  ypos -15
+ }
+ FilterErode {
+  size {{parent.innererode}}
+  name FilterErode1
+  xpos 160
+  ypos 85
+ }
+ Blur {
+  channels alpha
+  size {{parent.innerblur}}
+  name Blur1
+  xpos 160
+  ypos 185
+ }
+push $N2ac8790
+ Input {
+  inputs 0
+  name KEY
+  selected true
+  xpos 0
+  ypos -209
+  number 1
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge1
+  xpos 0
+  ypos 91
+ }
+ ChannelMerge {
+  inputs 2
+  name ChannelMerge1
+  xpos 0
+  ypos 179
+  disable {{parent.corematte}}
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 300
+ }
+end_group

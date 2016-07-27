@@ -1,0 +1,302 @@
+#! C:/Program Files/Nuke6.3v1/Nuke6.3.exe -nx
+version 6.3 v1
+Gizmo {
+ addUserKnob {20 BurnIn}
+ addUserKnob {1 Project}
+ Project projectname
+ addUserKnob {1 Company}
+ Company companyname
+ addUserKnob {1 Artist}
+ Artist artistname
+ addUserKnob {41 disable_7 l final T Switch1.disable}
+ addUserKnob {20 chooseelements l "Choose burn in elements" n 1}
+ addUserKnob {41 disable_1 l "disable frame" T frame.disable}
+ addUserKnob {41 disable_2 l "disable shotname" T shotname.disable}
+ addUserKnob {41 disable_6 l "disable status" T Merge1.disable}
+ addUserKnob {41 disable_5 l "disable company" T companyname.disable}
+ addUserKnob {41 disable_3 l "disable project" T projectname.disable}
+ addUserKnob {41 disable_4 l "disable artist" T artist.disable}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 Font n 1}
+ addUserKnob {2 font}
+ font C:/Windows/Fonts/arial.ttf
+ addUserKnob {16 size}
+ size 25
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 384
+  ypos -96
+ }
+add_layer {rgba redguard1.glow}
+ Text {
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name frame
+  xpos 384
+  ypos -54
+ }
+ Text {
+  message "\[file rootname \[file tail \[value root.name] ] ]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify center
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name shotname
+  xpos 384
+  ypos -30
+ }
+set N684fef0 [stack 0]
+ Text {
+  inputs 0
+  message WIP
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify right
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name shotstatus_final
+  xpos 274
+  ypos -62
+ }
+ Text {
+  inputs 0
+  message FINAL
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify right
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name shotstatus_wip
+  xpos 151
+  ypos -6
+ }
+ Switch {
+  inputs 2
+  which 1
+  name Switch1
+  xpos 274
+  ypos -6
+ }
+push $N684fef0
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 384
+  ypos -6
+ }
+ Text {
+  message "\[value parent.Company]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  yjustify bottom
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name companyname
+  xpos 384
+  ypos 18
+ }
+ Text {
+  message "\[value parent.Project]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify center
+  yjustify bottom
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name projectname
+  xpos 384
+  ypos 58
+ }
+ Text {
+  message "\[value parent.Artist]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify right
+  yjustify bottom
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name artist
+  xpos 384
+  ypos 82
+ }
+ Output {
+  name Output1
+  xpos 384
+  ypos 112
+ }
+ Viewer {
+  inputs 2
+  input_process false
+  name Viewer1
+  xpos 570
+  ypos 65
+ }
+end_group
+#! C:/Program Files/Nuke6.3v1/Nuke6.3.exe -nx
+version 6.3 v1
+Gizmo {
+ addUserKnob {20 BurnIn}
+ addUserKnob {1 Project}
+ Project projectname
+ addUserKnob {1 Company}
+ Company companyname
+ addUserKnob {1 Artist}
+ Artist artistname
+ addUserKnob {41 disable_7 l final T Switch1.disable}
+ addUserKnob {20 chooseelements l "Choose burn in elements" n 1}
+ addUserKnob {41 disable_1 l "disable frame" T frame.disable}
+ addUserKnob {41 disable_2 l "disable shotname" T shotname.disable}
+ addUserKnob {41 disable_6 l "disable status" T Merge1.disable}
+ addUserKnob {41 disable_5 l "disable company" T companyname.disable}
+ addUserKnob {41 disable_3 l "disable project" T projectname.disable}
+ addUserKnob {41 disable_4 l "disable artist" T artist.disable}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 Font n 1}
+ addUserKnob {2 font}
+ font C:/Windows/Fonts/arial.ttf
+ addUserKnob {16 size}
+ size 25
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 384
+  ypos -96
+ }
+add_layer {rgba redguard1.glow}
+ Text {
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name frame
+  xpos 384
+  ypos -54
+ }
+ Text {
+  message "\[file rootname \[file tail \[value root.name] ] ]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify center
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name shotname
+  xpos 384
+  ypos -30
+ }
+set N684fef0 [stack 0]
+ Text {
+  inputs 0
+  message WIP
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify right
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name shotstatus_final
+  xpos 274
+  ypos -62
+ }
+ Text {
+  inputs 0
+  message FINAL
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify right
+  yjustify top
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name shotstatus_wip
+  xpos 151
+  ypos -6
+ }
+ Switch {
+  inputs 2
+  which 1
+  name Switch1
+  xpos 274
+  ypos -6
+ }
+push $N684fef0
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 384
+  ypos -6
+ }
+ Text {
+  message "\[value parent.Company]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  yjustify bottom
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name companyname
+  xpos 384
+  ypos 18
+ }
+ Text {
+  message "\[value parent.Project]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify center
+  yjustify bottom
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name projectname
+  xpos 384
+  ypos 58
+ }
+ Text {
+  message "\[value parent.Artist]"
+  font "\[value parent.font]"
+  size {{parent.size i}}
+  xjustify right
+  yjustify bottom
+  Transform 1
+  box {{curve i} {curve i} {root.format.r i} {root.format.t i}}
+  center {1150 514}
+  name artist
+  xpos 384
+  ypos 82
+ }
+ Output {
+  name Output1
+  xpos 384
+  ypos 112
+ }
+ Viewer {
+  inputs 2
+  input_process false
+  name Viewer1
+  xpos 570
+  ypos 65
+ }
+end_group

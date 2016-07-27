@@ -1,0 +1,682 @@
+Gizmo {
+ inputs 3
+ tile_color 0x5236ff
+ gl_color 0xff0000ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font_size 14
+ note_font_color 0xff
+ addUserKnob {20 User l "Position Finder"}
+ addUserKnob {26 extras l "" t "here you can choose the way you would like find your position\n\n1 I have a Camera and great Matchmove\n   means you have only a tracked Camera - you will have to go normal way in finding position\n\n2  I have a Camera and Geometry\n   see little input called \"Extra\"? this is your new friend, if you have by any chance a geometry of the Scene - can be a model, lidar scan or just a bunch Nuke objects, connect it to the \"Extra\" input and press \"Set\" button, congrats you found your 3D position and ready sdjust your perspective(no need to bother with \"Z\" and \"Happy\" button\n\n3  I have a Camera and Wpos pass\n    if your nice 3D Artist rendered for you a Wpos pass, connect it to the \"Extra\" input and press \"Set\" button, congrats you found your 3D position and ready sdjust your perspective(no need to bother with \"Z\" and \"Happy\" button\n\n4  I have a Camera and Card\n    Let say you have animated Card and you want to translate it's position to Screen space, connect the Card to the .... guess what and press \"GO\" button\n    DONE!!!" +STARTLINE T "I have a Camera and"}
+ addUserKnob {4 extraStuff l "" t "here you can choose the way you would like find your position\n\n1 I have a Camera and great Matchmove\n   means you have only a tracked Camera - you will have to go normal way in finding position\n\n2  I have a Camera and Geometry\n   see little input called \"Extra\"? this is your new friend, if you have by any chance a geometry of the Scene - can be a model, lidar scan or just a bunch Nuke objects, connect it to the \"Extra\" input and press \"Set\" button, congrats you found your 3D position and ready sdjust your perspective(no need to bother with \"Z\" and \"Happy\" button\n\n3  I have a Camera and Wpos pass\n    if your nice 3D Artist rendered for you a Wpos pass, connect it to the \"Extra\" input and press \"Set\" button, congrats you found your 3D position and ready sdjust your perspective(no need to bother with \"Z\" and \"Happy\" button\n\n4  I have a Camera and Card\n    Let say you have animated Card and you want to translate it's position to Screen space, connect the Card to the .... guess what and press \"GO\" button\n    DONE!!!" -STARTLINE M {"great match move!!!" Geometry "Wpos pass" Card "" "" ""}}
+ addUserKnob {3 extraHelper l INVISIBLE -STARTLINE +INVISIBLE}
+ extraHelper {{"\[numvalue extraStuff]"}}
+ addUserKnob {26 ""}
+ addUserKnob {26 ds l <b>1. t "first step in finding desired position.\n\nplease find some feature on the screen, feature you can see on the other frames as well.\nnot position the picker on this feature and press \"Set\" button\n\nthe reference frame is set, yo should see now the grid centering on the \"picker\"\n\nthere is a chance that \"grid\" will be very small or very big depends on the size of your scene, feel free to adjust it's size with the u_scale knob.\n\nnow you ready for the next step" T "Set reference frame."}
+ addUserKnob {22 REF l Set t "first step in finding desired position.\n\nplease find some feature on the screen, feature you can see on the other frames as well.\nnot position the picker on this feature and press \"Set\" button\n\nthe reference frame is set, yo should see now the grid centering on the \"picker\"\n\nthere is a chance that \"grid\" will be very small or very big depends on the size of your scene, feel free to adjust it's size with the u_scale knob.\n\nnow you ready for the next step" T "nuke.toNode(\"Switch1\")\['disable'].setValue(0)\nn = nuke.thisNode()\ncam=n.input(1)\nclas = cam.Class()\nif \"Camera\" in clas:\n\tnuke.toNode(\"NoOp1\")\['pick'].execute()\n\tn\['refFrame'].setValue(nuke.frame())\n\tnuke.toNode(\"Switch\")\['which'].setValue(0)\n\tr=nuke.toNode(\"Perspective\")\n\tr.setSelected(False)\n\tr.hideControlPanel()\n\tr\['rotate'].setValue(0)\n\tr\['translate'].setValue(0)\n\tr\['scaling'].setValue(1)\n\tr\['uniform_scale'].setValue(1000)\n\nelse:\n\tnuke.message(\"please connect Camera node straight to the node, do not use nodes in between, thank you for your collaboration\")\n\nif n\['extraHelper'].value()==1 or n\['extraHelper'].value()==2:\n    n\['Adjust'].execute()\n    n\['group'].setFlag(1)\n    n\[\"Zfind\"].setValue(0)\nelse:\n    n\['group'].clearFlag(1)" +STARTLINE}
+ addUserKnob {3 refFrame l "" -STARTLINE}
+ refFrame 1011
+ addUserKnob {41 picker l | -STARTLINE T NoOp1.picker}
+ addUserKnob {41 hue_rotation l hue T HueShift1.hue_rotation}
+ addUserKnob {26 ""}
+ addUserKnob {20 group l "" +STARTLINE n 1}
+ addUserKnob {26 d l "<b>2. " t "Second step help us to find exact position in 3d space\n\nstart advance few frames, you should see that a grid is not fixed anymore to your reference feature, from the moment you noticing it is happening adjust \"Z\" knob to bring the \"grid\" back to the place it was. already after first adjustment you will see that grid is sticking well to the feature. Now you can go to some other frame and refine the position again if needed\n\nTipp:\nit is possible that already after one or two frames of advancement your grid will disappear it can happen because of the size of your scene. just play with \"Z\" slider till you will bring the \"grid\" back to the screen. it is possible that you will have to go to negative values as well." T "go to some other frame and adjust Z."}
+ addUserKnob {7 Zfind l Z t "Second step help us to find exact position in 3d space\n\nstart advance few frames, you should see that a grid is not fixed anymore to your reference feature, from the moment you noticing it is happening adjust \"Z\" knob to bring the \"grid\" back to the place it was. already after first adjustment you will see that grid is sticking well to the feature. Now you can go to some other frame and refine the position again if needed.\nonce you happy with the result\npress \"Happy\" button!!!\n\nTipp:\nit is possible that already after one or two frames of advancement your grid will disappear it can happen because of the size of your scene. just play with \"Z\" slider till you will bring the \"grid\" back to the screen. it is possible that you will have to go to negative values as well." R -100 100}
+ addUserKnob {26 ""}
+ addUserKnob {26 s l <b>3. t "this will create an axis in exact 3D position you found\nplease adjust (if needed)\nrotation of the card to match exact perspective you want\n\nTipp :\nadjusting \"scale\" and \"u_scale\":\nbe carefull when scaling up the card!!! from the moment one of the corners of the \"grid\" is passing the origin of the Camera the calculation will fail. So as a good practice leave your \"grid\" not too big it will not matter for final calculation since it still will lay on the same plane.\n\n" T "Happy with Z? Press \"Happy\" button and adjust perspective."}
+ addUserKnob {22 Adjust l Happy!!! t "this will create an axis in exact 3D position you found\nplease adjust (if needed)\nrotation of the card to match exact perspective you want\n\nTipp :\nadjusting \"scale\" and \"u_scale\":\nbe carefull when scaling up the card!!! from the moment one of the corners of the \"grid\" is passing the origin of the Camera the calculation will fail. So as a good practice leave your \"grid\" not too big it will not matter for final calculation since it still will lay on the same plane.\n\n" T "def consolidateAnimatedNodeTransforms():\n    # This is based on Ivan B's consolidateNodeTransforms().\n    # Added support for animated Axis/Camera nodes. Also, if it's\n    # a Camera being concatenated, then projection settings get copied.\n    # -Ean C 24/Feb/2011\n    import math\n    import nuke\n    axisNode = nuke.toNode('Z_finder')\n    m = nuke.math.Matrix4()\n\n    nuke.toNode(\"Switch\")\['which'].setValue(1)\n    n = nuke.toNode('Perspective')\n    n\['scaling'].setExpression('curve')\n    n\['rotate'].setExpression('curve')\n    n\['translate'].setExpression('curve')\n\n    first_frame_v = nuke.root()\['first_frame'].value()\n    last_frame_v = nuke.root()\['last_frame'].value()\n\n    scale_anim = n\['scaling'].animations()\n    rotate_anim = n\['rotate'].animations()\n    translate_anim = n\['translate'].animations()\n\n    for i in range(int(first_frame_v), int(last_frame_v+1)):\n\n        k = axisNode\['world_matrix']\n        k_time_aware = axisNode\['world_matrix'].getValueAt(i)\n\n\n        for y in range(k.height()):\n            for x in range(k.width()):\n                m\[x+(y*k.width())] = k_time_aware\[y + k.width()*x]\n\n\n            transM =nuke.math.Matrix4(m)\n            transM.translationOnly()\n            rotM = nuke.math.Matrix4(m)\n            rotM.rotationOnly()\n            scaleM = nuke.math.Matrix4(m)\n            scaleM.scaleOnly()\n\n            scale = (scaleM.xAxis().x, scaleM.yAxis().y, scaleM.zAxis().z)\n\n            rot = rotM.rotationsZXY()\n            rotDegrees = ( math.degrees(rot\[0]), math.degrees(rot\[1]), math.degrees(rot\[2]) )\n\n\n            trans = (transM\[12], transM\[13], transM\[14])\n\n            for s in range(3):\n                scale_anim\[s].setKey(i, scale\[s])\n                rotate_anim\[s].setKey(i, rotDegrees\[s])\n                translate_anim\[s].setKey(i, trans\[s])\n    n\['translate'].clearAnimated()\n    n\['rotate'].clearAnimated()\n    n\['scaling'].clearAnimated()\n    n\['uniform_scale'].setValue(nuke.toNode(\"Card1\")\['uniform_scale'].value())\n    #nuke.show((n), True)\n    n.setSelected(True)\n    r=nuke.toNode(\"look_at_Axis\")\n    r.setSelected(False)\n    r.hideControlPanel()\t\t\t\nconsolidateAnimatedNodeTransforms()\n" +STARTLINE}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {41 translate T Perspective.translate}
+ addUserKnob {41 rotate l "rotate    " T Perspective.rotate}
+ addUserKnob {41 scaling l "scale     " T Perspective.scaling}
+ addUserKnob {41 uniform_scale l "u_scale " T Perspective.uniform_scale}
+ addUserKnob {26 ""}
+ addUserKnob {26 r l <b>4. t "this little fellow will create for you three nodes\n\n1. CProject - basically it is a cornerPin node with steroids it allowes to you very easy set Reference point for your \"projection\", stabilize, crop. all in one\n2. CornerPin with a transformation baked in the \"matrix\" knob - usually i am using it to copy to GridWarp or SplineWarp\n3. Roto - the node i am using the most.\nthe transformation is baked into the root matrix.\nso just pick the frame create the rotoshape and enjoy!" T "Time to create our Nodes!"}
+ addUserKnob {22 C2T l <b>GO! t "this little fellow will create for you three nodes\n\n1. CProject - basically it is a cornerPin node with steroids it allowes to you very easy set Reference point for your \"projection\", stabilize, crop. all in one\n2. CornerPin with a transformation baked in the \"matrix\" knob - usually i am using it to copy to GridWarp or SplineWarp\n3. Roto - the node i am using the most.\nthe transformation is baked into the root matrix.\nso just pick the frame create the rotoshape and enjoy!" T "\n\na=nuke.thisNode()\na.begin()\n\nx=int(a\['xpos'].value())\ny=int(a\['ypos'].value())\np = nuke.toNode(\"Perspective\")\nt=p\['translate'].value()\nprint t\nr=p\['rotate'].value()\ns=p\['scaling'].value()\nus=p\['uniform_scale'].value()\nnuke.toNode(\"Switch\")\['which'].setValue(1)\na.end()\nn = nuke.nodes.Card2()\nn.setXYpos(x,y+100)\nn\['translate'].setValue(t)\nn\['rotate'].setValue(r)\nn\['scaling'].setValue(s)\nn\['uniform_scale'].setValue(us)\n\nfor node in nuke.allNodes():\n    node.setSelected(False)\na.input(1).setSelected(True)\na.input(0).setSelected(True)\n\nif a\['extraHelper'].value()==3:\n    a.input(2).setSelected(True)\nelse:\n    n.setSelected(True)\n\nwith nuke.Root():\n    #C2T new\n    import thread, threading, time, nuke, math, nukescripts\n\n    def execRC(first,last):\n        runMe = True\n        while runMe == True:\n            nuke.execute('r1',first,last)  \n            nuke.execute('r2',first,last) \n            nuke.execute('r3',first,last) \n            nuke.execute('r4',first,last) \n            stop_event.set()\n            runMe = False\n            print 'reconcile done'\n            break\n\n    def getCamera():\n        cameraClasses = \['Camera', 'Camera2']\n        redDotColor = 3070231295\n\n        allCamsInScript = \[]\n        for n in nuke.allNodes():\n            if n.Class() in cameraClasses:\n                allCamsInScript.append(n.name())\n\n\n        # by selection ...\n        for n in nuke.selectedNodes():\n            if n.Class() in cameraClasses:\n                cam = n\n                print 'got camera by selection:', cam.name()\n                return cam\n                \n        # by label ...\n        for d in nuke.allNodes(): \n            names = \['MainCam','main_cam','MasterCam','master_cam']\n            for one in names:\n                if d\['label'].value() ==one :\n                    cam = d\n                    print 'got camera by label:', cam.name()\n                    return cam\n\n        # by dropdown ...\n        camListPrint = ''\n        for c in allCamsInScript:\n            camListPrint = camListPrint + c + ' '\n        p = nuke.Panel('select camera')\n        p.addEnumerationPulldown('camera', camListPrint)\n        p.show()\n        if p.value('camera'):\n            # ok pressed\n            cam = nuke.toNode(p.value('camera'))\n            print 'got camera by dropdown:', cam.name()\n            return cam\n\n\n    def BGdetect():\n        for n in nuke.selectedNodes():\n            #if 'format' in n.knobs():\n            if 'xform_order' not in n.knobs():\n                Name = n.name()\n                Width = n.width()\n                Height = n.height()\n                Aspect = n.pixelAspect()\n                form = str(Width)+\" \"+str(Height)+\" \"+str(Aspect)\n                print 'format selected:'+\" \"+form\n                \n                bg = nuke.nodes.Constant(postage_stamp = False)\n                bg\['format'].setValue(nuke.addFormat(form))\n                return bg\n        #no format found ...\n        \n        #bg = nuke.createNode('Constant')\n        #bg = nuke.nodes.Constant(postage_stamp = False)\n        #return bg\n            \n    def C2T(dialog):\n\n        # classes\n        cameraClasses = \['Camera', 'Camera2']\n        cardClasses = \['Card', 'Card2']\n\n        #card\n        card = None\n        for n in nuke.selectedNodes():\n            if n.Class() in cardClasses:\n                card = n\n                break\n        if card == None:\n            nuke.message('no card selected?')\n            return\n\n\n            \n            \n        # initialize tool values for auto-creation\n        label = card\['label'].value()\n        ref = int(nuke.frame())\n        first = int(nuke.Root().knob('first_frame').getValue())\n        last = int(nuke.Root().knob('last_frame').getValue())\n        bg = BGdetect() \n        cam = getCamera()\n        rootAspect = nuke.Root()\['format'].value().pixelAspect()\n        x = card.xpos() \n        y = card.ypos()\n        \n        bg.setXYpos(x,y+50)\n        \n        if dialog == True:\n            # ask for tool values\n            \n            # all cams\n            \n            allCamsInScript = \[]\n            for n in nuke.allNodes():\n                if n.Class() in cameraClasses:\n                    allCamsInScript.append(n.name())\n            allCamsInScript.remove(cam.name()) # remove best camera ...\n            allCamsInScript.insert(0,cam.name()) # ... and insert at beginning\n            camListPrint = ''\n            for c in allCamsInScript:\n                camListPrint = camListPrint + c + ' '\n            camListPrint = camListPrint\[:-1]\n            \n            #bg, info only. will be determined by selected node - if any ..\n\n            #formatPrint = form\n\n            #panel\n            panel = nuke.Panel(\"C2T\")\n            panel.addSingleLineInput(\"label:\", card\['label'].value())\n            panel.addSingleLineInput(\"range:\", str(first)+\"-\"+str(last))\n            panel.addSingleLineInput(\"ref frame:\", str(ref))\n            panel.addEnumerationPulldown(\"camera:\", camListPrint)\n            #panel.addSingleLineInput(\"format:\", formatPrint)\n            if label == '':\n                panel.addBooleanCheckBox('reverse label', True)\n                \n            #panel.show()\n            \n            if panel.show():\n                first = int(panel.value(\"range:\").split(\"-\")\[0])\n                last = int(panel.value(\"range:\").split(\"-\")\[1])\n                ref = int(panel.value(\"ref frame:\"))\n                cam = nuke.toNode(panel.value(\"camera:\"))\n                label = panel.value(\"label:\")\n                # reverse label\n                if panel.value(\"reverse label\") == True:\n                    card\['label'].setValue(panel.value(\"label:\"))\n            else:\n                nuke.message('canceled')\n                nuke.delete(bg) # clean the mess up\n                return\n        else:\n            print 'no dialog, use auto-created input values'\n        \n        # labels are usefull!!\n        if label == '':\n            panel = nuke.Panel(\"C2T label\")\n            panel.addSingleLineInput(\"label:\", '')\n            panel.addBooleanCheckBox('reverse label', True)\n            if panel.show():\n                label = panel.value(\"label:\")\n                if panel.value(\"reverse label\") == True:\n                    card\['label'].setValue(panel.value(\"label:\"))\n                else:\n                    nuke.message('no label - no roto!')\n                    nuke.delete(bg) # clean the mess up\n                    return\n            else:\n                return\n        print '########'\n        print 'first', first\n        print 'last', last\n        print 'ref', ref\n        #print 'bg', form\n        print 'cam', cam.name()\n        print 'card', card.name()\n        print 'label', label\n        print '########' \n        \n        # create master axis and corner slaves\n        \n        aM = nuke.nodes.Axis2(name = 'aM', xform_order = 3, xpos = x, ypos = y+50)\n        uscale = card\['uniform_scale'].value()\n        scalex = card\['scaling'].value(0)\n        scaley = card\['scaling'].value(1)\n        \n        if card\['translate'].isAnimated() is True:\n            aM\['translate'].copyAnimations(card\['translate'].animations())\n        else:\n            aM\['translate'].setValue(card\['translate'].value())\n        \n        if card\['rotate'].isAnimated() is True:\n            aM\['rotate'].copyAnimations(card\['rotate'].animations())\n        else:\n            aM\['rotate'].setValue(card\['rotate'].value())\n            \n            \n        # slaves\n        a1 = nuke.nodes.Axis2(name = 'a1', xform_order = 1, xpos = x, ypos = y+50)\n        a2 = nuke.nodes.Axis2(name = 'a2', xform_order = 1, xpos = x, ypos = y+50)\n        a3 = nuke.nodes.Axis2(name = 'a3', xform_order = 1, xpos = x, ypos = y+50)\n        a4 = nuke.nodes.Axis2(name = 'a4', xform_order = 1, xpos = x, ypos = y+50)\n        \n        a1\['translate'].setValue(\[-0.5*uscale*scalex,rootAspect*-0.5*uscale*scaley,0])\n        a2\['translate'].setValue(\[0.5*uscale*scalex,rootAspect*-0.5*uscale*scaley,0])\n        a3\['translate'].setValue(\[0.5*uscale*scalex,rootAspect*0.5*uscale*scaley,0])\n        a4\['translate'].setValue(\[-0.5*uscale*scalex,rootAspect*0.5*uscale*scaley,0])\n        \n        aL = \[a1,a2,a3,a4]\n        \n        for a in aL:\n            a.setInput(0,aM)\n\n        # reconcile\n        r1 = nuke.nodes.Reconcile3D(name = 'r1', xpos = x, ypos = y+50)\n        r2 = nuke.nodes.Reconcile3D(name = 'r2', xpos = x, ypos = y+50)\n        r3 = nuke.nodes.Reconcile3D(name = 'r3', xpos = x, ypos = y+50)\n        r4 = nuke.nodes.Reconcile3D(name = 'r4', xpos = x, ypos = y+50)\n        \n        rL = \[r1,r2,r3,r4]\n        \n        for r in rL:\n            r.setInput(2,aL\[rL.index(r)])\n            r.setInput(1,cam)\n            r.setInput(0,bg)\n            \n        # run with threading\n        global stop_event \n        stop_event = threading.Event()\n        threading.Thread(target=execRC, kwargs=dict(first=first,last=last)).start() \n        while not stop_event.is_set():\n            time.sleep(0.1)\n        \n        # corner pin normal\n\n\n        try :\n            cp = nuke.nodes.CProject(xpos = x+110, ypos = y)\n            cp\['camera'].setValue(cam.name())\n            cp\['translate'].setValue(card\['translate'].value())\n            cp\['rotation'].setValue(card\['rotate'].value())\n            cp\['element'].setValue(label)\n            cp\['name'].setValue(cp\['name'].value().replace('CProject','CP')+\"_\"+label)\n            cp\['refFrame'].setValue(str(ref))\n        except:\n            cp = nuke.nodes.CornerPin2D(label = label +' ('+str(ref)+')', xpos = x+110, ypos = y)  \n        cp\['to1'].copyAnimations(r1\['output'].animations())\n        cp\['to2'].copyAnimations(r2\['output'].animations())\n        cp\['to3'].copyAnimations(r3\['output'].animations())\n        cp\['to4'].copyAnimations(r4\['output'].animations())\n        cp\['from1'].setValue(r1\['output'].getValueAt(ref))\n        cp\['from2'].setValue(r2\['output'].getValueAt(ref))\n        cp\['from3'].setValue(r3\['output'].getValueAt(ref))\n        cp\['from4'].setValue(r4\['output'].getValueAt(ref))\n\n        \n        \n        \n        # corner pin matrix & roto \n        cpm = nuke.nodes.CornerPin2D(label = label+' matrix ('+str(ref)+')', xpos = x+220, ypos = y)   \n        roto = nuke.nodes.Roto( xpos = x+330, ypos = y) \n        roto\['name'].setValue(roto\['name'].value().replace('Roto','R')+\"_\"+label)\n        nuke.show(roto)\n        \n        roto_transform = roto\['curves'].rootLayer.getTransform() # transform of root layer in roto\n        cpm\['transform_matrix'].setAnimated()\n        projectionMatrixTo = nuke.math.Matrix4()\n        projectionMatrixFrom = nuke.math.Matrix4()\n\n        frame = first\n        while frame<last+1:\n\n            to1x = cp\['to1'].valueAt(frame)\[0]\n            to1y = cp\['to1'].valueAt(frame)\[1]\n            to2x = cp\['to2'].valueAt(frame)\[0]\n            to2y = cp\['to2'].valueAt(frame)\[1]\n            to3x = cp\['to3'].valueAt(frame)\[0]\n            to3y = cp\['to3'].valueAt(frame)\[1]\n            to4x = cp\['to4'].valueAt(frame)\[0]\n            to4y = cp\['to4'].valueAt(frame)\[1]\n\n            from1x = cp\['from1'].valueAt(frame)\[0]\n            from1y = cp\['from1'].valueAt(frame)\[1]\n            from2x = cp\['from2'].valueAt(frame)\[0]\n            from2y = cp\['from2'].valueAt(frame)\[1]\n            from3x = cp\['from3'].valueAt(frame)\[0]\n            from3y = cp\['from3'].valueAt(frame)\[1]\n            from4x = cp\['from4'].valueAt(frame)\[0]\n            from4y = cp\['from4'].valueAt(frame)\[1]\n        \n            projectionMatrixTo.mapUnitSquareToQuad(to1x,to1y,to2x,to2y,to3x,to3y,to4x,to4y)\n            projectionMatrixFrom.mapUnitSquareToQuad(from1x,from1y,from2x,from2y,from3x,from3y,from4x,from4y)\n            theCornerpinAsMatrix = projectionMatrixTo*projectionMatrixFrom.inverse()\n            theCornerpinAsMatrix.transpose()\n\n            for i in range(0,16):\n                cpm\['transform_matrix'].setValueAt(theCornerpinAsMatrix\[i],frame,i)\n                \n            for i in range(0,16):\n                roto_transform.getExtraMatrixAnimCurve(0,i).addKey(frame,cpm\['transform_matrix'].getValueAt(frame,i))  \n                \n            frame = frame + 1\n\n        roto\['curves'].changed()\n        # check for turnover\n        k = cp\['to1']\n        vals = \[]\n        valSort =\[]\n        for i in range(first,last+1):\n            vals.append(k.valueAt(i,0))\n            valSort.append(k.valueAt(i,0))\n        valSort.sort()\n        min = valSort\[0]\n        max = valSort\[-1]\n        warning = ''\n        if math.fabs(vals.index(max)-vals.index(min)) == 1:\n            warning = 'Warning: perspective problem detected'\n\n\n        #clean up\n        rmL = \[r1,r2,r3,r4,a1,a2,a3,a4,aM]\n        for i in rmL:\n            nuke.delete(i)\n        nuke.delete(bg)\n        \n        if dialog == False:\n            roto.setXYpos(x+100,y)\n            #remove all non roto nodes\n            nuke.delete(cp)\n            nuke.delete(cpm)\n            \n            \n        # show warning if any\n        if warning != '':\n            nuke.message(warning)\n\n        print 'C2T done.'\n\n\n    C2T(True)\n\n\n\n\n" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 credit l " &copy;" T "Helge Stang & Alexey Kuchinski"}
+ addUserKnob {20 help_1 l Help}
+ addUserKnob {26 hhelp l "" +STARTLINE T "---------------------------------------------------\nStep 1\n\nplease find some feature on the screen, feature you can see on the other frames as well.\nnot position the picker on this feature and press \"Set\" button\n\nthe reference frame is set, yo should see now the grid centering on the \"picker\"\n\nthere is a chance that \"grid\" will be very small or very big depends on the size of your scene, feel free to adjust it's size with the u_scale knob.\n\nnow you ready for the next step\n\n---------------------------------------------------\nStep 2\n\nLet's find exact position in 3d space\n\nstart advance few frames, you should see that a grid is not fixed anymore to your reference feature, from the moment you noticing it is happening adjust \"Z\" knob to bring the \"grid\" back to the place it was. already after first adjustment you will see that grid is sticking well to the feature. Now you can go to some other frame and refine the position again if needed\n\nTipp:\nit is possible that already after one or two frames of advancement your grid will disappear it can happen because of the size of your scene. just play with \"Z\" slider till you will bring the \"grid\" back to the screen. it is possible that you will have to go to negative \nvalues as well.\n\n---------------------------------------------------\nStep 3\n\nthis will create an axis in exact 3D position you found\nplease adjust (if needed)\nrotation of the card to match exact perspective you want\n\nTipp :\nadjusting \"scale\" and \"u_scale\":\nbe carefull when scaling up the card!!! from the moment one of the corners of the \"grid\" is passing the origin of the Camera the calculation will fail. So as a good practice leave your \"grid\" not too big it will not matter for final calculation since it still will lay on the same plane.\n\n\n---------------------------------------------------\nStep 4\n\nButton \"Go\"  will create for you few nodes\n\n1. CProject - basically it is a cornerPin node with steroids it allowes to you very easy set Reference point for your \"projection\", stabilize, crop. all in one\n2. CornerPin with a transformation baked in the \"matrix\" knob - usually i am using it to copy to GridWarp or SplineWarp\n3. Roto - the node i am using the most.\nthe transformation is baked into the root matrix.\nso just pick the frame create the rotoshape and enjoy!\n"}
+}
+ Axis {
+  inputs 0
+  name Perspective
+  selected true
+  xpos -621
+  ypos 394
+ }
+ Axis {
+  inputs 0
+  translate {1268.670532 824.0136719 2760.921143}
+  rotate {{degrees(atan((parent.input1.translate.y(ref)-translate.y)/sqrt(pow2(sqrt(pow2(parent.input1.translate.x(ref)-translate.x)+pow2(parent.input1.translate.z(ref)-translate.z))))))} {"parent.input1.translate.x(ref)-translate.x >= 0 ? 270-degrees(atan((parent.input1.translate.z(ref)-translate.z)/(parent.input1.translate.x(ref)-translate.x))): -degrees(atan((parent.input1.translate.z(ref)-translate.z)/(parent.input1.translate.x(ref)-translate.x)))-270"} {curve}}
+  name look_at_Axis
+  xpos -494
+  ypos 264
+  addUserKnob {20 User}
+  addUserKnob {3 ref}
+  ref {{parent.refFrame}}
+ }
+ Axis {
+  display solid+wireframe
+  translate {0 0 {parent.Zfind}}
+  uniform_scale {{parent.Perspective.uniform_scale}}
+  name Z_finder
+  xpos -494
+  ypos 346
+ }
+ Switch {
+  inputs 2
+  which 1
+  name Switch
+  label "\[value which]"
+  xpos -504
+  ypos 478
+ }
+ Dot {
+  name Dot1
+  xpos -470
+  ypos 545
+ }
+set N65de9280 [stack 0]
+ Dot {
+  name Dot8
+  xpos -470
+  ypos 583
+ }
+ Input {
+  inputs 0
+  name Extra
+  xpos -1446
+  ypos -468
+  number 2
+ }
+ Dot {
+  name Dot11
+  xpos -1415
+  ypos 566
+ }
+set Ne0dec0d0 [stack 0]
+ Dot {
+  name Dot13
+  xpos -1415
+  ypos 644
+ }
+set N646846a0 [stack 0]
+ Dot {
+  name Dot12
+  xpos -1415
+  ypos 688
+ }
+set N657bf080 [stack 0]
+ Dot {
+  name Dot9
+  xpos -1412
+  ypos 1060
+ }
+ Input {
+  inputs 0
+  name Camera
+  xpos -587
+  ypos 823
+  number 1
+ }
+set N2bda5eb0 [stack 0]
+push $Ne0dec0d0
+ Axis {
+  inputs 0
+  translate {{parent.input1.translate} {parent.input1.translate} {parent.input1.translate}}
+  rotate {{parent.input1.rotate} {parent.input1.rotate} {parent.input1.rotate}}
+  name Axis1
+  xpos -842
+  ypos 367
+ }
+ ColorBars {
+  inputs 0
+  name ColorBars1
+  xpos -973
+  ypos 193
+ }
+ Card2 {
+  rows 4
+  columns 4
+  z 10
+  lens_in_focal {{parent.input1.focal}}
+  lens_in_haperture {{parent.input1.haperture}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card2
+  xpos -973
+  ypos 331
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo2
+  xpos -973
+  ypos 387
+ }
+ Switch {
+  inputs 2
+  which {{parent.extraHelper==1?1:0}}
+  name GeoInput
+  xpos -973
+  ypos 562
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos 803
+  ypos -535
+ }
+ Dot {
+  name Dot4
+  xpos 837
+  ypos -465
+ }
+set N641d00b0 [stack 0]
+ Dot {
+  name Dot5
+  xpos -1119
+  ypos -465
+ }
+ Dot {
+  name Dot6
+  xpos -1119
+  ypos 911
+ }
+ ScanlineRender {
+  inputs 3
+  motion_vectors_type distance
+  output_shader_vectors true
+  P_channel rgb
+  name ScanlineRender2
+  xpos -973
+  ypos 907
+ }
+ Switch {
+  inputs 2
+  which {{parent.extraHelper==2?1:0}}
+  name WpasRender
+  xpos -973
+  ypos 1056
+ }
+ NoOp {
+  name NoOp1
+  tile_color 0xffff
+  gl_color 0xffff
+  xpos -973
+  ypos 1652
+  addUserKnob {20 User}
+  addUserKnob {22 pick T "a=nuke.toNode(\"NoOp1\")\nr=nuke.sample(a,\"red\",a\['picker'].value(0),a\['picker'].value(1),1,1)\ng=nuke.sample(a,\"green\",a\['picker'].value(0),a\['picker'].value(1),1,1)\nb=nuke.sample(a,\"blue\",a\['picker'].value(0),a\['picker'].value(1),1,1)\n#nuke.tprint(r)\nnuke.toNode('look_at_Axis')\['translate'].setValue(\[r,g,b])" +STARTLINE}
+  addUserKnob {12 picker}
+  picker {1372 110}
+ }
+ Clamp {
+  channels rgba
+  name Clamp1
+  xpos -122
+  ypos 1652
+ }
+push $N2bda5eb0
+push $N657bf080
+ Wireframe {
+  inputs 0
+  operation "see through"
+  line_width 2
+  name Wireframe1
+  xpos -758
+  ypos 581
+ }
+push $N646846a0
+ ApplyMaterial {
+  inputs 2
+  name ApplyMaterial1
+  xpos -758
+  ypos 640
+ }
+push 0
+ Switch {
+  inputs 2
+  which {{parent.extraHelper==1?1:0}}
+  name GeoInput1
+  xpos -475
+  ypos 640
+ }
+push $N65de9280
+ Constant {
+  inputs 0
+  format "512 512 0 0 512 512 1 square_512"
+  name Constant2
+  tile_color 0xff
+  xpos -224
+  ypos -312
+  postage_stamp false
+ }
+set Nece727c0 [stack 0]
+ Wireframe {
+  operation "see through"
+  line_width 2
+  line_color {1 0 0 1}
+  name Wireframe4
+  xpos -639
+  ypos -93
+ }
+set Nfc34b2d0 [stack 0]
+ Card2 {
+  display wireframe
+  image_aspect false
+  rows 1
+  columns 1
+  translate {0.5 -0.5 0}
+  uniform_scale 0.03
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card9
+  xpos -888
+  ypos -46
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ Dot {
+  name Dot19
+  xpos -854
+  ypos 63
+ }
+push $Nfc34b2d0
+ Card2 {
+  display wireframe
+  image_aspect false
+  rows 1
+  columns 1
+  translate {0.5 0.5 0}
+  uniform_scale 0.03
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card8
+  xpos -803
+  ypos -43
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ Dot {
+  name Dot18
+  xpos -769
+  ypos 37
+ }
+push $Nfc34b2d0
+ Card2 {
+  display wireframe
+  image_aspect false
+  rows 1
+  columns 1
+  translate {-0.5 -0.5 0}
+  uniform_scale 0.03
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card7
+  xpos -721
+  ypos -45
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ Dot {
+  name Dot17
+  xpos -687
+  ypos 11
+ }
+push $Nfc34b2d0
+ Card2 {
+  display wireframe
+  image_aspect false
+  rows 1
+  columns 1
+  translate {-0.5 0.5 0}
+  uniform_scale 0.03
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card6
+  xpos -639
+  ypos -48
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ MergeGeo {
+  inputs 2
+  selectable false
+  name MergeGeo5
+  xpos -639
+  ypos 7
+ }
+ MergeGeo {
+  inputs 2
+  selectable false
+  name MergeGeo6
+  xpos -639
+  ypos 33
+ }
+ MergeGeo {
+  inputs 2
+  selectable false
+  name MergeGeo7
+  xpos -639
+  ypos 59
+ }
+ Dot {
+  name Dot16
+  xpos -605
+  ypos 136
+ }
+push $Nece727c0
+ Wireframe {
+  operation "see through"
+  line_width 2
+  line_color {0 1 0 1}
+  name Wireframe5
+  xpos -492
+  ypos -118
+ }
+ Card2 {
+  display wireframe
+  cast_shadow false
+  receive_shadow false
+  image_aspect false
+  rows 2
+  columns 2
+  uniform_scale 100
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card5
+  selected true
+  xpos -492
+  ypos -48
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ Dot {
+  name Dot15
+  xpos -458
+  ypos 16
+ }
+push $Nece727c0
+ Wireframe {
+  operation "see through"
+  line_width 2
+  line_color {1 0 1 1}
+  name Wireframe3
+  xpos -349
+  ypos -98
+ }
+ Card2 {
+  display wireframe
+  rows 2
+  columns 2
+  translate {0 0 -0.01}
+  uniform_scale 0.1
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card4
+  xpos -349
+  ypos -52
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ Dot {
+  name Dot14
+  xpos -315
+  ypos -10
+ }
+push $Nece727c0
+ Wireframe {
+  operation "see through"
+  line_width 2
+  name Wireframe2
+  xpos -229
+  ypos -103
+ }
+ Card2 {
+  display wireframe
+  rows 4
+  columns 4
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card1
+  xpos -229
+  ypos -48
+  addUserKnob {20 User}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+  addUserKnob {22 "floor Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[0,0.5,0])\nn\['pivot'].setValue(\[0,-0.5,0])"}
+  addUserKnob {22 "corner Pivot" -STARTLINE T "n=nuke.thisNode()\nn\['translate'].setValue(\[-.5,.5,0])\nn\['pivot'].setValue(\[.5,-.5,0])"}
+  addUserKnob {22 snapToSelected -STARTLINE T "b=nuke.selectedNode()\['translate'].value()\nn=nuke.thisNode()\nn\['translate'].setValue(b)"}
+ }
+ MergeGeo {
+  inputs 2
+  selectable false
+  name MergeGeo2
+  xpos -229
+  ypos -14
+ }
+ MergeGeo {
+  inputs 2
+  selectable false
+  name MergeGeo3
+  xpos -229
+  ypos 12
+ }
+ MergeGeo {
+  inputs 2
+  selectable false
+  name MergeGeo4
+  xpos -229
+  ypos 132
+ }
+push 0
+ Switch {
+  inputs 2
+  which 1
+  name Switch1
+  label "\[value which]"
+  xpos -229
+  ypos 490
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo1
+  xpos -232
+  ypos 541
+ }
+ MergeGeo {
+  inputs 2
+  selectable false
+  name MergeGeo1
+  xpos -232
+  ypos 640
+ }
+ Switch {
+  inputs 2
+  which {{parent.extraHelper==3?1:0}}
+  name AnimCard
+  xpos -232
+  ypos 677
+ }
+push $N641d00b0
+ Dot {
+  name Dot2
+  xpos 837
+  ypos 839
+ }
+ Dot {
+  name Dot3
+  xpos 837
+  ypos 911
+ }
+set N7f3b0740 [stack 0]
+ Remove {
+  name Remove1
+  xpos 155
+  ypos 907
+ }
+ ScanlineRender {
+  inputs 3
+  shutter 0
+  motion_vectors_type distance
+  name ScanlineRender1
+  xpos -232
+  ypos 913
+ }
+set N651b9e40 [stack 0]
+ HueShift {
+  name HueShift1
+  xpos -70
+  ypos 1022
+ }
+push $N7f3b0740
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 116
+  ypos 1138
+ }
+ Dot {
+  name Dot7
+  xpos 150
+  ypos 1211
+ }
+ Merge2 {
+  inputs 2
+  mix 0.001
+  name Merge1
+  xpos 116
+  ypos 1652
+ }
+ Output {
+  name Output1
+  xpos 116
+  ypos 1852
+ }
+ Axis {
+  inputs 0
+  translate {3994.217285 1141.840637 1395.124756}
+  name Axis2
+  xpos -727
+  ypos 392
+ }
+push $N651b9e40
+ Viewer {
+  frame_range 1001-1034
+  viewerProcess "sRGB (default)"
+  input_process false
+  name Viewer1
+  xpos 1830
+  ypos -10
+  hide_input true
+ }
+end_group

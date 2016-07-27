@@ -1,0 +1,206 @@
+#! C:/Program Files/Nuke9.0v5/nuke-9.0.5.dll -nx
+version 9.0 v5
+Gizmo {
+ inputs 2
+ tile_color 0xd2c09fff
+ addUserKnob {20 User}
+ addUserKnob {26 delightful l "" +STARTLINE T "Delightful lighting based on normals by Khari Anthony"}
+ addUserKnob {26 ""}
+ addUserKnob {41 format T formatMain.format}
+ addUserKnob {26 ""}
+ addUserKnob {41 light_type l "Light Type" T mainlight.light_type}
+ addUserKnob {41 falloff_type l Falloff T mainlight.falloff_type}
+ addUserKnob {12 lightPos l "Light Position" t "where the light be"}
+ addUserKnob {41 rotate l Orientation T mainlight.rotate}
+ addUserKnob {7 lightHeight l "Light Height" t "This will definitely broaden your... high-light. lol"}
+ lightHeight 0.2
+ addUserKnob {41 intensity l Intensity T mainlight.intensity}
+ addUserKnob {41 depthVal l "Depth Value" t "Modifies normal map to increase or decrease the \"height\" of the displacement" T depth.value}
+ addUserKnob {26 shdrsettings l "Shader settings"}
+ addUserKnob {41 diffuse l Diffuse T mainmaterial.diffuse}
+ addUserKnob {41 specular l Specular T mainmaterial.specular}
+ addUserKnob {41 roughness l Roughness t "Or glossiness or specular angle or whatever you want to call it" T mainmaterial.max_shininess}
+ addUserKnob {26 ""}
+ addUserKnob {41 shadowCol l "Shadow Color" T shadowcol.value}
+ addUserKnob {41 lightCol l "Light Color" T lightcol.value}
+ addUserKnob {6 outputfx l "Output effect only (no color)" +STARTLINE}
+}
+ Phong {
+  inputs 0
+  color 0.34
+  diffuse 2
+  specular 2
+  min_shininess 2
+  max_shininess 20
+  name mainmaterial
+  xpos -5430
+  ypos 537
+ }
+ Camera2 {
+  inputs 0
+  name Camera2
+  xpos -5063
+  ypos 516
+ }
+ Axis2 {
+  inputs 0
+  translate {-1.03 -1.03 0}
+  name Axis1
+  xpos -5194
+  ypos 223
+ }
+ Light2 {
+  intensity 0.2
+  falloff_type Quadratic
+  translate {{deLIGHTful.NoOp1.xposcalc} {deLIGHTful.NoOp1.yposcalc} {"deLIGHTful.lightHeight -.9"}}
+  cast_shadows true
+  samples 6.6
+  sample_width 1.7
+  depthmap_slope_bias 0.01
+  name mainlight
+  xpos -5194
+  ypos 348
+ }
+ Input {
+  inputs 0
+  name normal
+  label "normal as rgb"
+  xpos -5590
+  ypos 111
+ }
+ Multiply {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  name depth
+  xpos -5430
+  ypos 114
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name formatMain
+  xpos -5287
+  ypos -74
+ }
+add_layer {n n.red n.green n.blue n.alpha}
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  out n
+  name ShuffleCopy1
+  label "\[value in] -> \[value out]"
+  xpos -5287
+  ypos 111
+ }
+ ReLight {
+  inputs 4
+  normal n
+  name ReLight1
+  xpos -5287
+  ypos 537
+ }
+ Shuffle {
+  out alpha
+  name Shuffle2
+  label "\[value in] -> \[value out]"
+  xpos -5287
+  ypos 615
+ }
+set N10678400 [stack 0]
+ Dot {
+  name Dot5
+  xpos -5114
+  ypos 621
+ }
+push $N10678400
+ Dot {
+  name Dot1
+  xpos -5257
+  ypos 820
+ }
+ Input {
+  inputs 0
+  name color
+  label color
+  xpos -5760
+  ypos -43
+  number 1
+ }
+ Dot {
+  name Dot4
+  xpos -5729
+  ypos 117
+ }
+set N10a57400 [stack 0]
+ Dot {
+  name Dot2
+  xpos -5870
+  ypos 117
+ }
+ Multiply {
+  channels rgba
+  name lightcol
+  xpos -5900
+  ypos 620
+ }
+ Dot {
+  name Dot3
+  xpos -5870
+  ypos 819
+ }
+push $N10a57400
+ Multiply {
+  channels rgba
+  value 0.02
+  name shadowcol
+  xpos -5760
+  ypos 620
+ }
+ Keymix {
+  inputs 3
+  channels rgba
+  name Keymix2
+  xpos -5760
+  ypos 819
+ }
+set N10a56000 [stack 0]
+ Dot {
+  name Dot6
+  xpos -5730
+  ypos 1083
+ }
+ Switch {
+  inputs 2
+  which {{deLIGHTful.outputfx}}
+  name Switch1
+  xpos -5151
+  ypos 1083
+ }
+ Output {
+  name Output1
+  xpos -5151
+  ypos 1293
+ }
+push $N10a56000
+ Viewer {
+  frame 1023
+  input_process_node IP
+  input_process false
+  name Viewer1
+  xpos -5044
+  ypos 1125
+ }
+ NoOp {
+  inputs 0
+  name NoOp1
+  xpos -5100
+  ypos 369
+  addUserKnob {20 User}
+  addUserKnob {7 xposcalc}
+  xposcalc {{(deLIGHTful.lightPos.x)/(formatMain.width)*2}}
+  addUserKnob {7 yposcalc}
+  yposcalc {{(deLIGHTful.lightPos.y)/(formatMain.height)*2}}
+ }
+end_group

@@ -1,0 +1,430 @@
+#! C:/Program Files/Nuke6.3v2/Nuke6.3.exe -nx
+version 6.3 v2
+Group {
+ name primaries_hub
+ inputs 2
+ help "sort of photoshop like \"Selective Color\"\n\"restrict_ratio\" dissolve through three different algoritms from large to thin\n(download it on www.nukepedia.com)"
+ knobChanged "gizmo = nuke.thisNode()\nk = nuke.thisKnob()\nif k.name() == \"channel\":\n    if k.value() == \"red\":\n        gizmo\['tile_color'].setValue(-16776961)\n    elif k.value() == \"green\":\n        gizmo\['tile_color'].setValue(16711935)\n    elif k.value() == \"blue\":\n        gizmo\['tile_color'].setValue(65535)\n    elif k.value() == \"cyan\":\n        gizmo\['tile_color'].setValue(16777215)\n    elif k.value() == \"magenta\":\n        gizmo\['tile_color'].setValue(4278255615)\n    elif k.value() == \"yellow\":\n        gizmo\['tile_color'].setValue(4294902015)"
+ tile_color 0xffff00ff
+ label "\[value channel]"
+ addUserKnob {20 primaries_select}
+ addUserKnob {4 channel M {red green blue magenta cyan yellow ""}}
+ channel yellow
+ addUserKnob {6 invert -STARTLINE}
+ addUserKnob {6 postmult -STARTLINE}
+ addUserKnob {6 unPremult -STARTLINE}
+ addUserKnob {7 restrict_ratio l INVISIBLE +INVISIBLE R 0 2}
+ restrict_ratio {{(1-restrict_range)*2}}
+ addUserKnob {7 restrict_range R 0 2}
+ restrict_range 1
+ addUserKnob {26 ""}
+ addUserKnob {26 philhub -STARTLINE T 2012}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 146
+  ypos 248
+  number 1
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -1257
+  ypos -210
+ }
+set N7e8b780 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Alpha
+  xpos -1257
+  ypos -124
+ }
+push $N7e8b780
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge6
+  xpos -1123
+  ypos -124
+ }
+push $N7e8b780
+ Unpremult {
+  name Unpremult1
+  xpos -950
+  ypos -210
+  disable {{!(parent.postmult||parent.unPremult)}}
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos -950
+  ypos -124
+  disable {{!parent.unPremult}}
+ }
+set N14a52db0 [stack 0]
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace1
+  xpos -950
+  ypos -68
+ }
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  add -0.166665
+  black_clamp false
+  name Green2Cyan
+  xpos -950
+  ypos -44
+ }
+ Colorspace {
+  colorspace_in HSV
+  name Colorspace2
+  xpos -950
+  ypos -8
+ }
+ Dot {
+  name Dot6
+  xpos -916
+  ypos 127
+ }
+set N7f4e2f0 [stack 0]
+ Dot {
+  name Dot5
+  xpos -916
+  ypos 216
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -850
+  ypos 213
+ }
+push $N7f4e2f0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name yellow
+  xpos -613
+  ypos 126
+ }
+set N674bea0 [stack 0]
+push $N7f4e2f0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name cyan
+  xpos -826
+  ypos 124
+ }
+set N674c1d0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Mult_CyanYellow
+  xpos -722
+  ypos 35
+ }
+push $N14a52db0
+ Dot {
+  name Dot1
+  xpos -396
+  ypos -119
+ }
+set N674cb60 [stack 0]
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name green
+  xpos -333
+  ypos -123
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.restrict_range-1 i}}
+  name Mult_Green
+  xpos -223
+  ypos -123
+  disable {{parent.channel!=1 i}}
+ }
+set N674d1c0 [stack 0]
+push $N674bea0
+push $N7f4e2f0
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name mag
+  xpos -723
+  ypos 126
+ }
+set N674d4f0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Mult_MagYellow
+  xpos -669
+  ypos 69
+ }
+push $N674cb60
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name red
+  xpos -335
+  ypos -181
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.restrict_range-1 i}}
+  name Mult_Red
+  xpos -225
+  ypos -181
+  disable {{parent.channel!=0 i}}
+ }
+set N674de80 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Mult_RedGreen
+  xpos -472
+  ypos -181
+ }
+push $N674bea0
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.restrict_range-1 i}}
+  name Mult_Yellow
+  xpos -613
+  ypos -181
+  disable {{parent.channel!=5 i}}
+ }
+ Dot {
+  name Dot4
+  xpos -384
+  ypos -229
+ }
+set N674e810 [stack 0]
+push $N674c1d0
+push $N674d4f0
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Mult_MagCyan
+  xpos -780
+  ypos 70
+ }
+push $N674cb60
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name blue
+  xpos -333
+  ypos -69
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.restrict_range-1 i}}
+  name Mult_Blue
+  xpos -223
+  ypos -69
+  disable {{parent.channel!=2 i}}
+ }
+set N8012b70 [stack 0]
+push $N674d1c0
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Mult_GreenBlue
+  xpos -482
+  ypos -69
+ }
+push $N674c1d0
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.restrict_range-1 i}}
+  name Mult_Cyan
+  xpos -826
+  ypos -69
+  disable {{parent.channel!=4 i}}
+ }
+ Dot {
+  name Dot3
+  xpos -421
+  ypos -153
+ }
+set N8013500 [stack 0]
+push $N674de80
+push $N8012b70
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Mult_RedBlue
+  xpos -508
+  ypos -113
+ }
+push $N674d4f0
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.restrict_range-1 i}}
+  name Mult_Mag
+  xpos -723
+  ypos -17
+  disable {{parent.channel!=3 i}}
+ }
+set N8013b60 [stack 0]
+ Dot {
+  name Dot2
+  xpos -375
+  ypos -34
+ }
+set N8013e90 [stack 0]
+push $N8012b70
+push $N674d1c0
+push $N674de80
+ Switch {
+  inputs 6
+  which {{parent.channel i}}
+  name SwitchMain
+  xpos -127
+  ypos -37
+ }
+set N66209a0 [stack 0]
+push $N8013e90
+push $N674e810
+push $N674e810
+push $N674d1c0
+push $N674de80
+push $N8012b70
+ Switch {
+  inputs 6
+  which {{parent.channel i}}
+  name SwitchOtherB
+  xpos -132
+  ypos -232
+ }
+set N6620cf0 [stack 0]
+push $N8013500
+push $N8013e90
+push $N8013500
+push $N674de80
+push $N8012b70
+push $N674d1c0
+ Switch {
+  inputs 6
+  which {{parent.channel i}}
+  name SwitchOtherA
+  xpos -124
+  ypos -123
+ }
+set N6621040 [stack 0]
+ Merge2 {
+  inputs 2
+  operation max
+  name MergeMAX
+  xpos 17
+  ypos -123
+ }
+push $N6620cf0
+push $N6621040
+ Merge2 {
+  inputs 2
+  operation screen
+  name MergeSCREEN
+  xpos 11
+  ypos -196
+ }
+ Dissolve {
+  inputs 2
+  which {{parent.restrict_ratio i}}
+  name MAXvsSCREEN
+  xpos 127
+  ypos -129
+ }
+push $N66209a0
+ Merge2 {
+  inputs 2
+  operation stencil
+  name MergeSTENCIL
+  xpos 273
+  ypos -78
+ }
+set N8014b50 [stack 0]
+ Dissolve {
+  inputs 2
+  which {{parent.restrict_ratio<1?0:parent.restrict_ratio-1 i}}
+  name FROMvsSTENCIL
+  xpos 273
+  ypos -25
+ }
+ Clamp {
+  channels rgba
+  name Clamp1
+  xpos 273
+  ypos 23
+ }
+ Invert {
+  channels rgba
+  mix {{parent.invert i}}
+  name Invert1
+  xpos 273
+  ypos 69
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{parent.postmult||unPremult}}
+  name Multiply1
+  selected true
+  xpos 273
+  ypos 213
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Multiply
+  xpos 273
+  ypos 248
+  disable {{"!\[ exists parent.input\[value parent.mask.number] ]"}}
+ }
+ Output {
+  name Output1
+  xpos 273
+  ypos 315
+ }
+push $N66209a0
+push 0
+push 0
+push 0
+push 0
+push 0
+push 0
+push $N8014b50
+push $N66209a0
+push $N8013b60
+ Viewer {
+  inputs 10
+  viewerProcess None
+  input_process false
+  translate {-0.05799999833 -0.07999999821}
+  rotate 149.8756777
+  name Viewer1
+  xpos -34
+  ypos 44
+ }
+end_group

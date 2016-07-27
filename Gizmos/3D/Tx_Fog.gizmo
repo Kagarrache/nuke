@@ -1,0 +1,1691 @@
+#! /u/soft/foundry/nuke6.3v5/Nuke6.3 -nx
+version 6.3 v5
+Group {
+ name  TX_Fog
+ inputs 0
+ help "<b>TX_Fog :</b>\nModifying the subdivision parameter increase the quality of the fog.\nYou can create a smooth attenuation of you fog in the 3 xes using the decay parameters.\nThe volume can be fully modified by using the parameters in the control panel or in the viewport by moving the vertices on the bounding box.\n\nv1.1\n//by Tomas Lefebvre\nlefebvre.tomas@gmail.com"
+ tile_color 0xccccccff
+ addUserKnob {20 Settings}
+ addUserKnob {26 noiseSetupDiv l "<b>noise basic settings</b>"}
+ addUserKnob {20 noiseTabBegin l "" +STARTLINE n -2}
+ addUserKnob {20 Noise}
+ addUserKnob {41 size l x/ysize T Noise0.size}
+ addUserKnob {41 zoffset l z T Noise0.zoffset}
+ addUserKnob {41 octaves T Noise0.octaves}
+ addUserKnob {41 nyquist l "clip at Nyquist limit" -STARTLINE T Noise0.nyquist}
+ addUserKnob {41 lacunarity T Noise0.lacunarity}
+ addUserKnob {41 gain T Noise0.gain}
+ addUserKnob {41 gamma T Noise0.gamma}
+ addUserKnob {20 "" l Transform}
+ addUserKnob {41 transform T Noise0.transform}
+ addUserKnob {41 translate T Noise0.translate}
+ addUserKnob {41 rotate T Noise0.rotate}
+ addUserKnob {41 scale T Noise0.scale}
+ addUserKnob {41 skew T Noise0.skew}
+ addUserKnob {41 center T Noise0.center}
+ addUserKnob {41 xrotate T Noise0.xrotate}
+ addUserKnob {41 yrotate T Noise0.yrotate}
+ addUserKnob {20 "" l Color}
+ addUserKnob {41 color T Noise0.color}
+ addUserKnob {6 color_rampBT l ramp +STARTLINE}
+ addUserKnob {12 color_p0 l p0}
+ color_p0 {100 500}
+ addUserKnob {18 color_color2 l color}
+ color_color2 {0.4 0.4 1}
+ addUserKnob {12 color_p1 l p1}
+ color_p1 {2000 1500}
+ addUserKnob {20 noiseTabEnd l "" +STARTLINE n -3}
+ addUserKnob {26 deadSpace1 l "" +STARTLINE T "  "}
+ addUserKnob {3 subdivisions}
+ subdivisions 10
+ addUserKnob {22 update -STARTLINE T "from __future__ import with_statement\nthisNode = nuke.thisNode()\nsubdivs = thisNode\['subdivisions'].value()\n\nwith thisNode :\n\n    nAll = nuke.allNodes()\n\n    for n in nAll:\n        if n.name().split('_')\[0] == 'sub' :\n            nuke.delete(n)\n    for j in range(subdivs):\n        i = j + 1\n\n        ##Noise\n        noiseKnobs = \['octaves', 'nyquist', 'lacunarity', 'gain', 'gamma', 'translate', 'rotate', 'skew', 'center', 'ramp', 'color', 'xrotate', 'yrotate']\n        noise = nuke.nodes.Noise(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                  ypos =nuke.toNode('Noise0').ypos())\n        noise.setName('sub_' + str(i) + '_Noise')\n        for k in noiseKnobs :\n            noise\[k].setExpression('parent.Noise0.' + str(k))\n        noise\['size'].setValue(\[0,0])\n        noise\['size'].setExpression('parent.Noise0.size.0',0)\n        noise\['size'].setExpression('parent.Noise0.size.1',1)\n        noise\['scale'].setValue(\[0,0])\n        noise\['scale'].setExpression('parent.Noise0.scale.w',0)\n        noise\['scale'].setExpression('parent.Noise0.scale.h',1)\n        noise\['zoffset'].setExpression('parent.Noise0.zoffset+' + str(i) + '*parent.variancy')\n        noise\['xrotate'].setExpression('parent.Noise0.xrotate')\n        noise\['yrotate'].setExpression('parent.Noise0.yrotate')\n        noise.setInput(0,nuke.toNode('Base'))\n    \n        ##Ramp\n        unpRamp = nuke.nodes.Unpremult(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                                 ypos =nuke.toNode('Unpremult0').ypos())\n        unpRamp.setName('sub_' + str(i) + '_Unpremult')\n        unpRamp\['disable'].setExpression('!parent.color_rampBT')\n        unpRamp.setInput(0,noise)\n\n        ramp = nuke.nodes.Ramp(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                  ypos = nuke.toNode('Ramp0').ypos())\n        ramp.setName('sub_' + str(i) + '_Ramp')\n        ramp\['disable'].setExpression('!parent.color_rampBT')\n        ramp\['p0'].setExpression('parent.color_p0')\n        ramp\['output'].setValue('rgb')\n        ramp\['color'].setValue(\[0,0,0,0])\n        ramp\['color'].setExpression('parent.color_color2.r',0)\n        ramp\['color'].setExpression('parent.color_color2.g',1)\n        ramp\['color'].setExpression('parent.color_color2.b',2)\n        ramp\['p1'].setExpression('parent.color_p1')\n        ramp.setInput(0,unpRamp)\n\n        preRamp = nuke.nodes.Premult(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                                ypos =nuke.toNode('Premult0').ypos())\n        preRamp.setName('sub_' + str(i) + '_premult')\n        preRamp\['disable'].setExpression('!parent.color_rampBT')\n        preRamp.setInput(0,ramp)\n\n\n        ##Blur\n        blur = nuke.nodes.Blur(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                             ypos = nuke.toNode('Blur0').ypos())\n        blur.setName('sub_' + str(i) + '_Blur')\n        blur\['channel'].setValue('rgba')\n        blur\['size'].setValue(\[10,20])\n        blur\['size'].setExpression('parent.Blur0.size.w',0)\n        blur\['size'].setExpression('parent.Blur0.size.h',1)\n        blur.setInput(0,preRamp)\n\n\n        ##Edge smooth\n        smoothEdge = nuke.nodes.Multiply(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                                 ypos =nuke.toNode('Multiply0').ypos())\n        smoothEdge.setName('sub_' + str(i) + '_Multiply_SEdges')\n        smoothEdge\['channel'].setValue('rgba')\n        smoothEdge\['value'].setValue(0)\n        smoothEdge\['invert_mask'].setValue(True)\n        smoothEdge\['disable'].setExpression('!parent.softEdges')\n        smoothEdge.setInput(0,blur)\n        smoothEdge.setInput(1, nuke.toNode('GradeEdge'))\n        \n        ##All the ramps\n        decay_x = nuke.nodes.Ramp(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                       ypos =nuke.toNode('Ramp_X0').ypos())\n        decay_x.setName('sub_' + str(i) + '_Ramp_x')\n        decay_x\['type'].setValue('smooth')\n        decay_x\['color'].setValue(0)\n        decay_x\['disable'].setExpression('!parent.decay_XBT')\n        decay_x\['p0'].setValue(\[100,100])\n        decay_x\['p0'].setExpression('(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48',0)\n        decay_x\['p1'].setValue(\[100,100])\n        decay_x\['p1'].setExpression('(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48',0)\n        decay_x.setInput(0,smoothEdge)\n    \n        decayx = nuke.nodes.Ramp(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                       ypos =nuke.toNode('RampX0').ypos())\n        decayx.setName('sub_' + str(i) + '_Rampx')\n        decayx\['type'].setValue('smooth')\n        decayx\['color'].setValue(0)\n        decayx\['disable'].setExpression('!parent.decayXBT')\n        decayx\['p0'].setValue(\[100,100])\n        decayx\['p0'].setExpression('2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48',0)\n        decayx\['p1'].setValue(\[100,100])\n        decayx\['p1'].setExpression('2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48',0)\n        decayx.setInput(0,decay_x)\n    \n        decay_y = nuke.nodes.Ramp(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                       ypos =nuke.toNode('Ramp_Y0').ypos())\n        decay_y.setName('sub_' + str(i) + '_Ramp_y')\n        decay_y\['type'].setValue('smooth')\n        decay_y\['color'].setValue(0)\n        decay_y\['disable'].setExpression('!parent.decay_YBT')\n        decay_y\['p0'].setExpression('(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48',1)\n        decay_y\['p1'].setExpression('(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48',1)\n        decay_y.setInput(0,decayx)\n    \n        decayy = nuke.nodes.Ramp(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                       ypos =nuke.toNode('RampY0').ypos())\n        decayy.setName('sub_' + str(i) + '_Rampy')\n        decayy\['type'].setValue('smooth')\n        decayy\['color'].setValue(0)\n        decayy\['disable'].setExpression('!parent.decayYBT')\n        decayy\['p0'].setExpression('2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48',1)\n        decayy\['p1'].setExpression('2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48',1)\n        decayy.setInput(0,decay_y)\n\n        decay_z = nuke.nodes.Dissolve(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                           ypos =nuke.toNode('Dissolve_Z0').ypos())\n        decay_z.setName('sub_' + str(i) + '_Dissolve_z')\n        decay_z\['channel'].setValue('rgba')\n        decay_z\['disable'].setExpression('!parent.decay_ZBT')\n        decay_z\['which'].setExpression('parent.decay_Zmin>='+str(i)+'*100/'+str(subdivs)+'?1:parent.decay_Zmax<='+str(i)+'*100/'+str(subdivs)+'?0:1-('+str(i)+'*100/'+str(subdivs)+'-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))')\n        decay_z\['disable'].setExpression('!parent.decay_ZBT')\n        decay_z.setInput(1,nuke.toNode('Base'))\n        decay_z.setInput(0,decayy)\n    \n\n\n        ##Opacity\n        dissolve = nuke.nodes.Dissolve(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                           ypos =nuke.toNode('Dissolve0').ypos())\n        dissolve.setName('sub_' + str(i) + '_Dissolve')\n        dissolve\['channel'].setValue('rgba')\n        dissolve\['which'].setExpression('parent.Dissolve0.which')\n        dissolve.setInput(1,decay_z)\n        dissolve.setInput(0,nuke.toNode('Base'))\n    \n\n        ##Card\n        card = nuke.nodes.Card2(xpos = nuke.toNode('Noise0').xpos()+i*150,\n                                                  ypos =nuke.toNode('Card0').ypos())\n        card.setName('sub_' + str(i) + '_Card')\n        card\['translate'].setValue(\[0,0,0.5-i*1/subdivs])\n        card.setInput(0,dissolve)\n        nuke.toNode('Scene_layers').setInput(i,card)\n    \n\n\n\n"}
+ addUserKnob {26 noiseAdvSetupDiv l "<b>noise advance settings</b>"}
+ addUserKnob {14 blurSize l "blur size" R 0 100}
+ addUserKnob {6 softEdges l "soft edges" +STARTLINE}
+ softEdges true
+ addUserKnob {7 softEdgesSize l "  size" -STARTLINE R 0 300}
+ softEdgesSize 100
+ addUserKnob {7 opacity}
+ opacity 0.5
+ addUserKnob {7 variancy R 0 200}
+ variancy 100
+ addUserKnob {20 decayGroup l decay n 1}
+ decayGroup 0
+ addUserKnob {6 decay_XBT l -x +STARTLINE}
+ addUserKnob {7 decay_Xmin l "  min" -STARTLINE R 0 100}
+ addUserKnob {7 decay_Xmax l "  max" -STARTLINE R 0 100}
+ decay_Xmax 25
+ addUserKnob {6 decayXBT l " x" +STARTLINE}
+ addUserKnob {7 decayXmin l "  min" -STARTLINE R 0 100}
+ addUserKnob {7 decayXmax l "  max" -STARTLINE R 0 100}
+ decayXmax 25
+ addUserKnob {6 decay_YBT l -y +STARTLINE}
+ addUserKnob {7 decay_Ymin l "  min" -STARTLINE R 0 100}
+ addUserKnob {7 decay_Ymax l "  max" -STARTLINE R 0 100}
+ decay_Ymax 25
+ addUserKnob {6 decayYBT l " y" +STARTLINE}
+ addUserKnob {7 decayYmin l "  min" -STARTLINE R 0 100}
+ addUserKnob {7 decayYmax l "  max" -STARTLINE R 0 100}
+ decayYmax 25
+ addUserKnob {6 decay_ZBT l -z +STARTLINE}
+ addUserKnob {7 decay_Zmin l "  min" -STARTLINE R 0 100}
+ addUserKnob {7 decay_Zmax l "  max" -STARTLINE R 0 100}
+ decay_Zmax 25
+ addUserKnob {6 decayZBT l INVISIBLE +INVISIBLE +STARTLINE}
+ addUserKnob {20 endGroup l decayEndGroup n -1}
+ addUserKnob {20 cage n 1}
+ addUserKnob {41 cube l cage T Cube1.cube}
+ addUserKnob {13 cage_position l translate}
+ addUserKnob {13 cage_rotation l rotate}
+ addUserKnob {7 cage_scale l scale R 0 50}
+ cage_scale 1
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 0 0}
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Base
+  xpos -371
+  ypos -472
+ }
+set N25f8a1f0 [stack 0]
+push $N25f8a1f0
+ Shuffle {
+  alpha white
+  name ShuffleEdge
+  label "\[value in]"
+  xpos -23
+  ypos -456
+ }
+ Crop {
+  box {0 0 2048 2048}
+  softness {{parent.BlurEdge.size i}}
+  reformat true
+  crop false
+  name CropEdge
+  xpos -23
+  ypos -374
+ }
+ Blur {
+  channels alpha
+  size {{parent.softEdgesSize i}}
+  name BlurEdge
+  label "\[value size]"
+  xpos -23
+  ypos -348
+ }
+ Grade {
+  channels alpha
+  blackpoint 0.15
+  white_clamp true
+  mix {{parent.BlurEdge.size/100 i}}
+  name GradeEdge
+  xpos -23
+  ypos -290
+ }
+set N255da660 [stack 0]
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+10*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_10_Noise
+  xpos 234
+  ypos -31
+ }
+ Unpremult {
+  name sub_10_Unpremult
+  xpos 234
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_10_Ramp
+  xpos 234
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_10_premult
+  xpos 234
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_10_Blur
+  xpos 234
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_10_Multiply_SEdges
+  xpos 234
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_10_Ramp_x
+  xpos 234
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_10_Rampx
+  xpos 234
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_10_Ramp_y
+  xpos 234
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_10_Rampy
+  xpos 234
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=10*100/10.0?1:parent.decay_Zmax<=10*100/10.0?0:1-(10*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_10_Dissolve_z
+  xpos 234
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_10_Dissolve
+  xpos 234
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 -0.5}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_10_Card
+  xpos 234
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+9*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_9_Noise
+  xpos 84
+  ypos -31
+ }
+ Unpremult {
+  name sub_9_Unpremult
+  xpos 84
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_9_Ramp
+  xpos 84
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_9_premult
+  xpos 84
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_9_Blur
+  xpos 84
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_9_Multiply_SEdges
+  xpos 84
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_9_Ramp_x
+  xpos 84
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_9_Rampx
+  xpos 84
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_9_Ramp_y
+  xpos 84
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_9_Rampy
+  xpos 84
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=9*100/10.0?1:parent.decay_Zmax<=9*100/10.0?0:1-(9*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_9_Dissolve_z
+  xpos 84
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_9_Dissolve
+  xpos 84
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 -0.4}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_9_Card
+  xpos 84
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+8*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_8_Noise
+  xpos -66
+  ypos -31
+ }
+ Unpremult {
+  name sub_8_Unpremult
+  xpos -66
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_8_Ramp
+  xpos -66
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_8_premult
+  xpos -66
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_8_Blur
+  xpos -66
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_8_Multiply_SEdges
+  xpos -66
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_8_Ramp_x
+  xpos -66
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_8_Rampx
+  xpos -66
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_8_Ramp_y
+  xpos -66
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_8_Rampy
+  xpos -66
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=8*100/10.0?1:parent.decay_Zmax<=8*100/10.0?0:1-(8*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_8_Dissolve_z
+  xpos -66
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_8_Dissolve
+  xpos -66
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 -0.3}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_8_Card
+  xpos -66
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+7*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_7_Noise
+  xpos -216
+  ypos -31
+ }
+ Unpremult {
+  name sub_7_Unpremult
+  xpos -216
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_7_Ramp
+  xpos -216
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_7_premult
+  xpos -216
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_7_Blur
+  xpos -216
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_7_Multiply_SEdges
+  xpos -216
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_7_Ramp_x
+  xpos -216
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_7_Rampx
+  xpos -216
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_7_Ramp_y
+  xpos -216
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_7_Rampy
+  xpos -216
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=7*100/10.0?1:parent.decay_Zmax<=7*100/10.0?0:1-(7*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_7_Dissolve_z
+  xpos -216
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_7_Dissolve
+  xpos -216
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 -0.2}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_7_Card
+  xpos -216
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+6*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_6_Noise
+  xpos -366
+  ypos -31
+ }
+ Unpremult {
+  name sub_6_Unpremult
+  xpos -366
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_6_Ramp
+  xpos -366
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_6_premult
+  xpos -366
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_6_Blur
+  xpos -366
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_6_Multiply_SEdges
+  xpos -366
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_6_Ramp_x
+  xpos -366
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_6_Rampx
+  xpos -366
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_6_Ramp_y
+  xpos -366
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_6_Rampy
+  xpos -366
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=6*100/10.0?1:parent.decay_Zmax<=6*100/10.0?0:1-(6*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_6_Dissolve_z
+  xpos -366
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_6_Dissolve
+  xpos -366
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 -0.1}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_6_Card
+  xpos -366
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+5*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_5_Noise
+  xpos -516
+  ypos -31
+ }
+ Unpremult {
+  name sub_5_Unpremult
+  xpos -516
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_5_Ramp
+  xpos -516
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_5_premult
+  xpos -516
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_5_Blur
+  xpos -516
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_5_Multiply_SEdges
+  xpos -516
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_5_Ramp_x
+  xpos -516
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_5_Rampx
+  xpos -516
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_5_Ramp_y
+  xpos -516
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_5_Rampy
+  xpos -516
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=5*100/10.0?1:parent.decay_Zmax<=5*100/10.0?0:1-(5*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_5_Dissolve_z
+  xpos -516
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_5_Dissolve
+  xpos -516
+  ypos 581
+ }
+ Card2 {
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_5_Card
+  xpos -516
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+4*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_4_Noise
+  xpos -666
+  ypos -31
+ }
+ Unpremult {
+  name sub_4_Unpremult
+  xpos -666
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_4_Ramp
+  xpos -666
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_4_premult
+  xpos -666
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_4_Blur
+  xpos -666
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_4_Multiply_SEdges
+  xpos -666
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_4_Ramp_x
+  xpos -666
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_4_Rampx
+  xpos -666
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_4_Ramp_y
+  xpos -666
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_4_Rampy
+  xpos -666
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=4*100/10.0?1:parent.decay_Zmax<=4*100/10.0?0:1-(4*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_4_Dissolve_z
+  xpos -666
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_4_Dissolve
+  xpos -666
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 0.1}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_4_Card
+  xpos -666
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+3*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_3_Noise
+  xpos -816
+  ypos -31
+ }
+ Unpremult {
+  name sub_3_Unpremult
+  xpos -816
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_3_Ramp
+  xpos -816
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_3_premult
+  xpos -816
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_3_Blur
+  xpos -816
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_3_Multiply_SEdges
+  xpos -816
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_3_Ramp_x
+  xpos -816
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_3_Rampx
+  xpos -816
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_3_Ramp_y
+  xpos -816
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_3_Rampy
+  xpos -816
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=3*100/10.0?1:parent.decay_Zmax<=3*100/10.0?0:1-(3*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_3_Dissolve_z
+  xpos -816
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_3_Dissolve
+  xpos -816
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 0.2}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_3_Card
+  xpos -816
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+2*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_2_Noise
+  xpos -966
+  ypos -31
+ }
+ Unpremult {
+  name sub_2_Unpremult
+  xpos -966
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_2_Ramp
+  xpos -966
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_2_premult
+  xpos -966
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_2_Blur
+  xpos -966
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_2_Multiply_SEdges
+  xpos -966
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_2_Ramp_x
+  xpos -966
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_2_Rampx
+  xpos -966
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_2_Ramp_y
+  xpos -966
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_2_Rampy
+  xpos -966
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=2*100/10.0?1:parent.decay_Zmax<=2*100/10.0?0:1-(2*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_2_Dissolve_z
+  xpos -966
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_2_Dissolve
+  xpos -966
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 0.3}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_2_Card
+  xpos -966
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size {{parent.Noise0.size.0} {parent.Noise0.size.1}}
+  zoffset {{parent.Noise0.zoffset+1*parent.variancy}}
+  octaves {{parent.Noise0.octaves}}
+  nyquist {{parent.Noise0.nyquist}}
+  lacunarity {{parent.Noise0.lacunarity}}
+  gain {{parent.Noise0.gain}}
+  gamma {{parent.Noise0.gamma}}
+  translate {{parent.Noise0.translate} {parent.Noise0.translate}}
+  rotate {{parent.Noise0.rotate}}
+  scale {{parent.Noise0.scale.w} {parent.Noise0.scale.h}}
+  skew {{parent.Noise0.skew}}
+  center {{parent.Noise0.center} {parent.Noise0.center}}
+  xrotate {{parent.Noise0.xrotate}}
+  yrotate {{parent.Noise0.yrotate}}
+  ramp {{parent.Noise0.ramp}}
+  color {{parent.Noise0.color}}
+  name sub_1_Noise
+  xpos -1116
+  ypos -31
+ }
+ Unpremult {
+  name sub_1_Unpremult
+  xpos -1116
+  ypos 6
+  disable {{!parent.color_rampBT}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0} {parent.color_p0}}
+  p1 {{parent.color_p1} {parent.color_p1}}
+  color {{parent.color_color2.r} {parent.color_color2.g} {parent.color_color2.b} 0}
+  name sub_1_Ramp
+  xpos -1116
+  ypos 34
+  disable {{!parent.color_rampBT}}
+ }
+ Premult {
+  name sub_1_premult
+  xpos -1116
+  ypos 62
+  disable {{!parent.color_rampBT}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur0.size.w} {parent.Blur0.size.h}}
+  name sub_1_Blur
+  xpos -1116
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name sub_1_Multiply_SEdges
+  xpos -1116
+  ypos 210
+  disable {{!parent.softEdges}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_1_Ramp_x
+  xpos -1116
+  ypos 273
+  disable {{!parent.decay_XBT}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48} 100}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48} 100}
+  type smooth
+  color 0
+  name sub_1_Rampx
+  xpos -1116
+  ypos 299
+  disable {{!parent.decayXBT}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48}}
+  type smooth
+  color 0
+  name sub_1_Ramp_y
+  xpos -1116
+  ypos 325
+  disable {{!parent.decay_YBT}}
+ }
+ Ramp {
+  p0 {100 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48}}
+  p1 {100 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48}}
+  type smooth
+  color 0
+  name sub_1_Rampy
+  xpos -1116
+  ypos 351
+  disable {{!parent.decayYBT}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_Zmin>=1*100/10.0?1:parent.decay_Zmax<=1*100/10.0?0:1-(1*100/10.0-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))/(parent.decay_Zmax-(parent.decay_Zmin>=parent.decay_Zmax?parent.decay_Zmax-0.01:parent.decay_Zmin))}}
+  name sub_1_Dissolve_z
+  xpos -1116
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Dissolve0.which}}
+  name sub_1_Dissolve
+  xpos -1116
+  ypos 581
+ }
+ Card2 {
+  translate {0 0 0.4}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0 0 0} 
+1 {0 -0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {0.5 0 0} 
+1 {0.5 -0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666865 0} 1 {0 0 0} 1 {1 0 0} 
+1 {-0.5 0 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0 0.5 0} 
+1 {0 0 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {0.5 0.5 0} 
+1 {0.5 0 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0.1666666716 0} 1 {0 -0.1666666716 0} 1 {1 0.5 0} 
+1 {-0.5 0.5 0} 1 {0.1666666865 0 0} 1 {0 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0 1 0} 
+1 {0 0.5 0} 1 {0.1666666716 0 0} 1 {-0.1666666716 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {0.5 1 0} 
+1 {0.5 0.5 0} 1 {0 0 0} 1 {-0.1666666865 0 0} 1 {0 0 0} 1 {0 -0.1666666865 0} 1 {1 1 0} }
+  name sub_1_Card
+  xpos -1116
+  ypos 780
+ }
+push $N25f8a1f0
+push $N255da660
+push $N25f8a1f0
+ Noise {
+  size 500
+  zoffset 1
+  gamma 0.2
+  center {1099 567}
+  xrotate 5
+  yrotate 5
+  p1 {204 926}
+  color0 {1 0.1200000048 0.1200000048 0}
+  p0 {494 52}
+  name Noise0
+  xpos -1266
+  ypos -31
+ }
+ Unpremult {
+  name Unpremult0
+  xpos -1266
+  ypos 6
+  disable {{!parent.color_rampBT i}}
+ }
+ Ramp {
+  output rgb
+  p0 {{parent.color_p0 i} {parent.color_p0 i}}
+  p1 {{parent.color_p1 i} {parent.color_p1 i}}
+  color {{parent.color_color2 i} {parent.color_color2 i} {parent.color_color2 i} {parent.color_color2 i}}
+  name Ramp0
+  xpos -1266
+  ypos 34
+  disable {{!parent.color_rampBT i}}
+ }
+ Premult {
+  name Premult0
+  xpos -1266
+  ypos 62
+  disable {{!parent.color_rampBT i}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.blurSize i} {parent.blurSize i}}
+  name Blur0
+  label "\[value size]"
+  xpos -1266
+  ypos 107
+ }
+ Multiply {
+  inputs 1+1
+  channels rgba
+  value 0
+  invert_mask true
+  name Multiply0
+  xpos -1266
+  ypos 210
+  disable {{!parent.softEdges i}}
+ }
+ Ramp {
+  p0 {{(parent.decay_Xmax==0?1:parent.decay_Xmax)*20.48 i} 100}
+  p1 {{(parent.decay_Xmin>=parent.decay_Xmax?parent.decay_Xmax-1:parent.decay_Xmin)*20.48 i} 100}
+  type smooth
+  color 0
+  name Ramp_X0
+  xpos -1266
+  ypos 273
+  disable {{!parent.decay_XBT i}}
+ }
+ Ramp {
+  p0 {{2048-(parent.decayXmax==0?1:parent.decayXmax)*20.48 i} 200}
+  p1 {{2048-(parent.decayXmin>=parent.decayXmax?parent.decayXmax-1:parent.decayXmin)*20.48 i} 200}
+  type smooth
+  color 0
+  name RampX0
+  xpos -1266
+  ypos 299
+  disable {{!parent.decayXBT i}}
+ }
+ Ramp {
+  p0 {100 {(parent.decay_Ymax==0?1:parent.decay_Ymax)*20.48 i}}
+  p1 {100 {(parent.decay_Ymin>=parent.decay_Ymax?parent.decay_Ymax-1:parent.decay_Ymin)*20.48 i}}
+  type smooth
+  color 0
+  name Ramp_Y0
+  xpos -1266
+  ypos 325
+  disable {{!parent.decay_YBT i}}
+ }
+ Ramp {
+  p0 {200 {2048-(parent.decayYmax==0?1:parent.decayYmax)*20.48 i}}
+  p1 {200 {2048-(parent.decayYmin>=parent.decayYmax?parent.decayYmax-1:parent.decayYmin)*20.48 i}}
+  color 0
+  name RampY0
+  xpos -1266
+  ypos 351
+  disable {{!parent.decayYBT i}}
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.decay_ZBT}}
+  name Dissolve_Z0
+  selected true
+  xpos -1266
+  ypos 411
+  disable {{!parent.decay_ZBT}}
+ }
+push $N25f8a1f0
+ Dissolve {
+  inputs 2
+  which {{parent.opacity i}}
+  name Dissolve0
+  xpos -1266
+  ypos 581
+ }
+set N243acf00 [stack 0]
+ Card2 {
+  translate {0 0 0.5}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card0
+  xpos -1266
+  ypos 780
+ }
+ Scene {
+  inputs 11
+  name Scene_layers
+  xpos -206
+  ypos 1173
+ }
+ TransformGeo {
+  translate {{(parent.Cube1.cube.x+parent.Cube1.cube.r)/2 i} {(parent.Cube1.cube.y+parent.Cube1.cube.t)/2 i} {(parent.Cube1.cube.n+parent.Cube1.cube.f)/2 i}}
+  scaling {{(parent.Cube1.cube.r-parent.Cube1.cube.x) i} {(parent.Cube1.cube.t-parent.Cube1.cube.y) i} {(parent.Cube1.cube.f-parent.Cube1.cube.n) i}}
+  name TransformGeo_cage
+  xpos -216
+  ypos 1328
+ }
+ TransformGeo {
+  translate {{parent.cage_position i} {parent.cage_position i} {parent.cage_position i}}
+  rotate {{parent.cage_rotation i} {parent.cage_rotation i} {parent.cage_rotation i}}
+  uniform_scale {{parent.cage_scale i}}
+  name TransformGeo_transform
+  xpos -216
+  ypos 1391
+ }
+ Output {
+  name Output1
+  xpos -216
+  ypos 1640
+ }
+ Cube {
+  inputs 0
+  display wireframe
+  render_mode off
+  rows 1
+  columns 1
+  translate {{parent.cage_position i} {parent.cage_position i} {parent.cage_position i}}
+  rotate {{parent.cage_rotation i} {parent.cage_rotation i} {parent.cage_rotation i}}
+  uniform_scale {{parent.cage_scale i}}
+  name Cube1
+  xpos 48
+  ypos 1326
+ }
+push $N25f8a1f0
+push $N25f8a1f0
+push $N25f8a1f0
+push $N25f8a1f0
+push $N243acf00
+ Viewer {
+  inputs 5
+  input_number 1
+  viewerProcess None
+  input_process false
+  name Viewer1
+  xpos -1090
+  ypos -377
+ }
+end_group

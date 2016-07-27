@@ -1,0 +1,279 @@
+#! C:/Program Files/Nuke6.3v3/Nuke6.3.exe -nx
+version 6.3 v3
+Gizmo {
+ inputs 3
+ tile_color 0x4900ff
+ addUserKnob {20 User l "Simple Bokeh"}
+ addUserKnob {26 title l "" +STARTLINE T "SIMPLE BOKEH"}
+ addUserKnob {26 ""}
+ addUserKnob {26 bokeh_bloom_title l "" +STARTLINE T BLOOM}
+ addUserKnob {20 bokeh_bloom l "" +STARTLINE n 1}
+ bokeh_bloom 0
+ addUserKnob {41 channels T Defocus_bokeh.channels}
+ addUserKnob {41 bloom T Defocus_bokeh.defocus}
+ addUserKnob {41 ratio l "bloom aspect ratio" T Defocus_bokeh.ratio}
+ addUserKnob {41 scale l "bloom scaling" T Defocus_bokeh.scale}
+ addUserKnob {41 quality T Defocus_bokeh.quality}
+ addUserKnob {41 method T Defocus_bokeh.method}
+ addUserKnob {41 disable_2 l disable T Defocus_bokeh.disable}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 bokeh_edge_matte l "" +STARTLINE T "BOKEH EDGE GRADE MATTE"}
+ addUserKnob {20 bokeh_edgematte l "" +STARTLINE n 1}
+ bokeh_edgematte 0
+ addUserKnob {41 erodesize l "Erode Size" T EdgeDetectWrapper_bokeh.erodesize}
+ addUserKnob {41 blursize l "Blur size" T EdgeDetectWrapper_bokeh.blursize}
+ addUserKnob {41 blurquality l "Blur quality" T EdgeDetectWrapper_bokeh.blurquality}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 bokeh_edge_grade l "" +STARTLINE T "BOKEH EDGE GRADE"}
+ addUserKnob {20 bokeh_edge_grade_1 l "" +STARTLINE n 1}
+ bokeh_edge_grade_1 0
+ addUserKnob {41 channels_1 l channels T Grade_bokeh.channels}
+ addUserKnob {41 blackpoint T Grade_bokeh.blackpoint}
+ addUserKnob {41 whitepoint T Grade_bokeh.whitepoint}
+ addUserKnob {41 black l lift T Grade_bokeh.black}
+ addUserKnob {19 gain_bokeh l gain R 0 20}
+ gain_bokeh 5
+ addUserKnob {41 multiply T Grade_bokeh.multiply}
+ addUserKnob {41 add l offset T Grade_bokeh.add}
+ addUserKnob {41 gamma T Grade_bokeh.gamma}
+ addUserKnob {41 reverse T Grade_bokeh.reverse}
+ addUserKnob {41 black_clamp l "black clamp" T Grade_bokeh.black_clamp}
+ addUserKnob {41 white_clamp l "white clamp" T Grade_bokeh.white_clamp}
+ addUserKnob {41 mix T Grade_bokeh.mix}
+ addUserKnob {41 disable_1 l disable T Grade_bokeh.disable}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 bokeh_grain l "" +STARTLINE T "BOKEH GRAIN"}
+ addUserKnob {20 bokeh_grain_1 l "" +STARTLINE n 1}
+ bokeh_grain_1 0
+ addUserKnob {26 ""}
+ addUserKnob {41 disable_3 l "disable grain?" T Grain2_1_bokeh.disable}
+ addUserKnob {26 ""}
+ addUserKnob {6 anim_grain l "animate grain?" +STARTLINE}
+ addUserKnob {6 apply_bokeh_grain_alpha l "apply grain through source alpha?" +STARTLINE}
+ addUserKnob {6 apply_bokeh_grain_through_mask l "Apply Grain Through Mask?" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 bokehgrain_sat l "" +STARTLINE T "grain saturation"}
+ addUserKnob {41 channels_2 l channels T Saturation_bokeh.channels}
+ addUserKnob {41 saturation T Saturation_bokeh.saturation}
+ addUserKnob {41 mode l "luminance math" T Saturation_bokeh.mode}
+ addUserKnob {26 ""}
+ addUserKnob {41 seed T Grain2_1_bokeh.seed}
+ addUserKnob {41 presets l "" -STARTLINE T Grain2_1_bokeh.presets}
+ addUserKnob {26 "" l "@b;Size"}
+ addUserKnob {41 red_size l red T Grain2_1_bokeh.red_size}
+ addUserKnob {41 green_size l green T Grain2_1_bokeh.green_size}
+ addUserKnob {41 blue_size l blue T Grain2_1_bokeh.blue_size}
+ addUserKnob {26 "" l "@b;Irregularity"}
+ addUserKnob {41 red_i l red T Grain2_1_bokeh.red_i}
+ addUserKnob {41 green_i l green T Grain2_1_bokeh.green_i}
+ addUserKnob {41 blue_i l blue T Grain2_1_bokeh.blue_i}
+ addUserKnob {26 "" l "@b;Intensity"}
+ addUserKnob {41 red_m l red T Grain2_1_bokeh.red_m}
+ addUserKnob {41 green_m l green T Grain2_1_bokeh.green_m}
+ addUserKnob {41 blue_m l blue T Grain2_1_bokeh.blue_m}
+ addUserKnob {41 black_1 l black T Grain2_1_bokeh.black}
+ addUserKnob {41 minimum T Grain2_1_bokeh.minimum}
+ addUserKnob {41 mix_1 l "grain mix" T Merge_bokeh.mix}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {6 mask_bokeh l "Mask bokeh effect?" +STARTLINE}
+ addUserKnob {7 mix_bokeh l "fade bokeh effect"}
+ mix_bokeh 1
+ addUserKnob {26 ""}
+ addUserKnob {26 credit l "" +STARTLINE T "By Sean J. Loughran"}
+}
+ Input {
+  inputs 0
+  name mask_bokeh
+  xpos 693
+  ypos 601
+  number 1
+ }
+ Dot {
+  name Dot9
+  xpos 463
+  ypos 734
+ }
+ Input {
+  inputs 0
+  name mask_bokeh_grain
+  xpos 335
+  ypos 231
+  number 2
+ }
+ Dot {
+  name Dot8
+  xpos 369
+  ypos 278
+ }
+ Input {
+  inputs 0
+  name Image
+  xpos 141
+  ypos -52
+ }
+ Dot {
+  name Dot3
+  xpos 175
+  ypos 62
+ }
+set N148eaaa0 [stack 0]
+ Dot {
+  name Dot4
+  xpos 43
+  ypos 62
+ }
+ Dot {
+  name Dot2
+  xpos 43
+  ypos 212
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color 1
+  name Constant_bokeh
+  xpos -85
+  ypos 85
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy_bokeh_grain
+  xpos -85
+  ypos 203
+  disable {{"parent.apply_bokeh_grain_alpha? 0:1" i}}
+ }
+ Grain2 {
+  name Grain2_1_bokeh
+  label other
+  xpos -85
+  ypos 244
+  seed 0
+  red_m 0.42
+  black {0.001 0.001 0.001}
+  minimum {0 0 0}
+  maskgrain {{parent.apply_bokeh_grain_alpha i}}
+ }
+ FrameHold {
+  name FrameHold_bokeh
+  xpos -85
+  ypos 298
+  disable {{parent.anim_grain?0:1 i}}
+ }
+ Saturation {
+  name Saturation_bokeh
+  xpos -85
+  ypos 356
+ }
+ Dot {
+  name Dot1
+  xpos 109
+  ypos 359
+ }
+set N1492e780 [stack 0]
+push $N148eaaa0
+ Defocus {
+  channels rgba
+  defocus 8
+  scale 3
+  name Defocus_bokeh
+  xpos 141
+  ypos 89
+ }
+ EdgeDetectWrapper {
+  blursize 3
+  name EdgeDetectWrapper_bokeh
+  xpos 141
+  ypos 139
+ }
+ Grade {
+  white {{parent.gain_bokeh i}}
+  maskChannelInput rgba.alpha
+  name Grade_bokeh
+  xpos 141
+  ypos 231
+ }
+set N1492f110 [stack 0]
+ Merge2 {
+  inputs 2+1
+  operation multiply
+  mix {{parent.Merge_bokeh.mix i}}
+  name Merge_bokeh_mask
+  xpos 335
+  ypos 356
+ }
+ Dot {
+  name Dot5
+  xpos 369
+  ypos 518
+ }
+push $N1492e780
+push $N1492f110
+ Merge2 {
+  inputs 2
+  operation multiply
+  maskChannelMask none
+  name Merge_bokeh
+  xpos 141
+  ypos 460
+ }
+ Switch {
+  inputs 2
+  which {{parent.apply_bokeh_grain_through_mask i}}
+  name Switch_bokeh_mask
+  xpos 141
+  ypos 515
+ }
+set N5620b10 [stack 0]
+push $N148eaaa0
+ Dot {
+  name Dot12
+  xpos 305
+  ypos 62
+ }
+set N1492fdd0 [stack 0]
+ Keymix {
+  inputs 3
+  channels rgba
+  name Keymix1
+  xpos 273
+  ypos 731
+ }
+push $N5620b10
+ Switch {
+  inputs 2
+  which {{parent.mask_bokeh i}}
+  name Switch_masked_bokeh
+  xpos 141
+  ypos 731
+ }
+push $N1492fdd0
+ Dot {
+  name Dot7
+  xpos 511
+  ypos 62
+ }
+ Dot {
+  name Dot6
+  xpos 511
+  ypos 798
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix_bokeh i}}
+  name Dissolve_bokeh
+  xpos 141
+  ypos 795
+ }
+ Output {
+  name Output1
+  xpos 141
+  ypos 863
+ }
+end_group

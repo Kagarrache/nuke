@@ -1,0 +1,75 @@
+version 6.3 v4
+Gizmo {
+ addUserKnob {20 User l nMask}
+ addUserKnob {41 color T Constant.color}
+ addUserKnob {26 ""}
+ addUserKnob {41 scale T Reformat.scale}
+ addUserKnob {41 filter T Reformat.filter}
+ addUserKnob {26 ""}
+ addUserKnob {26 myText l "" +STARTLINE T "nMask 1.0 - www.toxik.sk"}
+}
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 1}
+  name Constant
+  xpos 199
+  ypos -127
+  cached true
+ }
+ Crop {
+  box {0 0 {getSize.myWidth i} {getSize.myHeight i}}
+  reformat true
+  crop false
+  name Crop_setSize
+  xpos 199
+  ypos -35
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 31
+  ypos -96
+ }
+ NoOp {
+  name getSize
+  xpos 31
+  ypos -53
+  addUserKnob {20 User}
+  addUserKnob {7 myWidth}
+  myWidth {{input.width i}}
+  addUserKnob {7 myHeight}
+  myHeight {{input.height i}}
+ }
+ MergeExpression {
+  inputs 2
+  temp_name0 a
+  temp_expr0 int(Ar*255)==int(Br*255)?1:0
+  temp_name1 b
+  temp_expr1 int(Ag*255)==int(Bg*255)?1:0
+  temp_name2 c
+  temp_expr2 int(Ab*255)==int(Bb*255)?1:0
+  temp_name3 d
+  temp_expr3 "( a && b && c )?1:0"
+  expr0 d
+  expr1 d
+  expr2 d
+  channel3 alpha
+  expr3 d
+  name MergeExpression1
+  xpos 98
+  ypos 20
+ }
+ Reformat {
+  type scale
+  scale 0.5
+  name Reformat
+  xpos 98
+  ypos 76
+ }
+ Output {
+  name Output
+  xpos 98
+  ypos 144
+ }
+end_group

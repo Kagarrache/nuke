@@ -1,0 +1,379 @@
+set cut_paste_input [stack 0]
+version 6.3 v1
+RotoPaint {
+ inputs 0
+ curves {AnimTree: "" {
+ Version: 1.2
+ Flag: 0
+ RootNode: 1
+ Node: {
+  NodeName: "Root" {
+   Flag: 512
+   NodeType: 1
+   Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 960 S 0 540 
+   NumOfAttributes: 11
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "pt" S 0 0 
+  }
+  NumOfChildren: 6
+  Node: {
+   NodeName: "Ellipse3" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 1 0 S 1 1 0 S 1 1 0 S 1 1 1 S 1 1 1 S 1 1 0 S 1 1 772.5 S 1 1 336.1 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 1 -2.41638 S 1 1 0 0 0 S 1 1 804.559 S 1 1 411.653 0 0 S 1 1 2.41632 S 1 1 0 0 0 S 1 1 0 S 1 1 -2.78064 0 0 S 1 1 808.934 S 1 1 416.688 0 0 S 1 1 0 S 1 1 2.78067 0 0 S 1 1 2.41632 S 1 1 0 0 0 S 1 1 804.559 S 1 1 421.723 0 0 S 1 1 -2.41638 S 1 1 0 0 0 S 1 1 0 S 1 1 2.78067 0 0 S 1 1 800.183 S 1 1 416.688 0 0 S 1 1 0 S 1 1 -2.78064 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 1 -2.41638 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 2.41632 S 1 1 0 0 0 S 1 1 0 S 1 1 -2.78064 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 2.78067 0 0 S 1 1 2.41632 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -2.41638 S 1 1 0 0 0 S 1 1 0 S 1 1 2.78067 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 -2.78064 0 
+     }
+     NumOfAttributes: 44
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 0.3 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 0 "spy" S 0 0 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 6 "pt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Ellipse2" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 1 0 S 1 1 0 S 1 1 0 S 1 1 1 S 1 1 1 S 1 1 0 S 1 1 772.5 S 1 1 336.1 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 1 -3.26001 S 1 1 0 0 0 S 1 1 774.265 S 1 1 407.739 0 0 S 1 1 3.25995 S 1 1 0 0 0 S 1 1 0 S 1 1 -3.64307 0 0 S 1 1 780.167 S 1 1 414.335 0 0 S 1 1 0 S 1 1 3.6431 0 0 S 1 1 3.25995 S 1 1 0 0 0 S 1 1 774.265 S 1 1 420.932 0 0 S 1 1 -3.26001 S 1 1 0 0 0 S 1 1 0 S 1 1 3.6431 0 0 S 1 1 768.362 S 1 1 414.335 0 0 S 1 1 0 S 1 1 -3.64307 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 1 -3.26001 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 3.25995 S 1 1 0 0 0 S 1 1 0 S 1 1 -3.64307 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 3.6431 0 0 S 1 1 3.25995 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -3.26001 S 1 1 0 0 0 S 1 1 0 S 1 1 3.6431 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 -3.64307 0 
+     }
+     NumOfAttributes: 44
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 0.3 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 0 "spy" S 0 0 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 6 "pt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Ellipse1" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 1 0 S 1 1 0 S 1 1 0 S 1 1 1 S 1 1 1 S 1 1 0 S 1 1 772.5 S 1 1 336.1 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 1 -2.89734 S 1 1 0 0 0 S 1 1 773.677 S 1 1 331.839 0 0 S 1 1 2.89734 S 1 1 0 0 0 S 1 1 0 S 1 1 -3.00287 0 0 S 1 1 778.923 S 1 1 337.276 0 0 S 1 1 0 S 1 1 3.00287 0 0 S 1 1 2.89734 S 1 1 0 0 0 S 1 1 773.677 S 1 1 342.714 0 0 S 1 1 -2.89734 S 1 1 0 0 0 S 1 1 0 S 1 1 3.00287 0 0 S 1 1 768.43 S 1 1 337.276 0 0 S 1 1 0 S 1 1 -3.00287 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 1 -2.89734 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 2.89734 S 1 1 0 0 0 S 1 1 0 S 1 1 -3.00287 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 3.00287 0 0 S 1 1 2.89734 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -2.89734 S 1 1 0 0 0 S 1 1 0 S 1 1 3.00287 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 -3.00287 0 
+     }
+     NumOfAttributes: 44
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 0.3 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 0 "spy" S 0 0 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 6 "pt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Bezier3" {
+    Flag: 576
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 1 0 S 1 1 0 S 1 1 0 S 1 1 1 S 1 1 1 S 1 1 0 S 1 1 771.84 S 1 1 367.6 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 15
+      0 S 1 1 2.3844 S 1 1 5.93311 0 0 S 1 1 805.785 S 1 1 338.883 0 0 S 1 1 -2.19379 S 1 1 -5.45886 0 0 S 1 1 0.412964 S 1 1 -6.90131 0 0 S 1 1 801.999 S 1 1 372.256 0 0 S 1 1 -0.412842 S 1 1 6.90137 0 0 S 1 1 -0.327271 S 1 1 -1.70261 0 0 S 1 1 803.402 S 1 1 406.866 0 0 S 1 1 0.327332 S 1 1 1.70261 0 0 S 1 1 -0.267212 S 1 1 1.73495 0 0 S 1 1 807.749 S 1 1 402.17 0 0 S 1 1 0.267151 S 1 1 -1.73495 0 0 S 1 1 0.0265503 S 1 1 5.9924 0 0 S 1 1 808.731 S 1 1 372.256 0 0 S 1 1 -0.0266113 S 1 1 -5.99231 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 15
+      0 S 1 1 2.3844 S 1 1 5.93311 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -2.19379 S 1 1 -5.45886 0 0 S 1 1 0.412964 S 1 1 -6.90131 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.412842 S 1 1 6.90137 0 0 S 1 1 -0.327271 S 1 1 -1.70261 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.327332 S 1 1 1.70261 0 0 S 1 1 -0.267212 S 1 1 1.73495 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.267151 S 1 1 -1.73495 0 0 S 1 1 0.0265503 S 1 1 5.9924 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.0266113 S 1 1 -5.99231 0 
+     }
+     NumOfAttributes: 44
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 0.03 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 0 "spy" S 0 0 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 4 "pt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Bezier2" {
+    Flag: 576
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 1 0 S 1 1 0 S 1 1 0 S 1 1 1 S 1 1 1 S 1 1 0 S 1 1 771.84 S 1 1 367.6 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 15
+      0 S 1 1 2.47858 S 1 1 -4.3056 0 0 S 1 1 774.045 S 1 1 397.536 0 0 S 1 1 -2.28046 S 1 1 3.96143 0 0 S 1 1 0.42926 S 1 1 5.00821 0 0 S 1 1 770.109 S 1 1 373.317 0 0 S 1 1 -0.429199 S 1 1 -5.00824 0 0 S 1 1 -0.34021 S 1 1 1.23557 0 0 S 1 1 771.567 S 1 1 348.201 0 0 S 1 1 0.340271 S 1 1 -1.23557 0 0 S 1 1 -0.277771 S 1 1 -1.25903 0 0 S 1 1 776.086 S 1 1 351.609 0 0 S 1 1 0.27771 S 1 1 1.25903 0 0 S 1 1 0.0276489 S 1 1 -4.3486 0 0 S 1 1 777.107 S 1 1 373.317 0 0 S 1 1 -0.0276489 S 1 1 4.34857 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 15
+      0 S 1 1 2.47858 S 1 1 -4.3056 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -2.28046 S 1 1 3.96143 0 0 S 1 1 0.42926 S 1 1 5.00821 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.429199 S 1 1 -5.00824 0 0 S 1 1 -0.34021 S 1 1 1.23557 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.340271 S 1 1 -1.23557 0 0 S 1 1 -0.277771 S 1 1 -1.25903 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.27771 S 1 1 1.25903 0 0 S 1 1 0.0276489 S 1 1 -4.3486 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.0276489 S 1 1 4.34857 0 
+     }
+     NumOfAttributes: 44
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 0.03 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 0 "spy" S 0 0 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 4 "pt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Bezier1" {
+    Flag: 576
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 1 0 S 1 1 0 S 1 1 0 S 1 1 1 S 1 1 1 S 1 1 0 S 1 1 788.083 S 1 1 369 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 18
+      0 S 1 1 0.465076 S 1 1 4.0229 0 0 S 1 1 784.5 S 1 1 407.5 0 0 S 1 1 -0.465075 S 1 1 -4.0229 0 0 S 1 1 -0.0899406 S 1 1 2.91409 0 0 S 1 1 783.6 S 1 1 344.4 0 0 S 1 1 0.089941 S 1 1 -2.91409 0 0 S 1 1 -2.91548 S 1 1 0 0 0 S 1 1 787 S 1 1 326.5 0 0 S 1 1 2.91548 S 1 1 0 0 0 S 1 1 -0.317286 S 1 1 -3.02479 0 0 S 1 1 793.4 S 1 1 341.2 0 0 S 1 1 0.317285 S 1 1 3.02479 0 0 S 1 1 0.16558 S 1 1 -5.7291 0 0 S 1 1 794.5 S 1 1 398 0 0 S 1 1 -0.165581 S 1 1 5.7291 0 0 S 1 1 2.93602 S 1 1 -2.78922 0 0 S 1 1 791.5 S 1 1 426.5 0 0 S 1 1 -2.93602 S 1 1 2.78922 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 18
+      0 S 1 1 0.465076 S 1 1 4.0229 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.465075 S 1 1 -4.0229 0 0 S 1 1 -0.0899406 S 1 1 2.91409 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.089941 S 1 1 -2.91409 0 0 S 1 1 -2.91548 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 2.91548 S 1 1 0 0 0 S 1 1 -0.317286 S 1 1 -3.02479 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.317285 S 1 1 3.02479 0 0 S 1 1 0.16558 S 1 1 -5.7291 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.165581 S 1 1 5.7291 0 0 S 1 1 2.93602 S 1 1 -2.78922 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -2.93602 S 1 1 2.78922 0 
+     }
+     NumOfAttributes: 44
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 0.03 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 0 "spy" S 0 0 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 4 "pt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+ }
+}
+}
+ toolbox {selectAll {
+  { selectAll ssx 1 ssy 1 sf 1 }
+  { createBezier ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBSpline ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse ssx 1 ssy 1 sf 1 sb 1 tt 6 }
+  { createRectangle ssx 1 ssy 1 sf 1 sb 1 }
+  { brush ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+ toolbar_brush_hardness 0.200000003
+ toolbar_lifetime_type all
+ toolbar_source_transform_scale {1 1}
+ toolbar_source_transform_center {320 240}
+ colorOverlay 0
+ opacity 0.03
+ lifetime_type "all frames"
+ motionblur_shutter_offset_type centred
+ source_black_outside true
+ createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+ name RotoPaint1
+ selected true
+ xpos -40
+ ypos -179
+}
+Crop {
+ box {759.5 323 817.5 428.5}
+ reformat true
+ crop false
+ name Crop1
+ selected true
+ xpos -40
+ ypos -155
+}
+set N8945910 [stack 0]
+Grade {
+ gamma {1 0.8599998951 -2.5 1}
+ name Grade4
+ selected true
+ xpos -94
+ ypos -75
+}
+Sphere {
+ inputs 0
+ translate {{(frame/10)*-1 i} {sin(frame/10)*-1 i} {sin(frame/15)*-1 i}}
+ uniform_scale 0.001
+ name Sphere4
+ selected true
+ xpos -390
+ ypos -102
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ rate 15
+ lifetime 100
+ velocity 0
+ size 0.2
+ name ParticleEmitter4
+ selected true
+ xpos -390
+ ypos -22
+}
+ParticleSettings {
+ steps_per_frame 15
+ name ParticleSettings4
+ selected true
+ xpos -390
+ ypos 2
+}
+Dot {
+ name Dot4
+ selected true
+ xpos -356
+ ypos 85
+}
+push $N8945910
+Grade {
+ gamma {1 -0.7999999523 0.6039994955 1}
+ name Grade3
+ selected true
+ xpos 20
+ ypos -74
+}
+Sphere {
+ inputs 0
+ translate {{(frame/10)*-1 i} {cos(frame/10) i} {cos(frame/15)*1.2 i}}
+ uniform_scale 0.001
+ name Sphere3
+ selected true
+ xpos 389
+ ypos -126
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ rate 15
+ lifetime 100
+ velocity 0
+ size 0.2
+ name ParticleEmitter3
+ selected true
+ xpos 389
+ ypos -46
+}
+ParticleSettings {
+ steps_per_frame 15
+ name ParticleSettings3
+ selected true
+ xpos 389
+ ypos -22
+}
+Dot {
+ name Dot3
+ selected true
+ xpos 423
+ ypos 82
+}
+push $N8945910
+Grade {
+ gamma {0.424000144 1 -0.7999999523 1}
+ name Grade2
+ selected true
+ xpos 18
+ ypos -131
+}
+Sphere {
+ inputs 0
+ translate {{(frame/10)*-1 i} {sin(frame/15)/2 i} {cos(frame/15)/2 i}}
+ uniform_scale 0.001
+ name Sphere2
+ selected true
+ xpos 161
+ ypos -211
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ rate 15
+ lifetime 100
+ velocity 0
+ size 0.2
+ name ParticleEmitter2
+ selected true
+ xpos 161
+ ypos -131
+}
+ParticleSettings {
+ steps_per_frame 15
+ name ParticleSettings2
+ selected true
+ xpos 161
+ ypos -107
+}
+Dot {
+ name Dot2
+ selected true
+ xpos 195
+ ypos 27
+}
+push $N8945910
+Grade {
+ gamma {-0.7999999523 0.6760003567 1 1}
+ name Grade1
+ selected true
+ xpos -118
+ ypos -131
+}
+push $cut_paste_input
+Sphere {
+ translate {{(frame/10)*-1 i} {cos(frame/15) i} {sin(frame/15) i}}
+ uniform_scale 0.001
+ name Sphere1
+ selected true
+ xpos -269
+ ypos -208
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ rate 15
+ lifetime 100
+ velocity 0
+ size 0.2
+ name ParticleEmitter1
+ selected true
+ xpos -269
+ ypos -131
+}
+ParticleSettings {
+ steps_per_frame 15
+ name ParticleSettings1
+ selected true
+ xpos -269
+ ypos -107
+}
+Dot {
+ name Dot1
+ selected true
+ xpos -235
+ ypos -60
+}
+ParticleMerge {
+ inputs 4
+ name ParticleMerge1
+ selected true
+ xpos -44
+ ypos 24
+}

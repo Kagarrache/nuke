@@ -1,0 +1,2031 @@
+#! C:/Program Files/Nuke6.3v3/Nuke6.3.exe -nx
+version 6.3 v3
+Gizmo {
+ tile_color 0xed6100ff
+ label SlateGen
+ addUserKnob {20 Slate}
+ addUserKnob {1 Show}
+ addUserKnob {6 AutoName l Auto   +STARTLINE}
+ AutoName true
+ addUserKnob {1 Shot -STARTLINE}
+ addUserKnob {6 AutoDate l Auto +STARTLINE}
+ AutoDate true
+ addUserKnob {1 Date_txt l "  Date" t Date -STARTLINE}
+ addUserKnob {6 AutoTime l Time -STARTLINE}
+ AutoTime true
+ addUserKnob {4 AutoFill l "Cut Length Type" M {Manual "Auto Script Length" "Auto Input Length" "" "" ""}}
+ AutoFill "Auto Script Length"
+ addUserKnob {3 CutLength l "    Frames" -STARTLINE}
+ CutLength 100
+ addUserKnob {6 AutoFrameRate l Auto   +STARTLINE}
+ AutoFrameRate true
+ addUserKnob {1 FrameRate -STARTLINE}
+ FrameRate 23.98
+ addUserKnob {1 Description_txt l Description}
+ addUserKnob {26 ""}
+ addUserKnob {4 SlateType M {Film Video}}
+ SlateType Video
+ addUserKnob {41 format l "output format" T Reformat2.format}
+ addUserKnob {41 filter l   filter -STARTLINE T Reformat2.filter}
+ addUserKnob {3 SlateFrame}
+ addUserKnob {6 AutoSlateFrame l Auto -STARTLINE}
+ AutoSlateFrame true
+ addUserKnob {26 ""}
+ addUserKnob {26 SuperSlate l "SuperSlate by Rachel Dunn"}
+ addUserKnob {20 MaskOverlays}
+ addUserKnob {6 HardMask +STARTLINE}
+ addUserKnob {4 AspectRatio l   AspectRatio -STARTLINE M {1.3161 1.33 1.66 1.7777 1.85 2.35 2.40 "" "" "" "" "" "" "" "" "" "" ""}}
+ AspectRatio 1.7777
+ addUserKnob {7 MaskOpacity l   MaskOpacity -STARTLINE}
+ MaskOpacity 1
+ addUserKnob {6 SafeArea l SafeArea  +STARTLINE}
+ addUserKnob {6 SafeInvert l Invert   -STARTLINE}
+ addUserKnob {7 SafeMix l Opacity -STARTLINE}
+ SafeMix 1
+ addUserKnob {6 Grid l Grid         +STARTLINE}
+ addUserKnob {6 GridInvert l Invert   -STARTLINE}
+ addUserKnob {7 GridMix l Opacity -STARTLINE}
+ GridMix 1
+ addUserKnob {4 Counter l "Frame Counter" M {None Frame "Preset Timecode" "" "" "" "" "" "" ""}}
+ addUserKnob {6 TitleOnMask l "Keep Overlays Outside Image Area" -STARTLINE}
+ TitleOnMask true
+ addUserKnob {6 ShowOverlay l Show  +STARTLINE}
+ addUserKnob {6 ShotOverlay l Shot   -STARTLINE}
+ addUserKnob {6 Date l "Date  " -STARTLINE}
+ addUserKnob {6 TimeOverlay l Time   -STARTLINE}
+ addUserKnob {6 Description l "Description  " -STARTLINE}
+ addUserKnob {6 Reverse l "Reverse  " -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 startcode T AddTimeCode1.startcode}
+ addUserKnob {41 fps T AddTimeCode1.fps}
+ addUserKnob {41 metafps l "get FPS from metadata" -STARTLINE T AddTimeCode1.metafps}
+ addUserKnob {41 frame l "start frame" T AddTimeCode1.frame}
+ addUserKnob {41 useFrame l "use start frame?" -STARTLINE T AddTimeCode1.useFrame}
+ addUserKnob {26 ""}
+ addUserKnob {6 Watermark l Watermark  +STARTLINE}
+ addUserKnob {6 UseLogo l "Use Logo " -STARTLINE}
+ UseLogo true
+ addUserKnob {7 WatermarkOpacity l Opacity -STARTLINE}
+ WatermarkOpacity 0.15
+ addUserKnob {7 WaterSat l   Sat -STARTLINE}
+ addUserKnob {1 Copyright l "Watermark Text"}
+ Copyright "© Rachel Dunn"
+ addUserKnob {6 ShowOnSlate l "Show On Slate" -STARTLINE}
+ ShowOnSlate true
+ addUserKnob {41 font_1 l font T Text2.font}
+ addUserKnob {16 LogoSize l    Size -STARTLINE}
+ LogoSize 1
+ addUserKnob {20 Logos}
+ addUserKnob {4 GenerateLogo l "Logo Source" M {"Use External File" GenerateLogo ""}}
+ GenerateLogo GenerateLogo
+ addUserKnob {41 file l     Logo_File -STARTLINE T Read1.file}
+ addUserKnob {41 message l "Logo Text" T LogoText.message}
+ addUserKnob {6 GlowOutline +STARTLINE}
+ GlowOutline true
+ addUserKnob {41 size_1 l "   Glow Size" -STARTLINE T Blur1.size}
+ addUserKnob {41 font T LogoText.font}
+ addUserKnob {41 size -STARTLINE T LogoText.size}
+ addUserKnob {41 kerning T LogoText.kerning}
+ addUserKnob {41 leading -STARTLINE T LogoText.leading}
+ addUserKnob {19 LogoColour l "Logo Colour"}
+ LogoColour {0.106599994 0.106599994 0.8199999928 1}
+}
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+  name Constant5
+  label "Additional Logos Can be added Here"
+  xpos 60
+  ypos -495
+ }
+ Grade {
+  channels rgba
+  white {{LogoColour.r i} {LogoColour.g i} {LogoColour.b i} {LogoColour.a i}}
+  name LogoColour1
+  xpos 60
+  ypos -328
+ }
+push 0
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+  name Constant1
+  xpos -433
+  ypos -639
+ }
+ Text {
+  message "Your\nName   Here "
+  font C:/Windows/Fonts/arial.ttf
+  size 420
+  kerning 0.01
+  leading -0.41
+  xjustify center
+  yjustify center
+  Transform 1
+  box {{0 i} {0 i} {width i} {height i}}
+  center {-100000 -100000}
+  name LogoText
+  xpos -433
+  ypos -537
+ }
+set N75680d0 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  xpos -332
+  ypos -537
+ }
+set N780d2d0 [stack 0]
+push $N780d2d0
+push $N780d2d0
+ Blur {
+  size 52
+  name Blur1
+  xpos -222
+  ypos -542
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  name Merge5
+  xpos -267
+  ypos -499
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge3
+  xpos -332
+  ypos -462
+ }
+push $N75680d0
+ Dissolve {
+  inputs 2
+  which {{GlowOutline i}}
+  name Dissolve20
+  xpos -433
+  ypos -430
+ }
+ Grade {
+  white {{LogoColour.r i} {LogoColour.g i} {LogoColour.b i} {LogoColour.a i}}
+  name LogoColour
+  xpos -433
+  ypos -383
+ }
+ Read {
+  inputs 0
+  file "C:/Users/jose/.nuke/Gizmos/Filter/SuperSlateIcon.png"
+  format "24 24 0 0 24 24 1 "
+  origset true
+  name Read1
+  xpos -618
+  ypos -357
+ }
+ Dissolve {
+  inputs 3+1
+  which {{GenerateLogo i}}
+  name Dissolve21
+  xpos -433
+  ypos -333
+ }
+ Reformat {
+  format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+  resize fit
+  name Reformat4
+  xpos -433
+  ypos -299
+ }
+set N7872a10 [stack 0]
+ Reformat {
+  format "2048 1556 590 820 1410 1250 1 2k_logoArea"
+  resize fill
+  black_outside true
+  pbb true
+  name Reformat3
+  xpos -433
+  ypos -265
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -1635
+  ypos -39
+ }
+set N788cba0 [stack 0]
+ Reformat {
+  format "1920 1080 0 0 1920 1080 1 HD"
+  name Reformat1
+  xpos -1635
+  ypos -107
+ }
+ Crop {
+  box {0 0 1920 1080}
+  name Crop13
+  xpos -1635
+  ypos -142
+ }
+ Transform {
+  translate {760 490}
+  scale 0.3
+  center {960 540}
+  name Transform8
+  xpos -1635
+  ypos -192
+ }
+push 0
+ ColorBars {
+  inputs 0
+  format "1920 1080 0 0 1920 1080 1 HD"
+  name ColorBars1
+  xpos -1505
+  ypos -412
+ }
+ Transform {
+  translate {-650 490}
+  scale 0.27
+  center {960 540}
+  name Transform7
+  xpos -1505
+  ypos -340
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+  name Constant4
+  xpos -2035
+  ypos -929
+ }
+set N788dec0 [stack 0]
+ Ramp {
+  replace true
+  p0 {254 430}
+  p1 {1816 430}
+  name Ramp1
+  xpos -2137
+  ypos -770
+ }
+ ColorLookup {
+  lut {master {curve K 0 x0.05000000075 0.05 x0.09561031312 0.1 x0.1434155107 0.15 x0.1912206262 0.2 x0.2390258014 0.25 x0.2868310213 0.3 x0.3346360922 0.35 x0.3824412525 0.4 0.45 x0.4780516028 0.5 x0.5258568525 0.55 x0.5736620426 0.6 x0.6214671135 0.65 0.7 x0.7170773149 0.75 x0.7648825049 0.8 0.8511736457 x0.8604928255 0.9 x0.9076246619 0.9492956521 x0.9561032057 1}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup1
+  xpos -2137
+  ypos -746
+ }
+ Grade {
+  black 0.07
+  gamma 0.4
+  name Grade1
+  xpos -2137
+  ypos -722
+ }
+push $N788dec0
+ Rectangle {
+  invert true
+  area {258 368 1814 427}
+  name Rectangle11
+  xpos -2035
+  ypos -780
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge10
+  xpos -2035
+  ypos -722
+ }
+ Crop {
+  box {256 366 1816 429}
+  name Crop12
+  xpos -2035
+  ypos -698
+ }
+push $N788dec0
+ Rectangle {
+  area {0 1394 2048 1396}
+  name Rectangle1
+  xpos -2232
+  ypos -753
+ }
+ Rectangle {
+  area {0 159 2048 161}
+  name Rectangle2
+  xpos -2232
+  ypos -729
+ }
+ Rectangle {
+  area {0 1356 2048 1358}
+  name Rectangle3
+  xpos -2232
+  ypos -705
+ }
+ Rectangle {
+  area {0 197 2048 199}
+  name Rectangle4
+  xpos -2232
+  ypos -681
+ }
+ Rectangle {
+  area {0 1331 2048 1333}
+  name Rectangle5
+  xpos -2232
+  ypos -657
+ }
+ Rectangle {
+  area {0 222 2048 224}
+  name Rectangle6
+  xpos -2232
+  ypos -633
+ }
+ Rectangle {
+  area {0 1214 2048 1216}
+  name Rectangle7
+  xpos -2232
+  ypos -609
+ }
+ Rectangle {
+  area {0 340 2048 342}
+  name Rectangle8
+  xpos -2232
+  ypos -585
+ }
+ Rectangle {
+  area {0 1205 2048 1207}
+  name Rectangle9
+  xpos -2232
+  ypos -561
+ }
+ Rectangle {
+  area {0 349 2048 351}
+  name Rectangle10
+  xpos -2232
+  ypos -537
+ }
+ Rectangle {
+  area {997 94 1066 1445}
+  color 0
+  name Rectangle12
+  xpos -2232
+  ypos -513
+ }
+ Text {
+  message "1.66\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 1060}
+  center {1024 778}
+  name Text9
+  xpos -2136
+  ypos -513
+ }
+ Text {
+  message "1.77\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 1024}
+  center {1024 778}
+  name Text10
+  xpos -2136
+  ypos -489
+ }
+ Text {
+  message "1.85\n\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 997}
+  center {1024 778}
+  name Text11
+  xpos -2136
+  ypos -465
+ }
+ Text {
+  message "2.35\n\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 887}
+  center {1024 778}
+  name Text12
+  xpos -2136
+  ypos -441
+ }
+ Text {
+  message "2.40\n\n\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 868}
+  center {1024 778}
+  name Text13
+  xpos -2136
+  ypos -417
+ }
+ Text {
+  message "1.66\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 -176}
+  center {1024 778}
+  name Text14
+  xpos -2136
+  ypos -393
+ }
+ Text {
+  message "1.77\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 -136}
+  center {1024 778}
+  name Text15
+  xpos -2136
+  ypos -369
+ }
+ Text {
+  message "1.85\n\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 -111}
+  center {1024 778}
+  name Text16
+  xpos -2136
+  ypos -345
+ }
+ Text {
+  message "2.35\n\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 -1}
+  center {1024 778}
+  name Text17
+  xpos -2136
+  ypos -321
+ }
+ Text {
+  message "2.40\n\n\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  size 32
+  xjustify center
+  yjustify top
+  Transform 1
+  box {970 298 1092 351}
+  translate {0 19}
+  center {1024 778}
+  name Text18
+  xpos -2136
+  ypos -297
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  name Merge11
+  xpos -2035
+  ypos -297
+ }
+set N79632a0 [stack 0]
+ Merge2 {
+  inputs 3+1
+  operation screen
+  name Merge12
+  xpos -1505
+  ypos -292
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+  name Constant3
+  xpos -1788
+  ypos -557
+ }
+ RotoPaint {
+  curves {AnimTree: "" {
+ Version: 1.2
+ Flag: 0
+ RootNode: 1
+ Node: {
+  NodeName: "Root" {
+   Flag: 512
+   NodeType: 1
+   NumOfAttributes: 10
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 
+  }
+  NumOfChildren: 16
+  Node: {
+   NodeName: "Shape15" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -337.48 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape14" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -314.98 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape13" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -292.48 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape12" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -269.97 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape11" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -247.5 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape10" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -225 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape9" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -202.5 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape8" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -180 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape7" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -157.5 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape6" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -135 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape5" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -112.5 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape4" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -90 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape16" {
+    Flag: 576
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -67.5 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 42
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 320 "spy" S 0 240 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape3" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -45 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape2" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 -22.5 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape1" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 8314 0 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 0 0 1 0 1 256 0 S 1 8314 1 S 1 8314 1 S 1 8314 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 1024 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 8314 778.001 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 943.2 S 1 8314 1477 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 1010.6 S 1 8314 1482.6 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1079.8 S 1 8314 1479.6 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 1024 S 1 8314 778 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 -34.15 S 1 8314 -0.650024 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 34.15 S 1 8314 0.649902 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 0 S 1 8314 0 S 1 8314 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 8314 "ltm" S 0 8314 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+ }
+}
+}
+  toolbox {selectAll {
+  { createBezier ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle ssx 1 ssy 1 sf 1 sb 1 }
+  { brush ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+  toolbar_brush_hardness 0.200000003
+  toolbar_lifetime_type all
+  toolbar_source_transform_scale {1 1}
+  toolbar_source_transform_center {1024 778}
+  colorOverlay 0
+  lifetime_type "all frames"
+  lifetime_start 8314
+  lifetime_end 8314
+  motionblur_shutter_offset_type centred
+  aspect_ignore_compatibility11 true
+  name RotoPaint1
+  xpos -1788
+  ypos -462
+ }
+set N7963900 [stack 0]
+ Transform {
+  translate {670 140}
+  scale 0.32
+  center {1024 778}
+  name Transform6
+  xpos -1889
+  ypos -385
+ }
+push 0
+push $N7963900
+ Transform {
+  translate {-670 140}
+  scale 0.32
+  center {1024 778}
+  name Transform1
+  xpos -1788
+  ypos -382
+ }
+push $N79632a0
+ Merge2 {
+  inputs 3+1
+  operation screen
+  name Merge9
+  xpos -1788
+  ypos -231
+ }
+ Dissolve {
+  inputs 2
+  which {{SlateType i}}
+  name Dissolve1
+  xpos -1465
+  ypos -236
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  name Merge1
+  xpos -433
+  ypos -231
+ }
+ Text {
+  message "Show:\n\nShot:\n\nDate:\n\nResolution:\n\nCutLength:\n\nFrame Rate:\n\nDescription:"
+  font C:/Windows/Fonts/arial.ttf
+  leading -0.46
+  xjustify right
+  yjustify top
+  Transform 1
+  box {286 432 751 870}
+  center {1024 778}
+  name Text1
+  xpos -433
+  ypos -207
+ }
+ Text {
+  message "\[knob Show]"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 1784 870}
+  center {1024 778}
+  name Show
+  xpos -434
+  ypos -183
+ }
+ Text {
+  message "\[file tail \[value \[? AutoName==0 Shot root.name]]]"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 1784 814}
+  center {1024 778}
+  name Shot
+  xpos -434
+  ypos -135
+ }
+ Text {
+  message "\[? AutoDate==0 \[knob Date_txt] \"\[date %D]\"]   \[? AutoTime==1 \"\[date %T] \[date %Z]\" \"\"]"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 1784 760}
+  center {1024 778}
+  name Date
+  xpos -434
+  ypos -111
+ }
+ Text {
+  opacity 0.66
+  message "\[value Output1.width] x \[value Output1.height]   \[expr \[value Output1.width]*\[value Output1.pixel_aspect] *1.0 / \[value Output1.height] ]\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 1784 706}
+  center {1024 778}
+  name Rez
+  xpos -434
+  ypos -87
+ }
+set N7611110 [stack 0]
+ Text {
+  message "\[expr \[value Input1.last_frame] -  \[value Input1.first_frame]+0] Frames   (\[expr  \[expr \[value Input1.last_frame] -  \[value Input1.first_frame]+0.0] /\[value \[? AutoFrameRate==0 FrameRate root.fps]]] seconds)"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 2048 651}
+  center {1024 778}
+  name CutLength2
+  xpos -333
+  ypos -31
+ }
+push 0
+push $N7611110
+ Text {
+  message "\[expr \[value root.last_frame] -  \[value root.first_frame]+0]  Frames  (\[expr  \[expr \[value root.last_frame] -  \[value root.first_frame]+0.0] /\[value \[? AutoFrameRate==0 FrameRate root.fps]]] seconds)\n\n"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 2030 651}
+  center {1024 778}
+  name CutLength1
+  xpos -435
+  ypos -30
+ }
+push $N7611110
+ Text {
+  message "\[knob CutLength] Frames  (\[expr (\[knob CutLength]+0.0)/\[value \[? AutoFrameRate==0 FrameRate root.fps]]] seconds)"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 2052 651}
+  center {1024 778}
+  name CutLength
+  xpos -542
+  ypos -32
+ }
+ Dissolve {
+  inputs 3+1
+  which {{AutoFill i}}
+  name Dissolve12
+  xpos -435
+  ypos 15
+ }
+ Text {
+  message "\[value \[? AutoFrameRate==0 FrameRate root.fps]] fps"
+  font C:/Windows/Fonts/arial.ttf
+  yjustify top
+  Transform 1
+  box {780 442 1784 599}
+  center {1024 778}
+  name FrameRate
+  xpos -435
+  ypos 66
+ }
+ Text {
+  message "\[knob Description_txt]"
+  font C:/Windows/Fonts/arial.ttf
+  leading -0.32
+  yjustify top
+  Transform 1
+  box {780 432 1784 549}
+  center {1024 778}
+  name Description
+  xpos -435
+  ypos 117
+ }
+ Text {
+  opacity {{ShowOnSlate i}}
+  message "\[knob Copyright]"
+  font C:/Windows/Fonts/arial.ttf
+  xjustify center
+  yjustify center
+  Transform 1
+  box {512 222 1536 344}
+  center {1024 778}
+  name Notice
+  xpos -435
+  ypos 141
+ }
+ Reformat {
+  format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+  black_outside true
+  name Reformat2
+  xpos -453
+  ypos 1009
+ }
+ set C7612a90 [stack 0]
+ Dot {
+  name Dot2
+  xpos 154
+  ypos 1012
+ }
+set N7612dc0 [stack 0]
+push $N788cba0
+ Dot {
+  name Dot1
+  xpos -1601
+  ypos 95
+ }
+set N76130f0 [stack 0]
+ Crop {
+  box {{curve i} {"(height-((width*pixel_aspect)/(\[knob AspectRatio])))/2" i} {width i} {"height-((height-(width*pixel_aspect)/(\[knob AspectRatio]))/2)" i}}
+  name HardMask
+  xpos -1751
+  ypos 161
+ }
+push $N76130f0
+ Dissolve {
+  inputs 2
+  which {{MaskOpacity i}}
+  name Dissolve7
+  xpos -1710
+  ypos 235
+ }
+push $N76130f0
+ Dissolve {
+  inputs 2
+  which {{HardMask i}}
+  name Dissolve5
+  label Mask
+  xpos -1635
+  ypos 288
+ }
+clone $C7612a90 {
+  xpos -1635
+  ypos 501
+  selected false
+ }
+set N13bdf2e0 [stack 0]
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name Shuffle3
+  xpos 345
+  ypos 228
+ }
+set N13bdf610 [stack 0]
+ AddTimeCode {
+  useFrame true
+  name AddTimeCode1
+  xpos 345
+  ypos 301
+ }
+set N13bdf940 [stack 0]
+ Text {
+  message "\[timecode]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(height-((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*1 i}}
+  center {1024 778}
+  name TimecodeDisplay
+  xpos 394
+  ypos 361
+ }
+push 0
+push $N13bdf610
+ Dot {
+  name Dot4
+  xpos 483
+  ypos 301
+ }
+set N13bdffa0 [stack 0]
+ Text {
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(height-((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*1 i}}
+  center {1024 778}
+  name FrameDisplay1
+  xpos 497
+  ypos 361
+ }
+push $N13bdffa0
+ Dissolve {
+  inputs 3+1
+  which {{Counter i}}
+  name Counter1
+  xpos 449
+  ypos 409
+ }
+ Text {
+  opacity 0.875
+  message "\[? Date==1 \[? AutoDate==0 \[knob Date_txt] \"\[date %D]\"] \"\"]  \[? TimeOverlay==1 \"\[date %T] \[date %Z]\" \"\"]\n"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  leading -1
+  xjustify right
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(height-((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*1 i}}
+  center {1024 778}
+  name Date_man
+  xpos 449
+  ypos 459
+ }
+ Text {
+  opacity {{Description i}}
+  message "\[knob Description_txt]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  xjustify center
+  yjustify top
+  Transform 1
+  box {{((width-(width*.9))/2)+(width/4) i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-(width/4)" i} {"(((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*-1 i}}
+  center {1024 778}
+  name Description4
+  xpos 449
+  ypos 483
+ }
+ Text {
+  opacity {{ShowOverlay i}}
+  message "\[knob Show]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*-1 i}}
+  center {1024 778}
+  name Show4
+  xpos 449
+  ypos 507
+ }
+ Text {
+  opacity {{ShotOverlay i}}
+  message "\[file tail \[value \[? AutoName==0 Shot root.name]]]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  xjustify right
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*-1 i}}
+  center {1024 778}
+  name ShotMan5
+  xpos 449
+  ypos 535
+ }
+push $N13bdf940
+ Text {
+  replace true
+  message "\[timecode]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*-1 i}}
+  center {1024 778}
+  name Frame1
+  xpos 286
+  ypos 367
+ }
+push 0
+push $N13bdf610
+ Dot {
+  name Dot5
+  xpos 247
+  ypos 311
+ }
+set N13be1920 [stack 0]
+ Text {
+  replace true
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*-1 i}}
+  center {1024 778}
+  name Frame
+  xpos 150
+  ypos 367
+ }
+push $N13be1920
+ Dissolve {
+  inputs 3+1
+  which {{Counter i}}
+  name Counter
+  xpos 213
+  ypos 415
+ }
+ Text {
+  message "\[? Date==1 \[? AutoDate==0 \[knob Date_txt] \"\[date %D]\"] \"\"]  \[? TimeOverlay==1 \"\[date %T] \[date %Z]\" \"\"]\n"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  leading -1
+  xjustify right
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*-1 i}}
+  center {1024 778}
+  name Date4
+  xpos 213
+  ypos 457
+ }
+ Text {
+  opacity {{Description i}}
+  message "\[knob Description_txt]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  xjustify center
+  yjustify bottom
+  Transform 1
+  box {{((width-(width*.9))/2)+(width/4) i} {"(height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-(width/4)" i} {"(height-((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*1 i}}
+  center {1024 778}
+  name Description1
+  xpos 213
+  ypos 487
+ }
+ Text {
+  opacity {{ShowOverlay i}}
+  message "\[knob Show]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(height-((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*1 i}}
+  center {1024 778}
+  name Show_Overlay
+  xpos 213
+  ypos 511
+ }
+ Text {
+  opacity {{ShotOverlay i}}
+  message "\[file tail \[value \[? AutoName==0 Shot root.name]]]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{40*(((width*pixel_aspect)/2048)) i}}
+  xjustify right
+  yjustify center
+  Transform 1
+  box {{((width-(width*.9))/2)+10 i} {"(height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))" i} {"(width -((width-(width*.9))/2))-10" i} {"(height-((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i}}
+  translate {{curve i} {(TitleOnMask*(108/(1556/height)))*1 i}}
+  center {1024 778}
+  name ShotOver
+  xpos 213
+  ypos 535
+ }
+ Dissolve {
+  inputs 2
+  which {{Reverse i}}
+  name Dissolve9
+  xpos 323
+  ypos 530
+ }
+set N13d02fb0 [stack 0]
+ Blur {
+  size 3
+  name Blur2
+  xpos 263
+  ypos 580
+ }
+ Transform {
+  translate {3 -3}
+  center {1024 778}
+  name Transform2
+  xpos 263
+  ypos 628
+ }
+push $N13d02fb0
+ ChannelMerge {
+  inputs 2
+  name ChannelMerge1
+  xpos 323
+  ypos 669
+ }
+push $N13bdf2e0
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name Shuffle4
+  xpos -145
+  ypos 501
+ }
+ Rectangle {
+  area {{((width-(width*.9))/2)-(3*pixel_aspect) i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))-(3*((width*pixel_aspect)/2048))" i} {"(width -((width-(width*.9))/2))+(3*pixel_aspect)" i} {"(height-(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2)))+(3*((width*pixel_aspect)/2048))" i}}
+  name Rectangle39
+  xpos -145
+  ypos 525
+ }
+ Rectangle {
+  area {{((width-(width*.9))/2) i} {"(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i} {"width -((width-(width*.9))/2)" i} {"height-(((height-(((width*pixel_aspect)*.9)/\[value AspectRatio]))/2))" i}}
+  color 0
+  name Rectangle40
+  xpos -145
+  ypos 549
+ }
+ Rectangle {
+  area {{((width-(width*.8))/2)-(3*pixel_aspect) i} {"(((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))-(3*((width*pixel_aspect)/2048))" i} {"(width -((width-(width*.8))/2))+(3*pixel_aspect)" i} {"(height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2))+(3*((width*pixel_aspect)/2048))" i}}
+  name Rectangle41
+  xpos -145
+  ypos 573
+ }
+ Rectangle {
+  area {{(width-(width*.8))/2 i} {"((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2)" i} {"width -((width-(width*.8))/2)" i} {"height-((height-(((width*pixel_aspect)*.8)/\[value AspectRatio]))/2)" i}}
+  color 0
+  name Rectangle42
+  xpos -145
+  ypos 597
+ }
+ Rectangle {
+  area {{(width/2)-2 i} {(height/2)-(height*0.025706940874036) i} {(width/2)+2 i} {(height/2)+(height*0.025706940874036) i}}
+  name Rectangle17
+  xpos -145
+  ypos 621
+ }
+ Rectangle {
+  area {{(width/2)-(width*0.01953125) i} {(height/2)-(2*pixel_aspect) i} {(width/2)+(width*0.01953125) i} {(height/2)+(2*pixel_aspect) i}}
+  name Rectangle18
+  xpos -145
+  ypos 645
+ }
+set N13d04f90 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  format "4096 3112 0 0 4096 3112 1 4K_Super_35(full-ap)"
+  name Constant2
+  xpos -969
+  ypos -101
+ }
+ RotoPaint {
+  replace true
+  curves {AnimTree: "" {
+ Version: 1.2
+ Flag: 0
+ RootNode: 1
+ Node: {
+  NodeName: "Root" {
+   Flag: 512
+   NodeType: 1
+   NumOfAttributes: 11
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "pt" S 0 0 
+  }
+  NumOfChildren: 2
+  Node: {
+   NodeName: "Shape2" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 1 1 0 S 1 1 0 S 1 1 0 S 1 1 1 S 1 1 1 S 1 1 0 S 1 1 2048 S 1 1 1555.99 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 18
+      0 S 1 1 0 S 1 1 0 0 0 S 1 1 3.01 S 1 1 0.01 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -2.26 S 1 1 -1.7 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 3 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 4093.02 S 1 1 3111.95 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.717515 S 1 1 0.751802 0 0 S 1 1 4098.28 S 1 1 3114.04 0 0 S 1 1 0.717515 S 1 1 -0.751802 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 4096 S 1 1 3108.97 0 0 S 1 1 0 S 1 1 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 18
+      0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.717515 S 1 1 0.751802 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.717515 S 1 1 -0.751802 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+  Node: {
+   NodeName: "Shape1" {
+    Flag: 512
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 0 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 0 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 0 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 1 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 1 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 0 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 2047.65 0 1 0 1 256 0 L 0 4096 0.5 2 0 0 "" 0 1 "" 1 1556.54 0 1 0 1 256 0 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 18
+      0 S 1 1 0 S 1 1 0 0 0 S 1 1 3.01 S 1 1 3111.98 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -3.08 S 1 1 3114.1 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0.03 S 1 1 3108.99 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 4093.02 S 1 1 -0.01 0 0 S 1 1 -0.000244141 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 4098.84 S 1 1 -1.9 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.000244141 S 1 1 0 0 0 S 1 1 4095.98 S 1 1 2.99 0 0 S 1 1 0 S 1 1 0 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 18
+      0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.000244141 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 -0.000244141 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 0 S 1 1 0 S 1 1 0 0 
+     }
+     NumOfAttributes: 27
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 
+    }
+   }
+   NumOfChildren: 0
+  }
+ }
+}
+}
+  toolbox {selectAll {
+  { createBezier ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle ssx 1 ssy 1 sf 1 sb 1 }
+  { brush ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+  toolbar_brush_hardness 0.200000003
+  toolbar_lifetime_type all
+  toolbar_source_transform_scale {1 1}
+  toolbar_source_transform_center {2048 1556}
+  lifetime_type "all frames"
+  view {}
+  motionblur_on true
+  motionblur_shutter_offset_type centred
+  aspect_ignore_compatibility11 true
+  name RotoPaint2
+  xpos -972
+  ypos -4
+ }
+ Grid {
+  number 32
+  size 5
+  name Grid1
+  xpos -969
+  ypos 30
+ }
+ Text {
+  message "16       15       14        13        12       11        10       9          8         7          6         5          4                     2      "
+  font C:/Windows/Fonts/arial.ttf
+  size 41
+  yjustify bottom
+  Transform 1
+  box {14 1564 2048 1619}
+  center {2048 1556}
+  name Text3
+  xpos -969
+  ypos 54
+ }
+ Text {
+  message "2                     4         5          6          7         8         9        10        11       12        13       14       15        16"
+  font C:/Windows/Fonts/arial.ttf
+  size 41
+  xjustify right
+  yjustify bottom
+  Transform 1
+  box {2048 1564 4082 1619}
+  center {2048 1556}
+  name Text4
+  xpos -969
+  ypos 78
+ }
+ Text {
+  message "16\n\n\n15\n\n\n14\n\n\n13\n\n\n12\n\n\n11\n\n\n10\n\n\n9\n\n\n8\n\n\n7\n\n\n6\n\n\n5\n\n\n4\n\n\n\n\n\n2      "
+  font C:/Windows/Fonts/arial.ttf
+  size 41
+  leading -0.216
+  yjustify top
+  Transform 1
+  box {2055 1564 2114 3098}
+  center {2048 1556}
+  name Text6
+  xpos -969
+  ypos 102
+ }
+ Text {
+  message "2\n\n\n\n\n\n4\n\n\n5\n\n\n6\n\n\n7\n\n\n8\n\n\n9\n\n\n10\n\n\n11\n\n\n12\n\n\n13\n\n\n14\n\n\n15\n\n\n16"
+  font C:/Windows/Fonts/arial.ttf
+  size 41
+  leading -0.209
+  yjustify bottom
+  Transform 1
+  box {2054 5 2114 1556}
+  center {2048 1556}
+  name Text7
+  xpos -969
+  ypos 126
+ }
+ Radial {
+  area {1690 1518 1770 1598}
+  softness 0.055
+  color 0.5
+  name Radial1
+  xpos -969
+  ypos 150
+ }
+ Radial {
+  area {2332 1518 2412 1598}
+  softness 0.055
+  ramp linear
+  color 0.5
+  name Radial2
+  xpos -969
+  ypos 174
+ }
+ Radial {
+  area {2008 1758 2088 1838}
+  softness 0.055
+  color 0.5
+  name Radial3
+  xpos -969
+  ypos 198
+ }
+ Radial {
+  area {2008 1274 2088 1354}
+  softness 0.055
+  color 0.5
+  name Radial4
+  xpos -969
+  ypos 222
+ }
+ Text {
+  message N
+  font C:/Windows/Fonts/arial.ttf
+  size 60
+  xjustify center
+  yjustify center
+  Transform 1
+  box {1024 778 3072 2334}
+  translate {0 242}
+  center {2048 1556}
+  color 0
+  name Text8
+  xpos -969
+  ypos 246
+ }
+ Text {
+  message S
+  font C:/Windows/Fonts/arial.ttf
+  size 60
+  xjustify center
+  yjustify center
+  Transform 1
+  box {1024 778 3072 2334}
+  translate {0 -242}
+  center {2048 1556}
+  color 0
+  name Text19
+  xpos -969
+  ypos 270
+ }
+ Text {
+  message E
+  font C:/Windows/Fonts/arial.ttf
+  size 60
+  xjustify center
+  yjustify center
+  Transform 1
+  box {1024 778 3072 2334}
+  translate {323 0}
+  center {2048 1556}
+  color 0
+  name Text20
+  xpos -969
+  ypos 294
+ }
+ Text {
+  message W
+  font C:/Windows/Fonts/arial.ttf
+  size 60
+  xjustify center
+  yjustify center
+  Transform 1
+  box {1024 778 3072 2334}
+  translate {-318 0}
+  center {2048 1556}
+  color 0
+  name Text21
+  xpos -969
+  ypos 318
+ }
+ CornerPin2D {
+  to1 {0 0}
+  to2 {{Reformat2.width i} {0 i}}
+  to3 {{Reformat2.width i} {Reformat2.height i}}
+  to4 {{0 i} {Reformat2.height i}}
+  invert false
+  filter Mitchell
+  shutter 0
+  from1 {0 0}
+  from2 {4096 0}
+  from3 {4096 3112}
+  from4 {0 3112}
+  name CornerPin2D1
+  xpos -969
+  ypos 342
+ }
+ Crop {
+  box {{curve i} {curve i} {Reformat2.width i} {Reformat2.height i}}
+  reformat true
+  crop false
+  name Crop1
+  xpos -969
+  ypos 366
+ }
+set N13ed7970 [stack 0]
+ Crop {
+  box {{curve i} {"(height-((width*Reformat2.pixel_aspect)/(\[knob AspectRatio])))/2" i} {width i} {"height-((height-(width*Reformat2.pixel_aspect)/(\[knob AspectRatio]))/2)" i}}
+  name HardMask1
+  xpos -1046
+  ypos 455
+ }
+push $N13ed7970
+ Dissolve {
+  inputs 2
+  which {{MaskOpacity i}}
+  name Dissolve8
+  xpos -1019
+  ypos 541
+ }
+push $N13ed7970
+ Dissolve {
+  inputs 2
+  which {{"HardMask && Reformat2.pixel_aspect !=2" i}}
+  name Dissolve19
+  label Mask
+  xpos -969
+  ypos 584
+ }
+set N13ed8300 [stack 0]
+push $N7872a10
+ Transform {
+  scale {{LogoSize i}}
+  center {{Input1.width/2 i} {Input1.height/2 i}}
+  name Transform4
+  xpos -1217
+  ypos -119
+ }
+clone $C7612a90 {
+  xpos -1217
+  ypos -95
+  selected false
+ }
+set N13ed8960 [stack 0]
+ Saturation {
+  saturation {{WaterSat i}}
+  name Saturation1
+  xpos -1271
+  ypos 6
+ }
+set N13ed8c90 [stack 0]
+push $N13ed8960
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  xpos -1163
+  ypos 5
+ }
+ Dissolve {
+  inputs 2
+  which {{WaterSat i}}
+  name Dissolve3
+  xpos -1203
+  ypos 58
+ }
+push $N13ed8c90
+ Dissolve {
+  inputs 2
+  which {{GenerateLogo i}}
+  name Dissolve6
+  xpos -1216
+  ypos 127
+ }
+push $N13bdf2e0
+ Dot {
+  name Dot7
+  xpos -1357
+  ypos 648
+ }
+set N13ed9950 [stack 0]
+ Text {
+  replace true
+  message "\[knob Copyright]"
+  font C:/Windows/Fonts/arial.ttf
+  size {{((width*pixel_aspect)*.085)*LogoSize i}}
+  xjustify center
+  yjustify center
+  Transform 1
+  box {{curve i} {curve i} {width i} {height i}}
+  center {-100000 -100000}
+  name Text2
+  xpos -1326
+  ypos 581
+ }
+ Dissolve {
+  inputs 2
+  which {{UseLogo i}}
+  name Dissolve4
+  xpos -1216
+  ypos 576
+ }
+ Clamp {
+  name Clamp1
+  xpos -1216
+  ypos 621
+ }
+push $N13ed9950
+ Merge2 {
+  inputs 2
+  operation screen
+  mix {{WatermarkOpacity i}}
+  name Merge4
+  xpos -1216
+  ypos 670
+ }
+push $N13ed9950
+ Dissolve {
+  inputs 2
+  which {{Watermark i}}
+  name Dissolve2
+  xpos -1216
+  ypos 706
+ }
+ Dot {
+  name Dot8
+  xpos -1016
+  ypos 714
+ }
+set N13fcccb0 [stack 0]
+ Merge2 {
+  inputs 2
+  mix {{GridMix i}}
+  name Merge7
+  xpos -969
+  ypos 645
+ }
+push $N13ed8300
+push $N13fcccb0
+ Merge2 {
+  inputs 2
+  operation stencil
+  mix {{GridMix i}}
+  name Merge8
+  xpos -861
+  ypos 648
+ }
+ Dissolve {
+  inputs 2
+  which {{GridInvert i}}
+  name Dissolve25
+  xpos -861
+  ypos 708
+ }
+push $N13fcccb0
+ Dissolve {
+  inputs 2
+  which {{Grid i}}
+  name Dissolve22
+  xpos -861
+  ypos 756
+ }
+ Dot {
+  name Dot6
+  xpos -347
+  ypos 773
+ }
+set N13fcdca0 [stack 0]
+ Merge2 {
+  inputs 2
+  mix {{SafeMix i}}
+  name Merge13
+  xpos -266
+  ypos 729
+ }
+push $N13d04f90
+push $N13fcdca0
+ Merge2 {
+  inputs 2
+  operation stencil
+  mix {{SafeMix i}}
+  name Merge14
+  xpos -145
+  ypos 733
+ }
+ Dissolve {
+  inputs 2
+  which {{SafeInvert i}}
+  name Dissolve24
+  xpos -192
+  ypos 778
+ }
+push $N13fcdca0
+ Dissolve {
+  inputs 2
+  which {{SafeArea i}}
+  name Dissolve23
+  xpos -192
+  ypos 822
+ }
+ Dot {
+  name Dot9
+  xpos -82
+  ypos 830
+ }
+ Merge2 {
+  inputs 2
+  also_merge all
+  name Merge2
+  xpos 323
+  ypos 845
+ }
+ Dot {
+  name Dot3
+  xpos 357
+  ypos 1011
+ }
+set N13fcf2f0 [stack 0]
+ Dissolve {
+  inputs 2
+  which {{"frame < (\[value Input1.first_frame])" i}}
+  name Dissolve15
+  xpos 350
+  ypos 1093
+ }
+push $N7612dc0
+push $N13fcf2f0
+ Dissolve {
+  inputs 2
+  which {{"frame <= (\[value root.first_frame])" i}}
+  name Dissolve16
+  xpos 241
+  ypos 1092
+ }
+ Dissolve {
+  inputs 2
+  which {{AutoFill-1 i}}
+  name Dissolve14
+  xpos 350
+  ypos 1141
+ }
+push $N7612dc0
+push $N13fcf2f0
+ Dissolve {
+  inputs 2
+  which {{"frame <= SlateFrame" i}}
+  name Dissolve11
+  xpos 120
+  ypos 1091
+ }
+ Dissolve {
+  inputs 2
+  which {{AutoSlateFrame i}}
+  name Dissolve17
+  xpos 240
+  ypos 1141
+ }
+ Output {
+  name Output1
+  xpos 241
+  ypos 1280
+ }
+end_group

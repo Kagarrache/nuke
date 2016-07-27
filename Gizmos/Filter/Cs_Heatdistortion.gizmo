@@ -1,0 +1,173 @@
+#! C:/Program Files/Nuke6.3v2/Nuke6.3.exe -nx
+version 6.3 v2
+Gizmo {
+ tile_color 0x990000ff
+ addUserKnob {20 CS_HeatDistortion}
+ addUserKnob {41 GlowInside t "Glow inside of the alpha." T GlowIn.brightness}
+ addUserKnob {41 GlowOutside t "Glow outside of the alpha." T GlowOut.brightness}
+ addUserKnob {7 Expand t "Size of the heat cloud outside the alpha." R 0 100}
+ Expand 50
+ addUserKnob {41 uv_scale l Distortion T IDistort1.uv_scale}
+ addUserKnob {20 Noise n 1}
+ addUserKnob {41 Detail T Noise1.size}
+ addUserKnob {41 Frequence T Noise1.zoffset}
+ addUserKnob {20 endGroupNoise n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 Creator l "" +STARTLINE T "CS_HeatDistortion v1.1 by Christian Schulze - www.christian-schulze.eu"}
+ addUserKnob {20 ColorCorrection}
+ addUserKnob {20 Inside n 1}
+ addUserKnob {41 saturation T CCIn.saturation}
+ addUserKnob {41 contrast T CCIn.contrast}
+ addUserKnob {41 gamma T CCIn.gamma}
+ addUserKnob {41 gain T CCIn.gain}
+ addUserKnob {41 offset T CCIn.offset}
+ addUserKnob {20 endGroupInside n -1}
+ addUserKnob {20 Outside n 1}
+ addUserKnob {41 saturation_1 l saturation T CCOut.saturation}
+ addUserKnob {41 contrast_1 l contrast T CCOut.contrast}
+ addUserKnob {41 gamma_1 l gamma T CCOut.gamma}
+ addUserKnob {41 gain_1 l gain T CCOut.gain}
+ addUserKnob {41 offset_1 l offset T CCOut.offset}
+ addUserKnob {20 endGroupOutside n -1}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -480
+  ypos -369
+ }
+set N824ce20 [stack 0]
+ Constant {
+  inputs 0
+  channels alpha
+  color 1
+  format "640 480 0 0 640 480 1 PC_Video"
+  name Constant1
+  xpos -260
+  ypos -399
+ }
+add_layer {rgba rgba.water}
+ Copy {
+  inputs 2
+  channels alpha
+  name Copy1
+  xpos -370
+  ypos -381
+ }
+push $N824ce20
+ ShuffleCopy {
+  inputs 2
+  in alpha
+  in2 none
+  red red
+  out alpha
+  name ShuffleCopy2
+  xpos -480
+  ypos -321
+ }
+set N824d780 [stack 0]
+ Dot {
+  name Dot1
+  tile_color 0
+  xpos -336
+  ypos -318
+ }
+set N824daa0 [stack 0]
+ Dot {
+  name Dot2
+  tile_color 0
+  xpos -226
+  ypos -318
+ }
+ FilterErode {
+  size {{-Expand i}}
+  filter gaussian
+  name FilterErode1
+  xpos -260
+  ypos -231
+ }
+set N8295910 [stack 0]
+ Noise {
+  output alpha
+  replace true
+  maskChannelInput rgba.alpha
+  size 50
+  zoffset {{frame/2}}
+  center {960 540}
+  name Noise1
+  xpos -260
+  ypos -183
+ }
+push $N8295910
+push $N824daa0
+ ChannelMerge {
+  inputs 2
+  operation xor
+  name ChannelMerge1
+  xpos -370
+  ypos -237
+ }
+set N857f790 [stack 0]
+push $N857f790
+push $N824d780
+ ColorCorrect {
+  gamma {1 0.7 0.5 0}
+  maskChannelInput rgba.alpha
+  name CCIn
+  xpos -480
+  ypos -297
+ }
+ Glow {
+  tint {1 1 1}
+  brightness 2
+  maskChannelInput rgba.alpha
+  name GlowIn
+  xpos -480
+  ypos -261
+ }
+ ColorCorrect {
+  inputs 1+1
+  gamma {1 1 1 0}
+  maskChannelInput -rgba.alpha
+  name CCOut
+  xpos -480
+  ypos -225
+ }
+ Glow {
+  inputs 1+1
+  tint {1 1 1}
+  brightness 0
+  maskChannelInput -rgba.alpha
+  name GlowOut
+  xpos -480
+  ypos -201
+ }
+ ShuffleCopy {
+  inputs 2
+  in alpha
+  in2 none
+  red alpha
+  green alpha
+  blue alpha
+  black red
+  white red
+  red2 red
+  green2 red
+  out motion
+  name ShuffleCopy1
+  xpos -480
+  ypos -177
+ }
+ IDistort {
+  uv motion
+  uv_scale {25 -50}
+  name IDistort1
+  xpos -480
+  ypos -111
+ }
+ Output {
+  name Output
+  xpos -480
+  ypos -33
+ }
+end_group

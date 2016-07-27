@@ -1,0 +1,162 @@
+#! /Applications/Nuke6.0v1-32/Nuke6.0v1.app/Contents/MacOS/Nuke6.0v1 -nx
+version 6.0 v1
+Gizmo {
+ inputs 2
+ addUserKnob {20 User}
+ addUserKnob {41 AlphaTweak T Grade1.gamma}
+ addUserKnob {26 Inner l "" +STARTLINE}
+ addUserKnob {41 InnerScatter T Blur2.size}
+ addUserKnob {41 InnerOpacity T Dissolve2.which}
+ addUserKnob {41 InnerBlur T Blur3.size}
+ addUserKnob {26 Outer l "" +STARTLINE}
+ addUserKnob {41 OuterScatter T Blur1.size}
+ addUserKnob {41 OuterOpacity T Dissolve1.which}
+ addUserKnob {26 ""}
+ addUserKnob {41 Mix T Dissolve3.which}
+ addUserKnob {26 ""}
+ addUserKnob {26 x l "" +STARTLINE T "MagicMerge by racheldunn"}
+}
+ Input {
+  inputs 0
+  name FG
+  xpos -147
+  ypos -114
+  number 1
+ }
+ Grade {
+  channels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  black_clamp false
+  mix 0.635
+  name Grade1
+  xpos -147
+  ypos -55
+ }
+set N1a3e0cd0 [stack 0]
+push $N1a3e0cd0
+ Blur {
+  size 5
+  name Blur1
+  xpos -282
+  ypos 2
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos -478
+  ypos 162
+ }
+set N1a3f7ed0 [stack 0]
+ Merge2 {
+  inputs 2
+  also_merge all
+  name Merge1
+  xpos -282
+  ypos 110
+ }
+push $N1a3f7ed0
+ Dissolve {
+  inputs 2
+  which 0.5
+  name Dissolve1
+  xpos -282
+  ypos 156
+ }
+set N2981f6a0 [stack 0]
+ Merge2 {
+  inputs 2
+  also_merge all
+  name Merge2
+  xpos -147
+  ypos 162
+ }
+set N1a3c2640 [stack 0]
+push $N1a3e0cd0
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -37
+  ypos -49
+ }
+set N29836120 [stack 0]
+ Clamp {
+  name Clamp1
+  xpos -37
+  ypos -103
+ }
+ Invert {
+  name Invert1
+  xpos 80
+  ypos -103
+ }
+ Blur {
+  size 5
+  name Blur2
+  xpos 80
+  ypos -58
+ }
+push $N29836120
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge4
+  xpos 80
+  ypos -12
+ }
+push $N2981f6a0
+ Blur {
+  size 5
+  name Blur3
+  xpos -79
+  ypos 67
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 76
+  ypos 69
+ }
+ Premult {
+  name Premult1
+  xpos 76
+  ypos 105
+ }
+push $N1a3c2640
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos 76
+  ypos 162
+ }
+push $N1a3c2640
+ Dissolve {
+  inputs 2
+  which 0.085
+  name Dissolve2
+  xpos 76
+  ypos 195
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  selected true
+  xpos 76
+  ypos 259
+ }
+push $N1a3f7ed0
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve3
+  xpos 76
+  ypos 313
+ }
+ Output {
+  name Output1
+  xpos 76
+  ypos 378
+ }
+end_group

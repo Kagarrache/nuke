@@ -1,0 +1,446 @@
+#! C:/Program Files/Nuke6.3v6/Nuke6.3.exe -nx
+version 6.3 v6
+Gizmo {
+ inputs 3
+ addUserKnob {20 User l Despillator}
+ addUserKnob {4 screentype l "Screen Type" M {Red Green Blue}}
+ screentype Green
+ addUserKnob {7 center}
+ center 0.5
+ addUserKnob {7 limiter R 0.5 1.5}
+ limiter 1
+ addUserKnob {7 skirt R 0.05 4}
+ skirt 1
+ addUserKnob {7 luminance}
+ addUserKnob {26 ""}
+ addUserKnob {7 saturation R 0 4}
+ addUserKnob {7 add R -1 1}
+ addUserKnob {7 gamma R 0 4}
+ gamma 1
+ addUserKnob {26 ""}
+ addUserKnob {7 bgmix l "bg mix"}
+ bgmix 1
+ addUserKnob {7 bgblur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {4 outalpha l "out alpha" M {source correction}}
+ addUserKnob {26 ""}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -553
+  ypos 484
+  number 2
+ }
+ Input {
+  inputs 0
+  name in
+  xpos -780
+  ypos -480
+ }
+ Dot {
+  name Dot89
+  xpos -752
+  ypos -421
+ }
+set N191b8d80 [stack 0]
+ Dot {
+  name Dot90
+  xpos -927
+  ypos -421
+ }
+ Dot {
+  name Dot91
+  xpos -927
+  ypos 481
+ }
+set N19253450 [stack 0]
+push $N191b8d80
+add_layer {rgba rgba.beta}
+ Gamma {
+  channels rgb
+  value {{parent.skirt i}}
+  name Gamma2
+  xpos -780
+  ypos -357
+ }
+set N19253780 [stack 0]
+ Dot {
+  name Dot92
+  xpos -844
+  ypos -360
+ }
+ Dot {
+  name Dot93
+  xpos -844
+  ypos -2
+ }
+set N19253de0 [stack 0]
+push $N19253780
+ Dot {
+  name Dot94
+  xpos -536
+  ypos -360
+ }
+set N19254110 [stack 0]
+ Dot {
+  name Dot95
+  xpos -442
+  ypos -360
+ }
+set N19254440 [stack 0]
+ Dot {
+  name Dot96
+  xpos -349
+  ypos -360
+ }
+add_layer {shadow}
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name blue1
+  xpos -377
+  ypos -288
+ }
+set N19254aa0 [stack 0]
+push $N19254110
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name red1
+  xpos -564
+  ypos -289
+ }
+set N19254dd0 [stack 0]
+push $N19254440
+ Shuffle {
+  red green
+  blue green
+  alpha black
+  name green1
+  xpos -470
+  ypos -288
+ }
+set N19255100 [stack 0]
+ Dissolve {
+  inputs 2
+  channels rgb
+  which {{parent.DissolveCenter4.which i}}
+  name DissolveCenter3
+  xpos -195
+  ypos -162
+ }
+ Multiply {
+  channels rgb
+  value {{parent.Mult_Limit4.value i}}
+  name Mult_Limit3
+  xpos -195
+  ypos -138
+ }
+set N19255760 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge64
+  xpos -130
+  ypos -83
+ }
+push $N19254aa0
+push $N19255760
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge65
+  xpos -269
+  ypos -82
+ }
+ ShuffleCopy {
+  inputs 2
+  alpha red
+  name ShuffleCopy21
+  xpos -198
+  ypos -37
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  alpha alpha2
+  name ShuffleCopy22
+  xpos -198
+  ypos 23
+ }
+push $N19253de0
+push $N19255100
+push $N19254aa0
+push $N19254dd0
+ Dissolve {
+  inputs 2
+  channels rgb
+  which {{parent.center i}}
+  name DissolveCenter4
+  xpos -444
+  ypos -158
+ }
+ Multiply {
+  channels rgb
+  value {{parent.limiter i}}
+  name Mult_Limit4
+  xpos -444
+  ypos -134
+ }
+set N19256a80 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge66
+  xpos -379
+  ypos -79
+ }
+push $N19255100
+push $N19256a80
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge67
+  xpos -518
+  ypos -78
+ }
+ ShuffleCopy {
+  inputs 2
+  alpha red
+  name ShuffleCopy23
+  xpos -448
+  ypos -28
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue blue
+  alpha alpha2
+  name ShuffleCopy24
+  xpos -448
+  ypos 33
+ }
+push $N19253de0
+push $N19254dd0
+push $N19255100
+push $N19254aa0
+ Dissolve {
+  inputs 2
+  channels rgb
+  which {{parent.DissolveCenter4.which i}}
+  name DissolveCenter5
+  xpos -693
+  ypos -157
+ }
+ Multiply {
+  channels rgb
+  value {{parent.Mult_Limit4.value i}}
+  name Mult_Limit5
+  xpos -693
+  ypos -133
+ }
+set N6c0fe1b0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge68
+  xpos -628
+  ypos -78
+ }
+push $N19254dd0
+push $N6c0fe1b0
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge69
+  xpos -767
+  ypos -77
+ }
+ ShuffleCopy {
+  inputs 2
+  alpha red
+  name ShuffleCopy25
+  xpos -696
+  ypos -32
+ }
+ ShuffleCopy {
+  inputs 2
+  green green
+  blue blue
+  alpha alpha2
+  name ShuffleCopy26
+  xpos -696
+  ypos 29
+ }
+ Switch {
+  inputs 3
+  which {{parent.screentype i}}
+  name Switch12
+  xpos -696
+  ypos 102
+ }
+ Gamma {
+  channels rgb
+  value {{"1 / parent.Gamma2.value" i}}
+  name Gamma5
+  xpos -696
+  ypos 126
+ }
+set N6c0ff1a0 [stack 0]
+ Clamp {
+  channels alpha
+  name Clamp1
+  xpos -586
+  ypos 161
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  alpha black
+  name Shuffle1
+  xpos -586
+  ypos 197
+ }
+push $N6c0ff1a0
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  mix {{parent.luminance}}
+  name Merge1
+  xpos -696
+  ypos 197
+ }
+ Dot {
+  name Dot1
+  xpos -668
+  ypos 245
+ }
+set N6c0ffe60 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle33
+  xpos -586
+  ypos 248
+ }
+ Input {
+  inputs 0
+  name bg
+  xpos -476
+  ypos 248
+  number 1
+ }
+ Blur {
+  channels rgb
+  size {{parent.bgblur i}}
+  name Blur4
+  xpos -476
+  ypos 272
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge70
+  xpos -586
+  ypos 272
+ }
+ Clamp {
+  channels rgb
+  name Clamp6
+  xpos -586
+  ypos 296
+ }
+push $N6c0ffe60
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  mix {{parent.bgmix i}}
+  name Merge71
+  xpos -696
+  ypos 296
+ }
+ Saturation {
+  saturation {{parent.saturation i}}
+  maskChannelInput rgba.alpha
+  name Saturation4
+  xpos -696
+  ypos 343
+ }
+ Gamma {
+  channels rgb
+  value {{parent.gamma i}}
+  maskChannelInput rgba.alpha
+  name Gamma6
+  xpos -696
+  ypos 379
+ }
+ Add {
+  channels rgb
+  value {{parent.add i}}
+  maskChannelInput rgba.alpha
+  name Add3
+  xpos -696
+  ypos 415
+ }
+ Keymix {
+  inputs 3
+  channels rgba
+  name Keymix8
+  xpos -696
+  ypos 484
+ }
+set N6bfe78e0 [stack 0]
+push $N19253450
+ Dot {
+  name Dot97
+  xpos -927
+  ypos 523
+ }
+set N6bfe7c10 [stack 0]
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix i}}
+  name Dissolve5
+  xpos -696
+  ypos 526
+ }
+push $N6bfe78e0
+push $N6bfe7c10
+ Switch {
+  inputs 2
+  which {{parent.outalpha i}}
+  name Switch13
+  xpos -806
+  ypos 550
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  alpha alpha2
+  name ShuffleCopy27
+  xpos -696
+  ypos 550
+ }
+ Output {
+  name Output
+  xpos -696
+  ypos 574
+ }
+end_group

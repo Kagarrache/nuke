@@ -1,0 +1,1696 @@
+set cut_paste_input [stack 0]
+version 6.3 v4
+BackdropNode {
+ inputs 0
+ name BackdropNode3
+ tile_color 0x797446ff
+ label Transforms
+ note_font_size 42
+ selected true
+ xpos 14511
+ ypos 1333
+ bdwidth 363
+ bdheight 366
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode4
+ tile_color 0x7171c600
+ label "Core Despill"
+ note_font_size 72
+ selected true
+ xpos 13628
+ ypos -1062
+ bdwidth 752
+ bdheight 903
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode5
+ tile_color 0x8e8e3800
+ label "Edge Matte"
+ note_font_size 72
+ selected true
+ xpos 16196
+ ypos -700
+ bdwidth 484
+ bdheight 600
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode6
+ tile_color 0x7171c600
+ label "BG element"
+ note_font_size 142
+ selected true
+ xpos 17508
+ ypos -2883
+ bdwidth 551
+ bdheight 480
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode7
+ tile_color 0x3c6d8eff
+ label "BG despill edge blending"
+ note_font_size 62
+ selected true
+ xpos 14353
+ ypos 1780
+ bdwidth 1583
+ bdheight 696
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode8
+ tile_color 0x374935ff
+ label "Green\nScreen Footage"
+ note_font_size 112
+ selected true
+ xpos 14411
+ ypos -2415
+ bdwidth 604
+ bdheight 426
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode9
+ tile_color 0x436967ff
+ label "creating GS channel\n for review at bottom of key"
+ note_font_size 42
+ selected true
+ xpos 14415
+ ypos -1769
+ bdwidth 593
+ bdheight 336
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode10
+ tile_color 0x7171c600
+ label "Core Matte"
+ note_font_size 62
+ selected true
+ xpos 15414
+ ypos -808
+ bdwidth 663
+ bdheight 687
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode11
+ tile_color 0x8e8e3800
+ label "Edge Despill"
+ note_font_size 62
+ selected true
+ xpos 14543
+ ypos -1195
+ bdwidth 799
+ bdheight 1016
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode12
+ tile_color 0xe9967a01
+ label "Color \nCorrections"
+ note_font_size 62
+ selected true
+ xpos 14506
+ ypos 851
+ bdwidth 438
+ bdheight 447
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode13
+ tile_color 0x7b7b85ff
+ label denoise
+ note_font_size 42
+ selected true
+ xpos 15648
+ ypos -1211
+ bdwidth 218
+ bdheight 147
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode26
+ tile_color 0x5b7179ff
+ label "optional,\ngenerally \nuseful"
+ note_font_size 42
+ selected true
+ xpos 15199
+ ypos 116
+ bdwidth 256
+ bdheight 246
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode27
+ tile_color 0xe6e6fa01
+ label "gizmos with defaults"
+ note_font_size 42
+ selected true
+ xpos 16003
+ ypos -2165
+ bdwidth 419
+ bdheight 233
+}
+push $cut_paste_input
+NoOp {
+ name BG_ELEMENT1
+ note_font_size 31
+ selected true
+ xpos 17692
+ ypos -2624
+}
+set N53a1760 [stack 0]
+Dot {
+ name Dot12
+ selected true
+ xpos 17726
+ ypos -2490
+}
+push $N53a1760
+Dot {
+ name Dot13
+ label BG
+ note_font_size 71
+ selected true
+ xpos 17726
+ ypos 2000
+}
+set N53a3ac0 [stack 0]
+Dot {
+ name Dot14
+ label BG
+ note_font_size 101
+ selected true
+ xpos 15493
+ ypos 2000
+}
+Grade {
+ black_clamp false
+ name Grade4
+ label "BG Prep"
+ selected true
+ xpos 15459
+ ypos 2081
+}
+Dot {
+ name Dot15
+ selected true
+ xpos 15493
+ ypos 2275
+}
+NoOp {
+ inputs 0
+ name GS_PLATE1
+ note_font_size 31
+ selected true
+ xpos 14630
+ ypos -2120
+}
+Dot {
+ name Dot16
+ label "raw color\nplate"
+ note_font_size 31
+ selected true
+ xpos 14664
+ ypos -2022
+}
+Dot {
+ name Dot17
+ selected true
+ xpos 14664
+ ypos -1661
+}
+AddChannels {
+ channels rgba
+ name AddChannels1
+ selected true
+ xpos 14630
+ ypos -1611
+}
+set N53ae3c0 [stack 0]
+push $N53ae3c0
+add_layer {GS GS.red GS.green GS.blue GS.alpha}
+Copy {
+ inputs 2
+ from0 rgba.red
+ to0 GS.red
+ from1 rgba.green
+ to1 GS.green
+ from2 rgba.blue
+ to2 GS.blue
+ name Copy1
+ selected true
+ xpos 14630
+ ypos -1539
+}
+Dot {
+ name Dot18
+ selected true
+ xpos 14664
+ ypos -1340
+}
+set N53b3320 [stack 0]
+Dot {
+ name Dot19
+ selected true
+ xpos 15749
+ ypos -1340
+}
+Dot {
+ name Dot20
+ label "<<<-----Place your DENOISE node \nor denoise plates here"
+ note_font_size 51
+ selected true
+ xpos 15749
+ ypos -1123
+}
+Dot {
+ name Dot21
+ label "Denoise\nPlate"
+ note_font_size 81
+ selected true
+ xpos 15749
+ ypos -988
+}
+set N53b6690 [stack 0]
+Primatte3 {
+ data { 3
+    0 0 0
+    65552
+    0 5
+    30234 30234 30234 0
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    0 0 0 0 0 0
+    -1 -1 -1 -1
+    -1 -1 999999 999999
+    -1 -1 -1 -1
+    0.05 1.732 1.732
+    0.05 1.732 1.732
+    0.05 0.866 0.866
+    0.05 0.866 0.866
+    0.05 0.866 0.866
+    0.05 0.866 0.866
+    0.05 0.866 0.866
+    0.05 0.866 0.866
+  }
+
+ crop {0 0 2048 1556}
+ name Primatte3
+ selected true
+ xpos 15715
+ ypos -705
+}
+Shuffle {
+ red alpha
+ green alpha
+ blue alpha
+ name Shuffle2
+ label "\[value in]"
+ selected true
+ xpos 15715
+ ypos -651
+}
+Dot {
+ name Dot22
+ label "<--- crunch key"
+ note_font_size 41
+ selected true
+ xpos 15749
+ ypos -563
+}
+Group {
+ name Feather_v02_
+ selected true
+ xpos 15715
+ ypos -451
+ disable true
+ addUserKnob {20 User}
+ addUserKnob {41 channels T Blur1.channels}
+ addUserKnob {7 amount R -100 100}
+ amount -4
+ addUserKnob {41 filter T Blur1.filter}
+ addUserKnob {26 ""}
+ addUserKnob {4 fallOff M {linear smooth smooth0 smooth1 "" "" "" ""}}
+ addUserKnob {41 value l gamma T Gamma1.value}
+}
+ Input {
+  inputs 0
+  name InputMask
+  xpos 655
+  ypos -80
+  number 1
+ }
+ Invert {
+  name Invert1
+  xpos 655
+  ypos -24
+ }
+ AddChannels {
+  channels rgba
+  name AddChannels1
+  selected true
+  xpos 655
+  ypos 33
+ }
+ Invert {
+  name Invert2
+  xpos 655
+  ypos 95
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 181
+  ypos -498
+ }
+ Dot {
+  name Dot5
+  xpos 215
+  ypos -433
+ }
+set N10350b40 [stack 0]
+ Blur {
+  channels rgba
+  size {{parent.amount*2 i}}
+  name Blur1
+  label "\[value size]"
+  xpos 181
+  ypos -360
+ }
+set N1036f930 [stack 0]
+ Grade {
+  channels {{{parent.Blur1.channels}}}
+  whitepoint 0.47
+  white_clamp true
+  name Grade2
+  xpos 287
+  ypos -280
+ }
+push $N1036f930
+ Grade {
+  channels {{{parent.Blur1.channels}}}
+  blackpoint 0.52
+  white_clamp true
+  name Grade1
+  xpos 181
+  ypos -280
+ }
+ Switch {
+  inputs 2
+  which {{"parent.amount < 0 ? 0 : 1" i}}
+  name Switch1
+  xpos 181
+  ypos -234
+ }
+ Dot {
+  name Dot1
+  xpos 215
+  ypos -188
+ }
+set N155cf5e0 [stack 0]
+ Dot {
+  name Dot4
+  xpos 310
+  ypos -188
+ }
+set N155d0790 [stack 0]
+ Dot {
+  name Dot2
+  xpos 434
+  ypos -188
+ }
+set N155d1940 [stack 0]
+ Dot {
+  name Dot3
+  xpos 544
+  ypos -188
+ }
+ ColorLookup {
+  channels {{{parent.Blur1.channels}}}
+  lut {master {curve L 0 C k 1 s0}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup2
+  label smooth1
+  xpos 510
+  ypos -147
+ }
+push $N155d1940
+ ColorLookup {
+  channels {{{parent.Blur1.channels}}}
+  lut {master {curve C k 0 s0 L 1}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup1
+  label smooth0
+  xpos 400
+  ypos -148
+ }
+push $N155d0790
+ ColorLookup {
+  channels {{{parent.Blur1.channels}}}
+  lut {master {curve C k 0 s0 1 s0}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup3
+  label smooth
+  xpos 276
+  ypos -146
+ }
+push $N155cf5e0
+ Switch {
+  inputs 4
+  which {{parent.fallOff i}}
+  name Switch2
+  xpos 181
+  ypos -75
+ }
+ Clamp {
+  channels {{{parent.Blur1.channels}}}
+  name Clamp1
+  xpos 181
+  ypos -38
+ }
+ Gamma {
+  channels {{{parent.Blur1.channels}}}
+  name Gamma1
+  xpos 181
+  ypos 22
+ }
+push $N10350b40
+ Dot {
+  name Dot6
+  xpos 53
+  ypos -433
+ }
+ Dot {
+  name Dot7
+  xpos 53
+  ypos 105
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos 181
+  ypos 95
+ }
+ Output {
+  name Output1
+  xpos 181
+  ypos 258
+ }
+end_group
+Dot {
+ name Dot23
+ label "Core\nMatte"
+ note_font_size 101
+ selected true
+ xpos 15749
+ ypos -18
+}
+Dot {
+ name Dot24
+ selected true
+ xpos 15749
+ ypos 294
+}
+set N155ee160 [stack 0]
+push $N53b6690
+Dot {
+ name Dot25
+ selected true
+ xpos 16353
+ ypos -988
+}
+Dot {
+ name Dot26
+ selected true
+ xpos 16353
+ ypos -516
+}
+set N155f06c0 [stack 0]
+IBKColourV3 {
+ name IBKColourV3_1
+ selected true
+ xpos 16425
+ ypos -520
+ screen_type green
+}
+push $N155f06c0
+IBKGizmoV3 {
+ inputs 2
+ name IBKGizmoV3_1
+ xpos 16319
+ ypos -445
+ st C-green
+}
+Shuffle {
+ red alpha
+ green alpha
+ blue alpha
+ name Shuffle3
+ label "\[value in]"
+ selected true
+ xpos 16319
+ ypos -354
+}
+Dot {
+ name Dot27
+ label "Edge\nMatte"
+ note_font_size 101
+ selected true
+ xpos 16353
+ ypos -106
+}
+Merge2 {
+ inputs 2
+ operation screen
+ bbox B
+ name Merge1
+ selected true
+ xpos 16319
+ ypos 290
+}
+Dot {
+ name Dot28
+ label "Combined\nMatte"
+ note_font_size 101
+ selected true
+ xpos 16353
+ ypos 749
+}
+push $N155ee160
+Group {
+ name ExponBlur_v03_2
+ help "L_ExponBlur_v03 The ExponBlur blurs an image with an exponential falloff based upon an alpha. Most often used with roto shapes. The effect is applied to RGBA only. (For any questions, comments or suggestions please email gizmos@luma-pictures.com)"
+ note_font "Bitstream Vera Sans"
+ selected true
+ xpos 15272
+ ypos 290
+ disable true
+ mapsize {0.15 0.15}
+ addUserKnob {20 ExponBlur}
+ addUserKnob {26 Description l "" +STARTLINE T ":ExponBlur: by Luma Pictures\n\nExponentially blurs image outward or inward"}
+ addUserKnob {14 size R -40 40}
+ size -4.2
+ addUserKnob {7 Multiplier R 0 10}
+ Multiplier 5.05
+ addUserKnob {6 crop l "crop to format" +STARTLINE}
+ addUserKnob {6 disableCropBB l "disable CropBB" -STARTLINE}
+ addUserKnob {26 ""}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -372
+  ypos 265
+ }
+set N1686f6b0 [stack 0]
+ Invert {
+  name L_ExponBlur_Invert4
+  xpos -372
+  ypos 329
+  disable {{"parent.size>=0 ? 1 : 0" i}}
+ }
+set N16870860 [stack 0]
+ Blur {
+  size {{parent.size.w i} {parent.size.h i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur1
+  label "\[value size]"
+  xpos -592
+  ypos 479
+ }
+push $N16870860
+ Blur {
+  size {{parent.size.w*parent.Multiplier i} {parent.size.h*parent.Multiplier i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur2
+  label "\[value size]"
+  xpos -482
+  ypos 479
+ }
+ Merge2 {
+  inputs 2
+  name L_ExponBlur_Merge7
+  xpos -537
+  ypos 572
+ }
+push $N16870860
+ Blur {
+  size {{parent.size.w*parent.Multiplier*2 i} {parent.size.h*parent.Multiplier*2 i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur3
+  label "\[value size]"
+  xpos -372
+  ypos 479
+ }
+ Merge2 {
+  inputs 2
+  name L_ExponBlur_Merge8
+  xpos -477
+  ypos 637
+ }
+push $N16870860
+ Blur {
+  size {{parent.size.w*parent.Multiplier*4 i} {parent.size.h*parent.Multiplier*4 i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur4
+  label "\[value size]"
+  xpos -262
+  ypos 479
+ }
+ Merge2 {
+  inputs 2
+  name L_ExponBlur_Merge9
+  xpos -372
+  ypos 709
+ }
+ Invert {
+  name L_ExponBlur_Invert5
+  xpos -372
+  ypos 774
+  disable {{"parent.size>=0 ? 1 : 0"}}
+ }
+ Clamp {
+  channels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name L_ExponBlur_clampOutput
+  xpos -372
+  ypos 835
+ }
+ Crop {
+  box {0 0 {input.width i} {input.height i}}
+  reformat true
+  crop false
+  name L_ExponBlur_Crop1
+  xpos -372
+  ypos 901
+  disable {{parent.disableCropBB i x-5 1}}
+ }
+push $N1686f6b0
+ Dot {
+  name Dot1
+  xpos -81
+  ypos 270
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  name L_ExponBlur_ChannelsPassThrough
+  xpos -115
+  ypos 901
+ }
+ Output {
+  name Output1
+  xpos -115
+  ypos 993
+ }
+end_group
+push $N53b3320
+Dot {
+ name Dot29
+ selected true
+ xpos 13952
+ ypos -1340
+}
+Dot {
+ name Dot30
+ selected true
+ xpos 13952
+ ypos -879
+}
+set N168997e0 [stack 0]
+Dot {
+ name Dot31
+ selected true
+ xpos 14161
+ ypos -879
+}
+push $N168997e0
+OFXuk.co.thefoundry.keylight.keylight_v201 {
+ show "Final Result"
+ unPreMultiply false
+ screenColour {0 1 0}
+ screenGain 1
+ screenBalance 0.5
+ alphaBias {0.5 0.5 0.5}
+ despillBias {0.5 0.5 0.5}
+ gangBiases true
+ preBlur 0
+ "Screen Matte" 0
+ screenClipMin 0
+ screenClipMax 1
+ screenClipRollback 0
+ screenGrowShrink 0
+ screenSoftness 0
+ screenDespotBlack 0
+ screenDespotWhite 0
+ screenReplaceMethod "Soft Colour"
+ screenReplaceColour {0.5 0.5 0.5}
+ Tuning 0
+ midPoint 0.5
+ lowGain 1
+ midGain 1
+ highGain 1
+ "Inside Mask" 0
+ sourceAlphaHandling Ignore
+ insideReplaceMethod "Soft Colour"
+ insideReplaceColour {0.5 0.5 0.5}
+ Crops 0
+ SourceXMethod Colour
+ SourceYMethod Colour
+ SourceEdgeColour 0
+ SourceCropL 0
+ SourceCropR 1
+ SourceCropB 0
+ SourceCropT 1
+ balanceSet false
+ insideComponent None
+ outsideComponent None
+ cacheBreaker false
+ name Keylight1
+ label "replace with your despill"
+ selected true
+ xpos 13918
+ ypos -778
+}
+Dot {
+ name Dot32
+ selected true
+ xpos 13952
+ ypos -678
+}
+set N168a2aa0 [stack 0]
+Merge2 {
+ inputs 2
+ operation minus
+ name Merge2
+ selected true
+ xpos 14127
+ ypos -682
+}
+Saturation {
+ saturation 0
+ name Saturation2
+ selected true
+ xpos 14127
+ ypos -624
+}
+Dot {
+ name Dot33
+ label "despill\ndifference\nmatte"
+ note_font_size 41
+ selected true
+ xpos 14161
+ ypos -526
+}
+Dot {
+ name Dot34
+ selected true
+ xpos 14161
+ ypos -434
+}
+push $N168a2aa0
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge3
+ selected true
+ xpos 13918
+ ypos -438
+}
+Dot {
+ name Dot35
+ label "core \ndespill"
+ note_font_size 101
+ selected true
+ xpos 13952
+ ypos -12
+}
+Dot {
+ name Dot36
+ selected true
+ xpos 13952
+ ypos 296
+}
+push $N53b3320
+Dot {
+ name Dot37
+ selected true
+ xpos 14664
+ ypos -1087
+}
+set N168b2df0 [stack 0]
+Dot {
+ name Dot38
+ selected true
+ xpos 15059
+ ypos -1087
+}
+push $N168b2df0
+OFXuk.co.thefoundry.keylight.keylight_v201 {
+ show "Final Result"
+ unPreMultiply false
+ screenColour {0 1 0}
+ screenGain 1
+ screenBalance 0.5
+ alphaBias {0.6000000238 0.5 0.5}
+ despillBias {0.5 0.5 0.5}
+ gangBiases true
+ preBlur 0
+ "Screen Matte" 0
+ screenClipMin 0
+ screenClipMax 1
+ screenClipRollback 0
+ screenGrowShrink 0
+ screenSoftness 0
+ screenDespotBlack 0
+ screenDespotWhite 0
+ screenReplaceMethod "Soft Colour"
+ screenReplaceColour {0.5 0.5 0.5}
+ Tuning 0
+ midPoint 0.5
+ lowGain 1
+ midGain 1
+ highGain 1
+ "Inside Mask" 0
+ sourceAlphaHandling Ignore
+ insideReplaceMethod "Soft Colour"
+ insideReplaceColour {0.5 0.5 0.5}
+ Crops 0
+ SourceXMethod Colour
+ SourceYMethod Colour
+ SourceEdgeColour 0
+ SourceCropL 0
+ SourceCropR 1
+ SourceCropB 0
+ SourceCropT 1
+ balanceSet false
+ insideComponent None
+ outsideComponent None
+ cacheBreaker false
+ name Keylight2
+ selected true
+ xpos 14630
+ ypos -995
+}
+Dot {
+ name Dot41
+ selected true
+ xpos 14664
+ ypos -844
+}
+set N168ba370 [stack 0]
+Merge2 {
+ inputs 2
+ operation minus
+ name Merge4
+ selected true
+ xpos 15025
+ ypos -848
+}
+Saturation {
+ saturation 0
+ name Saturation5
+ selected true
+ xpos 15025
+ ypos -799
+}
+Clamp {
+ channels rgba
+ maximum_enable false
+ name Clamp2
+ selected true
+ xpos 15025
+ ypos -773
+}
+Dot {
+ name Dot52
+ label "despill\ndifference\nmatte"
+ note_font_size 41
+ selected true
+ xpos 15059
+ ypos -705
+}
+Dot {
+ name Dot58
+ selected true
+ xpos 15059
+ ypos -645
+}
+set N168c6f20 [stack 0]
+Dot {
+ name Dot75
+ label "despill\nMatte"
+ note_font_size 81
+ selected true
+ xpos 15059
+ ypos -394
+}
+push $N168ba370
+Dot {
+ name Dot77
+ selected true
+ xpos 14664
+ ypos -646
+}
+set N168c9280 [stack 0]
+add_layer {despill despill.red}
+Copy {
+ inputs 2
+ from0 rgba.red
+ to0 despill.red
+ name Copy2
+ selected true
+ xpos 14630
+ ypos -404
+}
+Dot {
+ name Dot79
+ label "edge\ndespill"
+ note_font_size 101
+ selected true
+ xpos 14664
+ ypos -91
+}
+Keymix {
+ inputs 3
+ name Keymix1
+ selected true
+ xpos 14630
+ ypos 286
+}
+Copy {
+ inputs 2
+ from0 rgba.alpha
+ to0 rgba.alpha
+ name Copy3
+ selected true
+ xpos 14630
+ ypos 741
+}
+Dot {
+ name Dot80
+ label "<----- put Luts, White Balance, and \ncolor corrections Here"
+ note_font_size 61
+ selected true
+ xpos 14664
+ ypos 1142
+}
+Dot {
+ name Dot81
+ label "<----- put transforms/3d \nprojections here"
+ note_font_size 61
+ selected true
+ xpos 14664
+ ypos 1554
+}
+Dot {
+ name Dot82
+ selected true
+ xpos 14664
+ ypos 2026
+}
+set N168d5850 [stack 0]
+Shuffle {
+ in despill
+ name Shuffle9
+ label "\[value in]"
+ selected true
+ xpos 14942
+ ypos 2017
+}
+Remove {
+ operation keep
+ channels rgba
+ name Remove2
+ selected true
+ xpos 14942
+ ypos 2055
+}
+Grade {
+ black_clamp false
+ name Grade5
+ selected true
+ xpos 14942
+ ypos 2120
+}
+set N168dd6b0 [stack 0]
+Merge2 {
+ inputs 2
+ operation multiply
+ name Merge5
+ selected true
+ xpos 14942
+ ypos 2271
+}
+Shuffle {
+ alpha black
+ name Shuffle10
+ label "\[value in]"
+ selected true
+ xpos 14942
+ ypos 2347
+}
+push $N168dd6b0
+Shuffle {
+ green red
+ blue red
+ alpha red
+ name Shuffle11
+ label "\[value in]"
+ selected true
+ xpos 14799
+ ypos 2114
+}
+Grade {
+ channels all
+ whitepoint 0.5
+ black_clamp false
+ name Grade6
+ selected true
+ xpos 14799
+ ypos 2172
+}
+push $N168d5850
+Saturation {
+ inputs 1+1
+ name Saturation6
+ label "change if necessary"
+ selected true
+ xpos 14630
+ ypos 2172
+}
+Merge2 {
+ inputs 2
+ operation plus
+ bbox B
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name Merge6
+ selected true
+ xpos 14630
+ ypos 2353
+}
+Premult {
+ name Premult1
+ selected true
+ xpos 14630
+ ypos 2609
+}
+Dot {
+ name Dot83
+ label "<<---defocus or \nadditional filters here"
+ note_font_size 41
+ selected true
+ xpos 14664
+ ypos 2766
+}
+Dot {
+ name Dot84
+ label "<<---if needed, Put your \nLightwrap here"
+ note_font_size 31
+ selected true
+ xpos 14664
+ ypos 2924
+}
+Dot {
+ name Dot85
+ selected true
+ xpos 14664
+ ypos 3113
+}
+Dot {
+ name Dot86
+ selected true
+ xpos 17091
+ ypos 3113
+}
+set N16902500 [stack 0]
+Shuffle {
+ in GS
+ name Shuffle12
+ label "\[value in]"
+ selected true
+ xpos 17057
+ ypos 3313
+}
+Dot {
+ name Dot87
+ label "Key\nQC "
+ note_font_size 141
+ selected true
+ xpos 17091
+ ypos 3534
+}
+push $N168c6f20
+push $N168c9280
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge7
+ label "test lunimance match"
+ selected true
+ xpos 14799
+ ypos -655
+}
+Dot {
+ name Dot88
+ label test
+ note_font_size 31
+ selected true
+ xpos 14833
+ ypos -591
+}
+StickyNote {
+ inputs 0
+ name StickyNote2
+ label "<<-- will want to change WP /BP"
+ note_font_size 22
+ selected true
+ xpos 15579
+ ypos 2074
+}
+StickyNote {
+ inputs 0
+ name StickyNote3
+ label "uncheck clamp black from\nthis grade.  add contrast with \nblack point and whitepoint.\nthe key is to add negative values\nso that dark areas get darker, and \nlight areas brighten."
+ note_font_size 18
+ selected true
+ xpos 15604
+ ypos 2115
+}
+StickyNote {
+ inputs 0
+ name StickyNote6
+ label "<-- adjust despill matte\nif necessary"
+ note_font_size 18
+ selected true
+ xpos 15045
+ ypos 2117
+}
+StickyNote {
+ inputs 0
+ name StickyNote7
+ label "Sometimes you'll want to desat the \ndespill, to avoid unatural colors"
+ note_font_size 12
+ selected true
+ xpos 14383
+ ypos 2159
+}
+push $N53a3ac0
+Dot {
+ name Dot89
+ selected true
+ xpos 17726
+ ypos 2859
+}
+set N16912140 [stack 0]
+Dot {
+ name Dot90
+ selected true
+ xpos 15066
+ ypos 2859
+}
+Dot {
+ name Dot91
+ label "BG input\n for lightwrap"
+ note_font_size 41
+ selected true
+ xpos 15066
+ ypos 2922
+}
+push $N16902500
+push $N16912140
+Merge2 {
+ inputs 2
+ bbox B
+ name Merge8
+ selected true
+ xpos 17692
+ ypos 3109
+}
+Dot {
+ name Dot92
+ selected true
+ xpos 17726
+ ypos 3479
+}
+Group {
+ inputs 0
+ name Feather_v02_3
+ selected true
+ xpos 16086
+ ypos -2011
+ addUserKnob {20 User}
+ addUserKnob {41 channels T Blur1.channels}
+ addUserKnob {7 amount R -100 100}
+ amount -4
+ addUserKnob {41 filter T Blur1.filter}
+ addUserKnob {26 ""}
+ addUserKnob {4 fallOff M {linear smooth smooth0 smooth1 "" "" "" ""}}
+ fallOff smooth
+ addUserKnob {41 value l gamma T Gamma1.value}
+}
+ Input {
+  inputs 0
+  name InputMask
+  xpos 655
+  ypos -80
+  number 1
+ }
+ Invert {
+  name Invert1
+  xpos 655
+  ypos -24
+ }
+ AddChannels {
+  channels rgba
+  name AddChannels1
+  selected true
+  xpos 655
+  ypos 33
+ }
+ Invert {
+  name Invert2
+  xpos 655
+  ypos 95
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 181
+  ypos -498
+ }
+ Dot {
+  name Dot5
+  xpos 215
+  ypos -433
+ }
+set N18133490 [stack 0]
+ Blur {
+  channels rgba
+  size {{parent.amount*2 i}}
+  name Blur1
+  label "\[value size]"
+  xpos 181
+  ypos -360
+ }
+set N181344a0 [stack 0]
+ Grade {
+  channels {{{parent.Blur1.channels}}}
+  whitepoint 0.47
+  white_clamp true
+  name Grade2
+  xpos 287
+  ypos -280
+ }
+push $N181344a0
+ Grade {
+  channels {{{parent.Blur1.channels}}}
+  blackpoint 0.52
+  white_clamp true
+  name Grade1
+  xpos 181
+  ypos -280
+ }
+ Switch {
+  inputs 2
+  which {{"parent.amount < 0 ? 0 : 1" i}}
+  name Switch1
+  xpos 181
+  ypos -234
+ }
+ Dot {
+  name Dot1
+  xpos 215
+  ypos -188
+ }
+set N15d12860 [stack 0]
+ Dot {
+  name Dot4
+  xpos 310
+  ypos -188
+ }
+set N15d13a10 [stack 0]
+ Dot {
+  name Dot2
+  xpos 434
+  ypos -188
+ }
+set N15d14bc0 [stack 0]
+ Dot {
+  name Dot3
+  xpos 544
+  ypos -188
+ }
+ ColorLookup {
+  channels {{{parent.Blur1.channels}}}
+  lut {master {curve L 0 C k 1 s0}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup2
+  label smooth1
+  xpos 510
+  ypos -147
+ }
+push $N15d14bc0
+ ColorLookup {
+  channels {{{parent.Blur1.channels}}}
+  lut {master {curve C k 0 s0 L 1}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup1
+  label smooth0
+  xpos 400
+  ypos -148
+ }
+push $N15d13a10
+ ColorLookup {
+  channels {{{parent.Blur1.channels}}}
+  lut {master {curve C k 0 s0 1 s0}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup3
+  label smooth
+  xpos 276
+  ypos -146
+ }
+push $N15d12860
+ Switch {
+  inputs 4
+  which {{parent.fallOff i}}
+  name Switch2
+  xpos 181
+  ypos -75
+ }
+ Clamp {
+  channels {{{parent.Blur1.channels}}}
+  name Clamp1
+  xpos 181
+  ypos -38
+ }
+ Gamma {
+  channels {{{parent.Blur1.channels}}}
+  name Gamma1
+  xpos 181
+  ypos 22
+ }
+push $N18133490
+ Dot {
+  name Dot6
+  xpos 53
+  ypos -433
+ }
+ Dot {
+  name Dot7
+  xpos 53
+  ypos 105
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos 181
+  ypos 95
+ }
+ Output {
+  name Output1
+  xpos 181
+  ypos 258
+ }
+end_group
+push $cut_paste_input
+Group {
+ name ExponBlur_v03_3
+ help "L_ExponBlur_v03 The ExponBlur blurs an image with an exponential falloff based upon an alpha. Most often used with roto shapes. The effect is applied to RGBA only. (For any questions, comments or suggestions please email gizmos@luma-pictures.com)"
+ note_font "Bitstream Vera Sans"
+ selected true
+ xpos 16246
+ ypos -2015
+ mapsize {0.15 0.15}
+ addUserKnob {20 ExponBlur}
+ addUserKnob {26 Description l "" +STARTLINE T ":ExponBlur: by Luma Pictures\n\nExponentially blurs image outward or inward"}
+ addUserKnob {14 size R -40 40}
+ size 2
+ addUserKnob {7 Multiplier R 0 10}
+ Multiplier 2
+ addUserKnob {6 crop l "crop to format" +STARTLINE}
+ addUserKnob {6 disableCropBB l "disable CropBB" -STARTLINE}
+ addUserKnob {26 ""}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -372
+  ypos 265
+ }
+set N181f5420 [stack 0]
+ Invert {
+  name L_ExponBlur_Invert4
+  xpos -372
+  ypos 329
+  disable {{"parent.size>=0 ? 1 : 0" i}}
+ }
+set N181f65d0 [stack 0]
+ Blur {
+  size {{parent.size.w i} {parent.size.h i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur1
+  label "\[value size]"
+  xpos -592
+  ypos 479
+ }
+push $N181f65d0
+ Blur {
+  size {{parent.size.w*parent.Multiplier i} {parent.size.h*parent.Multiplier i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur2
+  label "\[value size]"
+  xpos -482
+  ypos 479
+ }
+ Merge2 {
+  inputs 2
+  name L_ExponBlur_Merge7
+  xpos -537
+  ypos 572
+ }
+push $N181f65d0
+ Blur {
+  size {{parent.size.w*parent.Multiplier*2 i} {parent.size.h*parent.Multiplier*2 i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur3
+  label "\[value size]"
+  xpos -372
+  ypos 479
+ }
+ Merge2 {
+  inputs 2
+  name L_ExponBlur_Merge8
+  xpos -477
+  ypos 637
+ }
+push $N181f65d0
+ Blur {
+  size {{parent.size.w*parent.Multiplier*4 i} {parent.size.h*parent.Multiplier*4 i}}
+  crop {{parent.crop i}}
+  name L_ExponBlur_Blur4
+  label "\[value size]"
+  xpos -262
+  ypos 479
+ }
+ Merge2 {
+  inputs 2
+  name L_ExponBlur_Merge9
+  xpos -372
+  ypos 709
+ }
+ Invert {
+  name L_ExponBlur_Invert5
+  xpos -372
+  ypos 774
+  disable {{"parent.size>=0 ? 1 : 0"}}
+ }
+ Clamp {
+  channels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name L_ExponBlur_clampOutput
+  xpos -372
+  ypos 835
+ }
+ Crop {
+  box {0 0 {input.width i} {input.height i}}
+  reformat true
+  crop false
+  name L_ExponBlur_Crop1
+  xpos -372
+  ypos 901
+  disable {{parent.disableCropBB i x-5 1}}
+ }
+push $N181f5420
+ Dot {
+  name Dot1
+  xpos -81
+  ypos 270
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  name L_ExponBlur_ChannelsPassThrough
+  xpos -115
+  ypos 901
+ }
+ Output {
+  name Output1
+  xpos -115
+  ypos 993
+ }
+end_group

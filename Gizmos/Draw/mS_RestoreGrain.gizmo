@@ -1,0 +1,150 @@
+#! C:/Program Files/Nuke9.0v7/nuke-9.0.7.dll -nx
+version 9.0 v7
+Gizmo {
+ inputs 3
+ tile_color 0xffff
+ addUserKnob {20 User}
+ addUserKnob {7 grainAmount l "Grain "}
+ grainAmount 1
+}
+ Input {
+  inputs 0
+  name KEY
+  xpos 279
+  ypos 396
+ }
+ Dot {
+  name Dot4
+  xpos 313
+  ypos 447
+ }
+set N591c4000 [stack 0]
+ Input {
+  inputs 0
+  name PLATE_DENOISED
+  xpos 421
+  ypos 302
+  number 1
+ }
+ Dot {
+  name Dot5
+  xpos 455
+  ypos 342
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 421
+  ypos 438
+ }
+ Premult {
+  name Premult4
+  xpos 421
+  ypos 510
+ }
+set N5aa5b000 [stack 0]
+push $N591c4000
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge3
+  xpos 279
+  ypos 510
+ }
+ Dot {
+  name Dot7
+  xpos 313
+  ypos 705
+ }
+push $N591c4000
+ Input {
+  inputs 0
+  name PLATE
+  xpos 564
+  ypos 304
+  number 2
+ }
+ Dot {
+  name Dot6
+  xpos 598
+  ypos 344
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 564
+  ypos 437
+ }
+ Premult {
+  name Premult5
+  xpos 564
+  ypos 511
+ }
+ Dot {
+  name Dot1
+  xpos 598
+  ypos 561
+ }
+set N5aa81400 [stack 0]
+push $N5aa5b000
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos 421
+  ypos 557
+ }
+set N5aa81000 [stack 0]
+ Dot {
+  name Dot2
+  xpos 354
+  ypos 561
+ }
+ Dot {
+  name Dot3
+  xpos 354
+  ypos 654
+ }
+push $N5aa81000
+push $N5aa81400
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge2
+  xpos 564
+  ypos 602
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  mix {{parent.grainAmount}}
+  name Grain
+  xpos 564
+  ypos 650
+ }
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge4
+  xpos 564
+  ypos 701
+ }
+ Output {
+  name Output1
+  xpos 564
+  ypos 801
+ }
+ Viewer {
+  inputs 0
+  frame 1000
+  frame_range 1000-1480
+  fps 25
+  name Viewer1
+  xpos 379
+  ypos 833
+ }
+end_group

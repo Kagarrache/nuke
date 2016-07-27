@@ -1,0 +1,124 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ tile_color 0xffa500ff
+ addUserKnob {20 tab01 l "Swatter Controls"}
+ addUserKnob {41 ROI T MaxLuma.ROI}
+ addUserKnob {41 resetROI l "Reset ROI" -STARTLINE T MaxLuma.resetROI}
+ addUserKnob {22 analyse l Analyse t "Like light to the flies" T "ml = nuke.toNode(\"MaxLuma\")\n\nmlOp = ml.knob(\"operation\")\nmlOp.setValue(3)\n\nmlGo = ml.knob(\"go\")\nmlGo.execute()" +STARTLINE}
+ addUserKnob {41 maxlumapixvalue l INVISIBLE +INVISIBLE T .maxlumapixvalue}
+ addUserKnob {41 translate l INVISIBLE +INVISIBLE T Transform1.translate}
+ addUserKnob {7 ffLimit l "Firefly Limit" t "Set a threshold to remove pixels above limit value"}
+ ffLimit 0.01
+ addUserKnob {41 scale T Transform2.scale}
+ addUserKnob {22 execute l Swat! t "Swats them fireflies!" T "import nuke\n\nml = nuke.toNode(\"MaxLuma\")\npos = nuke.toNode(\"Transform1\")\nremoval = nuke.toNode(\"MarkerRemoval2\")\n\nmPVal = ml.knob(\"maxlumapixvalue\")\nmLPP = ml.knob(\"maxlumapixdata\")\nposValues = pos.knob(\"translate\")\nremovalToggle = removal.knob(\"disable\")\n\n\nffLimit = nuke.thisNode().knob(\"ffLimit\").value()\nfirst = nuke.root().firstFrame()\nlast = nuke.root().lastFrame() + 1\n\nposValues.setAnimated()\nremovalToggle.setAnimated()\n\nf = nuke.frame()\n\nfor i in range(first, last):\n    mPVRed = mPVal.getValueAt(i, 0)\n    mPVGreen = mPVal.getValueAt(i, 1)\n    mPVBlue = mPVal.getValueAt(i, 2)\n    mLPPX = mLPP.getValueAt(i, 0)\n    mLPPY = mLPP.getValueAt(i, 1)\n    if mPVRed >= ffLimit or mPVGreen >= ffLimit or mPVBlue >= ffLimit:\n        removalToggle.setValueAt(0, i)\n        posValues.setValueAt(mLPPX, i, 0)\n        posValues.setValueAt(mLPPY, i, 1)\n    else:\n        removalToggle.setValueAt(1, i)\n\nnuke.frame(f)\n\n" +STARTLINE}
+ addUserKnob {26 instructions l Instructions T "\nStep 1: set region of interest to desired size over the area with fireflies. \n\nStep 2: Analyse! \n\nStep 3: Look in the curve editor. Values above the firefly limit will be patched\n(Limit to 1 patch per frame currently) \n\nStep 4: Swat! \n\nIf some fireflies are slipping through the net, \nand they are the only one on the frame, \ntry increasing the scale"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 180
+  ypos -297
+ }
+set N17cdb480 [stack 0]
+ Dot {
+  name Dot5
+  xpos 436
+  ypos -294
+ }
+ Dot {
+  name Dot6
+  xpos 434
+  ypos 42
+ }
+ Constant {
+  inputs 0
+  color {0 0 0 1}
+  format "2 2 0 0 2 2 1 ffBox2x2"
+  name Constant1
+  xpos 70
+  ypos -273
+  postage_stamp false
+ }
+ Transform {
+  translate {-1 -1}
+  scale 1.1
+  center {1 1}
+  black_outside false
+  name Transform2
+  xpos 70
+  ypos -249
+ }
+ Shuffle {
+  alpha white
+  name Shuffle9
+  tile_color 0xffffffff
+  label "1 alpha"
+  xpos 70
+  ypos -197
+ }
+ Transform {
+  translate {{curve 1221 -10 -10 1221 1221 1221 1221 1221 1221 1221 1221 -10 -10 -10 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 -10 -10 -10 -10 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1236 1221 1221 1221 1221 1221 1221 1244 1281 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1146 1221 1221 1221 1221 1221 1221 1221 1317 1221 1221 1221 1221 1221 1221 -10 -10 -10 -10 -10 -10 -10 -10 -10 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 1221 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 1221 -10 -10 1221 -10 -10 1221 1221 -10 1221 -10 1221 1221 -10 1221 1221 -10 1221 -10 1221 1221 -10 1221 -10 1221 -10 1221 -10 1221 -10 1221 -10 1221 -10 1221 1429 1221 -10 1221 1310 -10 -10 1221 -10 1221 -10 1221 1221 -10 1221 1221 -10 1221 1221 1307 1221 -10 1221 1221 -10 1221 1221 1239 -10 -10 -10 1221 -10 1221 -10 1221 -10 1221 1221 -10 1326 -10 1221 -10 1221 -10 -10 1400 -10 1221 -10 1221 1221 -10 -10 -10 1221 -10 -10 -10 1221 1221 -10 1221 1377 -10 1221 -10 -10 -10 -10 -10 -10 -10 1221 -10 1221 -10 -10 1221 1221 1221 1221 -10 1468 1173 1221 -10 -10 -10 -10 1221 -10 -10 -10 1267 1221 1221 -10 1221 -10 1221 1221 -10 1221 1221 -10 1221 -10 -10 -10 -10 -10 1221 1315 -10 -10 -10 1221 -10 1221 -10 1221 1221 1323 -10 -10 -10 -10 1221 1221 -10 -10 -10 1318 1221 -10 -10 -10 -10 1221 1221 -10 -10 -10 1221 -10 -10 1221 1221 -10 1379 1221 -10 -10 -10 1285 -10 1221 -10 -10 1221 -10 1221 1221 -10 -10 1221 -10 -10 -10 1221 -10 1221 -10 -10 1221 -10 -10 -10 -10 -10 1221 -10 -10 -10 -10 -10 1221 1416 -10 -10 -10 1221 -10 -10 1221 -10 -10 -10 -10 1262 -10 1221 -10 1221 1221 -10 -10 1221 1221 1221 -10 -10 -10 1221 -10 -10 1221 -10 1221 -10 -10 1221 -10 -10} {curve 293 -10 -10 293 293 293 293 293 293 293 293 -10 -10 -10 293 293 293 293 293 293 293 293 293 293 293 293 293 -10 -10 -10 -10 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 281 293 293 293 293 293 293 309 410 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 556 293 293 293 293 293 293 293 708 293 293 293 293 293 293 -10 -10 -10 -10 -10 -10 -10 -10 -10 293 293 293 293 293 293 293 293 293 293 293 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 293 -10 -10 293 -10 -10 293 293 -10 293 -10 293 293 -10 293 293 -10 293 -10 293 293 -10 293 -10 293 -10 293 -10 293 -10 293 -10 293 -10 293 735 293 -10 293 709 -10 -10 293 -10 293 -10 293 293 -10 293 293 -10 293 293 712 293 -10 293 293 -10 293 293 694 -10 -10 -10 293 -10 293 -10 293 -10 293 293 -10 709 -10 293 -10 293 -10 -10 692 -10 293 -10 293 293 -10 -10 -10 293 -10 -10 -10 293 293 -10 293 664 -10 293 -10 -10 -10 -10 -10 -10 -10 293 -10 293 -10 -10 293 293 293 293 -10 555 672 293 -10 -10 -10 -10 293 -10 -10 -10 634 293 293 -10 293 -10 293 293 -10 293 293 -10 293 -10 -10 -10 -10 -10 293 712 -10 -10 -10 293 -10 293 -10 293 293 714 -10 -10 -10 -10 293 293 -10 -10 -10 295 293 -10 -10 -10 -10 293 293 -10 -10 -10 293 -10 -10 293 293 -10 689 293 -10 -10 -10 733 -10 293 -10 -10 293 -10 293 293 -10 -10 293 -10 -10 -10 293 -10 293 -10 -10 293 -10 -10 -10 -10 -10 293 -10 -10 -10 -10 -10 293 519 -10 -10 -10 293 -10 -10 293 -10 -10 -10 -10 654 -10 293 -10 293 293 -10 -10 293 293 293 -10 -10 -10 293 -10 -10 293 -10 293 -10 -10 293 -10 -10}}
+  center {1 1}
+  name Transform1
+  xpos 70
+  ypos -105
+ }
+ Dot {
+  name Dot3
+  xpos 104
+  ypos -78
+ }
+push $N17cdb480
+ Shuffle {
+  alpha black
+  name Shuffle2
+  tile_color 0xff
+  label "0 alpha"
+  xpos 180
+  ypos -205
+ }
+set N9981b070 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 180
+  ypos -85
+ }
+ MarkerRemoval {
+  name MarkerRemoval2
+  xpos 180
+  ypos -33
+  disable {{curve i 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+ }
+ Copy {
+  inputs 2
+  from0 -rgba.alpha
+  to0 -rgba.alpha
+  channels alpha
+  name Copy4
+  xpos 180
+  ypos 30
+ }
+ Output {
+  name Output1
+  xpos 180
+  ypos 135
+ }
+push $N9981b070
+ Dot {
+  name Dot4
+  xpos 324
+  ypos -198
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  ROI {512 389 1536 1167}
+  autocropdata {512 389 1536 1167}
+  name MaxLuma
+  xpos 290
+  ypos -153
+ }
+end_group

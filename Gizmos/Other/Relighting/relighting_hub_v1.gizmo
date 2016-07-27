@@ -1,0 +1,836 @@
+#! D:/Nuke6.2v2/Nuke6.2.exe -nx
+version 6.2 v2
+Gizmo {
+ inputs 2
+ help "Non physical but fast and handy relighting tool with loads of parameters.\n\nThe relight is tuned by moving the on-screen point (\"center_light\" ).\n\nThe contribution parameters can be used to mimic directional light\n\n\nThe shadows are faked (depth based), so for some cases it doesn't work very much.\nEspecially for big discontinuities in depth, i.e. the shadow a character cast in front of a background. So no magic here.\nBUT for selfshadowing of characters or \"flat\" sets it usually does the trick. Essentially it helps to fill the leaks of a simple relight. (armpits and beneath aren't supposed to catch a lot of light, aren't they ?).\n\nThe depth is supposed to be with a very small dynamic, but you can lower it by decrease the \"penumbra_intensity\". In fact this parameter is quite important to access decent results.\n\nThe depth is used with dark in the near and bright in the far ( but it can be inverted in the \"channels section\" )\n\nBy default the global_quality is set to 0.5 to avoid time consuming process (it does the calculations in half res) but set to 1, renders of course more accurate and sharps shadows.\n\nThe \"output_only_shadows\" can be useful when shadows placement has to be tweaked over light position.\n\n"
+ tile_color 0xffd60000
+ label "shadows : \[value shadows]"
+ addUserKnob {20 Relighting_hub l Relighting_hub_v1}
+ addUserKnob {12 center_light}
+ center_light {1520 1094}
+ addUserKnob {26 "" l -->use_widget -STARTLINE}
+ addUserKnob {41 white l light_gain T LightGain.white}
+ addUserKnob {41 gamma_1 l light_gamma T LightGain.gamma}
+ addUserKnob {7 X_contribution t "can be used to mimic directional light"}
+ X_contribution 1
+ addUserKnob {41 add l INVISIBLE +INVISIBLE T X_etal.add}
+ addUserKnob {7 Y_contribution t "can be used to mimic directional light"}
+ Y_contribution 1
+ addUserKnob {41 add_1 l INVISIBLE +INVISIBLE T Y_etal.add}
+ addUserKnob {7 Fresnel_ratio}
+ addUserKnob {41 add_2 l INVISIBLE +INVISIBLE T Z_etal.add}
+ addUserKnob {6 alpha_postMultiply l post_premult +STARTLINE}
+ addUserKnob {6 Put_Light_in_alpha l copy_LightMask_to_Alpha -STARTLINE}
+ Put_Light_in_alpha true
+ addUserKnob {26 ""}
+ addUserKnob {6 shadows l enable_Shadows +STARTLINE}
+ shadows true
+ addUserKnob {6 output_only_shadows -STARTLINE}
+ addUserKnob {20 depthBased_SHADOWS l depthBased_SHADOWS_parameters n 1}
+ depthBased_SHADOWS 0
+ addUserKnob {7 Penumbra_intensity R 0.1 10}
+ Penumbra_intensity 1
+ addUserKnob {7 shadow_length R 0.1 10}
+ shadow_length 1.7
+ addUserKnob {41 steps l quality -STARTLINE T GodRays.steps}
+ addUserKnob {41 mix_3 l soft_amount T Merge10.mix}
+ addUserKnob {7 soft_gamma}
+ addUserKnob {7 blur_size R 0 10}
+ blur_size 8
+ addUserKnob {26 ""}
+ addUserKnob {6 enable_contact_shadow +STARTLINE}
+ enable_contact_shadow true
+ addUserKnob {7 penumbra_contact_intensity l intensity R 0.1 10}
+ penumbra_contact_intensity 1
+ addUserKnob {7 length -STARTLINE R 0 10}
+ length 0.2
+ addUserKnob {26 ""}
+ addUserKnob {41 mix_2 l shadow_mix T Shadows.mix}
+ addUserKnob {7 global_quality t "sub sample the depth pass to speed up shadows calculations" R 0.2 1}
+ global_quality 1
+ addUserKnob {20 tweaks_group l INVISIBLE +INVISIBLE n 1}
+ addUserKnob {26 msg_warn l INVISIBLE +INVISIBLE}
+ addUserKnob {6 tweak1 l INVISIBLE +INVISIBLE +STARTLINE}
+ tweak1 true
+ addUserKnob {6 tweak2 l INVISIBLE +INVISIBLE +STARTLINE}
+ addUserKnob {6 tweak3 l INVISIBLE +INVISIBLE +STARTLINE}
+ addUserKnob {20 endGroup l INVISIBLE +INVISIBLE n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 endGroup_SHADOWS n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 normal_management l CHANNELS_SETUP n 1}
+ normal_management 0
+ addUserKnob {41 in l normal_source T Shuffle1.in}
+ addUserKnob {6 invert_Xnormal -STARTLINE}
+ addUserKnob {6 invert_Ynormal -STARTLINE}
+ addUserKnob {41 in_1 l depth_source T Shuffle_depth.in}
+ addUserKnob {6 invertDepth l invert -STARTLINE}
+ invertDepth true
+ addUserKnob {41 in_2 l ambient_source T ShuffleAmbient.in}
+ addUserKnob {6 matrix_antialias +STARTLINE}
+ matrix_antialias true
+ addUserKnob {6 fringe_kill +STARTLINE}
+ addUserKnob {41 mix_1 l mix -STARTLINE T Merge4.mix}
+ addUserKnob {7 fringe_tweak R 0 0.2}
+ addUserKnob {26 ""}
+ addUserKnob {20 normal_endGroup n -1}
+ addUserKnob {20 Ambient_group l AMBIENT n 1}
+ Ambient_group 0
+ addUserKnob {7 Ambient_contribution}
+ addUserKnob {7 ambient_black_level}
+ addUserKnob {7 ambient_white_level}
+ ambient_white_level 0.355
+ addUserKnob {6 Ambient_view +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {20 Ambient_endGroup n -1}
+ addUserKnob {20 curves_group l LIGHT_curve_control n 1}
+ curves_group 0
+ addUserKnob {41 lut l "" -STARTLINE T ColorLookup1.lut}
+ addUserKnob {26 ""}
+ addUserKnob {20 curves_endGroup n -1}
+ addUserKnob {20 MASK_management l MASK n 1}
+ MASK_management 0
+ addUserKnob {41 Mask_input T ChannelMerge2.A}
+ addUserKnob {6 Mult_or_Sub l invert -STARTLINE}
+ addUserKnob {41 mix l Mask_mix T ChannelMerge2.mix}
+ addUserKnob {20 MASK_endGroup n -1}
+ addUserKnob {20 philhub_2010 t philpmaATfreeDOTfr n 1}
+ philhub_2010 0
+ addUserKnob {26 philpmaATfreeDOTfr l "contact :" T philpmaATfreeDOTfr}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -884
+  ypos -337
+ }
+set Nb743708 [stack 0]
+ Dot {
+  name Dot1
+  xpos -994
+  ypos -333
+ }
+set Nb748e08 [stack 0]
+ Dot {
+  name Dot5
+  xpos -1934
+  ypos -333
+ }
+ Reformat {
+  type scale
+  format "960 540 0 0 960 540 1 HD/2"
+  scale {{parent.global_quality}}
+  name Reformat3
+  xpos -1958
+  ypos 479
+ }
+ Shuffle {
+  in depth
+  name Shuffle_depth
+  xpos -1958
+  ypos 560
+ }
+ Invert {
+  channels rgba
+  name Invert_depth
+  xpos -1824
+  ypos 620
+  disable {{!parent.invertDepth i}}
+ }
+set N1b297488 [stack 0]
+ Grade {
+  white {{Penumbra_intensity}}
+  black_clamp false
+  name GradePenumbraIntensity
+  xpos -1958
+  ypos 620
+ }
+ Dot {
+  name Dot11
+  xpos -1924
+  ypos 678
+ }
+set Nb7a26e0 [stack 0]
+ Expression {
+  channel0 rgba
+  expr0 a
+  name Expression4
+  label "\[value expr0]"
+  xpos -2398
+  ypos 945
+ }
+ GodRays {
+  channels rgb
+  scale 2
+  center {{center_light.x*parent.global_quality i} {center_light.y*parent.global_quality i}}
+  steps 1
+  max true
+  name GodRays2
+  xpos -2398
+  ypos 1001
+ }
+ GodRays {
+  channels rgb
+  scale 2
+  center {{center_light.x*parent.global_quality i} {center_light.y*parent.global_quality i}}
+  steps 1
+  max true
+  name GodRays3
+  xpos -2398
+  ypos 1073
+ }
+ FilterErode {
+  channels rgb
+  size 100
+  name FilterErode1
+  xpos -2398
+  ypos 1133
+ }
+ Dot {
+  name Dot8
+  xpos -2355
+  ypos 1625
+ }
+push $N1b297488
+ GodRays {
+  channels rgba
+  scale {{1.01+length/10 i}}
+  center {{center_light.x*parent.global_quality i} {center_light.y*parent.global_quality i}}
+  steps 3
+  name GodRaysContact
+  xpos -1436
+  ypos 717
+ }
+push $N1b297488
+ Merge2 {
+  inputs 2
+  operation minus
+  name MergeMinContact
+  xpos -1436
+  ypos 824
+ }
+ Invert {
+  channels rgba
+  name Invert5
+  xpos -1436
+  ypos 891
+ }
+ Grade {
+  gamma 0.005
+  black_clamp false
+  white_clamp true
+  name Grade9
+  xpos -1436
+  ypos 943
+ }
+ Grade {
+  gamma {{1/penumbra_contact_intensity i}}
+  name Penumbra_grade_contact
+  xpos -1436
+  ypos 1020
+ }
+ FilterErode {
+  channels rgba
+  name FilterErode2
+  xpos -1436
+  ypos 1102
+ }
+ Blur {
+  channels rgba
+  size 2
+  name Blur8
+  xpos -1436
+  ypos 1164
+ }
+ Dot {
+  name Dot9
+  xpos -1402
+  ypos 1295
+ }
+push $Nb7a26e0
+ GodRays {
+  channels rgb
+  scale {{1+shadow_length/10}}
+  center {{center_light.x*parent.global_quality} {center_light.y*parent.global_quality}}
+  name GodRays4
+  xpos -2068
+  ypos 674
+ }
+ Grade {
+  gamma {{1+soft_gamma*0.01}}
+  black_clamp false
+  name GammaSoftShadows
+  xpos -2068
+  ypos 786
+ }
+push $Nb7a26e0
+ GodRays {
+  channels rgb
+  scale {{1+shadow_length/10}}
+  center {{center_light.x*parent.global_quality x1 770 x101 1568 x1495 1710} {center_light.y*parent.global_quality x1 1013 x101 650 x1495 1092}}
+  max true
+  name GodRays
+  xpos -1958
+  ypos 718
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  mix 0.7
+  name Merge10
+  xpos -1958
+  ypos 786
+ }
+ Dot {
+  name Dot10
+  xpos -1924
+  ypos 852
+ }
+set Nb8106f8 [stack 0]
+ Blur {
+  channels rgba
+  size {{parent.blur_size i}}
+  name Blur9
+  xpos -1875
+  ypos 848
+ }
+set Nb812e70 [stack 0]
+push $Nb7a26e0
+ Blur {
+  channels rgba
+  size {{parent.blur_size}}
+  name Blur10
+  xpos -1707
+  ypos 849
+ }
+set Nb819398 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge6
+  xpos -1602
+  ypos 1059
+ }
+ Invert {
+  channels rgba
+  name Invert3
+  xpos -1602
+  ypos 1113
+ }
+ Grade {
+  gamma 0.005
+  name Grade5
+  xpos -1602
+  ypos 1172
+ }
+push $Nb812e70
+push $Nb8106f8
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge1
+  xpos -1958
+  ypos 931
+ }
+ Dot {
+  name Dot7
+  xpos -1924
+  ypos 990
+ }
+push $Nb819398
+push $Nb7a26e0
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge7
+  xpos -1761
+  ypos 936
+ }
+ Dot {
+  name Dot6
+  xpos -1727
+  ypos 986
+ }
+ Sharpen {
+  channels rgba
+  amount 2
+  name Sharpen1
+  xpos -1761
+  ypos 1013
+  disable {{1-tweak2 i x110 0}}
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos -1807
+  ypos 1060
+ }
+ Invert {
+  channels rgba
+  name Invert2
+  xpos -1807
+  ypos 1116
+ }
+ Grade {
+  gamma 0.005
+  name Grade7
+  xpos -1807
+  ypos 1168
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge9
+  xpos -1694
+  ypos 1221
+  disable {{1-tweak1 i x110 0}}
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name ContactShadow
+  xpos -1694
+  ypos 1291
+  disable {{1-enable_contact_shadow i x110 0}}
+ }
+set Nb86d438 [stack 0]
+ Expression {
+  channel0 rgb
+  expr0 r>5?1:0
+  channel1 {-rgba.red rgba.green rgba.blue}
+  name Expression3
+  label "\[value expr0]"
+  xpos -1974
+  ypos 1345
+ }
+ Erode {
+  channels rgb
+  size -20
+  name Erode1
+  xpos -2087
+  ypos 1435
+ }
+ Blur {
+  channels rgb
+  size 10
+  name Blur5
+  xpos -2087
+  ypos 1511
+ }
+push $Nb86d438
+ Clamp {
+  name Clamp2
+  xpos -1812
+  ypos 1369
+ }
+set Nb888c70 [stack 0]
+push $Nb888c70
+ Blur {
+  channels rgba
+  size 3
+  name Blur7
+  xpos -1723
+  ypos 1448
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  mix 0.5
+  name Merge8
+  xpos -1812
+  ypos 1497
+ }
+set Nb895de0 [stack 0]
+ Grade {
+  inputs 1+1
+  white 0.001
+  maskChannelMask rgba.red
+  name Grade13
+  xpos -1927
+  ypos 1565
+ }
+push $Nb895de0
+ Merge2 {
+  inputs 2+1
+  maskChannelMask rgba.red
+  name ShadowFixTrick
+  xpos -1812
+  ypos 1618
+  disable {{1-tweak3 i x110 0}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Input1.format.width i}}
+  name ReformatToInputFormat
+  xpos -1812
+  ypos 1644
+ }
+ Grade {
+  gamma {{1/Penumbra_intensity i}}
+  name Penumbra_grade
+  xpos -1812
+  ypos 1671
+ }
+set Nb8b4b80 [stack 0]
+push $Nb748e08
+ Dot {
+  name Dot4
+  xpos -979
+  ypos 702
+ }
+set Nb8bb998 [stack 0]
+ Dot {
+  name Dot2
+  xpos -979
+  ypos 1194
+ }
+set Nb8be1f8 [stack 0]
+ MergeExpression {
+  inputs 2
+  channel0 rgb
+  expr0 Ar*Ba
+  name MergeExpression2
+  xpos -1812
+  ypos 1736
+ }
+push $Nb8b4b80
+push $Nb8be1f8
+ Shuffle {
+  in rgb
+  name ShuffleAmbient
+  label "\[value in]"
+  xpos -707
+  ypos 1184
+ }
+ Grade {
+  blackpoint {{ambient_black_level<ambient_white_level?ambient_black_level:ambient_white_level-.05 i}}
+  whitepoint {{ambient_white_level i}}
+  white_clamp true
+  name Grade6
+  xpos -707
+  ypos 1299
+ }
+set Nb8ceaa0 [stack 0]
+ Dot {
+  name Dot3
+  xpos -673
+  ypos 1522
+ }
+push $Nb8be1f8
+push $Nb8ceaa0
+push $Nb8bb998
+ Input {
+  inputs 0
+  name mask_in
+  xpos -188
+  ypos 607
+  number 1
+ }
+ Invert {
+  mix {{Mult_or_Sub i}}
+  name Invert1
+  xpos -383
+  ypos 601
+ }
+push $Nb743708
+ Shuffle {
+  in rgb
+  alpha blue
+  out rgb
+  name Shuffle1
+  label "\[value in]"
+  xpos -884
+  ypos -303
+ }
+ Expression {
+  expr0 -r
+  name invert_red
+  xpos -884
+  ypos -243
+  disable {{!invert_Xnormal i}}
+ }
+ Expression {
+  expr1 -g
+  name invert_green
+  xpos -884
+  ypos -217
+  disable {{!invert_Ynormal i}}
+ }
+ Grade {
+  black {{-(center_light.x-format.w/2)/format.w*2} {-(center_light.y-format.h/2)/format.h*2} 0 0}
+  white {{black.r+1} {black.g+1} {black.b+1} 1}
+  black_clamp false
+  maskChannelInput -rgba.alpha
+  name Grade_center_light
+  xpos -884
+  ypos -173
+ }
+ ColorLookup {
+  lut {master {curve C 0 s0.4499999881 1}
+    red {curve C x-0.4980379939 0 x0 1 s0 x0.5 0}
+    green {curve C x-0.4980379939 0 x0 1 s0 x0.5 0}
+    blue {curve C x-0.5 0 x0 1 0}
+    alpha {}}
+  name ColorLookup1
+  xpos -884
+  ypos 8
+ }
+ Grade {
+  black 0.5
+  gamma 0.8
+  black_clamp false
+  name real_light_fixings
+  xpos -884
+  ypos 58
+ }
+ Grade {
+  name LightSpread
+  xpos -884
+  ypos 104
+  disable true
+ }
+ Grade {
+  channels {-rgba.red -rgba.green rgba.blue}
+  blackpoint {{Fresnel_ratio}}
+  add {{abs(Fresnel_ratio-1) i}}
+  name Z_etal
+  xpos -884
+  ypos 149
+ }
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue}
+  add {{abs(X_contribution-1) i}}
+  name X_etal
+  xpos -884
+  ypos 218
+ }
+ Grade {
+  channels {-rgba.red rgba.green -rgba.blue}
+  add {{abs(Y_contribution-1) i}}
+  name Y_etal
+  xpos -884
+  ypos 269
+ }
+ Clamp {
+  name Clamp1
+  xpos -884
+  ypos 316
+ }
+ Expression {
+  channel0 rgb
+  expr0 r*g*b
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  name ExpressionAA2
+  xpos -884
+  ypos 376
+ }
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  B rgba.red
+  output rgba.red
+  name ChannelMerge2
+  xpos -884
+  ypos 594
+  disable {{"!\[ exists parent.input\[value mask_in.number] ]"}}
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Br*Aa
+  expr1 Br*Aa
+  expr2 Br*Aa
+  name PostMultiply1
+  xpos -884
+  ypos 698
+  disable {{1-alpha_postMultiply i x101 1 x1494 0}}
+ }
+ Expression {
+  channel0 rgb
+  expr0 r
+  name KeepR
+  xpos -884
+  ypos 763
+ }
+set Nb941d30 [stack 0]
+ Grade {
+  blackpoint {{fringe_tweak i}}
+  name fringe_control
+  xpos -646
+  ypos 763
+ }
+set Nb948a10 [stack 0]
+ Expression {
+  channel0 rgba
+  expr0 a
+  name AtoRGB
+  xpos -388
+  ypos 812
+ }
+ Blur {
+  channels rgb
+  size 6
+  name Blur4
+  xpos -388
+  ypos 844
+ }
+ Grade {
+  blackpoint 0.97
+  white_clamp true
+  name Grade1
+  xpos -388
+  ypos 896
+ }
+push $Nb948a10
+ Grade {
+  whitepoint 0
+  white_clamp true
+  name Grade2
+  xpos -646
+  ypos 805
+ }
+ Blur {
+  channels rgb
+  size 3
+  name Blur1
+  xpos -646
+  ypos 847
+ }
+ Grade {
+  blackpoint 0.85
+  name Grade3
+  xpos -646
+  ypos 899
+ }
+ Blur {
+  channels rgb
+  size 3
+  name Blur2
+  xpos -646
+  ypos 931
+ }
+ Grade {
+  whitepoint 0.022
+  white_clamp true
+  name Grade4
+  xpos -646
+  ypos 983
+ }
+ Blur {
+  channels rgb
+  size 5
+  name Blur3
+  xpos -646
+  ypos 1015
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge3
+  xpos -646
+  ypos 1062
+ }
+push $Nb941d30
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge4
+  label fringe_kill
+  xpos -884
+  ypos 1056
+  disable {{1-fringe_kill}}
+ }
+ Grade {
+  name LightGain
+  xpos -884
+  ypos 1135
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{Ambient_contribution i}}
+  name MultAmbient
+  xpos -884
+  ypos 1299
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Br*Aa
+  expr1 Br*Aa
+  expr2 Br*Aa
+  name PostMultiply
+  xpos -1022
+  ypos 1384
+  disable {{1-alpha_postMultiply i x1494 0}}
+ }
+set Nb9ac478 [stack 0]
+ Switch {
+  inputs 2
+  which {{Ambient_view i}}
+  name Switch1
+  xpos -1022
+  ypos 1518
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Shadows
+  xpos -1022
+  ypos 1671
+  disable {{1-shadows}}
+ }
+ Switch {
+  inputs 2
+  which {{output_only_shadows&&shadows i}}
+  name ONLY_shadows
+  xpos -1022
+  ypos 1736
+ }
+ Expression {
+  channel0 rgb
+  expr0 (r+g+b)/3
+  channel1 alpha
+  expr1 r
+  name RToAlpha
+  xpos -1022
+  ypos 1803
+  disable {{1-Put_Light_in_alpha i}}
+ }
+set Nb9c2508 [stack 0]
+ Matrix {
+  matrix {
+      {1 2 1}
+      {2 12 2}
+      {1 2 1}
+    }
+  normalize true
+  name Matrix1
+  xpos -1022
+  ypos 1860
+  disable {{!matrix_antialias}}
+ }
+ Reformat {
+  name Reformat1
+  xpos -1022
+  ypos 1898
+ }
+ Output {
+  name Output1
+  xpos -1022
+  ypos 1992
+ }
+push $Nb9c2508
+push $Nb9ac478
+push $Nb86d438
+ Viewer {
+  inputs 3
+  input_number 1
+  viewerProcess None
+  input_process false
+  name Viewer1
+  xpos -710
+  ypos 486
+ }
+end_group

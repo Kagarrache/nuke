@@ -1,0 +1,410 @@
+#! /s/apps/lin/nuke/Nuke6.2v4/Nuke6.2 -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Scanner}
+ addUserKnob {41 box T Crop6.box}
+ addUserKnob {41 size l smoothness T CurveSoftness1.size}
+ addUserKnob {41 which l mix T Dissolve2.which}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -460
+  ypos -310
+ }
+ Dot {
+  name Dot9
+  xpos -428
+  ypos -261
+ }
+set N9068ae0 [stack 0]
+ Crop {
+  box {10 10 256 256}
+  reformat true
+  crop false
+  name Crop6
+  xpos -610
+  ypos -264
+ }
+ Shuffle {
+  alpha white
+  name Shuffle5
+  xpos -610
+  ypos -238
+ }
+ Blur {
+  channels rgb
+  name CurveSoftness1
+  xpos -610
+  ypos -212
+ }
+ Group {
+  name PixelAnalyser2
+  xpos -610
+  ypos -166
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos -258
+   ypos -209
+  }
+  Dot {
+   name Dot8
+   xpos -226
+   ypos -152
+  }
+set N91ff4d0 [stack 0]
+  Group {
+   name Group2
+   xpos -258
+   ypos -114
+   addUserKnob {20 User l "Pixel Analyser"}
+   addUserKnob {41 box T Crop3.box}
+  }
+   Input {
+    inputs 0
+    name Input
+    xpos 271
+    ypos -475
+   }
+   Crop {
+    box {{Input.bbox.x i x57 640} {Input.bbox.y i x57 0} {Input.bbox.w i x57 2800} {Input.bbox.h i x57 2304}}
+    reformat true
+    crop false
+    name Crop4
+    xpos 271
+    ypos -449
+   }
+   Reformat {
+    type "to box"
+    box_width 32
+    box_height 32
+    box_fixed true
+    resize distort
+    name Reformat1
+    xpos 271
+    ypos -423
+   }
+set N8ec40a0 [stack 0]
+   Dilate {
+    channels rgb
+    size {{input.bbox.w i} {input.bbox.h i}}
+    name Dilate4
+    xpos 325
+    ypos -353
+   }
+set N8fef550 [stack 0]
+push $N8ec40a0
+   Dilate {
+    channels rgb
+    size {{-input.bbox.w i} {-input.bbox.h i}}
+    name Dilate3
+    xpos 178
+    ypos -352
+   }
+set N9100830 [stack 0]
+push $N8fef550
+   Dissolve {
+    inputs 2
+    channels rgb
+    which 0.5
+    name Dissolve2
+    xpos 444
+    ypos -290
+   }
+push $N9100830
+   ContactSheet {
+    inputs 3
+    width 96
+    height 32
+    rows 1
+    columns 3
+    name ContactSheet1
+    xpos 178
+    ypos -248
+   }
+   Shuffle {
+    alpha white
+    name Shuffle1
+    xpos 178
+    ypos -222
+   }
+   Output {
+    name Output
+    xpos 178
+    ypos -196
+   }
+  end_group
+  BlackOutside {
+   name BlackOutside1
+   xpos -258
+   ypos -88
+  }
+  Transform {
+   translate {0 {Input.height i}}
+   center {48 16}
+   filter Impulse
+   name Transform6
+   xpos -258
+   ypos -4
+  }
+  Dot {
+   name Dot1
+   xpos -226
+   ypos 43
+  }
+push $N91ff4d0
+  Dot {
+   name Dot9
+   xpos -89
+   ypos -152
+  }
+  Group {
+   name Group1
+   tile_color 0x6aff55ff
+   xpos -121
+   ypos -112
+   addUserKnob {20 User l "Scan Line"}
+   addUserKnob {7 Slice}
+   Slice 0.5
+  }
+   Input {
+    inputs 0
+    name In
+    xpos -87
+    ypos -358
+   }
+set Nb0d9700 [stack 0]
+   NoOp {
+    name Control
+    tile_color 0xff0000ff
+    xpos 63
+    ypos -358
+    addUserKnob {20 User}
+    addUserKnob {12 SourceRange l "Source Range"}
+    SourceRange {{parent.src1 i} {parent.src2 i}}
+    addUserKnob {12 DestinationRange l "Destination Range"}
+    DestinationRange {{parent.dst1 i} {parent.dst2 i}}
+   }
+push $Nb0d9700
+   Crop {
+    box {0 {"In.height * parent.Slice" i} {Input.width i} {"In.height * parent.Slice + 1" i}}
+    reformat true
+    crop false
+    name Crop1
+    xpos -87
+    ypos -127
+   }
+   Crop {
+    box {0 0 {In.width i} {In.height i}}
+    reformat true
+    crop false
+    name Crop2
+    xpos -87
+    ypos -101
+   }
+set Nb0e5490 [stack 0]
+push $Nb0d9700
+   Ramp {
+    output rgb
+    cliptype none
+    replace true
+    p0 {0 1}
+    p1 {0 0}
+    name Ramp3
+    xpos -307
+    ypos -122
+   }
+   Crop {
+    box {0 0 {In.width i} {In.height i}}
+    name Crop4
+    xpos -307
+    ypos -96
+   }
+set Nb0f21c0 [stack 0]
+   Copy {
+    inputs 2
+    from0 rgba.red
+    to0 forward.v
+    name Copy1
+    xpos -307
+    ypos 50
+   }
+   IDistort {
+    channels {rgba.red -rgba.green -rgba.blue}
+    uv {-forward.u forward.v}
+    uv_scale {0 {-input.height i}}
+    blur_scale {0 0}
+    filter Impulse
+    name IDistort1
+    xpos -307
+    ypos 90
+   }
+push $Nb0e5490
+push $Nb0f21c0
+   Copy {
+    inputs 2
+    from0 rgba.green
+    to0 forward.v
+    name Copy2
+    xpos -197
+    ypos 13
+   }
+   IDistort {
+    channels {-rgba.red rgba.green -rgba.blue}
+    uv {-forward.u forward.v}
+    uv_scale {0 {-input.height i}}
+    blur_scale {0 0}
+    filter Impulse
+    name IDistort2
+    xpos -197
+    ypos 55
+   }
+   ShuffleCopy {
+    inputs 2
+    in rgb
+    in2 rgb
+    red red
+    blue black
+    alpha black
+    out rgb
+    name ShuffleCopy1
+    xpos -197
+    ypos 97
+   }
+push $Nb0e5490
+push $Nb0f21c0
+   Copy {
+    inputs 2
+    from0 rgba.blue
+    to0 forward.v
+    name Copy3
+    xpos -87
+    ypos 13
+   }
+   IDistort {
+    channels {-rgba.red -rgba.green rgba.blue}
+    uv {-forward.u forward.v}
+    uv_scale {0 {-input.height i}}
+    blur_scale {0 0}
+    filter Impulse
+    name IDistort3
+    xpos -87
+    ypos 55
+   }
+   ShuffleCopy {
+    inputs 2
+    in rgb
+    in2 rgb
+    red red
+    green green
+    alpha black
+    out rgb
+    name ShuffleCopy2
+    selected true
+    xpos -87
+    ypos 97
+   }
+   Output {
+    name Output
+    xpos -87
+    ypos 163
+   }
+  end_group
+set Nb0d4ee0 [stack 0]
+  Crop {
+   box {0 0 {Input.width i} 1}
+   reformat true
+   crop false
+   name Crop1
+   xpos 29
+   ypos -112
+  }
+  Expression {
+   channel0 {rgba.red rgba.green rgba.blue rgba.alpha}
+   expr0 clamp(sin(x),0,1)
+   name Expression1
+   xpos 29
+   ypos -86
+  }
+  Position {
+   translate {0 {"int(Input.height / 2)" i}}
+   name Position1
+   xpos 29
+   ypos -60
+  }
+  BlackOutside {
+   name BlackOutside2
+   xpos 29
+   ypos -34
+  }
+push $Nb0d4ee0
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -121
+   ypos -34
+  }
+  Merge2 {
+   inputs 2
+   name Merge2
+   xpos -121
+   ypos 40
+  }
+  Crop {
+   box {0 0 {input.width i} {input.bbox.h i}}
+   reformat true
+   crop false
+   name Crop6
+   xpos -121
+   ypos 66
+   disable true
+  }
+  Output {
+   name Output
+   xpos -121
+   ypos 92
+  }
+ end_group
+set N8da9670 [stack 0]
+push $N8da9670
+ Expression {
+  channel0 alpha
+  expr0 "(r>0||g>0||b>0)? 1 : 0"
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression2
+  xpos -694
+  ypos -129
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which 0.5
+  name Dissolve2
+  xpos -610
+  ypos -91
+ }
+ Transform {
+  translate {{parent.Crop6.box.x i} {parent.Crop6.box.y i}}
+  center {234 161}
+  filter Impulse
+  name Transform6
+  xpos -610
+  ypos -65
+ }
+push $N9068ae0
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos -460
+  ypos -65
+ }
+ Output {
+  name Output
+  xpos -460
+  ypos -39
+ }
+end_group

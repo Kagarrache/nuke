@@ -1,0 +1,151 @@
+#! /Applications/Nuke9.0v7/Nuke9.0v7.app/Contents/MacOS//libnuke-9.0.7.dylib -nx
+
+Gizmo {
+ inputs 2
+ help "Transforms position and normal passes between camera and world space.\n\nv1.1 Adrian Herr 2016"
+ label "(\[value space_transform])"
+ addUserKnob {20 SpaceTransform}
+ addUserKnob {26 info l "" +STARTLINE T "Connect camera for transformation"}
+ addUserKnob {26 ""}
+ addUserKnob {41 in l input T Shuffle1.in}
+ addUserKnob {4 data_type l "data type" M {"normal vectors" "point positions"}}
+ addUserKnob {4 space_transform l "space transform" M {"cam to world" "world to cam" ""}}
+ addUserKnob {41 out l output T ShuffleCopy1.out2}
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "v1.1 Adrian Herr 2016"}
+}
+ Input {
+  inputs 0
+  name cam
+  xpos 852
+  ypos -563
+  number 1
+ }
+ Axis2 {
+  name Axis3
+  xpos 862
+  ypos -489
+ }
+ NoOp {
+  name NoOp1
+  label "camera scale"
+  xpos 852
+  ypos -399
+  addUserKnob {20 User}
+  addUserKnob {13 scale}
+  scale {{"\[value \[topnode parent.input1].scaling.x]"} {"\[value \[topnode parent.input1].scaling.y]"} {"\[value \[topnode parent.input1].scaling.z]"}}
+  addUserKnob {7 uniform_scale l "uniform scale"}
+  uniform_scale {{"\[value \[topnode parent.input1].uniform_scale]"}}
+  addUserKnob {13 total_scale l "total scale"}
+  total_scale {{"scale*uniform_scale ? 1/(scale*uniform_scale) : 0"} {"scale*uniform_scale ? 1/(scale*uniform_scale) : 0"} {"scale*uniform_scale ? 1/(scale*uniform_scale) : 0"}}
+ }
+ Input {
+  inputs 0
+  name src
+  xpos 164
+  ypos -564
+ }
+ Dot {
+  name Dot7
+  xpos 198
+  ypos -482
+ }
+set N64c57550 [stack 0]
+ Shuffle {
+  in rgb
+  alpha black
+  out rgb
+  name Shuffle1
+  label "in: \[value in]"
+  xpos 400
+  ypos -489
+ }
+ Dot {
+  name Dot1
+  xpos 434
+  ypos -397
+ }
+set N64c687e0 [stack 0]
+ Dot {
+  name Dot2
+  xpos 666
+  ypos -397
+ }
+ Add {
+  channels rgb
+  value {{-parent.Axis3.world_matrix.3} {-parent.Axis3.world_matrix.7} {-parent.Axis3.world_matrix.11} 0}
+  name Add1
+  label "inverse translation"
+  xpos 632
+  ypos -246
+  disable {{!parent.data_type}}
+ }
+ ColorMatrix {
+  matrix {
+      {{"parent.Axis3.world_matrix.0 * parent.NoOp1.total_scale.x"} {"parent.Axis3.world_matrix.1 * parent.NoOp1.total_scale.y"} {"parent.Axis3.world_matrix.2 * parent.NoOp1.total_scale.z"}}
+      {{"parent.Axis3.world_matrix.4 * parent.NoOp1.total_scale.x"} {"parent.Axis3.world_matrix.5 * parent.NoOp1.total_scale.y"} {"parent.Axis3.world_matrix.6 * parent.NoOp1.total_scale.z"}}
+      {{"parent.Axis3.world_matrix.8 * parent.NoOp1.total_scale.x"} {"parent.Axis3.world_matrix.9 * parent.NoOp1.total_scale.y"} {"parent.Axis3.world_matrix.10 * parent.NoOp1.total_scale.z"}}
+    }
+  invert true
+  name ColorMatrix3
+  label "world to cam"
+  xpos 632
+  ypos -184
+  disable {{hasError}}
+ }
+ Dot {
+  name Dot3
+  xpos 666
+  ypos -77
+ }
+push $N64c687e0
+ ColorMatrix {
+  matrix {
+      {{"parent.Axis3.world_matrix.0 * parent.NoOp1.total_scale.x"} {"parent.Axis3.world_matrix.1 * parent.NoOp1.total_scale.y"} {"parent.Axis3.world_matrix.2 * parent.NoOp1.total_scale.z"}}
+      {{"parent.Axis3.world_matrix.4 * parent.NoOp1.total_scale.x"} {"parent.Axis3.world_matrix.5 * parent.NoOp1.total_scale.y"} {"parent.Axis3.world_matrix.6 * parent.NoOp1.total_scale.z"}}
+      {{"parent.Axis3.world_matrix.8 * parent.NoOp1.total_scale.x"} {"parent.Axis3.world_matrix.9 * parent.NoOp1.total_scale.y"} {"parent.Axis3.world_matrix.10 * parent.NoOp1.total_scale.z"}}
+    }
+  name ColorMatrix2
+  label "cam to world"
+  xpos 400
+  ypos -310
+  disable {{hasError}}
+ }
+ Add {
+  channels rgb
+  value {{parent.Axis3.world_matrix.3} {parent.Axis3.world_matrix.7} {parent.Axis3.world_matrix.11} 0}
+  name Add5
+  label translation
+  xpos 400
+  ypos -246
+  disable {{!parent.data_type}}
+ }
+ Switch {
+  inputs 2
+  which {{parent.space_transform}}
+  name Switch1
+  label transform
+  xpos 400
+  ypos -84
+ }
+push $N64c57550
+ ShuffleCopy {
+  inputs 2
+  alpha alpha2
+  black red
+  white green
+  red2 blue
+  green2 alpha
+  out2 rgb
+  name ShuffleCopy1
+  label "out: \[value out2]"
+  xpos 164
+  ypos -84
+  disable {{"!(NoOp1.total_scale.x && NoOp1.total_scale.y && NoOp1.total_scale.z && \[exists parent.input0])"}}
+ }
+ Output {
+  name Output1
+  xpos 164
+  ypos 9
+ }
+end_group

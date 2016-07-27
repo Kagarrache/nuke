@@ -1,0 +1,79 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l ScanSlice}
+ addUserKnob {4 Axe M {X Y}}
+ addUserKnob {7 Line R 0 500}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -4
+  ypos 7
+ }
+set N32172230 [stack 0]
+ Crop {
+  box {0 {parent.Line*height i} {input.width i} {box.y+1 i}}
+  reformat true
+  crop false
+  name Crop1
+  xpos 53
+  ypos 76
+ }
+add_layer {rgba rgba.beta}
+ Add {
+  channels none
+  name Add1
+  xpos 53
+  ypos 102
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input.width i}}
+  box_height {{Input.height i}}
+  box_fixed true
+  filter Impulse
+  name Reformat1
+  xpos 53
+  ypos 140
+ }
+push $N32172230
+ Crop {
+  box {{parent.Line*width i} 0 {box.x+1 i} {input.height i}}
+  reformat true
+  crop false
+  name Crop2
+  xpos -125
+  ypos 75
+ }
+ Add {
+  channels none
+  name Add2
+  xpos -125
+  ypos 101
+ }
+ Reformat {
+  type "to box"
+  box_width {{Input.width i}}
+  box_height {{Input.height i}}
+  box_fixed true
+  resize height
+  filter Impulse
+  name Reformat2
+  xpos -125
+  ypos 139
+ }
+ Switch {
+  inputs 2
+  which {{parent.Axe}}
+  name Switch1
+  xpos -63
+  ypos 212
+ }
+ Output {
+  name Output1
+  xpos -63
+  ypos 260
+ }
+end_group

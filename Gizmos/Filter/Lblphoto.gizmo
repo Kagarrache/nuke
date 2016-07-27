@@ -1,0 +1,778 @@
+#! C:/Program Files/Nuke7.0v1/Nuke7.0.exe -nx
+version 7.0 v1
+Gizmo {
+ inputs 2
+ tile_color 0xff5f00ff
+ gl_color 0xff
+ addUserKnob {20 FilterFlare}
+ addUserKnob {6 FilterFlareOn l On +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 range l "Luma Threshold" T filterflare_keyer.range}
+ addUserKnob {26 FilterFlareText1 l "" +STARTLINE T "\"A\" is the only value that should be changed\nRecommended value is between 0.8 and 1"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 scale l Scale T filterflare_transform.scale}
+ addUserKnob {26 FilterFlareText4 l "" +STARTLINE T "Recommended value is between 1 and 2"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 size l "Blur Size" T filterflare_blur.size}
+ addUserKnob {26 FilterFlareText2 l "" +STARTLINE T "This value should greater than 50"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 mix l Mix T filterflare_merge.mix}
+ addUserKnob {26 FilterFlareText3 l "" +STARTLINE T "This value should not be less than 0.1\nRecommended value is between 0.01 to 0.03"}
+ addUserKnob {20 LensDistortion}
+ addUserKnob {6 LensDistortionOn l On +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 lensType l "Lens Type" T lensdistortion_lensdistortion.lensType}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 distortion1 l "Radial Distortion 1" T lensdistortion_lensdistortion.distortion1}
+ addUserKnob {41 distortion2 l "Radial Distortion 2" T lensdistortion_lensdistortion.distortion2}
+ addUserKnob {41 reset l Reset T lensdistortion_lensdistortion.reset}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 filter T lensdistortion_lensdistortion.filter}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 LensDistortion_1 l "" +STARTLINE T "This tab can be adjusted to taste"}
+ addUserKnob {20 FieldCurvature}
+ addUserKnob {6 FieldCurvatureOn l On +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 size_1 l Size T fieldcurvature_defocus.size}
+ addUserKnob {26 FieldCurvatureText1 l "" +STARTLINE T "This value should be between 1 and 15 depending on format\nRecommended value for HD is 8"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 aspect l "Aperture Ratio" T fieldcurvature_defocus.aspect}
+ addUserKnob {26 FieldCurvatureText2 l "" -STARTLINE T "This is the aspect ratio of the aperture of the lens\nUse 1 for standard\nUse 0.4 to 0.6 for anamorphic"}
+ addUserKnob {20 AirDiffraction}
+ addUserKnob {6 AirDiffractionOn l On +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 pad l "Edge Pad" T airdiffraction_airydisk.pad}
+ addUserKnob {26 AirDiffractionText1 l "" -STARTLINE T "Edge pad will add an edge to your image before\nthe effect is applied to resolve edge issues. This\nincreases render time dramatically.\nOnly use when doing final render\nRecommended value is between 10 and 30"}
+ addUserKnob {41 scale_1 l Size T airdiffraction_airydisk.scale}
+ addUserKnob {26 AirDiffractionText2 l "" +STARTLINE T "This value should be greater than 1"}
+ addUserKnob {41 mix_1 l Mix T airdiffraction_airydisk.mix}
+ addUserKnob {26 line l "" +STARTLINE}
+ addUserKnob {26 AirDiffractionText3 l "" -STARTLINE T "To use this feature you need to load a\n normalized lense bokeh image and plug it\n into the \"Lens\" input of this gizmo. This can be\n found on ZNAG and Nukepedia. Each image has\n a different look so please try them out."}
+ addUserKnob {20 Astigmatism}
+ addUserKnob {6 SagittalFocus l "Sagittal Focus" +STARTLINE}
+ addUserKnob {6 TangentialFocus l "Tangential Focs" +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 BlurLength l "Sagittal Size" T astigmatism_zoom.BlurLength}
+ addUserKnob {26 AstigmatismText1 l "" +STARTLINE T "This value should be no greater than 5"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 BlurLength_1 l "Tangential Size" T astigmatism_radial.BlurLength}
+ addUserKnob {26 AstigmatismText2 l "" +STARTLINE T "This value should be not more than 0.5"}
+ addUserKnob {20 ChromaticAberration}
+ addUserKnob {6 ChromaticAberrationOn l On +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 channels T chromaticaberration.channels}
+ addUserKnob {41 scale_2 l scale T chromaticaberration.scale}
+ addUserKnob {26 ChromaticAberrationText2 l "" +STARTLINE T "This value should be less than 0.3"}
+ addUserKnob {41 mix_2 l mix T chromaticaberration.mix}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 ChromaticAberrationText1 l "" +STARTLINE T "Green-Magenta:\nScale green alone, or red and blue together\n\nRed-Teal:\nScale red alone, or green and blue together"}
+ addUserKnob {20 Vingnette}
+ addUserKnob {6 VingnetteOn l On +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 VingnetteAspect l "Aspect Ratio" R 0 3}
+ VingnetteAspect 1
+ addUserKnob {41 scale_3 l Size T vingnette_size.scale}
+ addUserKnob {41 value l "Curve Smooth" T vingnette_dilate.value}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 saturation l Saturation T vingnette_saturation.saturation}
+ addUserKnob {41 value_1 l Gamma T vingnette_gamma.value}
+ addUserKnob {41 value_2 l Gain T vingnette_gain.value}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  label vingnette
+  note_font_size 40
+  xpos 326
+  ypos -331
+  bdwidth 373
+  bdheight 534
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  label "filter flare"
+  note_font_size 40
+  xpos 325
+  ypos -4000
+  bdwidth 370
+  bdheight 603
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  label "lens distortion"
+  note_font_size 40
+  xpos 325
+  ypos -3338
+  bdwidth 367
+  bdheight 603
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  label "field curvature"
+  note_font_size 40
+  xpos 326
+  ypos -2638
+  bdwidth 369
+  bdheight 437
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  label "air diffraction"
+  note_font_size 40
+  xpos 327
+  ypos -2149
+  bdwidth 364
+  bdheight 486
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  label "chromatic aberration"
+  note_font_size 40
+  xpos 324
+  ypos -971
+  bdwidth 391
+  bdheight 502
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  label astigmastism
+  note_font_size 40
+  xpos 322
+  ypos -1606
+  bdwidth 389
+  bdheight 526
+ }
+ Input {
+  inputs 0
+  name Lens
+  xpos 711
+  ypos -1894
+  number 1
+ }
+ Input {
+  inputs 0
+  name Source
+  xpos 142
+  ypos -4245
+ }
+ NoOp {
+  name Data
+  xpos 142
+  ypos -4136
+ }
+ Dot {
+  name Dot5
+  xpos 176
+  ypos -3892
+ }
+set N9bf624a0 [stack 0]
+ Dot {
+  name Dot9
+  xpos 459
+  ypos -3892
+ }
+set N9bf62810 [stack 0]
+ Keyer {
+  operation "luminance key"
+  range {0.8 1 1 1}
+  name filterflare_keyer
+  xpos 425
+  ypos -3826
+ }
+ Premult {
+  name filterflare_premult
+  xpos 425
+  ypos -3726
+ }
+ Transform {
+  rotate 180
+  scale 1.4
+  center {{Data.width/2} {Data.height/2}}
+  shutter 0
+  name filterflare_transform
+  xpos 425
+  ypos -3634
+ }
+ Blur {
+  size 80
+  name filterflare_blur
+  xpos 425
+  ypos -3535
+ }
+push $N9bf62810
+ Dot {
+  name Dot8
+  xpos 632
+  ypos -3892
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  metainput A
+  mix 0.01
+  name filterflare_merge
+  xpos 598
+  ypos -3529
+ }
+ Dot {
+  name Dot7
+  xpos 632
+  ypos -3452
+ }
+push $N9bf624a0
+ Switch {
+  inputs 2
+  which {{parent.FilterFlareOn x1 0}}
+  name filterflare_switch
+  xpos 142
+  ypos -3455
+ }
+ Dot {
+  name Dot10
+  xpos 176
+  ypos -3279
+ }
+set N9be8f870 [stack 0]
+ Dot {
+  name Dot11
+  xpos 455
+  ypos -3279
+ }
+ LensDistortion {
+  serializeKnob ""
+  serialiseKnob "22 serialization::archive 9 0 0 0 0 0 0 0 0 0 0 0 0"
+  distortion1 0.01
+  distortion2 0.003
+  name lensdistortion_lensdistortion
+  xpos 421
+  ypos -3016
+ }
+ Dot {
+  name Dot12
+  xpos 455
+  ypos -2789
+ }
+push $N9be8f870
+ Switch {
+  inputs 2
+  which {{parent.LensDistortionOn}}
+  name lensdistortion_switch
+  xpos 142
+  ypos -2792
+ }
+ Dot {
+  name Dot13
+  xpos 176
+  ypos -2546
+ }
+set N50506ec0 [stack 0]
+ Dot {
+  name Dot15
+  xpos 449
+  ypos -2546
+ }
+set N50507230 [stack 0]
+ Radial {
+  output alpha
+  invert true
+  area {0 0 {Data.width} {Data.height}}
+  name fieldcurvature_radial
+  xpos 415
+  ypos -2443
+ }
+push $N50507230
+ Dot {
+  name Dot14
+  xpos 621
+  ypos -2546
+ }
+ ShuffleCopy {
+  inputs 2
+  in alpha
+  in2 none
+  red red
+  out depth
+  name fieldcurvature_shuffle
+  xpos 587
+  ypos -2437
+ }
+ ZDefocus2 {
+  channels rgb
+  serializeKnob ""
+  math far=1
+  focal_point {948 539}
+  dof 1.5
+  size 12
+  max_size 20
+  name fieldcurvature_defocus
+  xpos 587
+  ypos -2296
+ }
+push $N50506ec0
+ Switch {
+  inputs 2
+  which {{parent.FieldCurvatureOn}}
+  name fieldcurvature_switch
+  xpos 142
+  ypos -2290
+ }
+ Dot {
+  name Dot16
+  xpos 176
+  ypos -2063
+ }
+set N50508360 [stack 0]
+ Dot {
+  name Dot17
+  xpos 441
+  ypos -2063
+ }
+ Group {
+  inputs 2
+  name airdiffraction_airydisk
+  tile_color 0xff0000ff
+  gl_color 0xff
+  note_font_color 0xffff
+  xpos 407
+  ypos -1894
+  addUserKnob {20 User}
+  addUserKnob {6 alpha l "Convolve Alpha" t "Convolve the alpha channel." +STARTLINE}
+  alpha true
+  addUserKnob {41 from0 l "Alpha Color" t "Color channel of input lens used to convolve alpha." T alpha_inject.from0}
+  addUserKnob {26 ""}
+  addUserKnob {3 pad l "Edge Pad" t "A result of the convolve operation is that bright features from one edge will cause flares on the opposite side. To prevent this, pad the edge with some black pixels. The more padding is used the longer the convolve time will be. It is suggested to raise this number only at render time."}
+  addUserKnob {41 scale l Size t "The scale of the lens used in the convolve." T lens_size.scale}
+  addUserKnob {7 mix l Mix}
+  mix 1
+ }
+  Input {
+   inputs 0
+   name source
+   xpos 196
+   ypos -245
+  }
+  NoOp {
+   name input_image
+   xpos 196
+   ypos -205
+  }
+set N50508db0 [stack 0]
+  Reformat {
+   type "to box"
+   box_width {{width+(2*parent.pad)}}
+   box_height {{height+(2*parent.pad)}}
+   resize none
+   filter Impulse
+   name pad_box
+   xpos 196
+   ypos -164
+  }
+  set C50509120 [stack 0]
+  FFT {
+   channels rgba
+   name image_fft
+   xpos 196
+   ypos -117
+  }
+  Dot {
+   name Dot8
+   xpos 230
+   ypos -63
+  }
+  Input {
+   inputs 0
+   name lens
+   xpos 421
+   ypos -438
+   number 1
+  }
+  NoOp {
+   name input_lens
+   xpos 421
+   ypos -377
+  }
+  Transform {
+   center {{lens.width/2} {lens.height/2}}
+   black_outside false
+   name lens_size
+   selected true
+   xpos 421
+   ypos -315
+  }
+set N5050aca0 [stack 0]
+  Dot {
+   name Dot1
+   xpos 345
+   ypos -312
+  }
+  Saturation {
+   saturation 0
+   name Saturation
+   label luminance
+   note_font Helvetica
+   xpos 311
+   ypos -264
+  }
+push $N5050aca0
+  Copy {
+   inputs 2
+   from0 rgba.red
+   to0 rgba.alpha
+   name alpha_inject
+   xpos 421
+   ypos -263
+  }
+clone $C50509120 {
+   xpos 421
+   ypos -165
+   selected false
+  }
+  FFT {
+   channels rgba
+   normalize_input true
+   center_kernel true
+   name lens_fft
+   xpos 421
+   ypos -116
+  }
+  FFTMultiply {
+   inputs 2
+   channels rgba
+   name FFTMultiply1
+   xpos 421
+   ypos -66
+  }
+  InvFFT {
+   channels rgba
+   name InvFFT1
+   xpos 421
+   ypos -13
+  }
+  Reformat {
+   type "to box"
+   box_width {{input_image.width}}
+   box_height {{input_image.height}}
+   resize none
+   filter Impulse
+   name Reformat1
+   xpos 421
+   ypos 35
+  }
+set N5050bdd0 [stack 0]
+  Dot {
+   name Dot6
+   xpos 455
+   ypos 107
+  }
+push $N50508db0
+  Dot {
+   name Dot2
+   xpos 153
+   ypos -202
+  }
+set N5050c4b0 [stack 0]
+  Dot {
+   name Dot3
+   xpos 36
+   ypos -202
+  }
+set N5050c820 [stack 0]
+  Copy {
+   inputs 2
+   channels rgba
+   name Copy3
+   xpos 2
+   ypos 92
+  }
+  Dot {
+   name Dot7
+   xpos 36
+   ypos 167
+  }
+push $N5050bdd0
+push $N5050c4b0
+  Copy {
+   inputs 2
+   channels rgb
+   name Copy2
+   xpos 119
+   ypos 23
+  }
+  Switch {
+   inputs 2
+   which {{parent.alpha}}
+   name Switch1
+   xpos 119
+   ypos 164
+  }
+push $N5050c820
+  Dot {
+   name Dot5
+   xpos -74
+   ypos -202
+  }
+  Dot {
+   name Dot4
+   xpos -74
+   ypos 229
+  }
+  Dissolve {
+   inputs 2
+   which {{parent.mix}}
+   name mix
+   xpos 119
+   ypos 220
+  }
+  Output {
+   name Output1
+   xpos 119
+   ypos 290
+  }
+push $N5050bdd0
+  Viewer {
+   input_process false
+   name Viewer1
+   xpos 779
+   ypos 26
+  }
+ end_group
+set N266ea90 [stack 0]
+ Dot {
+  name Dot18
+  xpos 441
+  ypos -1721
+ }
+push $N50508360
+ Switch {
+  inputs 2
+  which {{parent.AirDiffractionOn}}
+  name airdiffraction_switch
+  xpos 142
+  ypos -1724
+ }
+ Dot {
+  name Dot20
+  xpos 176
+  ypos -1488
+ }
+set N9c4c4990 [stack 0]
+ Dot {
+  name Dot22
+  xpos 448
+  ypos -1488
+ }
+set N9c4c4d00 [stack 0]
+ Radial {
+  output alpha
+  area {0 0 {Data.width} {Data.height}}
+  name astigmatism_mask
+  xpos 567
+  ypos -1497
+ }
+ Transform {
+  scale {1.1 1.3}
+  center {960 540}
+  name astigmatism_transform
+  xpos 567
+  ypos -1424
+ }
+ Grade {
+  channels alpha
+  whitepoint 0.5
+  name astigmatism_grade
+  xpos 567
+  ypos -1354
+ }
+push $N9c4c4d00
+ DirBlurWrapper {
+  inputs 1+1
+  channels rgb
+  BlurCenter {{Data.width/2} {Data.height/2}}
+  invert_mask true
+  name astigmatism_zoom
+  xpos 414
+  ypos -1348
+ }
+push $N9c4c4990
+ Switch {
+  inputs 2
+  which {{parent.SagittalFocus}}
+  name sagittal_focus
+  xpos 142
+  ypos -1348
+ }
+ Dot {
+  name Dot1
+  xpos 176
+  ypos -1276
+ }
+set N9c1997c0 [stack 0]
+ Dot {
+  name Dot19
+  xpos 448
+  ypos -1276
+ }
+ DirBlurWrapper {
+  channels rgb
+  BlurType radial
+  BlurCenter {{Data.width/2} {Data.height/2}}
+  BlurLength 0.5
+  BlurAngle 0
+  invert_mask true
+  name astigmatism_radial
+  xpos 414
+  ypos -1196
+ }
+push $N9c1997c0
+ Switch {
+  inputs 2
+  which {{parent.TangentialFocus}}
+  name tangential_focus
+  xpos 142
+  ypos -1196
+ }
+ Dot {
+  name Dot24
+  xpos 173
+  ypos -896
+ }
+set N9c4c6880 [stack 0]
+ Dot {
+  name Dot25
+  xpos 439
+  ypos -896
+ }
+ GodRays {
+  channels {rgba.red -rgba.green rgba.blue}
+  scale 1.003
+  center {{Data.width/2} {Data.height/2}}
+  name chromaticaberration
+  xpos 405
+  ypos -711
+ }
+ Dot {
+  name Dot26
+  xpos 439
+  ypos -504
+ }
+push $N9c4c6880
+ Switch {
+  inputs 2
+  which {{parent.ChromaticAberrationOn}}
+  name chromaticaberration_switch
+  xpos 139
+  ypos -507
+ }
+ Dot {
+  name Dot4
+  xpos 173
+  ypos -253
+ }
+set N9c4c79b0 [stack 0]
+ Dot {
+  name Dot3
+  xpos 452
+  ypos -253
+ }
+set N9c4c7640 [stack 0]
+ Dot {
+  name Dot2
+  xpos 599
+  ypos -253
+ }
+ Radial {
+  output alpha
+  area {0 0 {Data.width} {Data.height}}
+  name vingnette_radial
+  xpos 565
+  ypos -208
+ }
+ Transform {
+  scale {{parent.VingnetteAspect} 1}
+  center {{Data.width/2} {Data.height/2}}
+  shutter 0
+  name vingnette_aspect
+  xpos 565
+  ypos -156
+ }
+ Transform {
+  scale 1.45
+  center {{Data.width/2} {Data.height/2}}
+  shutter 0
+  name vingnette_size
+  xpos 565
+  ypos -110
+ }
+ Grade {
+  channels alpha
+  whitepoint 0.232
+  name vingnette_grade
+  xpos 565
+  ypos -76
+ }
+ Gamma {
+  channels alpha
+  name vingnette_dilate
+  xpos 565
+  ypos -16
+ }
+set N8cb26510 [stack 0]
+push $N8cb26510
+push $N8cb26510
+push $N9c4c7640
+ Saturation {
+  inputs 1+1
+  invert_mask true
+  name vingnette_saturation
+  xpos 418
+  ypos -72
+ }
+ Gamma {
+  inputs 1+1
+  channels rgb
+  invert_mask true
+  name vingnette_gamma
+  xpos 418
+  ypos -20
+ }
+ Multiply {
+  inputs 1+1
+  channels rgb
+  value 0
+  invert_mask true
+  name vingnette_gain
+  xpos 418
+  ypos 39
+ }
+ Dot {
+  name Dot6
+  xpos 452
+  ypos 156
+ }
+push $N9c4c79b0
+ Switch {
+  inputs 2
+  which {{parent.VingnetteOn}}
+  name vingnette_switch
+  xpos 139
+  ypos 153
+ }
+ Output {
+  name Output0
+  xpos 139
+  ypos 347
+ }
+push $N266ea90
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 869
+  ypos -3435
+ }
+end_group

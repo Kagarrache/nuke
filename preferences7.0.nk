@@ -1,0 +1,7 @@
+Preferences {
+ inputs 0
+ name Preferences
+ selectedGPUDeviceName "no GPU available"
+ platformPathRemaps ""
+ FloatingWindowHint "Normal (KDE)"
+}

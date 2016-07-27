@@ -1,0 +1,120 @@
+Gizmo {
+ help "Rebuilt Nuke Keyer.  Non-clamped, so values can exceed 1.0.  Added LUT color controls, so you can perform gamma corrections or any other cc you desire.  Output is in the Alpha."
+ name Keyer_CB
+ tile_color 0xff00ff
+ label "\[value opT]"
+ addUserKnob {20 CBuehler l "Keyer CB"}
+ addUserKnob {41 channels T Remove1.channels}
+ addUserKnob {41 opT l operation t "None of these operations are clamped.  They're all based on the in coming channels, which you can turn on and off as desired." T Expression2.opT}
+ addUserKnob {6 cMath l clamp -STARTLINE}
+ addUserKnob {6 iNv l invert -STARTLINE}
+ addUserKnob {6 keep0 l "keep 0" t "Anything that is the value of zero, will remain zero.  Great for premultiplied images." -STARTLINE}
+ addUserKnob {26 range l "range (alpha only)"}
+ addUserKnob {6 usecc l "<font size=\"3\"><font color=\"Goldenrod\">use CC" +STARTLINE}
+ usecc true
+ addUserKnob {35 APresets l "  " t "Alpha presets" -STARTLINE M {"alpha presets/4 points" "knob ColorLookup1.lut \{master \{\} red \{\} green \{\} blue \{\} alpha \{curve C 0 s0 u0 v0 1 s0 u0 v0 x1.1 1 s0 u0 v0 1 s0 u0 v0\}\}" "alpha presets/2 points" "knob ColorLookup1.lut \{master \{\} red \{\} green \{\} blue \{\} alpha \{curve C 0 s0 u0 v0 1 s0 u0 v0\}\}" "alpha presets/2 points smooth" "knob ColorLookup1.lut \{master \{\} red \{\} green \{\} blue \{\} alpha \{curve 0 s0 1 s0\}\}"}}
+ addUserKnob {41 choice l "  feather type" -STARTLINE T Expression.choice}
+ addUserKnob {41 lut l "" +STARTLINE T ColorLookup1.lut}
+ addUserKnob {32 Chad l ChadB t "Go to nukepedia.com to download the latest version, leave a comment/request or a bug." T "start http://www.vfxconnection.com/profile/Buehler" +STARTLINE}
+ addUserKnob {26 version l "" -STARTLINE T "               by Chad Buehler    v1.8  "}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 290
+  ypos 235
+ }
+set N230d27b0 [stack 0]
+ Dot {
+  name Dot1
+  xpos 178
+  ypos 398
+ }
+push $N230d27b0
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos 290
+  ypos 301
+ }
+add_layer {rgb rgb.red rgb.green rgb.blue}
+ Expression {
+  temp_name0 lumMax
+  temp_expr0 "((max(r, g, b))+(min(r, g, b)))/2"
+  temp_name1 deltaMax
+  temp_expr1 "max(r, g, b)-min(r, g, b)"
+  temp_name2 pick
+  temp_expr2 "opT==0?r:opT==1?g:opT==2?b:opT==3?1-(r-max(g,b)):opT==4?1-(g-max(r,b)):opT==5?1-(b-max(r,g)):opT==6?(r*.2125)+(g*.7154)+(b*.0721):opT==7?max(abs(lumMax<0.5?deltaMax/((max(r, g, b))+(min(r, g, b))):deltaMax/(2 -(max(r, g, b))-(min(r, g, b))))==inf?0:(lumMax<0.5?deltaMax/((max(r, g, b))+(min(r, g, b))):deltaMax/(2 -(max(r, g, b))-(min(r, g, b)))),0):opT==8?max(abs(deltaMax/max(r, g, b))==inf?0:(deltaMax/max(r, g, b)),0):opT==9?max(r,g,b):opT==10?min(r,g,b):opT==11?1-((1-r)-max(1-g,1-b)):opT==12?1-((1-g)-max(1-r,1-b)):opT==13?1-((1-b)-max(1-r,1-g)):0"
+  temp_name3 pf
+  temp_expr3 "abs(pick)==inf || isnan(pick)?0:pick"
+  expr3 pf
+  maskChannelMask -rgba.alpha
+  maskChannelInput -rgba.alpha
+  unpremult -rgba.alpha
+  name Expression2
+  xpos 290
+  ypos 346
+  addUserKnob {20 Buehler l User}
+  addUserKnob {4 opT l operation M {"red keyer" "green keyer" "blue keyer" redscreen greenscreen bluescreen "luminance key" "saturation key (HSL)" "saturation key (HSV)" "max keyer" "min keyer" cyanscreen magentascreen yellowscreen}}
+  opT "luminance key"
+ }
+ Clamp {
+  channels alpha
+  maskChannelMask -rgba.alpha
+  maskChannelInput -rgba.alpha
+  unpremult -rgba.alpha
+  name Clamp1
+  xpos 290
+  ypos 408
+  disable {{!parent.cMath i}}
+ }
+ Invert {
+  channels alpha
+  maskChannelMask -rgba.alpha
+  maskChannelInput -rgba.alpha
+  unpremult -rgba.alpha
+  name Invert1
+  xpos 290
+  ypos 461
+  disable {{"iNv ==1  && keep0 == 0 ? 0 : 1" i}}
+ }
+ MergeExpression {
+  inputs 2
+  expr3 "Aa == 0 ? 0 : parent.iNv == 1 ? 1-Ba : Ba"
+  name MergeExpression3
+  xpos 290
+  ypos 535
+  disable {{"keep0 == 1 ? 0 : 1" i}}
+ }
+ ColorLookup {
+  name ColorLookup1
+  xpos 290
+  ypos 591
+  disable {{!parent.usecc}}
+ }
+ Expression {
+  temp_name0 cl
+  temp_expr0 clamp(a)
+  expr3 "a >= 0 && a <= 1 ? choice == 1 ? cl*cl*(3 - 2*cl) : choice == 2 ? cl*(1 + cl*(1 - cl)) : choice == 3 ? cl*cl*(2 - cl) :  choice == 4 ? pow(cl, 3) : choice == 5 ? 1 - exp(-4 * cl) : a : a"
+  name Expression
+  xpos 290
+  ypos 633
+  disable {{!parent.usecc i}}
+  addUserKnob {20 User}
+  addUserKnob {4 choice l "feather type" M {linear smooth smooth1 smooth0 plinear "ease in"}}
+ }
+ ModifyMetaData {
+  metadata {
+   {set version "Keyer_CB 1.8"}
+  }
+  name MetaDataVersion
+  xpos 290
+  ypos 678
+ }
+ Output {
+  name Output1
+  xpos 290
+  ypos 723
+ }
+end_group

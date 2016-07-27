@@ -1,0 +1,17 @@
+#! C:/Program Files/Nuke6.0v1/Nuke6.0.exe -nx
+version 6.0 v1
+Text {
+message "\[value x]"
+font C:/WINDOWS/Fonts/arial.ttf
+yjustify center
+box {512 389 1536 1167}
+center {1024 778}
+name Text
+xpos -270
+ypos 9
+addUserKnob {20 Controls}
+addUserKnob {7 Slider R 0 10}
+addUserKnob {6 Integer +STARTLINE}
+addUserKnob {7 x l INVISIBLE +INVISIBLE}
+x {{Integer==0?Slider:rint(Slider)}}
+}

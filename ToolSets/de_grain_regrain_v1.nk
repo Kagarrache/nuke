@@ -1,0 +1,308 @@
+#! C:/Program Files/Nuke9.0v7/nuke-9.0.7.dll -nx
+version 9.0 v7
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="-8" y="-8" w="1936" h="1176" maximized="1" screen="1">
+        <splitter orientation="1">
+            <split size="40"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="1257" stretch="1"/>
+            <splitter orientation="2">
+                <split size="0"/>
+                <dock id=""/>
+                <split size="1111"/>
+                <dock id="" activePageId="DAG.1" focus="true">
+                    <page id="DAG.1"/>
+                    <page id="DAG.2"/>
+                </dock>
+            </splitter>
+            <split size="615"/>
+            <splitter orientation="2">
+                <split size="556"/>
+                <dock id="" activePageId="Properties.1">
+                    <page id="Properties.1"/>
+                </dock>
+                <split size="555"/>
+                <dock id="" activePageId="DopeSheet.1">
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                </dock>
+            </splitter>
+        </splitter>
+    </window>
+    <window x="1920" y="0" w="1920" h="1200" fullscreen="1" screen="0">
+        <splitter orientation="2">
+            <split size="1200"/>
+            <dock id="" activePageId="Viewer.1">
+                <page id="Viewer.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name K:/production/tools/nuke/ToolSets/OTHER/de_grain_regrain_v1.nk
+ last_frame 150
+ lock_range true
+ format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ luts {linear {}
+   sRGB {}
+   rec709 {}
+   Cineon {}
+   Gamma1.8 {}
+   Gamma2.2 {}
+   Gamma2.4 {}
+   Panalog {}
+   REDLog {}
+   ViperLog {}
+   AlexaV3LogC {}
+   PLogLin {}
+   SLog {}
+   SLog1 {}
+   SLog2 {}
+   SLog3 {}
+   CLog {}
+   Protune {}
+   REDSpace {}
+   "Alexa LogC 640 ISO" {"t > 0.146271 ? (pow(10, (t - 0.385040) / 0.250219) - 0.056443) / 5.555556 : (t - 0.092805) / 5.433426 "}}
+}
+Group {
+ inputs 0
+ name De_Grain
+ tile_color 0xffffffff
+ xpos 218
+ ypos -223
+ addUserKnob {20 Controls}
+ addUserKnob {26 de_noise_controls l De_Noise}
+ addUserKnob {41 type l Source T Denoise1.type}
+ addUserKnob {41 model l "Noise Model" T Denoise1.model}
+ addUserKnob {41 profile l Profile T Denoise1.profile}
+ addUserKnob {41 output l Output T Denoise1.output}
+ addUserKnob {41 amount l "Denoise Amount" T Denoise1.amount}
+ addUserKnob {26 grain_normalisation l "Grain Normalisation"}
+ addUserKnob {41 value l "Grain gamma value" t "edit value to even out grain" T Gamma2.value}
+ addUserKnob {26 ""}
+ addUserKnob {6 view_grain l "View grain" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x7171c600
+  label DeGrain
+  note_font_size 42
+  xpos -566
+  ypos -655
+  bdwidth 601
+  bdheight 329
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  label Footage
+  note_font_size 42
+  xpos -615
+  ypos -977
+  bdwidth 225
+  bdheight 178
+ }
+ Input {
+  inputs 0
+  name FOOTAGE
+  label Footage
+  xpos -556
+  ypos -894
+ }
+ Dot {
+  name Dot18
+  xpos -522
+  ypos -705
+ }
+set N37abc00 [stack 0]
+ Dot {
+  name Dot19
+  xpos -334
+  ypos -705
+ }
+push $N37abc00
+ Denoise2 {
+  amount 1.21
+  analysisRegion {440.75 735.5 661.25 930.5}
+  needsAnalyzing false
+  profileCurve {profile {curve x0.1000000015 0 x0.1333521456 0 x0.1778279394 0 x0.2371373773 0 x0.3162277639 0 x0.4216965139 0 x0.5623413324 0 x0.7498942018 0 x1 0}}
+  serializeKnob "1.50024 0.513454 0.498166
+0.00383534 0.00239841 0.000927164
+0.00383534 0.00239841 0.000927164
+0.00160094 0.00082937 0.000283709
+0 0 0
+0.00217493 0.00225605 0.00103413
+0.00217493 0.00225605 0.00103413
+0.000995786 0.000747839 0.00031408
+0 0 0
+0.00108605 0.00210273 0.00103078
+0.00108605 0.00210273 0.00103078
+0.000587676 0.000990394 0.000453494
+0 0 0
+0.000328024 0.00064677 0.000378129
+0.000328024 0.00064677 0.000378129
+0.00023122 0.000486443 0.00028747
+0 0 0 0 0 0 0 0 0 
+9032002483793159533"
+  name Denoise1
+  xpos -556
+  ypos -551
+ }
+set N37ab400 [stack 0]
+ Dot {
+  name Dot20
+  xpos -522
+  ypos -457
+ }
+set N37db800 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge10
+  xpos -368
+  ypos -461
+ }
+push $N37ab400
+ Gamma {
+  value 1.38
+  name Gamma2
+  xpos -247
+  ypos -551
+ }
+ Dot {
+  name Dot21
+  xpos -88
+  ypos -541
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge11
+  selected true
+  xpos -122
+  ypos -461
+ }
+ Dot {
+  name Dot1
+  xpos -88
+  ypos -373
+ }
+add_layer {Grain Grain.red Grain.green Grain.blue Grain.alpha}
+ Shuffle {
+  out Grain
+  name Shuffle1
+  xpos -254
+  ypos -377
+ }
+set N37da000 [stack 0]
+ Dot {
+  name Dot2
+  xpos -220
+  ypos -292
+ }
+push $N37da000
+push $N37db800
+ Merge2 {
+  inputs 2
+  Achannels none
+  also_merge Grain
+  name Merge1
+  xpos -556
+  ypos -377
+ }
+ Switch {
+  inputs 2
+  which {{view_grain}}
+  name Switch1
+  xpos -556
+  ypos -296
+ }
+ Output {
+  name Output2
+  xpos -556
+  ypos -232
+ }
+end_group
+Group {
+ name Re_Grain
+ tile_color 0xfcffffff
+ selected true
+ xpos 218
+ ypos -20
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x7171c600
+  label Regrain
+  note_font_size 42
+  xpos -141
+  ypos -13
+  bdwidth 515
+  bdheight 182
+ }
+ Input {
+  inputs 0
+  name RE_GRAIN
+  xpos -165
+  ypos -69
+ }
+ Dot {
+  name Dot1
+  xpos -131
+  ypos 11
+ }
+set N3e99c800 [stack 0]
+ Dot {
+  name Dot16
+  xpos -131
+  ypos 77
+ }
+set N3e99c400 [stack 0]
+ Dot {
+  name Dot17
+  xpos -131
+  ypos 132
+ }
+push $N3e99c400
+ Gamma {
+  value {{parent.parent.De_Grain.Gamma2.value}}
+  name Gamma1
+  xpos 112
+  ypos 67
+ }
+push $N3e99c800
+ Shuffle {
+  in Grain
+  name Shuffle1
+  xpos 269
+  ypos 7
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge12
+  xpos 269
+  ypos 73
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge13
+  xpos 269
+  ypos 128
+ }
+ Output {
+  name Output1
+  xpos 269
+  ypos 228
+ }
+end_group

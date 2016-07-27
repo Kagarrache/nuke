@@ -1,0 +1,97 @@
+#! C:/Program Files/Nuke8.0v4/nuke-8.0.v4.dll -nx
+version 8.0 v4
+Gizmo {
+ inputs 2
+ addUserKnob {20 ssao l SSAO}
+ addUserKnob {7 maxDist l "Maximum Distance" t "Sets the maximum distance between pixels' depths. Values greater than the Maximum Distance will be discarded."}
+ maxDist 0.004
+ addUserKnob {3 radius l Radius t "Sets the radius to be considered around the current pixel for the ambient occlusion computation."}
+ radius 40
+ addUserKnob {7 spread l Spread t "Sets how much the ambient occlusion is spread after calculation" R 0 100}
+ spread 17
+ addUserKnob {7 strength l Strength t "sets the strength of the ambient occlusion"}
+ strength 1
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 120
+  ypos -152
+ }
+ DeepToImage {
+  name DeepToImage1
+  xpos 120
+  ypos -112
+ }
+set Nd251be30 [stack 0]
+push $Nd251be30
+ Copy {
+  inputs 2
+  from0 depth.Z
+  to0 rgba.red
+  from1 depth.Z
+  to1 rgba.green
+  from2 depth.Z
+  to2 rgba.blue
+  name Copy1
+  xpos 120
+  ypos -18
+ }
+ Input {
+  inputs 0
+  name Input2
+  xpos -14
+  ypos -154
+  number 1
+ }
+ DeepToImage {
+  name DeepToImage2
+  xpos -14
+  ypos -114
+ }
+set Nd251c880 [stack 0]
+push $Nd251c880
+ Copy {
+  inputs 2
+  from0 depth.Z
+  to0 rgba.red
+  from1 depth.Z
+  to1 rgba.green
+  from2 depth.Z
+  to2 rgba.blue
+  name Copy2
+  xpos -14
+  ypos -21
+ }
+ BlinkScript {
+  inputs 2
+  kernelSourceFile C:/Users/Marco/Documents/nuke_blinkKernels/examples/BoxBlur2D.bsk
+  ProgramGroup 1
+  KernelDescription "1 \"BoxBlur2D\" iterate componentWise 0600ca23536c5deadcbbc55ba2a810ab206fb63f3cafb61921bfda617bb278e5 3 \"srcA\" Read Ranged2D \"srcB\" Read Ranged2D \"dst\" Write Point 2 \"far\" Float 1 AACAPw== \"radius\" Int 1 AQAAAA=="
+  kernelSource "kernel BoxBlur2D : public ImageComputationKernel<eComponentWise>\n\{\n  Image<eRead, eAccessRanged2D, eEdgeClamped> srcA;\n  Image<eRead, eAccessRanged2D, eEdgeClamped> srcB;\n  Image<eWrite, eAccessPoint> dst;\n\nparam:\n  float maxDist;  //The vertical radius of our box blur\n  int radius;  //The vertical radius of our box blur\n\nlocal:\n  float _maxRadialDist;\n\n  void define() \{\n    defineParam(maxDist, \"far\", 1.0f);\n    defineParam(radius, \"radius\", 1);\n  \}\n\n  void init() \{\n    //Set the range we need to access from the source \n    srcA.setRange(-radius, -radius, radius, radius);\n    srcB.setRange(-radius, -radius, radius, radius);\n    _maxRadialDist = sqrt(2*pow(radius,2));\n  \}\n\n  void process() \{\n    float occ = 0.0f;\n    if(srcA(0,0)>srcB(0,0))\n    \{\n      for(int j = -radius; j <= radius; j++)\n        for(int i = -radius; i <= radius; i++)\n          if(srcB(i,j)>srcA(i,j))\n          \{\n            float diff = fabs(srcB(i,j)-srcA(0,0));\n            float radialDist = sqrt(pow(i,2)+pow(j,2));\n            float radialAbsorption = 1-(radialDist/_maxRadialDist);\n            if(diff<   maxDist)\n              occ += ((1-diff)*radialAbsorption);\n          \}\n    \}\n    else\n    \{\n      for(int j = -radius; j <= radius; j++)\n        for(int i = -radius; i <= radius; i++)\n          if(srcA(i,j)>srcB(i,j))\n          \{\n            float diff = fabs(srcA(i,j)-srcB(0,0));\n            float radialDist = sqrt(pow(i,2)+pow(j,2));\n            float radialAbsorption = 1-(radialDist/_maxRadialDist);\n            if(diff<   maxDist)\n              occ += ((1-diff)*radialAbsorption);\n          \}\n    \}\n    dst() = 1-(occ/(pow((radius*2+1),2)));\n  \}\n\};"
+  rebuild ""
+  BoxBlur2D_far {{parent.maxDist}}
+  BoxBlur2D_radius {{parent.radius}}
+  name BlinkScript1
+  xpos 51
+  ypos 71
+ }
+ Histogram {
+  in {0 {parent.strength*10} 1}
+  name Histogram1
+  xpos 51
+  ypos 136
+ }
+ Blur {
+  size {{parent.spread}}
+  maskChannelInput rgba.alpha
+  name Blur1
+  xpos 51
+  ypos 211
+ }
+ Output {
+  name Output1
+  xpos 51
+  ypos 288
+ }
+end_group

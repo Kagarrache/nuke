@@ -1,0 +1,38 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Random}
+ addUserKnob {7 seed R 0 100}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -480
+  ypos 62
+ }
+add_layer {rgba rgba.beta}
+ Expression {
+  temp_name0 seed
+  temp_expr0 parent.seed
+  expr0 "random(x,y, 0+seed)"
+  expr1 "random(x,y, 1+(seed*2))"
+  expr2 "random(x,y, 2+(seed*3))"
+  expr3 "random(x,y, 3+(seed*4))"
+  name Expression4
+  xpos -480
+  ypos 88
+ }
+ Grade {
+  channels rgba
+  black -1
+  black_clamp false
+  name Grade1
+  xpos -480
+  ypos 114
+ }
+ Output {
+  name Output
+  xpos -480
+  ypos 140
+ }
+end_group

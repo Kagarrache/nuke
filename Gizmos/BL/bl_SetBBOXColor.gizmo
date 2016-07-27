@@ -1,0 +1,76 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l SetBBOXColor}
+ addUserKnob {41 value T Multiply1.value}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 343
+  ypos -228
+ }
+set N1a1520f0 [stack 0]
+ Dot {
+  name Dot1
+  xpos 245
+  ypos -225
+ }
+ AdjBBox {
+  numpixels 1
+  name AdjBBox1
+  xpos 211
+  ypos -166
+ }
+set N1a152650 [stack 0]
+push $N1a152650
+ Expression {
+  channel0 none
+  channel1 rgb
+  expr1 "(x == input.bbox.x || x == input.bbox.r-1 || y == input.bbox.y || y == input.bbox.t-1)? 1 : 0"
+  channel2 none
+  name Expression1
+  xpos 275
+  ypos -120
+ }
+push $N1a1520f0
+push $N1a152650
+ Expression {
+  channel0 rgb
+  expr0 "(x<input.bbox.x || x>input.bbox.r-1 || y<input.bbox.y || y>input.bbox.t-1)? 0 : 1"
+  channel1 none
+  channel2 none
+  name Expression2
+  selected true
+  xpos 442
+  ypos -166
+ }
+ Multiply {
+  channels rgba
+  value {1 1 1 1}
+  name Multiply1
+  xpos 442
+  ypos -138
+ }
+ Keymix {
+  inputs 3
+  channels rgba
+  maskChannel rgba.red
+  invertMask true
+  name Keymix1
+  xpos 343
+  ypos -77
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 213
+  ypos -77
+ }
+ Output {
+  name Output
+  xpos 213
+  ypos -49
+ }
+end_group

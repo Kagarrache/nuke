@@ -1,0 +1,140 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Luma_Keyer_v1\n\nBased on the Frank Reuter macro it uses curves to create efficent luma key  working on different color space as HSV, HSL, LAB, YPbPn. Pre key and post key blur, alpha multiply, Invert alpha and premultiply options.\n\nfeel free to contact me at niccolo.barbero@gmail.com"
+ addUserKnob {20 User l DUCK_Luma_Keyer_v1}
+ addUserKnob {41 channels T Remove1.channels}
+ addUserKnob {41 Pre_key_blur T pre_blur.size}
+ addUserKnob {4 operation M {HSV HSL Lab YPbPn "" ""}}
+ addUserKnob {41 lut l "" +STARTLINE T ColorLookup1.lut}
+ addUserKnob {41 value l Alpha_Multiply T Multiply1.value}
+ addUserKnob {41 post_key_blur l Post_key_blur T post_blur.size}
+ addUserKnob {6 Invert l "invert alpha" +STARTLINE}
+ addUserKnob {6 premult l premultiply +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Img
+  xpos -73
+  ypos -343
+ }
+set Nc36a8e0 [stack 0]
+ Remove {
+  operation keep
+  channels rgb
+  name Remove1
+  xpos 281
+  ypos -343
+ }
+ AddChannels {
+  channels rgb
+  name AddChannels1
+  xpos 281
+  ypos -295
+ }
+ Blur {
+  name pre_blur
+  xpos 281
+  ypos -252
+ }
+ ColorLookup {
+  lut {master {curve C x0.030726403 0 s0 x0.5894590616 0.2865282893 x0.9583829641 1 s2.200000048}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup1
+  xpos 281
+  ypos -201
+ }
+set Nc385a30 [stack 0]
+ Colorspace {
+  colorspace_out YPbPr
+  name Colorspace4
+  xpos 487
+  ypos -138
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle2
+  xpos 487
+  ypos -66
+ }
+push $Nc385a30
+ Colorspace {
+  colorspace_out CIE-Lab
+  name Colorspace3
+  label "\[value colorspace_out]"
+  xpos 362
+  ypos -136
+ }
+ Shuffle {
+  blue red
+  name Shuffle1
+  xpos 362
+  ypos -84
+ }
+push $Nc385a30
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace2
+  label "\[value colorspace_out]"
+  xpos 260
+  ypos -140
+ }
+push $Nc385a30
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace1
+  label "\[value colorspace_out]"
+  xpos 156
+  ypos -134
+ }
+ Switch {
+  inputs 4
+  which {{parent.operation}}
+  name Switch1
+  xpos 329
+  ypos 9
+ }
+ Multiply {
+  name Multiply1
+  selected true
+  xpos 329
+  ypos 97
+ }
+push $Nc36a8e0
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.alpha
+  name Copy1
+  xpos -73
+  ypos 97
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos -73
+  ypos 183
+  disable {{!parent.Invert i}}
+ }
+ Premult {
+  name Premult1
+  xpos -73
+  ypos 310
+  disable {{!parent.premult i}}
+ }
+ Blur {
+  name post_blur
+  xpos -73
+  ypos 371
+ }
+ Output {
+  name Output1
+  xpos -73
+  ypos 444
+ }
+end_group

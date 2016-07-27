@@ -1,0 +1,39 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l Binary}
+ addUserKnob {19 Threshold}
+ Threshold {0.5 0.5 0.5 0.5}
+}
+ Input {
+  inputs 0
+  name in
+  xpos -25
+  ypos 142
+ }
+ Expression {
+  temp_name0 rTol
+  temp_expr0 parent.Threshold.r
+  temp_name1 gTol
+  temp_expr1 parent.Threshold.g
+  temp_name2 bTol
+  temp_expr2 parent.Threshold.b
+  temp_name3 aTol
+  temp_expr3 parent.Threshold.a
+  expr0 "(r>rTol)? 1 : 0"
+  expr1 "(g>gTol)? 1 : 0"
+  expr2 "(b>bTol)? 1 : 0"
+  channel3 alpha
+  expr3 "(a>aTol)? 1 : 0"
+  name Expression3
+  selected true
+  xpos -25
+  ypos 202
+ }
+ Output {
+  name Output1
+  xpos -25
+  ypos 282
+ }
+end_group

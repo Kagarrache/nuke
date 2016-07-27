@@ -1,0 +1,112 @@
+#! /Applications/Nuke8.0v1/Nuke8.0v1.app/Contents/MacOS/libnuke-8.0.v1.dylib -nx
+version 8.0 v1
+Gizmo {
+ inputs 0
+ postage_stamp true
+ addUserKnob {20 User}
+ addUserKnob {41 color_1 l "color 1" T color1.color}
+ addUserKnob {41 color_2 l "color 2" T color2.color}
+ addUserKnob {41 color_3 l "color 3" T color3.color}
+ addUserKnob {41 color_4 l "color 4" T color4.color}
+ addUserKnob {41 top_p0 l "Top point 0" T Ramp1.p0}
+ addUserKnob {41 top_p1 l "Top point 1" T Ramp1.p1}
+ addUserKnob {41 top_type l "Top type" T Ramp1.type}
+ addUserKnob {41 bottom_p0 l "Bottom point 0" T Ramp2.p0}
+ addUserKnob {41 bottom_p1 l "Bottom point 1" T Ramp2.p1}
+ addUserKnob {41 bottom_type l "Bottom type" T Ramp2.type}
+ addUserKnob {41 v_p0 l "V point 0" T Ramp3.p0}
+ addUserKnob {41 v_p1 l "V point 1" T Ramp3.p1}
+ addUserKnob {41 v_type l "V type" T Ramp3.type}
+ addUserKnob {41 format T color1.format}
+}
+ Ramp {
+  inputs 0
+  p0 {100 0}
+  p1 {100 1080}
+  name Ramp3
+  xpos -386
+  ypos -217
+ }
+ Ramp {
+  inputs 0
+  p0 {0 980}
+  p1 {1920 980}
+  name Ramp1
+  xpos -822
+  ypos -371
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  format {{{parent.color1.format}}}
+  name color2
+  xpos -606
+  ypos -443
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  name color1
+  xpos -712
+  ypos -443
+ }
+ Merge2 {
+  inputs 2+1
+  operation out
+  name Merge3
+  xpos -712
+  ypos -371
+ }
+ Dot {
+  name Dot3
+  xpos -678
+  ypos -214
+ }
+ Ramp {
+  inputs 0
+  p0 {0 100}
+  p1 {1920 100}
+  name Ramp2
+  xpos -386
+  ypos -241
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  format {{{parent.color1.format}}}
+  name color4
+  xpos -387
+  ypos -329
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 1 0 0}
+  format {{{parent.color1.format}}}
+  name color3
+  xpos -496
+  ypos -328
+ }
+ Merge2 {
+  inputs 2+1
+  operation out
+  name Merge2
+  xpos -496
+  ypos -241
+ }
+ Merge2 {
+  inputs 2+1
+  operation out
+  name Merge1
+  xpos -496
+  ypos -217
+ }
+ Output {
+  name Output1
+  xpos -496
+  ypos -117
+ }
+end_group

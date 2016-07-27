@@ -1,0 +1,94 @@
+#! C:/Program Files/Nuke6.3v1/Nuke6.3.exe -nx
+version 6.3 v1
+Group {
+ name SmartRectangle
+ inputs 0
+ addUserKnob {20 SmartRectangle}
+ addUserKnob {41 X T CoordinateControl.X}
+ addUserKnob {41 Y T CoordinateControl.Y}
+ addUserKnob {41 OffsetX l "Offset X" T CoordinateControl.OffsetX}
+ addUserKnob {41 OffsetY l "Offset Y" T CoordinateControl.OffsetY}
+ addUserKnob {20 Bevel_1 l Bevel n 1}
+ Bevel_1 0
+ addUserKnob {41 BevelX l "Bevel X" T CoordinateControl.BevelX}
+ addUserKnob {41 BevelY l "Bevel Y" T CoordinateControl.BevelY}
+ addUserKnob {41 disable_1 l Disable T Merge1.disable}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 Color_1 l Color n 1}
+ Color_1 0
+ addUserKnob {41 output l Output T OutterRectangle.output}
+ addUserKnob {41 Color T OutterRectangle.color}
+ addUserKnob {41 opacity l Opacity T OutterRectangle.opacity}
+ addUserKnob {26 ""}
+ addUserKnob {41 softness l "Outter Soft" T OutterRectangle.softness}
+ addUserKnob {41 softness_1 l "Inner Soft" T InnerRectangle.softness}
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelInput l Mask T OutterRectangle.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T OutterRectangle.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T OutterRectangle.invert_mask}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ NoOp {
+  inputs 0
+  name CoordinateControl
+  xpos 200
+  ypos -226
+  addUserKnob {20 User}
+  addUserKnob {7 X R 0 750}
+  X 750
+  addUserKnob {7 Y R 0 750}
+  Y 340
+  addUserKnob {7 OffsetX l "Offset X" R 0 2048}
+  OffsetX {{format.w}}
+  addUserKnob {7 OffsetY l "Offset Y" R 0 2048}
+  OffsetY {{format.h}}
+  addUserKnob {26 ""}
+  addUserKnob {7 BevelX l "Bevel X" R -250 250}
+  BevelX 20
+  addUserKnob {7 BevelY l "Bevel Y" R -250 250}
+  BevelY {{-BevelX}}
+ }
+ Rectangle {
+  inputs 0
+  area {{+CoordinateControl.X+CoordinateControl.BevelX i x1 44} {+CoordinateControl.Y-CoordinateControl.BevelY i x1 230} {-CoordinateControl.X+CoordinateControl.OffsetX-CoordinateControl.BevelX i x1 -196} {-CoordinateControl.Y+CoordinateControl.OffsetY+CoordinateControl.BevelY i x1 -410}}
+  color {{parent.OutterRectangle.color.r i} {parent.OutterRectangle.color.g i} {parent.OutterRectangle.color.b i} {parent.OutterRectangle.color.a i}}
+  name InnerRectangle
+  xpos 80
+  ypos -178
+ }
+ Rectangle {
+  inputs 0
+  area {{+CoordinateControl.X i x1 44} {+CoordinateControl.Y i x1 230} {-CoordinateControl.X+CoordinateControl.OffsetX i x1 -196} {-CoordinateControl.Y+CoordinateControl.OffsetY i x1 -410}}
+  name OutterRectangle
+  xpos 200
+  ypos -178
+ }
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge1
+  xpos 200
+  ypos -130
+  disable true
+ }
+ Output {
+  name Output
+  xpos 200
+  ypos -82
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label "WARNING:\nBevel can cause glitchy effects when X,Y values\nexceed half the value of your comp.\n\nIf comp X=1920 do not exceed X value of 960\nIf comp Y=1080 do not exceed Y value of 540\n\nAn X,Y value of 0 will cover 100% space\nPixels are subtracted according to +X,+Y values,"
+  xpos 364
+  ypos -206
+ }
+end_group
+Transform {
+  center {960 540}
+  name Transform1
+  selected true
+  shutter 0.0
+  xpos 320
+  ypos -200
+ }

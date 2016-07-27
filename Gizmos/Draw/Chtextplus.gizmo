@@ -1,0 +1,367 @@
+set cut_paste_input [stack 0]
+version 7.0 v4
+push $cut_paste_input
+Group {
+ name chTextPlus
+ addUserKnob {20 User}
+ addUserKnob {22 refresh T "nuke.load('chTextPlus.py')\nchTP_refresh()" +STARTLINE}
+ addUserKnob {14 size l Blur R 0 100}
+ size {0 0}
+ addUserKnob {7 opacity l Opacity}
+ opacity 1
+ addUserKnob {26 ""}
+ addUserKnob {12 p_translate l translate}
+ addUserKnob {7 p_rotate l rotate}
+ addUserKnob {7 p_scale l scale}
+ p_scale 1
+ addUserKnob {26 ""}
+ addUserKnob {7 timeoffset R 0 100}
+ timeoffset 10
+ addUserKnob {4 animation -STARTLINE M {offset random ""}}
+ animation random
+ addUserKnob {3 seed}
+ seed 1234
+ addUserKnob {20 textInfo}
+ addUserKnob {14 font_size l size R 0 100}
+ font_size 50
+ addUserKnob {7 kerning}
+ addUserKnob {20 transform l Transform n 1}
+ addUserKnob {15 box}
+ box {512 389 1536 1167}
+ addUserKnob {12 translate}
+ addUserKnob {7 rotate}
+ addUserKnob {14 scale R 0 100}
+ scale 1
+ addUserKnob {7 skewX l "Skew X"}
+ addUserKnob {7 skewY l "Skew Y"}
+ addUserKnob {12 center}
+ center {1024 778}
+ addUserKnob {20 endGroup n -1}
+}
+ Text {
+  inputs 0
+  message f
+  font C:/Windows/Fonts/arial.ttf
+  size {{parent.font_size}}
+  kerning {{parent.kerning}}
+  yjustify center
+  box {{parent.box} {parent.box} {parent.box} {parent.box}}
+  translate {{parent.translate} {parent.translate}}
+  rotate {{parent.rotate}}
+  scale {{parent.scale}}
+  skewX {{parent.skewX}}
+  skewY {{parent.skewY}}
+  center {{parent.center} {parent.center}}
+  name chSub_0
+  xpos 0
+ }
+ Transform {
+  translate {{0+parent.p_translate} {parent.p_translate}}
+  rotate {{parent.p_rotate}}
+  scale {{parent.p_scale}}
+  center {{"\[python \{nuke.thisNode().input(0).bbox().w()/2+nuke.thisNode().input(0).bbox().x()\}]"} {"\[python \{nuke.thisNode().input(0).bbox().h()/2+nuke.thisNode().input(0).bbox().y()\}]"}}
+  name chSub_Translate_0
+ }
+ Blur {
+  size {{parent.size} {parent.size}}
+  name chSub_Blur_0
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name chSub_Multiply_0
+ }
+ TimeOffset {
+  time_offset {{parent.animation?random(chNodeNum*parent.seed)*parent.timeoffset:chNodeNum*parent.timeoffset}}
+  name chSub_TimeOffset_0
+  addUserKnob {20 User}
+  addUserKnob {3 chNodeNum l NodeNumber}
+  chNodeNum {{"\[python \{nuke.thisNode().name().split(\"_\")\[2]\}]"}}
+ }
+ Merge {
+  name chSub_Merge_0
+ }
+ Text {
+  inputs 0
+  message r
+  font C:/Windows/Fonts/arial.ttf
+  size {{parent.font_size}}
+  kerning {{parent.kerning}}
+  yjustify center
+  box {{parent.box} {parent.box} {parent.box} {parent.box}}
+  translate {{parent.translate} {parent.translate}}
+  rotate {{parent.rotate}}
+  scale {{parent.scale}}
+  skewX {{parent.skewX}}
+  skewY {{parent.skewY}}
+  center {{parent.center} {parent.center}}
+  name chSub_1
+  xpos 150
+ }
+ Transform {
+  translate {{19.0+parent.p_translate} {parent.p_translate}}
+  rotate {{parent.p_rotate}}
+  scale {{parent.p_scale}}
+  center {{"\[python \{nuke.thisNode().input(0).bbox().w()/2+nuke.thisNode().input(0).bbox().x()\}]"} {"\[python \{nuke.thisNode().input(0).bbox().h()/2+nuke.thisNode().input(0).bbox().y()\}]"}}
+  name chSub_Translate_1
+ }
+ Blur {
+  size {{parent.size} {parent.size}}
+  name chSub_Blur_1
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name chSub_Multiply_1
+ }
+ TimeOffset {
+  time_offset {{parent.animation?random(chNodeNum*parent.seed)*parent.timeoffset:chNodeNum*parent.timeoffset}}
+  name chSub_TimeOffset_1
+  addUserKnob {20 User}
+  addUserKnob {3 chNodeNum l NodeNumber}
+  chNodeNum {{"\[python \{nuke.thisNode().name().split(\"_\")\[2]\}]"}}
+ }
+ Merge {
+  inputs 2
+  name chSub_Merge_1
+ }
+ Text {
+  inputs 0
+  message a
+  font C:/Windows/Fonts/arial.ttf
+  size {{parent.font_size}}
+  kerning {{parent.kerning}}
+  yjustify center
+  box {{parent.box} {parent.box} {parent.box} {parent.box}}
+  translate {{parent.translate} {parent.translate}}
+  rotate {{parent.rotate}}
+  scale {{parent.scale}}
+  skewX {{parent.skewX}}
+  skewY {{parent.skewY}}
+  center {{parent.center} {parent.center}}
+  name chSub_2
+  xpos 300
+ }
+ Transform {
+  translate {{37.0+parent.p_translate} {parent.p_translate}}
+  rotate {{parent.p_rotate}}
+  scale {{parent.p_scale}}
+  center {{"\[python \{nuke.thisNode().input(0).bbox().w()/2+nuke.thisNode().input(0).bbox().x()\}]"} {"\[python \{nuke.thisNode().input(0).bbox().h()/2+nuke.thisNode().input(0).bbox().y()\}]"}}
+  name chSub_Translate_2
+ }
+ Blur {
+  size {{parent.size} {parent.size}}
+  name chSub_Blur_2
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name chSub_Multiply_2
+ }
+ TimeOffset {
+  time_offset {{parent.animation?random(chNodeNum*parent.seed)*parent.timeoffset:chNodeNum*parent.timeoffset}}
+  name chSub_TimeOffset_2
+  addUserKnob {20 User}
+  addUserKnob {3 chNodeNum l NodeNumber}
+  chNodeNum {{"\[python \{nuke.thisNode().name().split(\"_\")\[2]\}]"}}
+ }
+ Merge {
+  inputs 2
+  name chSub_Merge_2
+ }
+ Text {
+  inputs 0
+  message m
+  font C:/Windows/Fonts/arial.ttf
+  size {{parent.font_size}}
+  kerning {{parent.kerning}}
+  yjustify center
+  box {{parent.box} {parent.box} {parent.box} {parent.box}}
+  translate {{parent.translate} {parent.translate}}
+  rotate {{parent.rotate}}
+  scale {{parent.scale}}
+  skewX {{parent.skewX}}
+  skewY {{parent.skewY}}
+  center {{parent.center} {parent.center}}
+  name chSub_3
+  xpos 450
+ }
+ Transform {
+  translate {{65.0+parent.p_translate} {parent.p_translate}}
+  rotate {{parent.p_rotate}}
+  scale {{parent.p_scale}}
+  center {{"\[python \{nuke.thisNode().input(0).bbox().w()/2+nuke.thisNode().input(0).bbox().x()\}]"} {"\[python \{nuke.thisNode().input(0).bbox().h()/2+nuke.thisNode().input(0).bbox().y()\}]"}}
+  name chSub_Translate_3
+ }
+ Blur {
+  size {{parent.size} {parent.size}}
+  name chSub_Blur_3
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name chSub_Multiply_3
+ }
+ TimeOffset {
+  time_offset {{parent.animation?random(chNodeNum*parent.seed)*parent.timeoffset:chNodeNum*parent.timeoffset}}
+  name chSub_TimeOffset_3
+  addUserKnob {20 User}
+  addUserKnob {3 chNodeNum l NodeNumber}
+  chNodeNum {{"\[python \{nuke.thisNode().name().split(\"_\")\[2]\}]"}}
+ }
+ Merge {
+  inputs 2
+  name chSub_Merge_3
+ }
+ Text {
+  inputs 0
+  message e
+  font C:/Windows/Fonts/arial.ttf
+  size {{parent.font_size}}
+  kerning {{parent.kerning}}
+  yjustify center
+  box {{parent.box} {parent.box} {parent.box} {parent.box}}
+  translate {{parent.translate} {parent.translate}}
+  rotate {{parent.rotate}}
+  scale {{parent.scale}}
+  skewX {{parent.skewX}}
+  skewY {{parent.skewY}}
+  center {{parent.center} {parent.center}}
+  name chSub_4
+  xpos 600
+ }
+ Transform {
+  translate {{103.0+parent.p_translate} {parent.p_translate}}
+  rotate {{parent.p_rotate}}
+  scale {{parent.p_scale}}
+  center {{"\[python \{nuke.thisNode().input(0).bbox().w()/2+nuke.thisNode().input(0).bbox().x()\}]"} {"\[python \{nuke.thisNode().input(0).bbox().h()/2+nuke.thisNode().input(0).bbox().y()\}]"}}
+  name chSub_Translate_4
+ }
+ Blur {
+  size {{parent.size} {parent.size}}
+  name chSub_Blur_4
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name chSub_Multiply_4
+ }
+ TimeOffset {
+  time_offset {{parent.animation?random(chNodeNum*parent.seed)*parent.timeoffset:chNodeNum*parent.timeoffset}}
+  name chSub_TimeOffset_4
+  addUserKnob {20 User}
+  addUserKnob {3 chNodeNum l NodeNumber}
+  chNodeNum {{"\[python \{nuke.thisNode().name().split(\"_\")\[2]\}]"}}
+ }
+ Merge {
+  inputs 2
+  name chSub_Merge_4
+ }
+ Text {
+  inputs 0
+  message 7
+  font C:/Windows/Fonts/arial.ttf
+  size {{parent.font_size}}
+  kerning {{parent.kerning}}
+  yjustify center
+  box {{parent.box} {parent.box} {parent.box} {parent.box}}
+  translate {{parent.translate} {parent.translate}}
+  rotate {{parent.rotate}}
+  scale {{parent.scale}}
+  skewX {{parent.skewX}}
+  skewY {{parent.skewY}}
+  center {{parent.center} {parent.center}}
+  name chSub_6
+  xpos 900
+ }
+ Transform {
+  translate {{147.666666667+parent.p_translate} {parent.p_translate}}
+  rotate {{parent.p_rotate}}
+  scale {{parent.p_scale}}
+  center {{"\[python \{nuke.thisNode().input(0).bbox().w()/2+nuke.thisNode().input(0).bbox().x()\}]"} {"\[python \{nuke.thisNode().input(0).bbox().h()/2+nuke.thisNode().input(0).bbox().y()\}]"}}
+  name chSub_Translate_6
+ }
+ Blur {
+  size {{parent.size} {parent.size}}
+  name chSub_Blur_6
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name chSub_Multiply_6
+ }
+ TimeOffset {
+  time_offset {{parent.animation?random(chNodeNum*parent.seed)*parent.timeoffset:chNodeNum*parent.timeoffset}}
+  name chSub_TimeOffset_6
+  addUserKnob {20 User}
+  addUserKnob {3 chNodeNum l NodeNumber}
+  chNodeNum {{"\[python \{nuke.thisNode().name().split(\"_\")\[2]\}]"}}
+ }
+ Merge {
+  inputs 2
+  name chSub_Merge_6
+ }
+ Text {
+  inputs 0
+  message 8
+  font C:/Windows/Fonts/arial.ttf
+  size {{parent.font_size}}
+  kerning {{parent.kerning}}
+  yjustify center
+  box {{parent.box} {parent.box} {parent.box} {parent.box}}
+  translate {{parent.translate} {parent.translate}}
+  rotate {{parent.rotate}}
+  scale {{parent.scale}}
+  skewX {{parent.skewX}}
+  skewY {{parent.skewY}}
+  center {{parent.center} {parent.center}}
+  name chSub_7
+  xpos 1050
+ }
+ Transform {
+  translate {{174.666666667+parent.p_translate} {parent.p_translate}}
+  rotate {{parent.p_rotate}}
+  scale {{parent.p_scale}}
+  center {{"\[python \{nuke.thisNode().input(0).bbox().w()/2+nuke.thisNode().input(0).bbox().x()\}]"} {"\[python \{nuke.thisNode().input(0).bbox().h()/2+nuke.thisNode().input(0).bbox().y()\}]"}}
+  name chSub_Translate_7
+ }
+ Blur {
+  size {{parent.size} {parent.size}}
+  name chSub_Blur_7
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name chSub_Multiply_7
+ }
+ TimeOffset {
+  time_offset {{parent.animation?random(chNodeNum*parent.seed)*parent.timeoffset:chNodeNum*parent.timeoffset}}
+  name chSub_TimeOffset_7
+  addUserKnob {20 User}
+  addUserKnob {3 chNodeNum l NodeNumber}
+  chNodeNum {{"\[python \{nuke.thisNode().name().split(\"_\")\[2]\}]"}}
+ }
+ Merge {
+  inputs 2
+  name chSub_Merge_7
+  selected true
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -167
+  ypos 1
+ }
+ Switch {
+  inputs 2
+  which {{!parent.disable}}
+  name Switch
+  xpos -167
+  ypos 208
+ }
+ Output {
+  name Output1
+  xpos -167
+  ypos 300
+ }
+ Viewer {
+  inputs 0
+  input_process false
+  name Viewer1
+  xpos 143
+  ypos 309
+ }
+end_group

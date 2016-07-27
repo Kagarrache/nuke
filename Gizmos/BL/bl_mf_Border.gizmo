@@ -1,0 +1,85 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Border}
+ addUserKnob {41 translate T Control1.translate}
+ addUserKnob {41 type T Control1.type}
+ addUserKnob {41 Threshold T bl_mf_Binary3.Threshold}
+}
+ NoOp {
+  inputs 0
+  name Control1
+  tile_color 0xff0000ff
+  xpos 94
+  ypos -402
+  addUserKnob {20 User}
+  addUserKnob {12 translate}
+  addUserKnob {4 type M {inside centered outside}}
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -143
+  ypos -284
+ }
+set N2219cd00 [stack 0]
+push $N2219cd00
+ Transform {
+  translate {{parent.Control1.translate.x i} {parent.Control1.translate.y i}}
+  center {2048 1152}
+  name Transform29
+  xpos 216
+  ypos -284
+ }
+add_layer {rgba rgba.beta}
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge39
+  xpos 216
+  ypos -125
+ }
+set N2219c4f0 [stack 0]
+push $N2219c4f0
+ Transform {
+  translate {{"- (parent.Control1.translate.x / 2)"} {"- (parent.Control1.translate.y / 2)"}}
+  center {2048 1152}
+  name Transform30
+  xpos 80
+  ypos -125
+ }
+push $N2219cd00
+ Transform {
+  translate {{-parent.Control1.translate.x i} {-parent.Control1.translate.y i}}
+  center {2048 1152}
+  name Transform31
+  xpos -41
+  ypos -201
+ }
+push $N2219cd00
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge40
+  xpos -41
+  ypos -123
+ }
+ Switch {
+  inputs 3
+  which {{Control1.type i}}
+  name Switch2
+  xpos 26
+  ypos -23
+ }
+ bl_mf_Binary {
+  name bl_mf_Binary3
+  xpos 26
+  ypos 3
+  Threshold 0.5
+ }
+ Output {
+  name Output
+  xpos 26
+  ypos 29
+ }
+end_group

@@ -1,0 +1,123 @@
+#! /s/apps/lin/nuke/Nuke6.1v3/Nuke6.1 -nx
+version 6.1 v3
+Gizmo {
+ inputs 2
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l ToBBOX}
+ addUserKnob {6 premult +STARTLINE}
+}
+ Input {
+  inputs 0
+  name bbox
+  xpos 382
+  ypos -297
+ }
+set N4fc2890 [stack 0]
+ NoOp {
+  name NoOp2
+  xpos 382
+  ypos -176
+ }
+push $N4fc2890
+push $N4fc2890
+ Input {
+  inputs 0
+  name img
+  xpos 535
+  ypos -299
+  number 1
+ }
+ Reformat {
+  type "to box"
+  box_width {{NoOp2.format.width i}}
+  box_height {{NoOp2.format.height i}}
+  box_fixed true
+  resize distort
+  name Reformat3
+  xpos 535
+  ypos -220
+ }
+ Reformat {
+  type "to box"
+  box_width {{NoOp2.bbox.w i}}
+  box_height {{NoOp2.bbox.h i}}
+  box_fixed true
+  resize distort
+  black_outside true
+  name Reformat4
+  xpos 535
+  ypos -192
+ }
+ Transform {
+  translate {{NoOp2.bbox.x i} {NoOp2.bbox.y i}}
+  center {390 225}
+  name Transform1
+  xpos 535
+  ypos -164
+ }
+ Crop {
+  box {0 0 {NoOp2.format.w i} {NoOp2.format.h i}}
+  reformat true
+  crop false
+  name Crop2
+  xpos 535
+  ypos -136
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 535
+  ypos -73
+ }
+ Premult {
+  name Premult1
+  selected true
+  xpos 535
+  ypos -45
+  disable {{1-parent.premult i}}
+ }
+ Group {
+  inputs 2
+  name Group1
+  tile_color 0x6aff55ff
+  xpos 535
+  ypos 13
+  addUserKnob {20 User l "Copy BBOX"}
+  addUserKnob {41 crop l "black outside" T Crop1.crop}
+ }
+  Input {
+   inputs 0
+   name from
+   xpos -91
+   ypos -49
+   number 1
+  }
+  NoOp {
+   name resoTo
+   xpos -91
+   ypos 3
+  }
+  Input {
+   inputs 0
+   name in
+   xpos -291
+   ypos -47
+  }
+  Crop {
+   box {{resoTo.bbox.x i} {resoTo.bbox.y i} {resoTo.bbox.r i} {resoTo.bbox.t i}}
+   name Crop1
+   xpos -291
+   ypos 17
+  }
+  Output {
+   name Output1
+   xpos -291
+   ypos 93
+  }
+ end_group
+ Output {
+  name Output1
+  xpos 535
+  ypos 73
+ }
+end_group

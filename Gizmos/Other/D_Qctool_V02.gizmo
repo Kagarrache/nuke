@@ -1,0 +1,381 @@
+set cut_paste_input [stack 0]
+version 8.0 v6
+push $cut_paste_input
+Gizmo {
+ name D_QCTool
+ tile_color 0x349d83ff
+ selected true
+ xpos -201
+ ypos -180
+ addUserKnob {20 QCTool}
+ addUserKnob {4 Mode M {All Grain "Clipping Area" "Saturation Level" Luminace}}
+ addUserKnob {6 Text +STARTLINE}
+ Text true
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "D_QCTool v2.0 - (c) 2013 - Denis Scolan"}
+}
+ Input {
+  inputs 0
+  name Inputinput
+  xpos -610
+  ypos -1070
+ }
+ Dot {
+  name Dot26
+  xpos -576
+  ypos -1030
+ }
+set N6cc9c60 [stack 0]
+ Dot {
+  name Dot27
+  xpos -313
+  ypos -916
+ }
+ Colorspace {
+  colorspace_out YPbPr
+  name Colorspace2
+  xpos -347
+  ypos -216
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle5
+  label LUMINACE
+  xpos -347
+  ypos -166
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message LUMINANCE
+  box {0 0 {input.width} {input.height}}
+  hidden_bbox {0 799 796 900}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 9
+  center {1079 450}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 900}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1079 450 0 0 1 1 0 0 0 0}
+    }
+  color {1 1 0 1}
+  name Text8
+  xpos -347
+  ypos -128
+  disable {{1-Text}}
+ }
+set N6c59150 [stack 0]
+push $N6cc9c60
+ Dot {
+  name Dot28
+  xpos -478
+  ypos -916
+ }
+ SoftClip {
+  conversion "logarithmic compress"
+  softclip_min 0.685
+  name SoftClip2
+  xpos -512
+  ypos -255
+ }
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace1
+  xpos -512
+  ypos -209
+ }
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle6
+  label SATURATION
+  xpos -512
+  ypos -164
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "SATURATION LEVEL"
+  box {0 0 {input.width} {input.height}}
+  hidden_bbox {0 799 796 900}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 16
+  center {1079 450}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 900}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1079 450 0 0 1 1 0 0 0 0}
+    }
+  color {1 1 0 1}
+  name Text7
+  xpos -512
+  ypos -108
+  disable {{1-Text}}
+ }
+set N6c7a290 [stack 0]
+push $N6cc9c60
+ Dot {
+  name Dot29
+  xpos -677
+  ypos -916
+ }
+ Log2Lin {
+  operation lin2log
+  name Log2Lin5
+  xpos -711
+  ypos -277
+ }
+ ColorLookup {
+  lut {master {curve L 10 x0 0 x1 1 x1 -0.1}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup6
+  xpos -711
+  ypos -221
+ }
+ Log2Lin {
+  name Log2Lin6
+  xpos -711
+  ypos -157
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "CLIPPING AREAS"
+  box {0 0 {input.width} {input.height}}
+  hidden_bbox {0 799 796 900}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 14
+  center {1079 450}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 900}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1079 450 0 0 1 1 0 0 0 0}
+    }
+  color {1 1 0 1}
+  name Text4
+  xpos -711
+  ypos -74
+  disable {{1-Text}}
+ }
+set N6eecba0 [stack 0]
+push $N6cc9c60
+ Dot {
+  name Dot30
+  xpos -1326
+  ypos -894
+ }
+set N6d40f00 [stack 0]
+ Dot {
+  name Dot4
+  xpos -906
+  ypos -620
+ }
+set N6d38c40 [stack 0]
+ Dot {
+  name Dot6
+  xpos -805
+  ypos -620
+ }
+ Dot {
+  name Dot5
+  xpos -805
+  ypos -265
+ }
+push $N6d38c40
+ Colorspace {
+  name Colorspace4
+  xpos -940
+  ypos -514
+ }
+set N6d32590 [stack 0]
+push $N6d32590
+ Blur {
+  size 1.7
+  name Blur4
+  xpos -895
+  ypos -477
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos -940
+  ypos -422
+ }
+ Grade {
+  white 500
+  black_clamp false
+  name Grade2
+  xpos -940
+  ypos -346
+ }
+ Saturation {
+  saturation 3
+  name Saturation2
+  xpos -940
+  ypos -303
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy2
+  xpos -940
+  ypos -249
+ }
+push $N6d40f00
+ Log2Lin {
+  operation lin2log
+  name Log2Lin4
+  xpos -1204
+  ypos -674
+ }
+ Dot {
+  name Dot2
+  xpos -1170
+  ypos -621
+ }
+set N6d04e20 [stack 0]
+ Dot {
+  name Dot3
+  xpos -1069
+  ypos -621
+ }
+ Dot {
+  name Dot1
+  xpos -1069
+  ypos -270
+ }
+push $N6d04e20
+ Colorspace {
+  colorspace_out Cineon
+  name Colorspace3
+  xpos -1204
+  ypos -541
+ }
+set N6d11bc0 [stack 0]
+push $N6d11bc0
+ Blur {
+  size 1.7
+  name Blur2
+  xpos -1159
+  ypos -497
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos -1204
+  ypos -442
+ }
+ Grade {
+  white 100
+  black_clamp false
+  name Grade1
+  xpos -1204
+  ypos -366
+ }
+ Saturation {
+  saturation 3
+  name Saturation1
+  xpos -1204
+  ypos -323
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos -1204
+  ypos -251
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Max
+  xpos -1070
+  ypos -154
+ }
+push $N6d40f00
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus3
+  xpos -1360
+  ypos -81
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message GRAIN
+  box {0 0 {input.width} {input.height}}
+  hidden_bbox {0 799 796 900}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 5
+  center {1079 450}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 900}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1079 450 0 0 1 1 0 0 0 0}
+    }
+  color {1 1 0 1}
+  name Text6
+  xpos -1360
+  ypos -48
+  disable {{1-Text}}
+ }
+set N78df130 [stack 0]
+push $N6c59150
+push $N6c7a290
+push $N6eecba0
+push $N78df130
+ ContactSheet {
+  inputs 4
+  width {{input.width i}}
+  height {{input.height i}}
+  rows 2
+  columns 2
+  roworder TopBottom
+  name ContactSheet1
+  xpos -611
+  ypos 101
+ }
+ Switch {
+  inputs 5
+  which {{Mode i}}
+  name Switch1
+  xpos -787
+  ypos 101
+ }
+ Output {
+  name Output1
+  xpos -787
+  ypos 201
+ }
+end_group

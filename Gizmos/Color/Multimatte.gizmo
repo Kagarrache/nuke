@@ -1,0 +1,147 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {41 color l Color T switch.color}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 size l Shrink T FilterErode.size}
+ addUserKnob {41 filter l Filter T FilterErode.filter}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 text l "" +STARTLINE T "multiMatte 2.6 - www.toxik.sk"}
+ help "multiMatte extracting 9 colors by expression from rgba channels and using this extracted colors as black and white matte on output.\n\nmultiMatte working with 8-bit images/inputs only."
+ label red
+ tile_color 0xff000000
+}
+ Input {
+  inputs 0
+  name rgba
+  xpos -220
+  ypos -118
+ }
+ NoOp {
+  name noOp
+  xpos -220
+  ypos -43
+ }
+set Nf032950 [stack 0]
+ Expression {
+  channel0 rgba
+  expr0 a
+  channel1 none
+  channel2 none
+  channel3 none
+  name _alpha
+  xpos 180
+  ypos 86
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 (((r+g)-1)+b)-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _white
+  xpos 69
+  ypos 85
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 ((((1-r)+(1-g))-1)+(1-b))-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _black
+  xpos -27
+  ypos 83
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 (((r+g)-1)+(1-b))-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _yellow
+  xpos -134
+  ypos 83
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 (((r+(1-g))-1)+b)-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _magenta
+  xpos -233
+  ypos 85
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 ((((1-r)+g)-1)+b)-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _cyan
+  xpos -325
+  ypos 85
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 ((((1-r)+(1-g))-1)+b)-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _blue
+  xpos -423
+  ypos 85
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 ((((1-r)+g)-1)+(1-b))-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _green
+  xpos -518
+  ypos 85
+ }
+push $Nf032950
+ Expression {
+  channel0 rgba
+  expr0 (((r+(1-g))-1)+(1-b))-1
+  channel1 none
+  channel2 none
+  channel3 none
+  name _red
+  xpos -622
+  ypos 85
+ }
+ Switch {
+  inputs 9
+  which {{this.color i x1 0 x217 0}}
+  name switch
+  xpos -233
+  ypos 238
+  addUserKnob {20 User}
+  addUserKnob {4 color M {red green blue cyan magenta yellow black white alpha "" "" "" "" "" "" "" "" "" "" "" "" "" ""}}
+  knobChanged "n=nuke.thisNode()\np=nuke.thisParent()\nif int(n\['color'].getValue())==0:p\['tile_color'].setValue(0xff000000);p\['label'].setValue('red')\nif int(n\['color'].getValue())==1: p\['tile_color'].setValue(0x00ff0000);p\['label'].setValue('green')\nif int(n\['color'].getValue())==2: p\['tile_color'].setValue(0x0000ff00);p\['label'].setValue('blue')\nif int(n\['color'].getValue())==3: p\['tile_color'].setValue(0x00ffff00);p\['label'].setValue('cyan')\nif int(n\['color'].getValue())==4: p\['tile_color'].setValue(0xff00ff00);p\['label'].setValue('magenta')\nif int(n\['color'].getValue())==5: p\['tile_color'].setValue(0xffff0000);p\['label'].setValue('yellow')\nif int(n\['color'].getValue())==6: p\['tile_color'].setValue(0x00000001);p\['label'].setValue('black')\nif int(n\['color'].getValue())==7: p\['tile_color'].setValue(0xffffffff);p\['label'].setValue('white')\nif int(n\['color'].getValue())==8: p\['tile_color'].setValue(0xffffffff);p\['label'].setValue('alpha')"
+ }
+ FilterErode {
+  channels all
+  size 0
+  name FilterErode
+  xpos -233
+  ypos 296
+ }
+ Output {
+  name Output
+  xpos -233
+  ypos 374
+ }
+end_group

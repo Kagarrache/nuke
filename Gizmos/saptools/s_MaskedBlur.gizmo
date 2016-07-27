@@ -1,0 +1,687 @@
+
+Group {
+ name s_MaskedBlur
+ tile_color 0xcc804e00
+ inputs 2
+ knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == 'iterations':\n    src = nuke.toNode('Shuffle5')\n    m0 = src\n    mask = nuke.toNode('Transform3')\n    output = nuke.toNode('Transform2')\n    tmp = None\n\n    for m in nuke.allNodes():\n        if 'static' not in m\['label'].getValue():\n            nuke.delete(m)\n\n    it = int(n\['iterations'].value())\n    for x in range(it):\n\n        c = nuke.nodes.Clamp()\n        c.setInput(0,mask)\n        c\['MinClampTo_enable'].setValue(True)\n        c\['MaxClampTo_enable'].setValue(True)\n        c\['minimum'].setExpression('%i*(1/iterations)' %x)\n\n        m1 = nuke.nodes.Merge2(operation='divide')\n        m1.setInput(0,c)\n        m1.setInput(1,c)\n\n        if x == 0:\n            d = nuke.nodes.Dilate(size = -1.5)\n            d.setInput(0,m1)\n            b = nuke.nodes.Blur(size = 1.5)\n            b.setInput(0,d)\n            tmp = nuke.nodes.Merge2(inputs = \[b,c])\n\n        b1 = nuke.nodes.Blur()\n        b1.setInput(0,m1)\n        b1\['size'].setSingleValue(False)\n        b1\['size'].setExpression('postblur.w', 0)\n        b1\['size'].setExpression('postblur.h', 1)\n\n        m4 = nuke.nodes.Merge2(operation = 'mask')\n        m4.setInput(0,b1)\n        m4.setInput(1,tmp)\n        \n        b2 = nuke.nodes.Blur()\n        b2.setInput(0,src)\n        b2\['size'].setSingleValue(False)\n        b2\['size'].setExpression('(%i+1)*(blur.w/iterations)' %x, 0)\n        b2\['size'].setExpression('(%i+1)*(blur.h/iterations)' %x, 1)\n\n        m2 = nuke.nodes.Merge2(operation='mask')\n        m2.setInput(0,b2)\n        m2.setInput(1,m4)\n\n        m3 = nuke.nodes.Merge2()\n        m3.setInput(0,m0)\n        m3.setInput(1,m2)\n\n        m0 = m3\n\n    output.setInput(0,m0)\n"
+ addUserKnob {20 User}
+ addUserKnob {14 blur l "Blur size" R 0 100}
+ blur {1 50}
+ addUserKnob {3 iterations l Iterations}
+ iterations 10
+ addUserKnob {26 ""}
+ addUserKnob {14 postblur l "Post blur" R 0 100}
+ postblur 15
+ addUserKnob {41 angle l Angle T Transform1.rotate}
+ addUserKnob {26 ""}
+ addUserKnob {4 channelmask l "Channel mask" M {red green blue alpha ""}}
+ channelmask alpha
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "v1.0\n\nIf you have any requests and/or problems, \nplease email me at hannes.sap@me.com."}
+}
+ Input {
+  inputs 0
+  name Src
+  label static
+  xpos 0
+  ypos -10
+ }
+set N3957800 [stack 0]
+ Dot {
+  name Dot1
+  label static
+  xpos -78
+ }
+ Dot {
+  name Dot2
+  label static
+  xpos -78
+  ypos 898
+ }
+ Input {
+  inputs 0
+  name Mask
+  label static
+  xpos 256
+  ypos -11
+  number 1
+ }
+set N2c83f400 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle4
+  label static
+  xpos 390
+  ypos 68
+ }
+push $N2c83f400
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle3
+  label static
+  xpos 306
+  ypos 69
+ }
+push $N2c83f400
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle2
+  label static
+  xpos 223
+  ypos 69
+ }
+push $N2c83f400
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  label static
+  xpos 140
+  ypos 72
+ }
+ Switch {
+  inputs 4
+  which {{parent.channelmask}}
+  name Switch1
+  label static
+  xpos 255
+  ypos 168
+ }
+ Transform {
+  rotate {{parent.Transform1.rotate}}
+  center {{parent.Transform1.center} {parent.Transform1.center}}
+  name Transform3
+  label static
+  xpos 255
+  ypos 353
+ }
+set N2c83fc00 [stack 0]
+ Clamp {
+  minimum {{0*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp1
+  xpos 255
+  ypos 391
+ }
+set N5b5c3c00 [stack 0]
+push $N5b5c3c00
+push $N5b5c3c00
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge1
+  xpos 255
+  ypos 429
+ }
+set N5b5c3800 [stack 0]
+ Dilate {
+  size -1.5
+  name Dilate1
+  xpos 365
+  ypos 455
+ }
+ Blur {
+  size 1.5
+  name Blur1
+  xpos 365
+  ypos 493
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 365
+  ypos 531
+ }
+set N5b5c2c00 [stack 0]
+push $N2c83fc00
+ Clamp {
+  minimum {{9*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp10
+  xpos 1245
+  ypos 391
+ }
+set N5b5c2800 [stack 0]
+push $N5b5c2800
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge38
+  xpos 1245
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur20
+  xpos 1355
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge39
+  xpos 1355
+  ypos 537
+ }
+push $N3957800
+ Transform {
+  center {1024 778}
+  black_outside false
+  name Transform1
+  label static
+  xpos 0
+  ypos 174
+ }
+ Shuffle {
+  alpha white
+  name Shuffle5
+  label static
+  xpos 0
+  ypos 212
+ }
+set N5b60b400 [stack 0]
+ Blur {
+  size {{(9+1)*(blur.w/iterations)} {(9+1)*(blur.h/iterations)}}
+  name Blur21
+  xpos 770
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge40
+  xpos 1355
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{8*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp9
+  xpos 1135
+  ypos 391
+ }
+set N5b60a800 [stack 0]
+push $N5b60a800
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge34
+  xpos 1135
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur18
+  xpos 1245
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge35
+  xpos 1245
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(8+1)*(blur.w/iterations)} {(8+1)*(blur.h/iterations)}}
+  name Blur19
+  xpos 660
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge36
+  xpos 1245
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{7*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp8
+  xpos 1025
+  ypos 391
+ }
+set N5b649000 [stack 0]
+push $N5b649000
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge30
+  xpos 1025
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur16
+  xpos 1135
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge31
+  xpos 1135
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(7+1)*(blur.w/iterations)} {(7+1)*(blur.h/iterations)}}
+  name Blur17
+  xpos 550
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge32
+  xpos 1135
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{6*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp7
+  xpos 915
+  ypos 391
+ }
+set N5b69b800 [stack 0]
+push $N5b69b800
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge26
+  xpos 915
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur14
+  xpos 1025
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge27
+  xpos 1025
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(6+1)*(blur.w/iterations)} {(6+1)*(blur.h/iterations)}}
+  name Blur15
+  xpos 440
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge28
+  xpos 1025
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{5*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp6
+  xpos 805
+  ypos 391
+ }
+set N5b69a000 [stack 0]
+push $N5b69a000
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge22
+  xpos 805
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur12
+  xpos 915
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge23
+  xpos 915
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(5+1)*(blur.w/iterations)} {(5+1)*(blur.h/iterations)}}
+  name Blur13
+  xpos 330
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge24
+  xpos 915
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{4*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp5
+  xpos 695
+  ypos 391
+ }
+set N5b6e2800 [stack 0]
+push $N5b6e2800
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge18
+  xpos 695
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur10
+  xpos 805
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge19
+  xpos 805
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(4+1)*(blur.w/iterations)} {(4+1)*(blur.h/iterations)}}
+  name Blur11
+  xpos 220
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge20
+  xpos 805
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{3*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp4
+  xpos 585
+  ypos 391
+ }
+set N5b72d000 [stack 0]
+push $N5b72d000
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge14
+  xpos 585
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur8
+  xpos 695
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge15
+  xpos 695
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(3+1)*(blur.w/iterations)} {(3+1)*(blur.h/iterations)}}
+  name Blur9
+  xpos 110
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge16
+  xpos 695
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{2*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp3
+  xpos 475
+  ypos 391
+ }
+set N5b775800 [stack 0]
+push $N5b775800
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge10
+  xpos 475
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur6
+  xpos 585
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge11
+  xpos 585
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(2+1)*(blur.w/iterations)} {(2+1)*(blur.h/iterations)}}
+  name Blur7
+  xpos 110
+  ypos 557
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge12
+  xpos 585
+  ypos 563
+ }
+push $N5b5c2c00
+push $N2c83fc00
+ Clamp {
+  minimum {{1*(1/iterations)}}
+  MinClampTo_enable true
+  MaxClampTo_enable true
+  name Clamp2
+  xpos 365
+  ypos 391
+ }
+set N5b774000 [stack 0]
+push $N5b774000
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge6
+  xpos 365
+  ypos 429
+ }
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur4
+  xpos 475
+  ypos 455
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge7
+  xpos 475
+  ypos 537
+ }
+push $N5b60b400
+ Blur {
+  size {{(1+1)*(blur.w/iterations)} {(1+1)*(blur.h/iterations)}}
+  name Blur5
+  xpos 0
+  ypos 250
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge8
+  xpos 475
+  ypos 563
+ }
+push $N5b5c2c00
+push $N5b5c3800
+ Blur {
+  size {{postblur.w} {postblur.h}}
+  name Blur2
+  xpos 255
+  ypos 551
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge3
+  xpos 365
+  ypos 557
+ }
+push $N5b60b400
+ Blur {
+  size {{(0+1)*(blur.w/iterations)} {(0+1)*(blur.h/iterations)}}
+  name Blur3
+  xpos 0
+  ypos 577
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge4
+  xpos 365
+  ypos 583
+ }
+push $N5b60b400
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos 365
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge9
+  xpos 475
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge13
+  xpos 585
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge17
+  xpos 695
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge21
+  xpos 805
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge25
+  xpos 915
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge29
+  xpos 1025
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge33
+  xpos 1135
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge37
+  xpos 1245
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge41
+  xpos 1355
+  ypos 609
+ }
+ Transform {
+  rotate {{parent.Transform1.rotate}}
+  center {{parent.Transform1.center} {parent.Transform1.center}}
+  invert_matrix true
+  name Transform2
+  label static
+  xpos 9
+  ypos 809
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  label "static\n"
+  xpos 9
+  ypos 882
+ }
+ Output {
+  name Output1
+  label static
+  xpos 9
+  ypos 998
+ }
+end_group

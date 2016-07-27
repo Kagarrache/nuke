@@ -1,0 +1,64 @@
+#! /Applications/Nuke6.1v2-32/NukeX6.1v2.app/../Nuke6.1v2.app/Contents/MacOS/Nuke6.1v2 -nx
+version 6.1 v2
+Gizmo {
+ inputs 0
+ label "3-Way Color Gradient"
+ note_font_color 0xff0000ff
+ addUserKnob {20 User l Gradient}
+ addUserKnob {26 title l "" +STARTLINE T "3-Way Color Gradient Properties\n"}
+ addUserKnob {41 format l "Gradient Format" T middle_ramp.format}
+ addUserKnob {8 Alpha_merge_mix l Alpha}
+ Alpha_merge_mix 1
+ addUserKnob {26 separator l "" +STARTLINE}
+ addUserKnob {7 Rotate R -90 90}
+ addUserKnob {7 z l "Start Position" R 0 500}
+ addUserKnob {7 Z l "End Position" R 0 2000}
+ Z 340
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {19 top_ramp_color l "Color 1"}
+ top_ramp_color {1 0 0 1}
+ addUserKnob {19 middle_ramp_color l "Color 2"}
+ middle_ramp_color {0 1 0 1}
+ addUserKnob {19 bottom_ramp_color l "Color 3"}
+ bottom_ramp_color {0 0 1 1}
+}
+ Constant {
+  inputs 0
+  color {{parent.middle_ramp_color.r} {parent.middle_ramp_color.g} {parent.middle_ramp_color.b} {parent.middle_ramp_color.a}}
+  name middle_ramp
+  xpos 5
+  ypos -174
+ }
+ Ramp {
+  p0 {{((cos(radians(Gradient.Rotate+90)))*Gradient.z)+(format.width/2)} {((sin(radians(Gradient.Rotate+90)))*Gradient.z)+(format.height/2)}}
+  p1 {{((cos(radians(Gradient.Rotate+90)))*Gradient.Z)+(format.width/2)} {((sin(radians(Gradient.Rotate+90)))*Gradient.Z)+(format.height/2)}}
+  type smooth
+  color {{parent.top_ramp_color.r} {parent.top_ramp_color.g} {parent.top_ramp_color.b} {parent.top_ramp_color.a}}
+  name top_ramp
+  xpos 5
+  ypos -92
+ }
+ Ramp {
+  p0 {{((cos(radians(Gradient.Rotate+270)))*Gradient.z)+(format.width/2)} {((sin(radians(Gradient.Rotate+270)))*Gradient.z)+(format.height/2)}}
+  p1 {{((cos(radians(Gradient.Rotate+270)))*Gradient.Z)+(format.width/2)} {((sin(radians(Gradient.Rotate+270)))*Gradient.Z)+(format.height/2)}}
+  type smooth
+  color {{parent.bottom_ramp_color.r} {parent.bottom_ramp_color.g} {parent.bottom_ramp_color.b} {parent.bottom_ramp_color.a}}
+  name bottom_ramp
+  xpos 5
+  ypos -68
+ }
+push 0
+ Merge2 {
+  inputs 2
+  mix {{parent.Alpha_merge_mix i}}
+  name Alpha_merge
+  selected true
+  xpos 5
+  ypos -27
+ }
+ Output {
+  name Output1
+  xpos 5
+  ypos 12
+ }
+end_group

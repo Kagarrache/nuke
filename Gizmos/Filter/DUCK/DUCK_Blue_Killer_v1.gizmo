@@ -1,0 +1,635 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Blue_Killer_v1\n\nBlue spill suppression, you have a restore luminance and red contribution channel option. In the advanced tab you can find options for edge color correction and edge visualization\n\nfeel free to contact me at niccolo.barbero@gmail.com"
+ addUserKnob {20 title l "DUCK_Blue_Killer v1.0"}
+ addUserKnob {26 space l "" +STARTLINE T "\n"}
+ addUserKnob {26 Greenluminancerestoration l "" +STARTLINE T "Luminance restoration"}
+ addUserKnob {41 mix l amount T Plus3.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 redchannelcontribuition l "" +STARTLINE T "Red channel contribution"}
+ addUserKnob {41 quantity l amount T Merge10.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 ""}
+ addUserKnob {26 space_1 l "" +STARTLINE T "\n\n"}
+ addUserKnob {26 credits l INVISIBLE +INVISIBLE T "Natural Born  Pixel v1.0    \n\nby Niccolo' Barbero 2015"}
+ addUserKnob {20 TAB l "Advanced Option"}
+ addUserKnob {26 Edge_correction_control l "Edge Correction Control"}
+ addUserKnob {26 entityofcfcorrection l "Correction Amount" T "(grab the slider for edge correction: 0 = no correction, 1= maximum correction)"}
+ addUserKnob {41 mix_1 l amount t "\n" T Keymix1.mix}
+ addUserKnob {26 line l "" +STARTLINE}
+ addUserKnob {26 Edgealpha l "Edge Alpha Control"}
+ addUserKnob {6 show_edge_alpha l "Show Edge Alpha" +STARTLINE}
+ addUserKnob {41 threshold l Threshold T EdgeDetect1.threshold}
+ addUserKnob {41 erodesize l "Erode Size" T EdgeDetect1.erodesize}
+ addUserKnob {41 blursize l "Blur size" T EdgeDetect1.blursize}
+ addUserKnob {26 ""}
+ addUserKnob {26 Colorcerrectioncontrol l "Edge CC Control"}
+ addUserKnob {41 saturation T ColorCorrect1.saturation}
+ addUserKnob {41 gamma T ColorCorrect1.gamma}
+ addUserKnob {41 gain T ColorCorrect1.gain}
+ addUserKnob {41 offset T ColorCorrect1.offset}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -626
+  ypos 196
+ }
+ Dot {
+  name Dot2
+  xpos -610
+  ypos 351
+ }
+set N366bd6f0 [stack 0]
+ Dot {
+  name Dot1
+  xpos -559
+  ypos 430
+ }
+set N366c14f0 [stack 0]
+ Dot {
+  name Dot5
+  xpos 525
+  ypos 459
+ }
+set N366b68b0 [stack 0]
+ Expression {
+  expr2 b>(r+g)/2?(r+g)/2:b
+  name Expression2
+  xpos 491
+  ypos 616
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle12
+  xpos 491
+  ypos 676
+ }
+set N366d26b0 [stack 0]
+ DegrainSimple {
+  name DegrainSimple1
+  xpos 620
+  ypos 672
+ }
+ Blur {
+  size 5
+  name Blur1
+  xpos 620
+  ypos 803
+ }
+push $N366b68b0
+ Dot {
+  name Dot3
+  xpos 1015
+  ypos 479
+ }
+set N366f29a0 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle2
+  xpos 981
+  ypos 555
+ }
+set N5ac008b0 [stack 0]
+ DegrainSimple {
+  rVal 4
+  gVal 4
+  bVal 8
+  name DegrainSimple2
+  xpos 754
+  ypos 699
+ }
+ Blur {
+  size 5
+  name Blur2
+  xpos 754
+  ypos 791
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge12
+  xpos 754
+  ypos 871
+ }
+ EdgeDetectWrapper {
+  threshold 0.08
+  blurquality 30
+  name EdgeDetect1
+  xpos 754
+  ypos 1334
+ }
+set N5ac23610 [stack 0]
+push $N366c14f0
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle9
+  xpos -593
+  ypos 478
+ }
+set N5ac1c4a0 [stack 0]
+push $N366c14f0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle8
+  xpos -53
+  ypos 521
+ }
+set N5ac3a520 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge6
+  xpos -270
+  ypos 618
+ }
+ Clamp {
+  name Clamp4
+  xpos -270
+  ypos 675
+ }
+ Matrix {
+  matrix {
+      {1 2 1}
+      {2 3 2}
+      {1 2 1}
+    }
+  normalize true
+  name Matrix3
+  selected true
+  xpos -270
+  ypos 742
+  disable true
+ }
+push $N5ac1c4a0
+push $N366c14f0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle10
+  xpos -1184
+  ypos 497
+ }
+set N5ac5c100 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos -1026
+  ypos 560
+ }
+ Matrix {
+  matrix {
+      {1 2 1}
+      {2 3 2}
+      {1 2 1}
+    }
+  normalize true
+  name Matrix1
+  xpos -909
+  ypos 615
+  disable true
+ }
+ Clamp {
+  name Clamp3
+  xpos -909
+  ypos 691
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Multiply
+  xpos -909
+  ypos 751
+ }
+ Clamp {
+  name Clamp5
+  xpos -909
+  ypos 804
+ }
+set N5ac9d490 [stack 0]
+ Dot {
+  name Dot6
+  xpos 282
+  ypos 1153
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle17
+  xpos 335
+  ypos 1150
+ }
+ Matrix {
+  matrix {
+      {1 2 1}
+      {2 3 2}
+      {1 2 1}
+    }
+  normalize true
+  name Matrix6
+  xpos 335
+  ypos 1193
+  disable true
+ }
+push $N366f29a0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle3
+  xpos 1158
+  ypos 542
+ }
+push $N5ac008b0
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos 1158
+  ypos 655
+ }
+ Clamp {
+  name Clamp2
+  xpos 1158
+  ypos 737
+ }
+set N5acc25f0 [stack 0]
+push $N5ac008b0
+push $N366f29a0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  xpos 852
+  ypos 563
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos 981
+  ypos 650
+ }
+ Clamp {
+  name Clamp1
+  xpos 981
+  ypos 732
+ }
+set N5acfa250 [stack 0]
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus
+  xpos 1158
+  ypos 811
+ }
+push $N5acc25f0
+push $N5acfa250
+ Merge2 {
+  inputs 2
+  operation divide
+  name Min
+  xpos 981
+  ypos 824
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge9
+  xpos 1158
+  ypos 901
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle5
+  xpos 1158
+  ypos 1061
+ }
+ Clamp {
+  name Clamp6
+  xpos 1158
+  ypos 1123
+ }
+ Matrix {
+  matrix {
+      {1 1 1}
+      {1 2 1}
+      {1 1 1}
+    }
+  normalize true
+  name Matrix4
+  xpos 1158
+  ypos 1167
+  disable true
+ }
+push $N5ac008b0
+push $N366d26b0
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge11
+  xpos 491
+  ypos 774
+ }
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle13
+  xpos 491
+  ypos 993
+ }
+ Clamp {
+  name Clamp7
+  xpos 491
+  ypos 1060
+ }
+ Matrix {
+  matrix {
+      {1 1 1}
+      {1 2 1}
+      {1 1 1}
+    }
+  normalize true
+  name Matrix5
+  xpos 491
+  ypos 1124
+  disable true
+ }
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve1
+  xpos 491
+  ypos 1179
+ }
+set N5ad78ac0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Multiply1
+  xpos 335
+  ypos 1257
+ }
+push $N366bd6f0
+ Expression {
+  expr2 b>(r+g)/2?(r+g)/2:b
+  name Expression1
+  xpos -363
+  ypos 1222
+ }
+push $N5ac5c100
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle4
+  xpos -1184
+  ypos 1147
+ }
+push $N366c14f0
+ Expression {
+  expr2 b>(r+g)/2?(r+g)/2:b
+  name Expression3
+  xpos -751
+  ypos 793
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle11
+  xpos -751
+  ypos 902
+ }
+set N5ad9c7b0 [stack 0]
+push $N5ac1c4a0
+push $N5ac1c4a0
+push $N5ac5c100
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge3
+  xpos -719
+  ypos 561
+ }
+push $N5ac3a520
+push $N5ac1c4a0
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge4
+  xpos -455
+  ypos 582
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Max
+  xpos -469
+  ypos 648
+ }
+ Matrix {
+  matrix {
+      {1 1.5 1}
+      {1.5 2 1.5}
+      {1 1.5 1}
+    }
+  normalize true
+  name Matrix2
+  xpos -459
+  ypos 866
+  disable true
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  mix 0.1
+  name Merge8
+  xpos -605
+  ypos 870
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  name Merge7
+  xpos -605
+  ypos 926
+ }
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle6
+  xpos -605
+  ypos 1062
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus1
+  xpos -605
+  ypos 1147
+ }
+push $N5ac3a520
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle7
+  xpos -53
+  ypos 979
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus2
+  xpos -53
+  ypos 1147
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  mix 0
+  name Merge10
+  xpos -45
+  ypos 1222
+ }
+set N5ae23180 [stack 0]
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus3
+  xpos -40
+  ypos 1289
+ }
+set N5ae292d0 [stack 0]
+push $N5ad78ac0
+ Clamp {
+  name Clamp8
+  xpos 491
+  ypos 1297
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha blue
+  name Shuffle19
+  xpos 491
+  ypos 1364
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color 0.5
+  name Constant1
+  xpos -241
+  ypos 1298
+ }
+push $N5ae292d0
+ Keymix {
+  inputs 3
+  name Keymix2
+  xpos -129
+  ypos 1360
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  name Merge13
+  xpos -40
+  ypos 1423
+ }
+set N5ae5f0a0 [stack 0]
+ ColorCorrect {
+  name ColorCorrect1
+  xpos -161
+  ypos 1640
+ }
+push $N5ac23610
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  alpha black
+  name Shuffle14
+  xpos 754
+  ypos 1627
+ }
+push $N5ae5f0a0
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus4
+  xpos -53
+  ypos 1627
+  disable {{!parent.show_edge_alpha}}
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -53
+  ypos 1710
+ }
+ Dot {
+  name Dot4
+  xpos -19
+  ypos 1775
+ }
+ Output {
+  name Output1
+  xpos -53
+  ypos 1848
+ }
+push $N366c14f0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle16
+  xpos 106
+  ypos 516
+ }
+push $N5ac9d490
+push $N5ad9c7b0
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Multiply2
+  xpos -909
+  ypos 971
+ }
+ Shuffle {
+  alpha black
+  name Shuffle18
+  xpos -909
+  ypos 1073
+ }
+push $N5ae5f0a0
+push $N5ae23180
+ Viewer {
+  inputs 2
+  frame 97
+  input_number 1
+  input_process false
+  name Viewer1
+  xpos -256
+  ypos 1469
+ }
+end_group

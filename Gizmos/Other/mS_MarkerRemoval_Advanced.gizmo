@@ -1,0 +1,381 @@
+#! C:/Program Files/Nuke9.0v7/nuke-9.0.7.dll -nx
+version 9.0 v7
+Gizmo {
+ inputs 2
+ tile_color 0xffff
+ addUserKnob {20 User}
+ addUserKnob {4 view l View M {Source "Pre-Grade Markers" "Restore Channel" "Screen Matte" "Final Matte" Result "" "" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {4 markerColor l "Markers Color" M {"Orange on Green-Screen" "Green on Blue-Screen" "Blue on Green-Screen" "Pink on Blue-Screen" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {20 preGrade_G l "Pre-Grade Markers" n 1}
+ preGrade_G 0
+ addUserKnob {26 preGrade l "Hue Key Markers"}
+ addUserKnob {41 lut l "" -STARTLINE T Marker_Keyer.lut}
+ addUserKnob {26 ""}
+ addUserKnob {18 markerGrade l "Grade Markers" R 0 4}
+ markerGrade {1 1 1}
+ addUserKnob {6 markerGrade_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 restoreChannel_G l "Restore Screen Color" n 1}
+ restoreChannel_G 0
+ addUserKnob {7 restoreChannel l "Restore Channel" R 0 4}
+ restoreChannel 1
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 screenKeyer l "Screen Keyer" n 1}
+ screenKeyer 0
+ addUserKnob {41 operation l "Screen Color" T Keyer3.operation}
+ addUserKnob {41 range T Keyer3.range}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 adjustMatte l "Adjust Matte" n 1}
+ adjustMatte 0
+ addUserKnob {41 size l "Dilate Matte" T Dilate2.size}
+ addUserKnob {41 size_1 l "Blur Matte" T Blur1.size}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name Markers_Matte
+  xpos -784
+  ypos -109
+  number 1
+ }
+ Input {
+  inputs 0
+  name Plate
+  xpos -13
+  ypos -115
+ }
+ Dot {
+  name Dot15
+  xpos 21
+  ypos -1
+ }
+set Na41a2800 [stack 0]
+ HueKeyer {
+  lut {amount {curve 0 x0 0 0 0 x1 0 x5 0 x6 0}
+    sat_thrsh {}}
+  invert false
+  name Marker_Keyer
+  xpos -465
+  ypos -11
+ }
+set Na41a2400 [stack 0]
+ Grade {
+  channels {-rgba.red rgba.green rgba.blue none}
+  white {{parent.markerGrade} {parent.markerGrade} {parent.markerGrade} {parent.markerGrade}}
+  maskChannelInput rgba.alpha
+  name PreGrade_GreenandBlue1
+  xpos -692
+  ypos 77
+ }
+set Na41a2000 [stack 0]
+ Shuffle {
+  red green
+  name Shuffle6
+  label "Pink on Blue"
+  xpos -692
+  ypos 319
+ }
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  white {{parent.restoreChannel}}
+  name Restore_redChannel2
+  xpos -692
+  ypos 357
+ }
+push $Na41a2400
+ Grade {
+  channels {rgba.red -rgba.green rgba.blue none}
+  white {{parent.markerGrade} {parent.markerGrade} {parent.markerGrade} {parent.markerGrade}}
+  maskChannelInput rgba.alpha
+  name PreGrade_RedandBlue1
+  xpos -559
+  ypos 79
+ }
+set Na4269400 [stack 0]
+ Shuffle {
+  green blue
+  name Shuffle5
+  label "Blue on Green"
+  xpos -559
+  ypos 322
+ }
+ Grade {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  white {{parent.restoreChannel}}
+  name Restore_greenChannel1
+  xpos -559
+  ypos 360
+ }
+push $Na41a2400
+ Grade {
+  channels {rgba.red -rgba.green rgba.blue none}
+  white {{parent.markerGrade} {parent.markerGrade} {parent.markerGrade} {parent.markerGrade}}
+  maskChannelInput rgba.alpha
+  name PreGrade_RedandBlue
+  xpos -440
+  ypos 79
+ }
+set Na4268800 [stack 0]
+ Shuffle {
+  green blue
+  name Shuffle3
+  label "Green on Blue"
+  xpos -440
+  ypos 322
+ }
+ Grade {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  white {{parent.restoreChannel}}
+  name Restore_greenChannel
+  xpos -440
+  ypos 360
+ }
+push $Na41a2400
+ Grade {
+  channels {-rgba.red rgba.green rgba.blue none}
+  white {{parent.markerGrade} {parent.markerGrade} {parent.markerGrade} {parent.markerGrade}}
+  maskChannelInput rgba.alpha
+  name PreGrade_GreenandBlue
+  xpos -310
+  ypos 80
+ }
+set N9a502000 [stack 0]
+ Shuffle {
+  red blue
+  name Shuffle1
+  label "Orange on Green"
+  xpos -310
+  ypos 321
+ }
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  white {{parent.restoreChannel}}
+  name Restore_redChannel
+  xpos -310
+  ypos 359
+ }
+ Switch {
+  inputs 4
+  which {{parent.markerColor}}
+  name Switch1
+  xpos -361
+  ypos 417
+ }
+ set C9a502800 [stack 0]
+set N9a502800 [stack 0]
+ Dot {
+  name Dot10
+  xpos -327
+  ypos 495
+ }
+set N8877a400 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy5
+  xpos -784
+  ypos 485
+ }
+ Blur {
+  channels alpha
+  size 2
+  name Blur4
+  label "\[value size]"
+  xpos -784
+  ypos 523
+ }
+ Premult {
+  name Premult5
+  xpos -784
+  ypos 590
+ }
+set N9a502c00 [stack 0]
+push $Na41a2800
+ Dot {
+  name Dot1
+  xpos 21
+  ypos 199
+ }
+set N8877a000 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge5
+  selected true
+  xpos -13
+  ypos 590
+ }
+ Keyer {
+  name Keyer3
+  xpos -13
+  ypos 649
+ }
+ Dilate {
+  channels alpha
+  name Dilate2
+  xpos -13
+  ypos 727
+ }
+ Blur {
+  channels alpha
+  name Blur1
+  label "\[value size]"
+  xpos -13
+  ypos 765
+ }
+set N87dccc00 [stack 0]
+push $N9a502c00
+ ChannelMerge {
+  inputs 2
+  operation stencil
+  name ChannelMerge3
+  xpos -784
+  ypos 765
+ }
+ Dot {
+  name Dot11
+  xpos -750
+  ypos 820
+ }
+push $N8877a400
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy6
+  xpos -361
+  ypos 810
+ }
+ Blur {
+  channels alpha
+  size 2
+  name Blur5
+  label "\[value size]"
+  xpos -361
+  ypos 893
+ }
+ Premult {
+  name Premult6
+  xpos -361
+  ypos 953
+ }
+set N87c7d000 [stack 0]
+push $N8877a000
+ Dot {
+  name Dot12
+  xpos 284
+  ypos 199
+ }
+set N8793a800 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 250
+  ypos 953
+ }
+ Dot {
+  name Dot19
+  label Result
+  xpos 284
+  ypos 997
+ }
+push $N87c7d000
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  label "\[value in]"
+  xpos -361
+  ypos 1022
+ }
+ Dot {
+  name Dot16
+  label "Final Matte"
+  xpos -327
+  ypos 1181
+ }
+push $N87dccc00
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle4
+  label "\[value in]"
+  xpos 97
+  ypos 772
+ }
+ Dot {
+  name Dot18
+  label "Screen Matte"
+  xpos 131
+  ypos 825
+ }
+push $N9a502800
+ Dot {
+  name Dot9
+  label "Restore Channel"
+  xpos -251
+  ypos 421
+ }
+ Dot {
+  name Dot7
+  xpos 109
+  ypos 1096
+ }
+push $Na41a2000
+push $Na4269400
+push $Na4268800
+push $N9a502000
+clone $C9a502800 {
+  inputs 4
+  xpos -210
+  ypos 267
+  selected false
+ }
+ Dot {
+  name Dot3
+  label "Pre-Grade Markers"
+  xpos -176
+  ypos 341
+ }
+ Dot {
+  name Dot4
+  xpos -176
+  ypos 1068
+ }
+ Dot {
+  name Dot14
+  xpos 209
+  ypos 1068
+ }
+push $N8793a800
+ Dot {
+  name Dot5
+  label Source
+  xpos 413
+  ypos 199
+ }
+ Dot {
+  name Dot6
+  xpos 413
+  ypos 1097
+ }
+ Switch {
+  inputs 6
+  which {{parent.view}}
+  name Switch2
+  xpos 250
+  ypos 1177
+ }
+ Output {
+  name Output1
+  xpos 250
+  ypos 1287
+ }
+end_group

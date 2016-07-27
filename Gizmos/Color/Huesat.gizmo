@@ -1,0 +1,224 @@
+#! /Applications/Nuke6.3v8/NukeX6.3v8.app/../Nuke6.3v8.app/Contents/MacOS/Nuke6.3v8 -nx
+version 6.3 v8
+Gizmo {
+ help "A node that mimics Adobe's Hue & Saturation effect."
+ addUserKnob {20 HueSat}
+ addUserKnob {7 hue R -180 180}
+ addUserKnob {7 sat R 0 5}
+ sat 1
+ addUserKnob {7 lightness R -1 1}
+ addUserKnob {20 Reds}
+ addUserKnob {7 redHue R -180 180}
+ addUserKnob {7 redSat R 0 5}
+ redSat 1
+ addUserKnob {7 redLightness R -1 1}
+ addUserKnob {20 redRange l "Red Range" n 1}
+ redRange 0
+ addUserKnob {41 lut l "" +STARTLINE T HueKeyer1.lut}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 Yellows}
+ addUserKnob {7 yellowHue R -180 180}
+ addUserKnob {7 yellowSat R 0 5}
+ yellowSat 1
+ addUserKnob {7 yellowLightness R -1 1}
+ addUserKnob {20 yellowRange l "Yellow Range" n 1}
+ yellowRange 0
+ addUserKnob {41 lut_1 l "" +STARTLINE T HueKeyer2.lut}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 Greens}
+ addUserKnob {7 greenHue R -180 180}
+ addUserKnob {7 greenSat R 0 5}
+ greenSat 1
+ addUserKnob {7 greenLightness R -1 1}
+ addUserKnob {20 greenRange l "Green Range" n 1}
+ greenRange 0
+ addUserKnob {41 lut_2 l "" -STARTLINE T HueKeyer3.lut}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 Cyans}
+ addUserKnob {7 cyanHue R -180 180}
+ addUserKnob {7 cyanSat R 0 5}
+ cyanSat 1
+ addUserKnob {7 cyanLightness R -1 1}
+ addUserKnob {20 cyanRange l "Cyan Range" n 1}
+ cyanRange 0
+ addUserKnob {41 lut_3 l "" -STARTLINE T HueKeyer4.lut}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {20 Blues}
+ addUserKnob {7 blueHue R -180 180}
+ addUserKnob {7 blueSat R 0 5}
+ blueSat 1
+ addUserKnob {7 blueLightness R -1 1}
+ addUserKnob {20 blueRange l "Blue Range" n 1}
+ blueRange 0
+ addUserKnob {41 lut_4 l "" -STARTLINE T HueKeyer5.lut}
+ addUserKnob {20 endGroup_4 l endGroup n -1}
+ addUserKnob {20 Magentas}
+ addUserKnob {7 magentaHue R -180 180}
+ addUserKnob {7 magentaSat R 0 5}
+ magentaSat 1
+ addUserKnob {7 magentaLightness R -1 1}
+ addUserKnob {20 magentaRange l "Magenta Range" n 1}
+ magentaRange 0
+ addUserKnob {41 lut_5 l "" -STARTLINE T HueKeyer6.lut}
+ addUserKnob {20 endGroup_5 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -265
+  ypos -263
+ }
+ Dot {
+  name Dot1
+  xpos -231
+  ypos -239
+ }
+set N1589e380 [stack 0]
+ HueKeyer {
+  lut {amount {curve x0.5 1 s0 x0.75 0 s0 x5.25 0 s0 x5.5 1 s0}
+    sat_thrsh {}}
+  invert false
+  name HueKeyer6
+  xpos -94
+  ypos 43
+ }
+push $N1589e380
+ HueKeyer {
+  lut {amount {curve x4.25 0 s0 x4.5 1 s0 x5.5 1 s0 x5.75 0 s0}
+    sat_thrsh {}}
+  invert false
+  name HueKeyer5
+  xpos -94
+  ypos 9
+ }
+push $N1589e380
+ HueKeyer {
+  lut {amount {curve x3.25 0 s0 x3.5 1 s0 x4.5 1 s0 x4.75 0 s0}
+    sat_thrsh {}}
+  invert false
+  name HueKeyer4
+  xpos -94
+  ypos -25
+ }
+push $N1589e380
+ HueKeyer {
+  lut {amount {curve x2.25 0 s0 x2.5 1 s0 L x3.5 1 s0 x3.75 0 s0}
+    sat_thrsh {}}
+  invert false
+  name HueKeyer3
+  xpos -93
+  ypos -59
+ }
+push $N1589e380
+ HueKeyer {
+  lut {amount {curve x1.25 0 s0 x1.5 1 s0 x2.5 1 s0 x2.75 0 s0}
+    sat_thrsh {}}
+  invert false
+  name HueKeyer2
+  xpos -94
+  ypos -93
+ }
+push $N1589e380
+ HueKeyer {
+  lut {amount {curve x0.25 0 s0 x0.5 1 s0 x1.5 1 s0 x1.75 0 s0}
+    sat_thrsh {}}
+  invert false
+  name HueKeyer1
+  xpos -97
+  ypos -127
+ }
+set N15a010f0 [stack 0]
+push $N1589e380
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace1
+  xpos -265
+  ypos -203
+ }
+ Grade {
+  white {1 {parent.sat i} 1 1}
+  add {{parent.hue/360 i} 0 {parent.lightness i} 0}
+  black_clamp false
+  name Grade1
+  xpos -265
+  ypos -151
+ }
+ Grade {
+  inputs 1+1
+  white {1 {parent.redSat i} 1 1}
+  add {{parent.redHue/360 i} 0 {parent.redLightness i} 0}
+  black_clamp false
+  name Grade2
+  label Reds
+  xpos -265
+  ypos -127
+ }
+ Grade {
+  inputs 1+1
+  white {1 {parent.yellowSat i} 1 1}
+  add {{parent.yellowHue/360 i} 0 {parent.yellowLightness i} 0}
+  black_clamp false
+  name Grade3
+  label Yellows
+  xpos -265
+  ypos -93
+ }
+ Grade {
+  inputs 1+1
+  white {1 {parent.greenSat i} 1 1}
+  add {{parent.greenHue/360 i} 0 {parent.greenLightness i} 0}
+  black_clamp false
+  name Grade4
+  label Greens
+  xpos -265
+  ypos -59
+ }
+ Grade {
+  inputs 1+1
+  white {1 {parent.cyanSat i} 1 1}
+  add {{parent.cyanHue/360 i} 0 {parent.cyanLightness i} 0}
+  black_clamp false
+  name Grade5
+  label Cyans
+  xpos -265
+  ypos -25
+ }
+ Grade {
+  inputs 1+1
+  white {1 {parent.blueSat i} 1 1}
+  add {{parent.blueHue/360 i} 0 {parent.blueLightness i} 0}
+  black_clamp false
+  name Grade6
+  label Blues
+  xpos -265
+  ypos 9
+ }
+ Grade {
+  inputs 1+1
+  white {1 {parent.magentaSat} 1 1}
+  add {{parent.magentaHue/360} 0 {parent.magentaLightness} 0}
+  black_clamp false
+  name Grade7
+  label Magenta
+  xpos -265
+  ypos 43
+ }
+ Colorspace {
+  colorspace_in HSL
+  name Colorspace2
+  xpos -265
+  ypos 146
+ }
+ Output {
+  name Output1
+  xpos -265
+  ypos 200
+ }
+push $N15a010f0
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 78
+  ypos 126
+ }
+end_group

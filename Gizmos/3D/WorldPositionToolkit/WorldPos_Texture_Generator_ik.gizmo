@@ -1,0 +1,83 @@
+#! C:/Program Files/Nuke7.0v8/Nuke7.0.exe -nx
+version 7.0 v8
+Gizmo {
+ help "WorldPos_Texture_Generator create procedural texture over world position points. Choose type of texture, adjust properties, enjoy! To adjust scale and position use together with TransformWorld_ik gizmo,\n------\nv001\nIvan Kokov. Yellow Mountain Studio Tianjin. 2013\nbutafor@inbox.ru\n\n"
+ addUserKnob {20 User}
+ addUserKnob {68 textureType l "Texture Type" M {Checker Random fBm Turbulate ""}}
+ addUserKnob {3 switcher l INVISIBLE +INVISIBLE}
+ switcher {{"\[python -execlocal n\\ =\\ nuke.thisNode()\\nret\\ =\\ n\\\['textureType'\\].getValue()\\nif\\ (ret\\ ==\\ 0)\\ :\\n\\ \\ \\ \\ n.knob('checker').setEnabled(True)\\n\\ \\ \\ \\ n.knob('CheckerSize').setEnabled(True)\\n\\ \\ \\ \\ n.knob('noise').setEnabled(False)\\n\\ \\ \\ \\ n.knob('octaves').setEnabled(False)\\n\\ \\ \\ \\ n.knob('lacunarity').setEnabled(False)\\n\\ \\ \\ \\ n.knob('gain').setEnabled(False)\\n\\ \\ \\ \\ ret\\ =\\ 0\\n\\nif\\ (ret\\ ==\\ 1):\\n\\ \\ \\ \\ n.knob('noise').setEnabled(True)\\n\\ \\ \\ \\ n.knob('checker').setEnabled(False)\\n\\ \\ \\ \\ n.knob('CheckerSize').setEnabled(False)\\n\\ \\ \\ \\ n.knob('octaves').setEnabled(False)\\n\\ \\ \\ \\ n.knob('lacunarity').setEnabled(False)\\n\\ \\ \\ \\ n.knob('gain').setEnabled(False)\\n\\ \\ \\ \\ ret\\ =\\ 1\\n\\nif\\ (\\ (ret\\ ==\\ 2)\\ or\\ (ret\\ ==\\ 3)\\ )\\ \\ :\\n\\ \\ \\ \\ n.knob('noise').setEnabled(True)\\n\\ \\ \\ \\ n.knob('octaves').setEnabled(True)\\n\\ \\ \\ \\ n.knob('lacunarity').setEnabled(True)\\n\\ \\ \\ \\ n.knob('gain').setEnabled(True)\\n\\ \\ \\ \\ n.knob('checker').setEnabled(False)\\n\\ \\ \\ \\ n.knob('CheckerSize').setEnabled(False)\\n\\ \\ \\ \\ ret\\ =\\ 1\\n\\n]"}}
+ addUserKnob {20 checker l Checker n 1}
+ addUserKnob {41 CheckerSize T CheckerTexture.CheckerSize}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 noise l Noise +DISABLED n 1}
+ addUserKnob {41 octaves T NoiseTexture_ik.octaves}
+ addUserKnob {41 lacunarity T NoiseTexture_ik.lacunarity}
+ addUserKnob {41 gain T NoiseTexture_ik.gain}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 credits l "" +STARTLINE T "v001 © Ivan Kokov. Yelow Mountain Studio. Tianjin. 2013"}
+}
+ Input {
+  inputs 0
+  name InputPointPos
+  selected true
+  xpos 14
+  ypos 5
+ }
+set N64e269c0 [stack 0]
+ Expression {
+  temp_name0 RND
+  temp_expr0 "random(r, g, b)"
+  temp_name1 FBM
+  temp_expr1 "fBm(r, g, b, octaves, lacunarity, gain)"
+  temp_name2 TRB
+  temp_expr2 "turbulence(r, g, b, octaves, lacunarity, gain)"
+  temp_name3 OUTPUT
+  temp_expr3 "(textureType == 1) ? RND : ((textureType == 2) ? FBM : TRB)"
+  expr0 OUTPUT
+  expr1 OUTPUT
+  expr2 OUTPUT
+  name NoiseTexture_ik
+  xpos -103
+  ypos 155
+  addUserKnob {20 User}
+  addUserKnob {7 octaves +DISABLED R 0 10}
+  octaves 4
+  addUserKnob {7 lacunarity +DISABLED}
+  lacunarity 10
+  addUserKnob {7 gain +DISABLED}
+  gain 0.5
+ }
+push $N64e269c0
+ Expression {
+  temp_name0 LinesR
+  temp_expr0 "abs(fmod(r, CheckerSize.x)) > 0.5 ? 1 : 0"
+  temp_name1 LinesG
+  temp_expr1 "abs(fmod(g, CheckerSize.y)) > 0.5 ? 1 : 0"
+  temp_name2 LinesB
+  temp_expr2 "abs(fmod(b, CheckerSize.z)) > 0.5 ? 1 : 0"
+  temp_name3 Checker
+  temp_expr3 "LinesR ^^ LinesG ^^ LinesB"
+  expr0 Checker
+  expr1 Checker
+  expr2 Checker
+  name CheckerTexture
+  xpos 128
+  ypos 155
+  addUserKnob {20 User}
+  addUserKnob {13 CheckerSize}
+  CheckerSize {1 1 1}
+ }
+ Switch {
+  inputs 2
+  which {{switcher}}
+  name Switch1
+  xpos 8
+  ypos 254
+ }
+ Output {
+  name Output1
+  xpos 8
+  ypos 300
+ }
+end_group

@@ -1,0 +1,130 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Emboss}
+ addUserKnob {4 mode M {Color Monochrome Brut Absolute}}
+ addUserKnob {41 rotate l angle T Transform2.rotate}
+ addUserKnob {7 size R 1 50}
+ size 10
+ addUserKnob {41 size_1 l "pre blur" T Blur1.size}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -532
+  ypos 119
+ }
+set N40e750d0 [stack 0]
+ Blur {
+  channels rgba
+  name Blur1
+  xpos -422
+  ypos 156
+ }
+set N40e74b70 [stack 0]
+ Reformat {
+  type "to box"
+  box_width {{"parent.size > 1 ? parent.size : 1" i}}
+  box_height 1
+  box_fixed true
+  resize none
+  center false
+  filter Impulse
+  name Reformat1
+  xpos -312
+  ypos 156
+ }
+ Expression {
+  expr0 "x==0 ? 1 : x==width-1 ? -1 : 0"
+  expr1 0
+  expr2 0
+  expr3 0
+  name Expression1
+  xpos -312
+  ypos 182
+ }
+push $N40e74b70
+ Transform {
+  black_outside false
+  name Transform2
+  xpos -422
+  ypos 182
+ }
+ Convolve {
+  inputs 2
+  channels rgba
+  channel rgba.red
+  normalize false
+  name Convolve1
+  xpos -422
+  ypos 208
+ }
+ Multiply {
+  channels rgba
+  value 0.5
+  name Multiply1
+  xpos -422
+  ypos 234
+ }
+set N14d293f0 [stack 0]
+ Expression {
+  expr0 abs(r)
+  expr1 abs(g)
+  expr2 abs(b)
+  expr3 abs(a)
+  name Expression2
+  xpos -270
+  ypos 269
+ }
+push $N14d293f0
+push $N14d293f0
+ Expression {
+  expr0 r/2+0.5
+  expr1 g/2+0.5
+  expr2 b/2+0.5
+  expr3 a/2+0.5
+  name Expression3
+  xpos -488
+  ypos 270
+ }
+set N14d296a0 [stack 0]
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos -384
+  ypos 269
+ }
+push $N14d296a0
+ Switch {
+  inputs 4
+  which {{parent.mode}}
+  name Switch1
+  selected true
+  xpos -422
+  ypos 314
+ }
+ Transform {
+  rotate {{-parent.Transform2.rotate i}}
+  black_outside false
+  name Transform3
+  xpos -422
+  ypos 340
+ }
+push $N40e750d0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix i}}
+  name Dissolve1
+  xpos -532
+  ypos 340
+ }
+ Output {
+  name Output
+  xpos -532
+  ypos 366
+ }
+end_group

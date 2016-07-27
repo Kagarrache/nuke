@@ -1,0 +1,175 @@
+#! /Applications/Nuke9.0v6/Nuke9.0v6.app/Contents/MacOS//libnuke-9.0.6.dylib -nx
+#Copyright © 2016 Matheus Madoglio Marques
+version 9.0 v6
+Gizmo {
+ inputs 2
+ help "Hue Mask gizmo - Matheus Madoglio Marques\n\nGizmo to help isolete especifc colors and tones based on the hue "
+ knobChanged "\n\n    ##check if the right knob is selected \n\nk = nuke.thisKnob()\nif k.name() == \"_Color\":\n\n    ##### changed knob \n\n    ### import colorsys module\n\n    import colorsys\n\n    ### Get RBG values \n\n    color = nuke.toNode('NoOp_Color_Mask_Tool')\n    colorVal = color.knob('_Color').value()\n\n    ### convert RGB values to HSV\n\n    hsvVal = colorsys.rgb_to_hsv((colorVal\[0]),(colorVal\[1]), (colorVal\[2]))\n    hsvValStr = ((hsvVal\[0]*6)+1)\n\n    if (hsvVal\[0]*6) > 6:\n        hsvValStr = (hsvVal\[0]*6+1)-6\n    else:\n        pass\n\n    ### declare variables for x y cordinates \n\n    Ycord = (hsvVal\[2]-hsvVal\[1])\n    if Ycord < 0.5:\n        Ycord = 0.5\n    Xcord = 'x'+str((hsvVal\[0]*6)+1)\n    YcordSat = (Ycord/2)\n\n    ### set velues for points in the curve in the expression \n\n    if float(hsvValStr) < 0.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) <= 6.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, Xcord)\n        h\[\"lut\"].fromScript(lutValue)\n    else:\n        pass\n\n    if float(hsvValStr) < 0.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) <= 6.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, XcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    else:\n        pass\nelse:\n    pass\n"
+ tile_color 0x38e25cff
+ addUserKnob {20 User}
+ addUserKnob {52 Hue_Lut_Ctrl l Python T "nuke.thisNode().knob('knobChanged').setValue(\"\"\"\n\n    ##check if the right knob is selected \n\nk = nuke.thisKnob()\nif k.name() == \"_Color\":\n\n    ##### changed knob \n\n    ### import colorsys module\n\n    import colorsys\n\n    ### Get RBG values \n\n    color = nuke.toNode('NoOp_Color_Mask_Tool')\n    colorVal = color.knob('_Color').value()\n\n    ### convert RGB values to HSV\n\n    hsvVal = colorsys.rgb_to_hsv((colorVal\[0]),(colorVal\[1]), (colorVal\[2]))\n    hsvValStr = ((hsvVal\[0]*6)+1)\n\n    if (hsvVal\[0]*6) > 6:\n        hsvValStr = (hsvVal\[0]*6+1)-6\n    else:\n        pass\n\n    ### declare variables for x y cordinates \n\n    Ycord = (hsvVal\[2]-hsvVal\[1])\n    if Ycord < 0.5:\n        Ycord = 0.5\n    Xcord = 'x'+str((hsvVal\[0]*6)+1)\n    YcordSat = (Ycord/2)\n\n    ### set velues for points in the curve in the expression \n\n    if float(hsvValStr) < 0.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, Ycord)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) <= 6.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"amount \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, Xcord)\n        h\[\"lut\"].fromScript(lutValue)\n    else:\n        pass\n\n    if float(hsvValStr) < 0.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 1.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 2.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 3.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 4.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) < 5.5:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, YcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    elif float(hsvValStr) <= 6.0:\n        h = nuke.toNode(\"HueKeyer_hue\")\n        lutValue = \"sat_thrsh \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, XcordSat)\n        h\[\"lut\"].fromScript(lutValue)\n    else:\n        pass\nelse:\n    pass\n\"\"\")" +STARTLINE}
+ addUserKnob {41 _Color l "Mask Color" T NoOp_Color_Mask_Tool._Color}
+ addUserKnob {41 _Color_panelDropped l "panel dropped state" T NoOp_Color_Mask_Tool._Color_panelDropped}
+ addUserKnob {41 linkedLutKnob l "" +STARTLINE T HueKeyer_hue.lut}
+ addUserKnob {26 ""}
+ addUserKnob {20 Mask_hue l Mask n 1}
+ addUserKnob {6 _Mask l Mask t "Check this button to mask around the color you want to isolete" +STARTLINE}
+ addUserKnob {6 Invert_mask l Invert t "Check this box to invert the mask" -STARTLINE}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 Scaling l "fine ajustment" n 1}
+ addUserKnob {41 blackpoint T Grade_Alpha.blackpoint}
+ addUserKnob {41 whitepoint T Grade_Alpha.whitepoint}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 Softness_1 l Softness n 1}
+ addUserKnob {7 Blur_Matte l Blur t "Choose the softness amount" R 0 100}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 out l output T Shuffle_Output.out}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -519
+  ypos -234
+  number 1
+ }
+ Invert {
+  channels alpha
+  mix {{parent.Invert_mask}}
+  name Invert1
+  xpos -519
+  ypos -164
+ }
+set N5ea00c60 [stack 0]
+ Input {
+  inputs 0
+  name Input
+  xpos -307
+  ypos -354
+ }
+ Dot {
+  name Dot1
+  xpos -273
+  ypos -298
+ }
+set N5ea085e0 [stack 0]
+ Dot {
+  name Dot4
+  xpos -584
+  ypos -298
+ }
+ Dot {
+  name Dot3
+  xpos -584
+  ypos -99
+ }
+push $N5ea085e0
+ Shuffle {
+  alpha black
+  name Shuffle_alpha_Black
+  xpos -307
+  ypos -238
+ }
+ HueKeyer {
+  name HueKeyer_hue
+  xpos -307
+  ypos -214
+ }
+ Invert {
+  channels alpha
+  name Invert_Alpha
+  xpos -307
+  ypos -182
+ }
+ Grade {
+  channels alpha
+  name Grade_Alpha
+  xpos -307
+  ypos -150
+ }
+ Dot {
+  name Dot2
+  xpos -273
+  ypos -99
+ }
+set N5ea25120 [stack 0]
+ Merge2 {
+  inputs 2+1
+  operation in
+  Achannels alpha
+  Bchannels alpha
+  output alpha
+  invert_mask true
+  name Merge_Hue_Mask
+  xpos -519
+  ypos -106
+ }
+ Shuffle {
+  in alpha
+  out alpha
+  name Shuffle_Output
+  xpos -519
+  ypos -7
+ }
+ Blur {
+  channels alpha
+  size {{parent.Blur_Hue_Keyer.size}}
+  name Blur_Hue_Keyer_Mask
+  xpos -519
+  ypos 17
+ }
+push $N5ea25120
+ Shuffle {
+  in alpha
+  out {{{parent.Shuffle_Output.out}}}
+  name Shuffle_Output1
+  selected true
+  xpos -307
+  ypos -53
+ }
+ Blur {
+  channels alpha
+  size {{parent.Blur_Matte}}
+  name Blur_Hue_Keyer
+  xpos -307
+  ypos 60
+ }
+ Switch {
+  inputs 2
+  which {{parent._Mask}}
+  name Switch1
+  xpos -519
+  ypos 64
+ }
+ Output {
+  name Output1
+  xpos -519
+  ypos 103
+ }
+push $N5ea00c60
+ Viewer {
+  frame_range 1-100
+  name Viewer1
+  xpos -641
+  ypos -25
+ }
+ NoOp {
+  inputs 0
+  name NoOp_Color_Mask_Tool
+  knobChanged "\n##### changed knob \n\n### import colorsys module\n\nimport colorsys\n\n### Get RBG values \n\ncolor = nuke.toNode('NoOp_Color_Mask_Tool')\ncolorVal = color.knob('_Color').value()\n\n### convert RGB values to HSV\n\nhsvVal = colorsys.rgb_to_hsv((colorVal\[0]),(colorVal\[1]), (colorVal\[2]))\nhsvValStr = ((hsvVal\[0]*6)+1)\n\nif (hsvVal\[0]*6) > 6:\n    hsvValStr = (hsvVal\[0]*6+1)-(hsvVal\[0]*6)\nelse:\n    pass\n\n### declare variables for x y cordinates \n\nYcord = (hsvVal\[2]-hsvVal\[1])\nif Ycord < 0.5:\n    Ycord = 0.5\nXcord = 'x'+str((hsvVal\[0]*6)+1)\nYcordSat = (Ycord/2)\n\n### set velues for points in the curve in the expression \n\nif float(hsvValStr) < 0.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) <= 6.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, Xcord)\n    h\[\"lut\"].fromScript(lutValue)\nelse:\n    pass\n\nif float(hsvValStr) < 0.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) <= 6.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, XcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelse:\n    pass\n"
+  xpos -82
+  ypos -108
+  addUserKnob {20 User}
+  addUserKnob {52 Color_RGB_to_Hue l Python T "nuke.thisNode().knob('knobChanged').setValue(\"\"\"\n##### changed knob \n\n### import colorsys module\n\nimport colorsys\n\n### Get RBG values \n\ncolor = nuke.toNode('NoOp_Color_Mask_Tool')\ncolorVal = color.knob('_Color').value()\n\n### convert RGB values to HSV\n\nhsvVal = colorsys.rgb_to_hsv((colorVal\[0]),(colorVal\[1]), (colorVal\[2]))\nhsvValStr = ((hsvVal\[0]*6)+1)\n\nif (hsvVal\[0]*6) > 6:\n    hsvValStr = (hsvVal\[0]*6+1)-(hsvVal\[0]*6)\nelse:\n    pass\n\n### declare variables for x y cordinates \n\nYcord = (hsvVal\[2]-hsvVal\[1])\nif Ycord < 0.5:\n    Ycord = 0.5\nXcord = 'x'+str((hsvVal\[0]*6)+1)\nYcordSat = (Ycord/2)\n\n### set velues for points in the curve in the expression \n\nif float(hsvValStr) < 0.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, Ycord)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) <= 6.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"amount \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, Xcord)\n    h\[\"lut\"].fromScript(lutValue)\nelse:\n    pass\n\nif float(hsvValStr) < 0.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 %s %f x0.5 0 x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 %s %f x1 0 x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 1.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 %s %f x1.551851988 0 x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 %s %f x2 0 x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 2.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1 0 x1.5 0 %s %f x2.588889122 0 x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.0 0 x0.5 0 x1.0 0 x1.5 0 x2 0 %s %f x3 0 x3.529629946 0 x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 3.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 %s %f x4 0 x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 %s %f x4.544444561 0 x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 4.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 %s %f x5 0 x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 %s %f x5.514815331 0 x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) < 5.5:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve 0 x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 %s %f x6 0\}\" % (Xcord, YcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelif float(hsvValStr) <= 6.0:\n    h = nuke.toNode(\"HueKeyer_hue\")\n    lutValue = \"sat_thrsh \{curve %f x0.5 0 x1 0 x1.5 0 x2.0 0 x2.5 0 x3.0 0 x3.5 0 x4 0 x4.5 0 x5.0 0 x5.5 0 %s\}\" % (Ycord, XcordSat)\n    h\[\"lut\"].fromScript(lutValue)\nelse:\n    pass\n\"\"\")" +STARTLINE}
+  addUserKnob {18 _Color l "Mask Color" t "Choose the colors for the mask - Use the color picker to set a pixel of example"}
+  _Color {0 0 0}
+  addUserKnob {6 _Color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {41 linkedLutKnob l "" +STARTLINE T HueKeyer_hue.lut}
+  addUserKnob {20 Scaling l "fine ajustment" n 1}
+  addUserKnob {20 endGroup_1 l endGroup n -1}
+  addUserKnob {20 Softness_1 l Softness n 1}
+  addUserKnob {7 Softness l Blur t "Set the amount of softness of the mask" R 0 100}
+  addUserKnob {20 endGroup n -1}
+ }
+end_group

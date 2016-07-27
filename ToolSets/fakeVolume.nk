@@ -1,0 +1,3354 @@
+set cut_paste_input [stack 0]
+BackdropNode {
+ inputs 0
+ name MaskBackdrop1
+ tile_color 0x7a8e37ff
+ label MASK
+ note_font_size 32
+ selected true
+ xpos 1650
+ ypos -116
+ bdheight 180
+}
+BackdropNode {
+ inputs 0
+ name PositionBackdropNode1
+ tile_color 0x342e3eff
+ label "Use transformGeo to position and scale box in 3D space"
+ note_font_size 22
+ selected true
+ xpos 1648
+ ypos 90
+ bdwidth 633
+ bdheight 111
+}
+push $cut_paste_input
+RotoPaint {
+ curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x4492c000 x4443c000}
+    {a}
+    {curvegroup Bezier1 512 bezier
+     {{cc
+       {f 8192}
+       {p
+        {xc1db1860 xc2a85094}
+        {x4417a29e x43f5a78e}
+        {x41db1860 x42a85090}
+        {xc30a7348 xc277ed00}
+        {x444ee9d5 x445ae4bf}
+        {x430a7348 x4277ed00}
+        {xc3083af8 x4284fe00}
+        {x44bedf21 x445ed4b6}
+        {x43083af8 xc284fe00}
+        {xc2049c40 x42c405a0}
+        {x44d5f8fd x43e2dc7d}
+        {x42049c40 xc2c405a8}
+        {x40ac1100 x41fc1fb8}
+        {x44d94f2e x437f81d9}
+        {xc0ac1100 xc1fc1fc8}
+        {x41ff1a00 x401391c0}
+        {x44ca49fe x43306405}
+        {xc1ff1a00 xc0139200}
+        {x425bdb20 xc0ed1c20}
+        {x444c89b2 x433cf58b}
+        {xc25bdb00 x40ed1c00}
+        {x41d094c0 xc243cd50}
+        {x442065a8 x4384dab7}
+        {xc1d094c0 x4243cd50}}}
+      {cc
+       {f 8192}
+       {p
+        {xc1db1860 xc2a85090}
+        {xc315b2a2 x44374de1}
+        {x41db1860 x42a85090}
+        {xc30a7348 xc277ed00}
+        {xc30cf28c x44195399}
+        {x430a7348 x4277ed00}
+        {xc3083af8 x4284fe00}
+        {x429e1f80 x44160b4a}
+        {x43083af8 xc284fe00}
+        {xc2049c40 x42c405b0}
+        {x431b6900 x444bf940}
+        {x42049c40 xc2c405a0}
+        {x40ac1100 x41fc1fb8}
+        {x4337f7d8 xc1ce16d0}
+        {xc0ac1100 xc1fc1fc8}
+        {x41ff1a00 x401391d0}
+        {x430dae70 xc305535f}
+        {xc1ff1a00 xc01391e0}
+        {x425bdb00 xc0ed1c18}
+        {xc3599f80 xc30726fe}
+        {xc25bdb20 x40ed1c00}
+        {x41d094c0 xc243cd4c}
+        {xc351abfc xc1e793f0}
+        {xc1d094d0 x4243cd50}}}}
+     {t x449bdc00 x44437800}
+     {a str 1 spx x4492c000 spy x4443c000 sb 1 nv x40000000 view2 x40000000 ltn x41300000 ltm x41300000 tt x40800000 ft 1}}}}}}
+ toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier ro 0 go 0 bo 0 ao 0 str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+ toolbar_brush_hardness 0.200000003
+ toolbar_source_transform_scale {1 1}
+ toolbar_source_transform_center {1174 783}
+ colorOverlay {0 0 0 0}
+ lifetime_type "all frames"
+ lifetime_start 11
+ lifetime_end 11
+ motionblur_shutter_offset_type centred
+ feather_type smooth0
+ source_black_outside true
+ createNewTrack {{-1} "-1\t(none)\t-1" "1000\tNew Track Layer\t1000"}
+ name RotoPaint1
+ selected true
+ xpos 1660
+ ypos -36
+}
+Reformat {
+ format "1024 1024 0 0 1024 1024 1 square_1K"
+ resize height
+ name Reformat1
+ selected true
+ xpos 1660
+ ypos -12
+}
+Blur {
+ size 52
+ name Blur1
+ selected true
+ xpos 1660
+ ypos 24
+}
+Group {
+ name fakeVolume
+ selected true
+ xpos 1812
+ ypos 30
+ addUserKnob {20 User}
+ addUserKnob {26 logo l "" +STARTLINE T "<font color=\"lightgreen\" size=\"5\">fakeVolume</font><font color=\"#FFCC66\" size=\"5\">TK</font>"}
+ addUserKnob {26 logo1 l "" +STARTLINE T "<font color=\"lightgreen\" size=\"2\">by Timur Khodzhaev</font>"}
+ addUserKnob {26 ""}
+ addUserKnob {6 setup_mode l "Setup Mode" t "Turns on display of wireframe box for easier placement of the box in the 3d space" +STARTLINE}
+ addUserKnob {6 enable_mask l "Enable Mask" t "Enables mask input.\nMask should be same format as \"output format\" set inside the node otherwise will be mismatching with the cards size. I recommend to link output format to input format." -STARTLINE}
+ enable_mask true
+ addUserKnob {3 slices l resolution t "Defines how many slices will be inside the box volume"}
+ slices 50
+ addUserKnob {22 go l "Refresh slices" t "If you changed resolution you need to click this button to rebuild slices inside the box.\n" -STARTLINE T "import threading\nn=nuke.thisNode()\n\ndef ch_createFakeVolume():\n\n# Creating task\t\n    task = nuke.ProgressTask(\"Generating volume\")\n    \n    # Clean old slices first\n    all_nodes=nuke.allNodes()\n    for n in all_nodes:\n            if n.name().split('_')\[0] == 'subSlice' :\n                    nuke.delete(n)\n    \n    # Create new set of slices\n    ch_merge=nuke.toNode('mergeAll')\n    ch_slices=int(nuke.thisNode()\['slices'].getValue())\n\n    for i in range(0,ch_slices):\n\n        if task.isCancelled():\n            nuke.executeInMainThread( nuke.message, args=( \"Generation of fake volume canceled!\" ) )\n            break;\n\n        task.setProgress(int(100*i/ch_slices))\n\n        task.setMessage(\"Generating slice :%s\"% i)\n\n        ch_n=nuke.createNode('Noise', inpanel=False)\n        ch_n\['name'].setValue('subSlice_Noise_%s' % i)\n        ch_nodeNum = nuke.Int_Knob('ch_nodeNum','Node Number',0)\n        ch_n.addKnob(ch_nodeNum)\n        ch_n.setInput(0,nuke.toNode('ResReformat'))\n        expr=\"\[python \{nuke.thisNode().name().split('_')\[2] \}]\"\n        ch_n\['ch_nodeNum'].setExpression(expr)\n        ch_n\['type'].setExpression('MasterNoise.type')\n        ch_n\['size'].setExpression('MasterNoise.size')\n        \n        ch_n\['zoffset'].setExpression('MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*%s' % i)\n        \n        ch_n\['octaves'].setExpression('MasterNoise.octaves')\n        ch_n\['nyquist'].setExpression('MasterNoise.nyquist')\n        ch_n\['lacunarity'].setExpression('MasterNoise.lacunarity')\n        ch_n\['gain'].setExpression('MasterNoise.gain')\n        ch_n\['gamma'].setExpression('MasterNoise.gamma')\n        ch_n\['translate'].setExpression('MasterNoise.translate')\n        ch_n\['rotate'].setExpression('MasterNoise.rotate')\n        ch_n\['scale'].setValue(1,1)\n        ch_n\['scale'].setExpression('MasterNoise.scale.w',0)\n        ch_n\['scale'].setExpression('MasterNoise.scale.h',1)\n        ch_n\['skewX'].setExpression('MasterNoise.skewX')\n        ch_n\['skewY'].setExpression('MasterNoise.skewY')\n        ch_n\['skew_order'].setExpression('MasterNoise.skew_order')\n        ch_n\['center'].setExpression('MasterNoise.center')\n        ch_n\['xrotate'].setExpression('MasterNoise.xrotate')\n        ch_n\['yrotate'].setExpression('MasterNoise.yrotate')\n        ch_n\['ramp'].setExpression('MasterNoise.ramp')\n        ch_n\['color'].setExpression('MasterNoise.color')\n        ch_n\['xpos'].setValue(100*i)\n        ch_n\['ypos'].setValue(0)\n        \n        #ch_i=nuke.createNode('Invert', inpanel=False)\n        #ch_i\['name'].setValue('subSlice_Invert_%s' % i)\n        #ch_i\['disable'].setExpression('!parent.invert_tex')\n        \n        ch_m=nuke.createNode('Multiply', inpanel=False)\n        ch_m\['name'].setValue('subSlice_Mult_%s' % i)\n        ch_m\['value'].setExpression('parent.opacity')\n        \n        ch_m1=nuke.createNode('Multiply', inpanel=False)\n        ch_m1\['name'].setValue('subSlice_maskMult_%s' % i)\n        ch_m1\['value'].setValue(0)\n        ch_m1\['invert_mask'].setValue(1)\n        ch_m1.setInput(1,nuke.toNode('Mask'))\n        ch_m1\['disable'].setExpression('!parent.enable_mask')\n        ch_m1\['ypos'].setValue(ch_m\['ypos'].getValue()+70)\n        ch_m1\['xpos'].setValue(100*i)\n\n#        ch_nd=nuke.createNode('Clamp', inpanel=False)\n#        ch_nd\['name'].setValue('subSlice_Clamp_%s' % i)\n\n        ch_nd=nuke.createNode('Grade', inpanel=False)\n        ch_nd\['name'].setValue('subSlice_Grade_%s' % i)\n        ch_nd\['black_clamp'].setValue(True)\n        ch_nd\['whitepoint'].setExpression('parent.whitepoint')\n        ch_nd\['blackpoint'].setExpression('parent.blackpoint')\n        ch_nd\['gamma'].setExpression('parent.gamma_post')\n\n        ch_bm=nuke.createNode('BlendMat', inpanel=False)\n        ch_bm\['name'].setValue('subSlice_BlendMat_%s' % i)\n        ch_bm\['operation'].setExpression('parent.BlendMat.operation')\n        ch_bm\['surfaceblend'].setValue('modulate')\n\n\n\n        \n        ch_c=nuke.createNode('Card', inpanel=False) \n        ch_c\['name'].setValue('subSlice_Card_%s' % i)\n        ch_c\['image_aspect'].setValue(0)\n        ch_c\['selectable'].setValue(0)\n\n        nd=nuke.thisNode()\n        ch_slices=nd\['slices'].getValue()\n        if (ch_slices>0) :\n            ch_card_offset=(1/ch_slices)*i\n        else:\n            ch_card_offset=0.1\n        ch_c\['translate'].setValue(\[0,0,ch_card_offset])\n        \n        # connect all to merge and output\n        \n        ch_merge.setInput(i,ch_c)\n\nch_createFakeVolume()"}
+ addUserKnob {7 ztex_offset l "ztex offset" t "texture offset along Z axis. smaller value produce streaky looking noise."}
+ ztex_offset 0.695
+ addUserKnob {7 opacity t "Global opacity level"}
+ opacity 1
+ addUserKnob {41 format l "output format" t "2D Resolution of the noise on the card" T ResReformat.format}
+ addUserKnob {41 operation -STARTLINE T BlendMat.operation}
+ addUserKnob {26 ""}
+ addUserKnob {26 txt l "" +STARTLINE T "Fractal noise parameters (same as in Noise node):"}
+ addUserKnob {41 zoffset l z T MasterNoise.zoffset}
+ addUserKnob {41 size l x/ysize T MasterNoise.size}
+ addUserKnob {41 lacunarity T MasterNoise.lacunarity}
+ addUserKnob {41 octaves T MasterNoise.octaves}
+ addUserKnob {41 gain T MasterNoise.gain}
+ addUserKnob {41 gamma T MasterNoise.gamma}
+ addUserKnob {26 ""}
+ addUserKnob {41 translate T MasterNoise.translate}
+ addUserKnob {41 center T MasterNoise.center}
+ addUserKnob {41 rotate T MasterNoise.rotate}
+ addUserKnob {41 scale T MasterNoise.scale}
+ addUserKnob {41 skewX l "skew X" T MasterNoise.skewX}
+ addUserKnob {41 xrotate T MasterNoise.xrotate}
+ addUserKnob {41 yrotate T MasterNoise.yrotate}
+ addUserKnob {26 ""}
+ addUserKnob {26 postgrade l "" +STARTLINE T "Post grade"}
+ addUserKnob {7 blackpoint}
+ addUserKnob {7 whitepoint}
+ whitepoint 1
+ addUserKnob {7 gamma_post l gamma R 0 2}
+ gamma_post 1
+}
+ Noise {
+  inputs 0
+  size 250
+  gamma 0.215
+  scale {1 1}
+  xrotate 0
+  yrotate 0
+  name MasterNoise
+  xpos -1
+  ypos -107
+ }
+ BlendMat {
+  operation plus
+  name BlendMat
+  xpos -1
+  ypos -83
+ }
+ Reformat {
+  inputs 0
+  format "512 512 0 0 512 512 1 square_512"
+  name Reformat1
+  xpos -593
+  ypos -167
+ }
+set N56543c0 [stack 0]
+ Grid {
+  number 2
+  size 3
+  name Grid2
+  xpos -593
+  ypos -121
+ }
+set N56613c0 [stack 0]
+ Multiply {
+  channels {-rgba.red rgba.green rgba.blue none}
+  value 0
+  name Multiply2
+  xpos -593
+  ypos -61
+ }
+push $N56613c0
+push $N56543c0
+ Grid {
+  size 1.5
+  name Grid1
+  xpos -698
+  ypos -120
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  name Multiply3
+  xpos -698
+  ypos -96
+ }
+ Multiply {
+  channels {rgba.red -rgba.green rgba.blue none}
+  value 0
+  name Multiply1
+  xpos -698
+  ypos -58
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge1
+  xpos -592
+  ypos -2
+ }
+set N5699280 [stack 0]
+ Card2 {
+  selectable false
+  cast_shadow false
+  receive_shadow false
+  rows 1
+  columns 1
+  translate {-0.5 0.5 0}
+  rotate {0 90 0}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card7
+  xpos -893
+  ypos 109
+ }
+push $N5699280
+ Card2 {
+  selectable false
+  cast_shadow false
+  receive_shadow false
+  rows 1
+  columns 1
+  translate {0.5 0.5 0}
+  rotate {0 90 0}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card6
+  xpos -786
+  ypos 111
+ }
+push $N5699280
+ Card2 {
+  selectable false
+  cast_shadow false
+  receive_shadow false
+  rows 1
+  columns 1
+  translate {0 0.5 0.5}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card5
+  xpos -692
+  ypos 110
+ }
+push $N5699280
+ Card2 {
+  selectable false
+  cast_shadow false
+  receive_shadow false
+  rows 1
+  columns 1
+  translate {0 0.5 -0.5}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card4
+  xpos -592
+  ypos 110
+ }
+push $N5699280
+ Card2 {
+  selectable false
+  cast_shadow false
+  receive_shadow false
+  rows 1
+  columns 1
+  translate {0 1 0}
+  rotate {90 0 0}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card3
+  xpos -480
+  ypos 110
+ }
+push $N5699280
+ Card2 {
+  selectable false
+  cast_shadow false
+  receive_shadow false
+  rows 1
+  columns 1
+  rotate {90 0 0}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card1
+  xpos -379
+  ypos 110
+ }
+ MergeGeo {
+  inputs 6
+  name MergeGeo1
+  xpos -592
+  ypos 174
+ }
+ Input {
+  inputs 0
+  name Mask
+  xpos 400
+  ypos -120
+ }
+set N57f44e0 [stack 0]
+ Reformat {
+  inputs 0
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name ResReformat
+  xpos 200
+  ypos -121
+ }
+set N57f8870 [stack 0]
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*49}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_49
+  xpos 4900
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_49
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_49
+  xpos 4900
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_49
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_49
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.98}
+  name subSlice_Card_49
+  selected true
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*48}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_48
+  xpos 4800
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_48
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_48
+  xpos 4800
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_48
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_48
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.96}
+  name subSlice_Card_48
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*47}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_47
+  xpos 4700
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_47
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_47
+  xpos 4700
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_47
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_47
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.94}
+  name subSlice_Card_47
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*46}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_46
+  xpos 4600
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_46
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_46
+  xpos 4600
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_46
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_46
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.92}
+  name subSlice_Card_46
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*45}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_45
+  xpos 4500
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_45
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_45
+  xpos 4500
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_45
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_45
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.9}
+  name subSlice_Card_45
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*44}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_44
+  xpos 4400
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_44
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_44
+  xpos 4400
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_44
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_44
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.88}
+  name subSlice_Card_44
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*43}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_43
+  xpos 4300
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_43
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_43
+  xpos 4300
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_43
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_43
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.86}
+  name subSlice_Card_43
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*42}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_42
+  xpos 4200
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_42
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_42
+  xpos 4200
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_42
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_42
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.84}
+  name subSlice_Card_42
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*41}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_41
+  xpos 4100
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_41
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_41
+  xpos 4100
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_41
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_41
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.82}
+  name subSlice_Card_41
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*40}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_40
+  xpos 4000
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_40
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_40
+  xpos 4000
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_40
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_40
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.8}
+  name subSlice_Card_40
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*39}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_39
+  xpos 3900
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_39
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_39
+  xpos 3900
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_39
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_39
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.78}
+  name subSlice_Card_39
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*38}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_38
+  xpos 3800
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_38
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_38
+  xpos 3800
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_38
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_38
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.76}
+  name subSlice_Card_38
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*37}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_37
+  xpos 3700
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_37
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_37
+  xpos 3700
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_37
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_37
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.74}
+  name subSlice_Card_37
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*36}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_36
+  xpos 3600
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_36
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_36
+  xpos 3600
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_36
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_36
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.72}
+  name subSlice_Card_36
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*35}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_35
+  xpos 3500
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_35
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_35
+  xpos 3500
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_35
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_35
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.7}
+  name subSlice_Card_35
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*34}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_34
+  xpos 3400
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_34
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_34
+  xpos 3400
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_34
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_34
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.68}
+  name subSlice_Card_34
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*33}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_33
+  xpos 3300
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_33
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_33
+  xpos 3300
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_33
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_33
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.66}
+  name subSlice_Card_33
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*32}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_32
+  xpos 3200
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_32
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_32
+  xpos 3200
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_32
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_32
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.64}
+  name subSlice_Card_32
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*31}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_31
+  xpos 3100
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_31
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_31
+  xpos 3100
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_31
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_31
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.62}
+  name subSlice_Card_31
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*30}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_30
+  xpos 3000
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_30
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_30
+  xpos 3000
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_30
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_30
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.6}
+  name subSlice_Card_30
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*29}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_29
+  xpos 2900
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_29
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_29
+  xpos 2900
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_29
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_29
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.58}
+  name subSlice_Card_29
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*28}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_28
+  xpos 2800
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_28
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_28
+  xpos 2800
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_28
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_28
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.56}
+  name subSlice_Card_28
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*27}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_27
+  xpos 2700
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_27
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_27
+  xpos 2700
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_27
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_27
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.54}
+  name subSlice_Card_27
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*26}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_26
+  xpos 2600
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_26
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_26
+  xpos 2600
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_26
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_26
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.52}
+  name subSlice_Card_26
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*25}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_25
+  xpos 2500
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_25
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_25
+  xpos 2500
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_25
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_25
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.5}
+  name subSlice_Card_25
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*24}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_24
+  xpos 2400
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_24
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_24
+  xpos 2400
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_24
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_24
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.48}
+  name subSlice_Card_24
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*23}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_23
+  xpos 2300
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_23
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_23
+  xpos 2300
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_23
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_23
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.46}
+  name subSlice_Card_23
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*22}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_22
+  xpos 2200
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_22
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_22
+  xpos 2200
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_22
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_22
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.44}
+  name subSlice_Card_22
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*21}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_21
+  xpos 2100
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_21
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_21
+  xpos 2100
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_21
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_21
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.42}
+  name subSlice_Card_21
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*20}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_20
+  xpos 2000
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_20
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_20
+  xpos 2000
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_20
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_20
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.4}
+  name subSlice_Card_20
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*19}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_19
+  xpos 1900
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_19
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_19
+  xpos 1900
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_19
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_19
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.38}
+  name subSlice_Card_19
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*18}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_18
+  xpos 1800
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_18
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_18
+  xpos 1800
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_18
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_18
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.36}
+  name subSlice_Card_18
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*17}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_17
+  xpos 1700
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_17
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_17
+  xpos 1700
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_17
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_17
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.34}
+  name subSlice_Card_17
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*16}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_16
+  xpos 1600
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_16
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_16
+  xpos 1600
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_16
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_16
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.32}
+  name subSlice_Card_16
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*15}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_15
+  xpos 1500
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_15
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_15
+  xpos 1500
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_15
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_15
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.3}
+  name subSlice_Card_15
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*14}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_14
+  xpos 1400
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_14
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_14
+  xpos 1400
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_14
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_14
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.28}
+  name subSlice_Card_14
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*13}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_13
+  xpos 1300
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_13
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_13
+  xpos 1300
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_13
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_13
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.26}
+  name subSlice_Card_13
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*12}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_12
+  xpos 1200
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_12
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_12
+  xpos 1200
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_12
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_12
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.24}
+  name subSlice_Card_12
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*11}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_11
+  xpos 1100
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_11
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_11
+  xpos 1100
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_11
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_11
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.22}
+  name subSlice_Card_11
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*10}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_10
+  xpos 1000
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_10
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_10
+  xpos 1000
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_10
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_10
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.2}
+  name subSlice_Card_10
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*9}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_9
+  xpos 900
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_9
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_9
+  xpos 900
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_9
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_9
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.18}
+  name subSlice_Card_9
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*8}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_8
+  xpos 800
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_8
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_8
+  xpos 800
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_8
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_8
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.16}
+  name subSlice_Card_8
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*7}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_7
+  xpos 700
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_7
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_7
+  xpos 700
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_7
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_7
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.14}
+  name subSlice_Card_7
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*6}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_6
+  xpos 600
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_6
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_6
+  xpos 600
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_6
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_6
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.12}
+  name subSlice_Card_6
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*5}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_5
+  xpos 500
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_5
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_5
+  xpos 500
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_5
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_5
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.1}
+  name subSlice_Card_5
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*4}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_4
+  xpos 400
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_4
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_4
+  xpos 400
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_4
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_4
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.08}
+  name subSlice_Card_4
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*3}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_3
+  xpos 300
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_3
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_3
+  xpos 300
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_3
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_3
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.06}
+  name subSlice_Card_3
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*2}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_2
+  xpos 200
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_2
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_2
+  xpos 200
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_2
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_2
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.04}
+  name subSlice_Card_2
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*1}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_1
+  xpos 100
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_1
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_1
+  xpos 100
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_1
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_1
+ }
+ Card {
+  selectable false
+  image_aspect false
+  translate {0 0 0.02}
+  name subSlice_Card_1
+ }
+push $N57f44e0
+push $N57f8870
+ Noise {
+  type {{MasterNoise.type}}
+  size {{MasterNoise.size}}
+  zoffset {{MasterNoise.zoffset+5*parent.ztex_offset/parent.slices*0}}
+  octaves {{MasterNoise.octaves}}
+  nyquist {{MasterNoise.nyquist}}
+  lacunarity {{MasterNoise.lacunarity}}
+  gain {{MasterNoise.gain}}
+  gamma {{MasterNoise.gamma}}
+  translate {{MasterNoise.translate} {MasterNoise.translate}}
+  rotate {{MasterNoise.rotate}}
+  scale {{MasterNoise.scale.w} {MasterNoise.scale.h}}
+  skewX {{MasterNoise.skewX}}
+  skewY {{MasterNoise.skewY}}
+  skew_order {{MasterNoise.skew_order}}
+  center {{MasterNoise.center} {MasterNoise.center}}
+  xrotate {{MasterNoise.xrotate}}
+  yrotate {{MasterNoise.yrotate}}
+  ramp {{MasterNoise.ramp}}
+  color {{MasterNoise.color}}
+  name subSlice_Noise_0
+  xpos 0
+  addUserKnob {20 User}
+  addUserKnob {3 ch_nodeNum l "Node Number"}
+  ch_nodeNum {{"\[python \{nuke.thisNode().name().split('_')\[2] \}]"}}
+ }
+ Multiply {
+  value {{parent.opacity}}
+  name subSlice_Mult_0
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name subSlice_maskMult_0
+  xpos 0
+  ypos 70
+  disable {{!parent.enable_mask}}
+ }
+ Grade {
+  blackpoint {{parent.blackpoint}}
+  whitepoint {{parent.whitepoint}}
+  gamma {{parent.gamma_post}}
+  name subSlice_Grade_0
+ }
+ BlendMat {
+  operation {{parent.BlendMat.operation}}
+  surfaceblend modulate
+  name subSlice_BlendMat_0
+ }
+ Card {
+  selectable false
+  image_aspect false
+  name subSlice_Card_0
+ }
+ MergeGeo {
+  inputs 50
+  name mergeAll
+  xpos 0
+  ypos 574
+ }
+ TransformGeo {
+  selectable false
+  translate {0 0.5 -0.5}
+  name TransformGeo1
+  xpos 0
+  ypos 613
+ }
+ Switch {
+  inputs 2
+  which {{parent.setup_mode}}
+  name Switch1
+  xpos 0
+  ypos 657
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 700
+ }
+push $N57f8870
+ Viewer {
+  colour_sample_bbox {0.955078125 0.607421875 0.95703125 0.609375}
+  input_process false
+  name Viewer1
+  xpos 400
+  ypos -9
+  hide_input true
+ }
+end_group
+TransformGeo {
+ name fakeVolumeTransformGeo1
+ selected true
+ xpos 1812
+ ypos 141
+}

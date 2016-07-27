@@ -1,0 +1,647 @@
+#! /Applications/Nuke6.2v2/NukeX6.2v2.app/../Nuke6.2v2.app/Contents/MacOS/Nuke6.2v2 -nx
+version 6.2 v2
+Gizmo {
+ inputs 2
+ help "Version 1.2\n\nCDMK is a color difference matte keyer\n\n1. Select wheter to key a blue or green screen\n2. Use the master curve to pull a matte\n3. Control the black and white level using the Mix slider\n4. Enable Unspill from the Fine Tune sub menu and click on the 3 to expand the controls for each rgb channels and mix the values to control the foreground spill supression\n5. To shrink the matte, enable it and use the slider to set the matte shrink size and from the drop down, pick the filter type\n6. To blur the matte, enable it and use the slider to set the matte blur size and from the drop down, pick the filter type\n7. From the Matte Edge slider, control the matte edge sharpness\n8. From the Edge Brightness, control the matte edge brightness\n9. To add garbage mask, use the GMASK tab\n\nFrom the View menu, pick the desired view:\n\nSource\nBackground\nFinal Result\nComp\n\n\nUse the viewer alpha channel (A) to view matte\nCheck unPremultiply to choose whether or not to un-premultiply the result\n\nBy S.Anselme"
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 cdmk l CDMK}
+ addUserKnob {4 view l "               View" t "what to render in output" M {Source Background "Final Result" Comp "" "" ""}}
+ addUserKnob {4 key l "" t "select keyer" +STARTLINE M {G-Screen B-Screen "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {41 lut l "" t "use master curve to pull matte" +STARTLINE T scaledMatte.lut}
+ addUserKnob {7 mix l Mix t "mix black & white level" R 0 4}
+ addUserKnob {6 unPremult l unPremultiply t "whether to unpremultiply the result" -STARTLINE}
+ addUserKnob {20 tuning l "Fine Tune" n 1}
+ tuning 0
+ addUserKnob {6 enableSpillSupression l Unspill t "enable/disable spill supression" +STARTLINE}
+ addUserKnob {18 spillSupression l "        " t "mix rgb value to unspill the foreground" -STARTLINE R 0 4}
+ spillSupression {0 0 0}
+ addUserKnob {6 shrink l "Shrink Matte" t "enable/disable shrink matte" +STARTLINE}
+ addUserKnob {7 shrinkSize l "" t "set shrink matte size" -STARTLINE R -10 10}
+ addUserKnob {41 shrinkFilter l "" t "select shrink matte filter type" -STARTLINE T shrinkMatte.filter}
+ addUserKnob {6 blur l "Matte Blur" t "enable/disable matte blur" +STARTLINE}
+ addUserKnob {7 blurSize l "   " t "set matte blur size" -STARTLINE R -10 10}
+ addUserKnob {41 blurFilter l "" t "select matte blur filter type" -STARTLINE T blurMatte.filter}
+ addUserKnob {7 edge l "Matte Edge" t "control sharpness of matte edge" R 0 10}
+ addUserKnob {7 brightness l "Edge Brightness" t "control matte edge brightness" R 0 10}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 blend l BLEND}
+ addUserKnob {41 premultiplied l Premultiplied T comp.premultiplied}
+ addUserKnob {41 nonlinear -STARTLINE T comp.nonlinear}
+ addUserKnob {41 lut_1 l "" +STARTLINE T comp.lut}
+ addUserKnob {41 mix_1 l "               Mix" T comp.mix}
+ addUserKnob {20 garbageMask l GMASK}
+ addUserKnob {41 curves l "" -STARTLINE T gmask.curves}
+ addUserKnob {41 toolbox l "" -STARTLINE T gmask.toolbox}
+ addUserKnob {41 toolbar_autokey l "autokey  " T gmask.toolbar_autokey}
+ addUserKnob {41 toolbar_feather_link l "feather link  " -STARTLINE T gmask.toolbar_feather_link}
+ addUserKnob {41 toolbar_show_transform_type l "show transform handle" -STARTLINE T gmask.toolbar_show_transform_type}
+ addUserKnob {41 visible -STARTLINE T gmask.visible}
+ addUserKnob {41 locked -STARTLINE T gmask.locked}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x7171c600
+  label MATTE
+  note_font "Verdana Bold Bold Bold Bold"
+  note_font_size 42
+  xpos 179
+  ypos -436
+  bdwidth 356
+  bdheight 505
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x7a8e7fff
+  label UNSPILL
+  note_font "Verdana Bold Bold Bold Bold"
+  note_font_size 42
+  xpos -451
+  ypos -225
+  bdwidth 448
+  bdheight 427
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x8e8e3800
+  label "DESPILL\nMAP"
+  note_font "Verdana Bold Bold Bold Bold"
+  note_font_size 42
+  xpos -597
+  ypos -492
+  bdwidth 327
+  bdheight 239
+ }
+ Input {
+  inputs 0
+  name FG
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos 22
+  ypos -387
+  number 1
+ }
+set N316d4db0 [stack 0]
+ Dot {
+  name Dot31
+  xpos 236
+  ypos -384
+ }
+set N316b1bb0 [stack 0]
+ Dot {
+  name Dot33
+  xpos 456
+  ypos -384
+ }
+set N29f80ba0 [stack 0]
+push $N29f80ba0
+add_layer {chanMax chanMax.alpha}
+ ChannelMerge {
+  inputs 2
+  A rgba.green
+  operation max
+  B rgba.red
+  output chanMax.alpha
+  name maxRG
+  note_font Helvetica
+  xpos 422
+  ypos -313
+ }
+set N2a4f0a10 [stack 0]
+push $N2a4f0a10
+add_layer {rawMatte rawMatte.alpha}
+ ChannelMerge {
+  inputs 2
+  A rgba.blue
+  operation minus
+  B chanMax.alpha
+  output rawMatte.alpha
+  name rawMatteB
+  note_font Helvetica
+  xpos 422
+  ypos -267
+ }
+push $N316b1bb0
+push $N316b1bb0
+ ChannelMerge {
+  inputs 2
+  A rgba.blue
+  operation max
+  B rgba.red
+  output chanMax.alpha
+  name maxRB
+  note_font Helvetica
+  xpos 202
+  ypos -313
+ }
+set N2a3e1420 [stack 0]
+push $N2a3e1420
+ ChannelMerge {
+  inputs 2
+  A rgba.green
+  operation minus
+  B chanMax.alpha
+  output rawMatte.alpha
+  name rawMatteG
+  note_font Helvetica
+  xpos 202
+  ypos -267
+ }
+ Switch {
+  inputs 2
+  which {{parent.key i}}
+  name gbSwitch
+  note_font "Verdana Bold Bold Bold"
+  xpos 312
+  ypos -256
+ }
+ set C39b5e550 [stack 0]
+ Gamma {
+  channels {rgba.alpha none none rawMatte.alpha}
+  value {{parent.mix i}}
+  name gamaMatte
+  note_font "Helvetica Bold Bold Bold"
+  xpos 312
+  ypos -232
+ }
+ ColorLookup {
+  channels {rgba.alpha none none rawMatte.alpha}
+  name scaledMatte
+  note_font "Verdana Bold Bold Bold Bold Bold"
+  xpos 312
+  ypos -198
+ }
+set N20307f40 [stack 0]
+push $N20307f40
+ ChannelMerge {
+  inputs 2
+  A rawMatte.alpha
+  name alphaMatte
+  xpos 312
+  ypos -164
+ }
+ Invert {
+  channels {rgba.alpha none none rawMatte.alpha}
+  name matte
+  xpos 312
+  ypos -118
+ }
+set N25410950 [stack 0]
+push $N25410950
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name multMatte
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos 312
+  ypos -84
+  disable {{parent.unPremult i}}
+ }
+ EdgeBlur {
+  channels {rgba.alpha none none rgba.alpha}
+  size {{parent.blurSize}}
+  edge_mult {{parent.edge}}
+  brightness {{parent.brightness}}
+  name blurMatte
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos 312
+  ypos -38
+  disable {{!parent.blur}}
+ }
+ FilterErode {
+  channels {rgba.alpha none none rgba.alpha}
+  size {{parent.shrinkSize}}
+  name shrinkMatte
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos 312
+  ypos -4
+  disable {{!parent.shrink}}
+ }
+ Roto {
+  curves {AnimTree: "" {
+ Version: 1.2
+ Flag: 0
+ RootNode: 1
+ Node: {
+  NodeName: "Root" {
+   Flag: 576
+   NodeType: 1
+   Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 480 S 0 270 
+   NumOfAttributes: 10
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 
+  }
+  NumOfChildren: 0
+ }
+}
+}
+  toolbox {createBezier {
+  { selectAll ssx 1 ssy 1 sf 1 }
+  { createBezier ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBSpline ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle ssx 1 ssy 1 sf 1 sb 1 }
+  { brush ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+  toolbar_brush_hardness 0.200000003
+  toolbar_lifetime_type all
+  toolbar_source_transform_scale {1 1}
+  colorOverlay 0
+  lifetime_type "all frames"
+  view {}
+  motionblur_on true
+  motionblur_shutter_offset_type centred
+  source_black_outside true
+  name gmask
+  note_font "Verdana Bold Bold Bold Bold Bold"
+  xpos 312
+  ypos 30
+ }
+ Dot {
+  name Dot16
+  xpos 141
+  ypos 33
+ }
+ Dot {
+  name Dot17
+  xpos 141
+  ypos 292
+ }
+set N32d3ec80 [stack 0]
+ Dot {
+  name Dot15
+  xpos 141
+  ypos 321
+ }
+push $N32d3ec80
+push $N316d4db0
+ Dot {
+  name Dot2
+  xpos -180
+  ypos -384
+ }
+set N39bbb350 [stack 0]
+ Dot {
+  name Dot29
+  xpos -335
+  ypos -384
+ }
+set N20a990b0 [stack 0]
+push $N20a990b0
+ Merge2 {
+  inputs 2
+  operation average
+  Achannels {rgba.alpha none none rgba.red}
+  Bchannels {rgba.alpha none none rgba.green}
+  output {rgba.alpha none none rgba.alpha}
+  name avgRG
+  note_font Helvetica
+  xpos -369
+  ypos -366
+ }
+set N20332e80 [stack 0]
+push $N20332e80
+ ChannelMerge {
+  inputs 2
+  A rgba.blue
+  operation minus
+  output {{{A}}}
+  name B
+  note_font Helvetica
+  xpos -369
+  ypos -332
+ }
+push $N20a990b0
+ Dot {
+  name Dot30
+  xpos -555
+  ypos -384
+ }
+set N39977500 [stack 0]
+push $N39977500
+ Merge2 {
+  inputs 2
+  operation average
+  Achannels {rgba.alpha none none rgba.red}
+  Bchannels {rgba.alpha none none rgba.blue}
+  output {rgba.alpha none none rgba.alpha}
+  name avgRB
+  note_font Helvetica
+  xpos -589
+  ypos -366
+ }
+set N20312ca0 [stack 0]
+push $N20312ca0
+ ChannelMerge {
+  inputs 2
+  A rgba.green
+  operation minus
+  output {{{A}}}
+  name G
+  note_font Helvetica
+  xpos -589
+  ypos -332
+ }
+clone $C39b5e550 {
+  inputs 2
+  xpos -479
+  ypos -321
+  selected false
+ }
+ Grade {
+  white {{parent.spillSupression i} {parent.spillSupression i} {parent.spillSupression i} 0}
+  name scale
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos -479
+  ypos -275
+ }
+ Dot {
+  name Dot7
+  xpos -526
+  ypos -272
+ }
+ Dot {
+  name Dot28
+  xpos -524
+  ypos -145
+ }
+ Dot {
+  name Dot1
+  xpos -414
+  ypos -145
+ }
+set N29a9b3f0 [stack 0]
+ Dot {
+  name Dot20
+  xpos -59
+  ypos -145
+ }
+push $N39bbb350
+ Dot {
+  name Dot10
+  xpos -180
+  ypos -97
+ }
+set N2030eb80 [stack 0]
+ Dot {
+  name Dot9
+  xpos -180
+  ypos -38
+ }
+set N254518f0 [stack 0]
+ ChannelMerge {
+  inputs 2
+  A rgba.green
+  operation plus
+  B rgba.green
+  output rgba.green
+  name Gadd
+  xpos -93
+  ypos -52
+ }
+ Dot {
+  name Dot21
+  xpos -59
+  ypos 143
+ }
+push $N254518f0
+push $N29a9b3f0
+ Dot {
+  name Dot3
+  xpos -414
+  ypos -38
+ }
+set N1b86d910 [stack 0]
+ ChannelMerge {
+  inputs 2
+  A rgba.green
+  operation minus
+  B rgba.green
+  output rgba.green
+  name Gmin
+  xpos -308
+  ypos -52
+ }
+ Dot {
+  name Dot13
+  xpos -274
+  ypos -6
+ }
+ Dot {
+  name Dot5
+  xpos -126
+  ypos -6
+ }
+clone $C39b5e550 {
+  inputs 2
+  xpos -160
+  ypos 139
+  selected false
+ }
+ Dot {
+  name Dot14
+  xpos -126
+  ypos 177
+ }
+push 0
+push $N254518f0
+ Dot {
+  name Dot8
+  xpos -180
+  ypos 26
+ }
+set N2761f6e0 [stack 0]
+push $N1b86d910
+ Dot {
+  name Dot22
+  xpos -414
+  ypos 73
+ }
+ ChannelMerge {
+  inputs 2
+  A rgba.blue
+  B rgba.blue
+  output rgba.blue
+  name Bmin
+  xpos -214
+  ypos 59
+ }
+ Dot {
+  name Dot23
+  xpos -180
+  ypos 115
+ }
+push $N1b86d910
+ Dot {
+  name Dot19
+  xpos -343
+  ypos 26
+ }
+push $N2761f6e0
+ ChannelMerge {
+  inputs 2
+  A rgba.blue
+  operation plus
+  B rgba.blue
+  output rgba.blue
+  name Badd
+  xpos -308
+  ypos 12
+ }
+clone $C39b5e550 {
+  inputs 2
+  xpos -308
+  ypos 111
+  selected false
+ }
+push $N1b86d910
+ Dot {
+  name Dot6
+  xpos -345
+  ypos -97
+ }
+push $N2030eb80
+ ChannelMerge {
+  inputs 2
+  A rgba.red
+  operation plus
+  B rgba.red
+  output rgba.red
+  name R
+  xpos -309
+  ypos -111
+ }
+ Dot {
+  name Dot4
+  xpos -275
+  ypos -129
+ }
+ Dot {
+  name Dot12
+  xpos -441
+  ypos -129
+ }
+ Dot {
+  name Dot11
+  xpos -441
+  ypos 177
+ }
+ Blend {
+  inputs 3+1
+  channels rgb
+  name unspilled
+  xpos -308
+  ypos 174
+ }
+ Dot {
+  name Dot18
+  xpos -274
+  ypos 263
+ }
+push $N316d4db0
+ Dot {
+  name Dot25
+  xpos 56
+  ypos 220
+ }
+set N399f8d90 [stack 0]
+ Switch {
+  inputs 2
+  which {{parent.enableSpillSupression i}}
+  name unspilledSwitch
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos 22
+  ypos 260
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.alpha none none rgba.alpha}
+  Bchannels {rgba.alpha none none rgba.alpha}
+  output {rgba.alpha none none rgba.alpha}
+  name alpha
+  xpos 22
+  ypos 284
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name black
+  xpos -88
+  ypos 294
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  Bchannels rgb
+  name result
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 22
+  ypos 318
+ }
+ Dot {
+  name Dot24
+  xpos 56
+  ypos 380
+ }
+set N2549b8e0 [stack 0]
+ Input {
+  inputs 0
+  name BG
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos -190
+  ypos 421
+ }
+set N31634030 [stack 0]
+ AddMix {
+  inputs 2
+  name comp
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos 22
+  ypos 421
+ }
+push $N2549b8e0
+ Dot {
+  name Dot27
+  xpos -13
+  ypos 380
+ }
+push $N31634030
+push $N399f8d90
+ Dot {
+  name Dot26
+  xpos -239
+  ypos 220
+ }
+ Switch {
+  inputs 4
+  which {{parent.view i}}
+  name viewSelection
+  note_font "Verdana Bold Bold Bold Bold"
+  xpos -273
+  ypos 655
+ }
+ Output {
+  name Output1
+  xpos -273
+  ypos 706
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label "By S.Anselme"
+  note_font "Verdana Bold Bold"
+  xpos -270
+  ypos 735
+ }
+end_group

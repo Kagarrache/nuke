@@ -1,0 +1,69 @@
+#! /lot/s62/SYSTEMS/3PS/foundry/linux_intel/nuke4.7/4b3/Nuke4.7 -nx
+version 4.7400
+Gizmo {
+ inputs 1
+ addUserKnob {20 User}
+ addUserKnob {41 display T VertigoCam.display}
+ addUserKnob {41 selectable T VertigoCam.selectable}
+ addUserKnob {41 transform T Axis1.transform}
+ addUserKnob {41 import_chan l "import chan file" T Axis1.import_chan}
+ addUserKnob {41 export_chan l "export chan file" T Axis1.export_chan}
+ addUserKnob {41 xform_order l "transform order" T Axis1.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T Axis1.rot_order}
+ addUserKnob {41 translate T Axis1.translate}
+ addUserKnob {41 rotate T Axis1.rotate}
+ addUserKnob {41 scaling l scale T Axis1.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T Axis1.uniform_scale}
+ addUserKnob {41 skew T Axis1.skew}
+ addUserKnob {41 pivot T Axis1.pivot}
+ addUserKnob {20 "" l Projection}
+ addUserKnob {41 orthographic T VertigoCam.orthographic}
+ addUserKnob {7 focal l "focal length" R 0 100}
+ focal 32
+ addUserKnob {41 haperture l "horiz aperture" T VertigoCam.haperture}
+ addUserKnob {41 vaperture l "vert aperture" T VertigoCam.vaperture}
+ addUserKnob {41 near T VertigoCam.near}
+ addUserKnob {7 far R 0 100000}
+ far 10
+ addUserKnob {41 win_translate l "window translate" T VertigoCam.win_translate}
+ addUserKnob {41 win_scale l "window scale" T VertigoCam.win_scale}
+ addUserKnob {41 winroll l "window roll" T VertigoCam.winroll}
+ addUserKnob {26 "" l ""}
+ addUserKnob {41 focal_point l "focal distance" T VertigoCam.focal_point}
+ addUserKnob {7 vertigo R -5 5}
+ addUserKnob {7 vertPos l "vertigo position"}
+ vertPos {{this.VertigoCam.translate.z}}
+ addUserKnob {7 vert_focal l "vertigo focal"}
+ vert_focal {{this.VertigoCam.focal}}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -59
+  ypos -90
+ }
+ Axis {
+  name Axis1
+  xpos -49
+  ypos -52
+ }
+ Camera {
+  selectable false
+  translate {0 0 {focal/parent.focal*parent.focal_point-focal_point x1 -0.6499999762}}
+  focal {{"parent.focal * pow(2,parent.vertigo)"}}
+  haperture 9.58
+  vaperture 5.39
+  far {{parent.far}}
+  win_scale {1 1}
+  focal_point 4.35
+  name VertigoCam
+  selected true
+  xpos 47
+  ypos -52
+ }
+ Output {
+  name Output1
+  xpos 37
+  ypos 71
+ }
+end_group

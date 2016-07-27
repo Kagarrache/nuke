@@ -1,0 +1,20 @@
+Group {
+ inputs 0
+ name NodesWeight
+ tile_color 0xffe501ff
+ note_font "Verdana Bold Bold Bold Bold"
+ selected true
+ xpos 610
+ ypos 771
+ lock_connections {{curve x45 0}}
+ addUserKnob {20 nodeWeight l NodeWeight}
+ addUserKnob {26 explanation l "" +STARTLINE T "It turns nodes color between green and red according to their weight to process.\n"}
+ addUserKnob {22 on l ON T "nuke.memory(\"free\")\nnuke.startPerformanceTimers()" +STARTLINE}
+ addUserKnob {26 sep3 l "" -STARTLINE T "   "}
+ addUserKnob {22 off l OFF -STARTLINE T nuke.stopPerformanceTimers()}
+ addUserKnob {26 refresh l "" +STARTLINE T "If nothing happens, you've to force nuke to refresh the frame.\n\nYou can play each frame to get an average of the result."}
+ addUserKnob {26 sep2 l "" +STARTLINE T " \n"}
+ addUserKnob {22 reset l RESET T "nuke.resetPerformanceTimers()\nnuke.memory(\"free\")" +STARTLINE}
+ addUserKnob {26 copyright l "" +STARTLINE T "\n\nNodes Weight v1.0 by Mathieu Vallet"}
+}
+end_group

@@ -1,0 +1,164 @@
+#! C:/Program Files/Nuke9.0v7/nuke-9.0.7.dll -nx
+version 9.0 v7
+Gizmo {
+ inputs 4
+ tile_color 0x8900ff
+ gl_color 0xff
+ addUserKnob {20 user l "Key Compositing"}
+ addUserKnob {41 show l View T Keylight1.show}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 screenColour l "Screen Colour" T Keylight1.screenColour}
+ addUserKnob {41 screenReplaceColour l "Screen Replace Colour" T Keylight1.screenReplaceColour}
+ addUserKnob {41 screenReplaceMethod l "Screen Replace" T Keylight1.screenReplaceMethod}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 Screen_Matte l "Screen Matte" n 1}
+ Screen_Matte 0
+ addUserKnob {41 screenGain l "Screen Gain" T Keylight1.screenGain}
+ addUserKnob {41 screenClipMax l "Clip White" T Keylight1.screenClipMax}
+ addUserKnob {41 screenClipMin l "Clip Black" T Keylight1.screenClipMin}
+ addUserKnob {41 screenSoftness l "Screen Softness" T Keylight1.screenSoftness}
+ addUserKnob {41 screenGrowShrink l "Screen Dilate" T Keylight1.screenGrowShrink}
+ addUserKnob {41 screenClipRollback l "Clip Rollback" T Keylight1.screenClipRollback}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 Mask n 1}
+ Mask 0
+ addUserKnob {41 outsideComponent l "OutM Component" T Keylight1.outsideComponent}
+ addUserKnob {41 insideComponent l "InM Component" T Keylight1.insideComponent}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 Light_Wrap l "Light Wrap" n 1}
+ Light_Wrap 0
+ addUserKnob {41 Intensity l "Intensity Light Wrap" T LightWrap1.Intensity}
+ addUserKnob {41 size l "Blur Size Alpha" T Blur1.size}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 Marge n 1}
+ Marge 0
+ addUserKnob {41 operation T Merge1.operation}
+ addUserKnob {41 bbox l "set bbox to " T Merge1.bbox}
+ addUserKnob {41 mix T Merge1.mix}
+ addUserKnob {41 invert_mask l invert T Merge1.invert_mask}
+ addUserKnob {41 inject T Merge1.inject}
+ addUserKnob {41 fringe T Merge1.fringe}
+ addUserKnob {20 endGroup n -1}
+}
+ Input {
+  inputs 0
+  name BG
+  xpos 197
+  ypos 130
+  number 3
+ }
+set N6f961800 [stack 0]
+ Input {
+  inputs 0
+  name OutM
+  xpos -117
+  ypos -87
+  number 2
+ }
+ Input {
+  inputs 0
+  name InM
+  xpos 210
+  ypos -77
+  number 1
+ }
+ Input {
+  inputs 0
+  name Soucer
+  xpos 65
+  ypos -116
+ }
+ OFXuk.co.thefoundry.keylight.keylight_v201 {
+  inputs 3
+  show "Final Result"
+  unPreMultiply false
+  screenColour {0.06580710411 0.3407679796 0.01548577752}
+  screenGain 1
+  screenBalance 0.5
+  alphaBias {0.5 0.5 0.5}
+  despillBias {0.5 0.5 0.5}
+  gangBiases true
+  preBlur 0
+  "Screen Matte" 1
+  screenClipMin 0
+  screenClipMax 1
+  screenClipRollback 0
+  screenGrowShrink 0
+  screenSoftness 0
+  screenDespotBlack 0
+  screenDespotWhite 0
+  screenReplaceMethod "Soft Colour"
+  screenReplaceColour 0.5
+  Tuning 0
+  midPoint 0.5
+  lowGain 1
+  midGain 1
+  highGain 1
+  "Inside Mask" 0
+  sourceAlphaHandling Ignore
+  insideReplaceMethod "Soft Colour"
+  insideReplaceColour {0.5 0.5 0.5}
+  Crops 0
+  SourceXMethod Colour
+  SourceYMethod Colour
+  SourceEdgeColour 0
+  SourceCropL 0
+  SourceCropR 1
+  SourceCropB 0
+  SourceCropT 1
+  balanceSet false
+  insideComponent None
+  outsideComponent Alpha
+  cacheBreaker true
+  name Keylight1
+  xpos 65
+  ypos -32
+ }
+ Blur {
+  channels alpha
+  name Blur1
+  xpos 65
+  ypos 1
+ }
+ Premult {
+  name Premult1
+  xpos 65
+  ypos 54
+ }
+ Reformat {
+  name Reformat1
+  xpos 65
+  ypos 88
+ }
+ LightWrap {
+  inputs 2
+  name LightWrap1
+  xpos 65
+  ypos 130
+  master 1
+  shadows 1
+  midtones 1
+  highlights 1
+ }
+push $N6f961800
+ Dot {
+  name Dot1
+  xpos 231
+  ypos 186
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  name Merge1
+  xpos 65
+  ypos 182
+ }
+ Output {
+  name Output1
+  xpos 65
+  ypos 237
+ }
+end_group

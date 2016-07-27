@@ -1,0 +1,487 @@
+#! /Applications/Nuke6.3v7/NukeX6.3v7.app/../Nuke6.3v7.app/Contents/MacOS/Nuke6.3v7 -nx
+version 6.3 v7
+Gizmo {
+ inputs 2
+ tile_color 0xd62c00ff
+ gl_color 0xaa1e00ff
+ addUserKnob {20 User}
+ addUserKnob {6 textureswitch l Texture -STARTLINE}
+ textureswitch true
+ addUserKnob {6 fillswitch l Fill -STARTLINE}
+ fillswitch true
+ addUserKnob {6 edgesswitch l Edges -STARTLINE}
+ edgesswitch true
+ addUserKnob {6 noiseswitch l Noise -STARTLINE}
+ addUserKnob {41 defocus T Defocus1.defocus}
+ addUserKnob {41 scale l scaling T Defocus1.scale}
+ addUserKnob {41 ratio l "aspect ratio" T Defocus1.ratio}
+ addUserKnob {41 method T Defocus1.method}
+ addUserKnob {41 quality T Defocus1.quality}
+ addUserKnob {20 PreGrade l "Pre Grade" n 1}
+ PreGrade 0
+ addUserKnob {41 gamma T Grade1.gamma}
+ addUserKnob {41 white l gain T Grade1.white}
+ addUserKnob {41 saturation T Saturation1.saturation}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 Postgrade l "Post Grade" n 1}
+ Postgrade 0
+ addUserKnob {41 gamma_1 l gamma T Grade10.gamma}
+ addUserKnob {41 white_1 l gain T Grade10.white}
+ addUserKnob {41 saturation_1 l saturation T Saturation2.saturation}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {41 which l "mix extras" T Dissolveeffects.which}
+ addUserKnob {41 which_1 l "mix all" T Dissolveall.which}
+ addUserKnob {6 Clamp l "Clamp Output" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 info l "" +STARTLINE T "jvm_bokeh v1.1 - creates graphical bokeh sweetness\njvm@julianvanmil.com"}
+ addUserKnob {20 LensTexture l "Lens Texture"}
+ addUserKnob {41 value l "Lens Textire Mix" T Multiply1.value}
+ addUserKnob {4 lenstexturecontrolchannel l "Control Channel" M {Red Green Blue}}
+ addUserKnob {41 operation T Merge3.operation}
+ addUserKnob {26 ""}
+ addUserKnob {41 blackpoint T Grade_texture.blackpoint}
+ addUserKnob {41 whitepoint T Grade_texture.whitepoint}
+ addUserKnob {41 black l lift T Grade_texture.black}
+ addUserKnob {41 white_2 l gain T Grade_texture.white}
+ addUserKnob {41 multiply_2 l multiply T Grade_texture.multiply}
+ addUserKnob {41 add l offset T Grade_texture.add}
+ addUserKnob {41 gamma_3 l gamma T Grade_texture.gamma}
+ addUserKnob {41 black_clamp l "black clamp" T Grade_texture.black_clamp}
+ addUserKnob {41 white_clamp l "white clamp" T Grade_texture.white_clamp}
+ addUserKnob {41 mix_1 l mix T Grade_texture.mix}
+ addUserKnob {41 invert_unpremult l invert T Grade_texture.invert_unpremult}
+ addUserKnob {20 BokehFill l "Bokeh Fill"}
+ addUserKnob {7 fillgain l "Fill Gain" R 0 20}
+ fillgain 2
+ addUserKnob {4 controlchannel l "Control Channel" M {Red Green Blue}}
+ addUserKnob {41 size_1 l "Blur Fill" T Blur2.size}
+ addUserKnob {41 multiply_1 l multiply T Grade_fill.multiply}
+ addUserKnob {41 mix T Grade_fill.mix}
+ addUserKnob {20 BokehEdge l "Bokeh Edges"}
+ addUserKnob {7 edgegain l "Edge Gain" R 0 20}
+ edgegain 5
+ addUserKnob {41 size l "Blur Edges" T Blur3.size}
+ addUserKnob {41 multiply T Grade_edges.multiply}
+ addUserKnob {41 threshold l Threshold T EdgeDetectWrapper1.threshold}
+ addUserKnob {41 channels T EdgeDetectWrapper1.channels}
+ addUserKnob {20 noisetab l Noise}
+ addUserKnob {41 type T Noise1.type}
+ addUserKnob {41 size_2 l x/ysize T Noise1.size}
+ addUserKnob {41 zoffset l z T Noise1.zoffset}
+ addUserKnob {41 octaves T Noise1.octaves}
+ addUserKnob {41 gain T Noise1.gain}
+ addUserKnob {41 gamma_2 l gamma T Noise1.gamma}
+ addUserKnob {41 lacunarity T Noise1.lacunarity}
+ addUserKnob {41 nyquist l "clip at Nyquist limit" T Noise1.nyquist}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0xc6430bff
+  label "BOKEH FILL\n"
+  note_font_size 42
+  xpos 123
+  ypos 159
+  bdwidth 399
+  bdheight 657
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0xfffee8ff
+  label "BOKEH EDGES"
+  note_font_size 42
+  xpos -448
+  ypos 520
+  bdwidth 370
+  bdheight 457
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x37698eff
+  label "POST GRADE"
+  note_font_size 42
+  xpos -478
+  ypos 1690
+  bdwidth 166
+  bdheight 191
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x71a4c6ff
+  label "PRE GRADE\n"
+  note_font_size 42
+  xpos -484
+  ypos -79
+  bdwidth 184
+  bdheight 197
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x2f8e82ff
+  label "LENS TEXTURE"
+  note_font_size 42
+  xpos -789
+  ypos 1140
+  bdwidth 916
+  bdheight 436
+ }
+ Noise {
+  inputs 0
+  size 170
+  lacunarity 1.78
+  gain 0.6
+  center {960 540}
+  name Noise1
+  xpos 189
+  ypos 719
+ }
+ set C21c6a5e0 [stack 0]
+ Input {
+  inputs 0
+  name Input1
+  xpos -438
+  ypos -292
+ }
+ Dot {
+  name Dot12
+  xpos -404
+  ypos -195
+ }
+set N21c77f60 [stack 0]
+ Grade {
+  name Grade1
+  xpos -438
+  ypos 8
+ }
+ Saturation {
+  name Saturation1
+  xpos -438
+  ypos 32
+ }
+ Defocus {
+  defocus 3
+  scale 10
+  name Defocus1
+  tile_color 0xff0000ff
+  xpos -438
+  ypos 231
+ }
+set N21c8aa80 [stack 0]
+ Dot {
+  name Dot2
+  xpos -156
+  ypos 239
+ }
+set N21c92150 [stack 0]
+ Dot {
+  name Dot3
+  xpos 233
+  ypos 239
+ }
+set N21c94e10 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name cc_blue
+  xpos 403
+  ypos 311
+ }
+push $N21c94e10
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name cc_green
+  xpos 302
+  ypos 311
+ }
+push $N21c94e10
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name cc_red
+  xpos 199
+  ypos 313
+ }
+ Switch {
+  inputs 3
+  which {{parent.controlchannel i}}
+  name control_channel_switch
+  xpos 199
+  ypos 391
+ }
+ Dot {
+  name Dot6
+  xpos 233
+  ypos 447
+ }
+set N21cb8b40 [stack 0]
+ Blur {
+  size 25
+  name Blurfill
+  xpos 199
+  ypos 561
+ }
+push $N21cb8b40
+ Dot {
+  name Dot5
+  xpos 343
+  ypos 447
+ }
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge4
+  xpos 309
+  ypos 566
+ }
+ Grade {
+  channels all
+  whitepoint 0.1
+  name Grade7
+  xpos 309
+  ypos 590
+ }
+ Blur {
+  size 4
+  name Blur2
+  xpos 309
+  ypos 633
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge1
+  xpos 309
+  ypos 719
+  disable {{!parent.noiseswitch}}
+ }
+ set C21cdf150 [stack 0]
+ Dot {
+  name Dot7
+  xpos 343
+  ypos 1030
+ }
+set N21ce8410 [stack 0]
+ Dot {
+  name Dot11
+  xpos 343
+  ypos 1205
+ }
+ Dot {
+  name Dot10
+  xpos -226
+  ypos 1205
+ }
+ Multiply {
+  name Multiply1
+  xpos -260
+  ypos 1269
+ }
+ Blur {
+  size 33
+  name Blur1
+  xpos -260
+  ypos 1303
+ }
+set Na1f8950 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name cc_blue1
+  xpos -53
+  ypos 1402
+ }
+push $Na1f8950
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name cc_green1
+  xpos -157
+  ypos 1404
+ }
+push $Na1f8950
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name cc_red1
+  xpos -260
+  ypos 1406
+ }
+ Switch {
+  inputs 3
+  which {{parent.lenstexturecontrolchannel i}}
+  name control_channel_switch2
+  xpos -260
+  ypos 1484
+ }
+clone $C21c6a5e0 {
+  inputs 0
+  xpos -613
+  ypos 1408
+  selected false
+ }
+ Input {
+  inputs 0
+  name Lens_Texture
+  xpos -757
+  ypos 1220
+  number 1
+ }
+ Grade {
+  white_clamp true
+  name Grade_texture
+  xpos -757
+  ypos 1322
+ }
+ Dot {
+  name Dot4
+  xpos -723
+  ypos 1487
+ }
+clone $C21cdf150 {
+  inputs 2
+  xpos -613
+  ypos 1484
+  selected false
+ }
+push $N21ce8410
+clone $C21c6a5e0 {
+  inputs 0
+  xpos -324
+  ypos 722
+  selected false
+ }
+push $N21c92150
+ EdgeDetectWrapper {
+  name EdgeDetectWrapper1
+  xpos -190
+  ypos 600
+ }
+ Blur {
+  size 1
+  name Blur3
+  xpos -190
+  ypos 634
+ }
+clone $C21cdf150 {
+  inputs 2
+  xpos -190
+  ypos 722
+  selected false
+ }
+ Dot {
+  name Dot1
+  xpos -156
+  ypos 940
+ }
+push $N21c8aa80
+ Grade {
+  inputs 1+1
+  white {{parent.edgegain i}}
+  name Grade_edges
+  xpos -438
+  ypos 937
+  disable {{!parent.edgesswitch i}}
+ }
+ Grade {
+  inputs 1+1
+  white {{parent.fillgain i}}
+  name Grade_fill
+  xpos -438
+  ypos 1027
+  disable {{!parent.fillswitch i}}
+ }
+ Dot {
+  name Dot13
+  xpos -404
+  ypos 1205
+ }
+ Merge2 {
+  inputs 2+1
+  operation multiply
+  screen_alpha true
+  name Merge3
+  xpos -438
+  ypos 1484
+  disable {{!parent.textureswitch i x1 1}}
+ }
+ Grade {
+  gamma 1.05
+  name Grade10
+  xpos -438
+  ypos 1785
+ }
+ Saturation {
+  saturation 1.2
+  name Saturation2
+  xpos -438
+  ypos 1809
+ }
+set N21f8d820 [stack 0]
+push $N21c8aa80
+ Dot {
+  name Dot8
+  xpos -914
+  ypos 239
+ }
+ Dot {
+  name Dot14
+  xpos -917
+  ypos 2243
+ }
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolveeffects
+  xpos -441
+  ypos 2235
+ }
+push $N21c77f60
+ Dot {
+  name Dot9
+  xpos -946
+  ypos -195
+ }
+ Dot {
+  name Dot15
+  xpos -949
+  ypos 2277
+ }
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolveall
+  xpos -441
+  ypos 2269
+ }
+ Clamp {
+  name Clamp1
+  xpos -441
+  ypos 2397
+  disable {{!parent.Clamp i}}
+ }
+ Output {
+  name Output1
+  xpos -441
+  ypos 2611
+ }
+push $N21f8d820
+ Viewer {
+  frame 1
+  input_process false
+  name Viewer1
+  selected true
+  xpos 312
+  ypos 1713
+ }
+end_group

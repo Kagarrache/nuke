@@ -1,0 +1,124 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ inputs 2
+ addUserKnob {20 User l ITime}
+ addUserKnob {41 step T Control1.step}
+ addUserKnob {3 timevalue l "time value"}
+ timevalue 20
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 first_frame l "frame range" T FrameRange2.first_frame}
+ addUserKnob {41 last_frame l "" -STARTLINE T FrameRange2.last_frame}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 158
+  ypos 160
+  number 1
+ }
+ Keyer {
+  operation "luminance key"
+  range {{Control1.timeratio i} {range.A i} {"range.A + Control1.ratio" i} {range.C i}}
+  name Keyer2
+  xpos 158
+  ypos 213
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  xpos 158
+  ypos 251
+ }
+ Input {
+  inputs 0
+  name source
+  xpos 479
+  ypos 96
+ }
+set N2dd599c0 [stack 0]
+ FrameRange {
+  first_frame 1
+  last_frame 1000
+  name FrameRange2
+  xpos 369
+  ypos 96
+ }
+ Retime {
+  input.last 1000
+  output.last 10000
+  speed {{parent.Control1.ratio i}}
+  filter nearest
+  name Retime3
+  xpos 369
+  ypos 122
+ }
+ TimeOffset {
+  time_offset {{"parent.Control1.blur * Control1.timestep" i}}
+  name TimeOffset2
+  xpos 369
+  ypos 182
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  xpos 369
+  ypos 251
+ }
+ Retime {
+  input.last 1600
+  output.last 134
+  speed {{parent.Control1.step x23 5 x38 5 x40 5}}
+  before black
+  after black
+  name Retime4
+  xpos 369
+  ypos 296
+ }
+ Multiply {
+  channels rgba
+  value {{parent.Control1.step i}}
+  name Multiply2
+  xpos 369
+  ypos 322
+ }
+push $N2dd599c0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix i}}
+  name Dissolve1
+  xpos 479
+  ypos 322
+ }
+ Output {
+  name Output
+  xpos 479
+  ypos 348
+ }
+ NoOp {
+  inputs 0
+  name Control1
+  tile_color 0xff0000ff
+  label "-\n-\n-\n-\n-\n-\n-"
+  xpos 222
+  ypos 8
+  addUserKnob {20 User}
+  addUserKnob {3 step}
+  step 20
+  addUserKnob {7 ratio}
+  ratio {{"1 / Control1.step "}}
+  addUserKnob {7 timestep}
+  timestep {{fmod(t-1,Control1.step)}}
+  addUserKnob {7 timeratio}
+  timeratio {{"timestep * ratio"}}
+  addUserKnob {26 ""}
+  addUserKnob {7 blur R 0 30}
+  blur {{parent.timevalue}}
+ }
+end_group

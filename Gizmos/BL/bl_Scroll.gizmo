@@ -1,0 +1,107 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l Scroll}
+ addUserKnob {12 Scroll}
+ addUserKnob {6 crop +STARTLINE}
+ crop true
+}
+ Input {
+  inputs 0
+  name in
+  xpos 312
+  ypos -39
+ }
+ NoOp {
+  name In1
+  xpos 312
+  ypos 1
+  addUserKnob {20 User}
+ }
+set N1a7c96e0 [stack 0]
+ Crop {
+  box {0 0 {width i} {height i}}
+  name Crop3
+  xpos 312
+  ypos 27
+ }
+ Position {
+  translate {{parent.Control1.LXScroll i} {parent.Control1.LYScroll i}}
+  name Position5
+  xpos 312
+  ypos 53
+ }
+set N1a7c9c40 [stack 0]
+push $N1a7c9c40
+ Dot {
+  name Dot4
+  xpos 641
+  ypos 57
+ }
+ Position {
+  translate {{"(parent.Control1.LXScroll <= 0)? width : -width" i} {"(parent.Control1.LYScroll <= 0)? height : - height" i}}
+  name Position6
+  xpos 607
+  ypos 111
+ }
+push 0
+push $N1a7c9c40
+ Dot {
+  name Dot5
+  xpos 441
+  ypos 57
+ }
+ Position {
+  translate {{"(parent.Control1.LXScroll <= 0)? width : -width" i} 0}
+  name Position7
+  xpos 407
+  ypos 111
+ }
+push $N1a7c9c40
+ Dot {
+  name Dot6
+  xpos 541
+  ypos 57
+ }
+ Position {
+  translate {0 {"(parent.Control1.LYScroll <= 0)? height : - height" i}}
+  name Position8
+  xpos 507
+  ypos 111
+ }
+ Merge2 {
+  inputs 4+1
+  operation screen
+  name Merge2
+  xpos 312
+  ypos 173
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop4
+  xpos 312
+  ypos 199
+  disable {{1-parent.Control1.crop}}
+ }
+ Output {
+  name Output1
+  xpos 312
+  ypos 260
+ }
+push $N1a7c96e0
+ NoOp {
+  name Control1
+  xpos 678
+  ypos 1
+  addUserKnob {20 User}
+  addUserKnob {12 Scroll}
+  Scroll {{parent.Scroll.x i} {parent.Scroll.y i}}
+  addUserKnob {6 crop +STARTLINE}
+  crop {{parent.crop i}}
+  addUserKnob {7 LXScroll}
+  LXScroll {{"(Scroll.x <0)? -(-Scroll.x)%width : Scroll.x%width" i}}
+  addUserKnob {7 LYScroll}
+  LYScroll {{"(Scroll.y <0)? -(-Scroll.y)%height : Scroll.y%height" i}}
+ }
+end_group

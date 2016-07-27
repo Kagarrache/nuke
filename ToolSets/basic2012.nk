@@ -1,0 +1,638 @@
+#! C:/Program Files/Nuke6.3v3/Nuke6.3.exe -nx
+version 6.3 v3
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="-8" y="-8" w="1936" h="1066" screen="0">
+        <splitter orientation="1">
+            <split size="1214"/>
+            <splitter orientation="1">
+                <split size="46"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                    <page id="Toolbar.1"/>
+                </dock>
+                <split size="1164"/>
+                <splitter orientation="2">
+                    <split size="501"/>
+                    <dock id="" activePageId="Viewer.1">
+                        <page id="Viewer.1"/>
+                    </dock>
+                    <split size="500"/>
+                    <dock id="" activePageId="DAG.1">
+                        <page id="DAG.1"/>
+                        <page id="Curve Editor.1"/>
+                        <page id="DopeSheet.1"/>
+                    </dock>
+                </splitter>
+            </splitter>
+            <split size="702"/>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name E:/basicComping.nk
+ last_frame 1
+ fps 25
+ format "2000 800 0 0 2000 800 1 "
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+}
+BackdropNode {
+ inputs 0
+ name CORRECTOR_FIXER
+ tile_color 0x1f8800ff
+ label "CORRECTOR\n(fix Reflection / Refraction Pixels)"
+ xpos -407
+ ypos -214
+ bdwidth 236
+ bdheight 593
+}
+BackdropNode {
+ inputs 0
+ name READ
+ tile_color 0x7171c600
+ note_font_size 42
+ xpos -178
+ ypos -616
+ bdwidth 356
+ bdheight 308
+}
+BackdropNode {
+ inputs 0
+ name DIFFERENCE_CHECK
+ tile_color 0x2c3e3eff
+ xpos 236
+ ypos -617
+ bdwidth 450
+ bdheight 299
+}
+Read {
+ inputs 0
+ file "\[value media_pathRENDER.media]rendering_0000.exr"
+ format "2000 800 0 0 2000 800 1 "
+ origset true
+ version 2
+ name Read3
+ selected true
+ xpos -44
+ ypos -564
+}
+Dot {
+ name Dot22
+ label INPUT
+ note_font_color 0xff00ff
+ xpos -10
+ ypos -354
+}
+Dot {
+ name Dot1
+ label MAIN
+ note_font_color 0xff0000ff
+ xpos -10
+ ypos -189
+}
+set N48cb950 [stack 0]
+Dot {
+ name Dot45
+ label "FROM MAIN"
+ note_font_color 0xff0000ff
+ xpos 301
+ ypos -516
+ hide_input true
+}
+push $N48cb950
+Dot {
+ name Dot14
+ label "GET ORIG. ALPHA"
+ note_font_color 0xff0000ff
+ xpos 1430
+ ypos 269
+ hide_input true
+}
+push $N48cb950
+Dot {
+ name Dot12
+ xpos 1014
+ ypos -2
+ hide_input true
+}
+add_layer {VRayAtmosphere VRayAtmosphere.red VRayAtmosphere.green VRayAtmosphere.blue}
+Shuffle {
+ in VRayAtmosphere
+ name athmosphere
+ xpos 980
+ ypos 93
+}
+push $N48cb950
+Dot {
+ name Dot11
+ xpos 892
+ ypos -2
+ hide_input true
+}
+add_layer {VRayBackground VRayBackground.red VRayBackground.green VRayBackground.blue}
+Shuffle {
+ in VRayBackground
+ name background
+ xpos 858
+ ypos 92
+}
+push $N48cb950
+Dot {
+ name Dot23
+ xpos -88
+ ypos -2
+ hide_input true
+}
+add_layer {VRayLighting VRayLighting.red VRayLighting.green VRayLighting.blue}
+Shuffle {
+ in VRayLighting
+ name light
+ xpos -122
+ ypos 92
+}
+push $N48cb950
+Dot {
+ name Dot37
+ xpos -8
+ ypos -1
+ hide_input true
+}
+add_layer {VRayDiffuseFilter VRayDiffuseFilter.red VRayDiffuseFilter.green VRayDiffuseFilter.blue}
+Shuffle {
+ in VRayDiffuseFilter
+ name diffuse
+ xpos -42
+ ypos 92
+}
+Dot {
+ name Dot2
+ xpos -8
+ ypos 166
+}
+set N123206b0 [stack 0]
+Merge2 {
+ inputs 2
+ operation divide
+ name Merge2
+ xpos -122
+ ypos 162
+}
+push $N123206b0
+Dot {
+ name Dot3
+ xpos -8
+ ypos 227
+}
+set N12321370 [stack 0]
+Merge2 {
+ inputs 2
+ operation multiply
+ name Merge3
+ xpos -122
+ ypos 223
+}
+push $N48cb950
+Dot {
+ name Dot15
+ label CORRECTOR
+ note_font_color 0xff0000ff
+ xpos -330
+ ypos -275
+ hide_input true
+}
+Shuffle {
+ name Shuffle13
+ xpos -364
+ ypos -146
+}
+set N123219d0 [stack 0]
+push $N123219d0
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayLighting
+ name Merge16
+ label "- LIGHT"
+ xpos -364
+ ypos -58
+}
+set N123bdbd0 [stack 0]
+push $N123bdbd0
+add_layer {VRaySpecular VRaySpecular.red VRaySpecular.green VRaySpecular.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRaySpecular
+ name Merge17
+ label "- SPECULAR"
+ xpos -364
+ ypos -20
+}
+set N123bdf00 [stack 0]
+push $N123bdf00
+add_layer {VRayReflection VRayReflection.red VRayReflection.green VRayReflection.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayReflection
+ name Merge18
+ label "- REFLECT"
+ xpos -364
+ ypos 18
+}
+set N123be230 [stack 0]
+push $N123be230
+add_layer {VRayRefraction VRayRefraction.red VRayRefraction.green VRayRefraction.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayRefraction
+ name Merge19
+ label "- REFRACT"
+ xpos -364
+ ypos 56
+}
+set N123be560 [stack 0]
+push $N123be560
+add_layer {VRayGlobalIllumination VRayGlobalIllumination.red VRayGlobalIllumination.green VRayGlobalIllumination.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayGlobalIllumination
+ name Merge20
+ label "- GI"
+ xpos -364
+ ypos 94
+}
+set N123be890 [stack 0]
+push $N123be890
+add_layer {VRaySelfIllumination VRaySelfIllumination.red VRaySelfIllumination.green VRaySelfIllumination.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRaySelfIllumination
+ name Merge21
+ label "- SELF ILLUM"
+ xpos -364
+ ypos 132
+}
+set N123bebc0 [stack 0]
+push $N123bebc0
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayAtmosphere
+ name Merge22
+ label "- ATHMO"
+ xpos -364
+ ypos 170
+}
+set N123beef0 [stack 0]
+push $N123beef0
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayBackground
+ name Merge23
+ label "- BACKGROUND"
+ xpos -364
+ ypos 208
+}
+Dot {
+ name Dot16
+ xpos -330
+ ypos 333
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge24
+ label CORRECTOR
+ note_font_color 0xff00ff
+ xpos -122
+ ypos 324
+}
+push $N48cb950
+Dot {
+ name Dot36
+ xpos 72
+ ypos -1
+ hide_input true
+}
+Shuffle {
+ in VRayGlobalIllumination
+ name GI
+ xpos 38
+ ypos 93
+}
+push $N123206b0
+Merge2 {
+ inputs 2
+ operation divide
+ name Merge1
+ xpos 38
+ ypos 162
+}
+push $N12321370
+Merge2 {
+ inputs 2
+ operation multiply
+ name Merge4
+ xpos 38
+ ypos 223
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge5
+ xpos 38
+ ypos 330
+}
+push $N48cb950
+Dot {
+ name Dot4
+ xpos 207
+ ypos -2
+ hide_input true
+}
+Shuffle {
+ in VRaySpecular
+ name specular
+ xpos 173
+ ypos 92
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge6
+ xpos 173
+ ypos 330
+}
+push $N48cb950
+Dot {
+ name Dot5
+ xpos 363
+ ypos -2
+ hide_input true
+}
+Shuffle {
+ in VRayReflection
+ name reflection
+ xpos 329
+ ypos 92
+}
+push $N48cb950
+Dot {
+ name Dot6
+ xpos 443
+ ypos -2
+ hide_input true
+}
+add_layer {VRayReflectionFilter VRayReflectionFilter.red VRayReflectionFilter.green VRayReflectionFilter.blue}
+Shuffle {
+ in VRayReflectionFilter
+ name reflectionFilter
+ xpos 409
+ ypos 92
+}
+Dot {
+ name Dot9
+ xpos 443
+ ypos 193
+}
+set N124a8c60 [stack 0]
+Merge2 {
+ inputs 2
+ operation divide
+ name Merge7
+ xpos 329
+ ypos 158
+}
+push $N124a8c60
+Merge2 {
+ inputs 2
+ operation multiply
+ name Merge9
+ xpos 329
+ ypos 227
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge11
+ xpos 329
+ ypos 330
+}
+push $N48cb950
+Dot {
+ name Dot7
+ xpos 578
+ ypos -2
+ hide_input true
+}
+Shuffle {
+ in VRayRefraction
+ name refraction
+ xpos 544
+ ypos 92
+}
+push $N48cb950
+Dot {
+ name Dot8
+ xpos 658
+ ypos -2
+ hide_input true
+}
+add_layer {VRayRefractionFilter VRayRefractionFilter.red VRayRefractionFilter.green VRayRefractionFilter.blue}
+Shuffle {
+ in VRayRefractionFilter
+ name refractionFilter
+ xpos 624
+ ypos 92
+}
+Dot {
+ name Dot10
+ xpos 658
+ ypos 195
+}
+set N124aa5e0 [stack 0]
+Merge2 {
+ inputs 2
+ operation divide
+ name Merge8
+ xpos 544
+ ypos 156
+}
+push $N124aa5e0
+Merge2 {
+ inputs 2
+ operation multiply
+ name Merge10
+ xpos 544
+ ypos 226
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge12
+ xpos 544
+ ypos 330
+}
+push $N48cb950
+Dot {
+ name Dot20
+ xpos 770
+ ypos 1
+ hide_input true
+}
+Shuffle {
+ in VRaySelfIllumination
+ name Shuffle1
+ label SelfIllumination
+ xpos 736
+ ypos 93
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge27
+ xpos 736
+ ypos 330
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge14
+ xpos 858
+ ypos 330
+}
+Merge2 {
+ inputs 2
+ operation plus
+ mix 0.46
+ name Merge15
+ xpos 980
+ ypos 330
+}
+Dot {
+ name Dot48
+ xpos 1014
+ ypos 389
+}
+Shuffle {
+ alpha black
+ name Shuffle2
+ label "KILL ALPHA"
+ xpos 1271
+ ypos 380
+}
+Copy {
+ inputs 2
+ from0 rgba.alpha
+ to0 rgba.alpha
+ name Copy1
+ xpos 1396
+ ypos 380
+}
+Dot {
+ name Dot13
+ xpos 1675
+ ypos 390
+}
+set N12574d30 [stack 0]
+Dot {
+ name Dot42
+ label "TO COLOR CHECK"
+ note_font_color 0xff449eff
+ xpos 1675
+ ypos 201
+}
+Dot {
+ name Dot43
+ label "FROM PASSING"
+ note_font_color 0xff449eff
+ xpos 562
+ ypos -516
+ hide_input true
+}
+Merge2 {
+ inputs 2
+ operation difference
+ name Merge13
+ label "DIFFERENCE\nchecker"
+ xpos 411
+ ypos -533
+}
+Dot {
+ name Dot46
+ label "VIEW DIFFERENCE\n(CHECK ORIGNAL WITH COMP)"
+ note_font_size 15
+ note_font_color 0xff00ff
+ xpos 445
+ ypos -361
+}
+push $N12574d30
+Dot {
+ name Dot44
+ label "FINAL POSTPROCESSING"
+ note_font_color 0xff0000ff
+ xpos 1755
+ ypos 390
+}
+Colorspace {
+ colorspace_in 2.20
+ name Colorspace2
+ tile_color 0xff0000ff
+ label "ACTIVATE FOR\nTONE MAP"
+ note_font_color 0xff
+ xpos 1721
+ ypos 504
+}
+Write {
+ channels rgba
+ file "\[value media_pathOUTPUT.media]nuked_render_\[date %m]\[date %d]_####.tif"
+ file_type tiff
+ checkHashOnRead false
+ version 26
+ name Write1
+ xpos 1721
+ ypos 707
+}
+Viewer {
+ frame 1
+ fps 25
+ roi {0.1840000004 -0.05200000107 0.5 0.3}
+ input_process false
+ name Viewer1
+ xpos 1898
+ ypos 713
+}
+NoOp {
+ inputs 0
+ name media_pathOUTPUT
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font_size 9
+ note_font_color 0x9e0000ff
+ xpos 1519
+ ypos 710
+ addUserKnob {20 User}
+ addUserKnob {2 media l "Media Folder Directory:"}
+ media E:/renderoutput/
+}
+NoOp {
+ inputs 0
+ name media_pathRENDER
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font_size 9
+ note_font_color 0x9e0000ff
+ xpos -166
+ ypos -538
+ addUserKnob {20 User}
+ addUserKnob {2 media l "Media Folder Directory:"}
+ media E:/renderinput/
+}

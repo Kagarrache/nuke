@@ -1,0 +1,89 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Arc}
+ addUserKnob {41 radius T ctrl2.radius}
+ addUserKnob {41 thickness T ctrl2.thickness}
+ addUserKnob {41 angle T ctrl2.angle}
+ addUserKnob {41 arc T ctrl2.arc}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 194
+  ypos -5
+ }
+add_layer {rgba rgba.beta}
+ Expression {
+  temp_name0 angle
+  temp_expr0 "ctrl2.angle / (360/(2*pi))"
+  expr0 cx*cos(angle)-cy*sin(angle)
+  expr1 cx*sin(angle)+cy*cos(angle)
+  channel2 none
+  channel3 none
+  name Expression1
+  xpos 194
+  ypos 21
+ }
+ Expression {
+  expr0 "sqrt(r*r + g*g)"
+  expr1 "atan2(r, g) +pi "
+  channel2 none
+  channel3 none
+  name Expression2
+  xpos 194
+  ypos 47
+ }
+ Expression {
+  temp_name0 ra
+  temp_expr0 ctrl2.radius
+  temp_name1 th
+  temp_expr1 ctrl2.thickness
+  temp_name2 arc
+  temp_expr2 ctrl2.arc
+  expr0 "clamp( ((r)-((ra-1)/width)) / (((ra+1)/width)-((ra-1)/width)), 0, 1 )"
+  expr1 "1-clamp( ((r)-(( (ra+(th*2))-1)/width)) / (((ra+(th*2)+1)/width)-((ra+(th*2)-1)/width)), 0, 1 )"
+  expr2 "g < pi/(180/arc) ? 1 : 0"
+  channel3 none
+  name Expression10
+  xpos 194
+  ypos 73
+ }
+ Soften {
+  channels {-rgba.red -rgba.green rgba.blue}
+  amount 1
+  size 1.5
+  name Soften1
+  xpos 194
+  ypos 99
+ }
+ Expression {
+  channel0 rgba
+  expr0 r*g*b
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression11
+  xpos 194
+  ypos 137
+ }
+ Output {
+  name Output
+  xpos 194
+  ypos 163
+ }
+ NoOp {
+  inputs 0
+  name ctrl2
+  xpos 343
+  ypos 27
+  addUserKnob {20 User}
+  addUserKnob {7 radius R 1 300}
+  radius 100
+  addUserKnob {7 thickness R 1 100}
+  thickness 40
+  addUserKnob {7 angle R -180 180}
+  addUserKnob {7 arc R 0 360}
+  arc 180
+ }
+end_group

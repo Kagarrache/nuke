@@ -1,0 +1,2248 @@
+Gizmo {
+ inputs 7
+ name Flare_Rig
+ help "There are 5 flare inputs and 1 Occlusion & Mask layer and the background input."
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 Master l "Flare Rig" t "Master Controls"}
+ addUserKnob {6 Fonly l "Flare Only" t "Toggles the ability to add/screen it directly to BG" +STARTLINE}
+ addUserKnob {12 Origin}
+ Origin {1666 912}
+ addUserKnob {6 aTr l INVISIBLE +INVISIBLE +STARTLINE}
+ addUserKnob {1 tracN l INVISIBLE t "Type in the name of the node and the field and check Apply Track.  This will automaticly link to the translate field\nex: Tracker1" -STARTLINE +INVISIBLE}
+ tracN Tracker1
+ addUserKnob {20 CenterPm l "Center Point (manual)" n 1}
+ CenterPm 0
+ addUserKnob {6 cPointmOn l enable +STARTLINE}
+ addUserKnob {12 Cent l "Center Point"}
+ Cent {1282 490}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 gBGcS l "BG origin color sample" n 1}
+ gBGcS 0
+ addUserKnob {41 bgsR l "bg sample radius" t "This controls the size of the sample area" T BG.bgsR}
+ addUserKnob {18 bgcolors l "bg color sample" t "This samples the color of anything feed in to the BG input.  Even when it's in Flare Only mode.  You can use this to drive anything you want."}
+ bgcolors {{BG.bgcS.r} {BG.bgcS.g} {BG.bgcS.b}}
+ addUserKnob {20 endGroup_23 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 GA l "Group Adjustments"}
+ addUserKnob {14 mt l translate t "This transforms all the flares together" R 0 100}
+ mt {0 0}
+ addUserKnob {7 mr l rotate t "This rotates all the flares together" R -180 180}
+ addUserKnob {14 ms l scale t "This scales all the flares together" R 0 100}
+ ms 1
+ addUserKnob {20 TAct l "Triggered Actions Area" n 1}
+ TAct 0
+ addUserKnob {41 AArea l "Action Area" t "This shows you where the action areas are" T MAction.AArea}
+ addUserKnob {6 TApreview l "preview          " t "check this to see where the action area(s) are" -STARTLINE}
+ addUserKnob {6 mCenterPT l "use manual Center Point" t "If you've activated the Center Point (manual) and you want the center of the action area to be the same as the manual" -STARTLINE}
+ addUserKnob {14 edgeF l "edge thickness" t "determines how wide the action area is on the edge of frame" R 0 100}
+ edgeF 50
+ addUserKnob {14 edgeS l "edge softness" t "This determines how much falloff there is on the edge of action area" R 0 100}
+ edgeS 80
+ addUserKnob {14 centerS l "center size" t "determines action area size for center" R 0 100}
+ centerS {0.65 0.7}
+ addUserKnob {7 centerSo l "center softness" t "how soft the action area is in the center"}
+ centerSo 1
+ addUserKnob {20 endGroup_12 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 occ l Occlussion n 1}
+ occ 0
+ addUserKnob {6 occE l enable t "activates the occlussion" +STARTLINE}
+ addUserKnob {41 in_1 l "Occlussion layer" t "Determines which layer from Occ_and_Mask input is used for your occlussion" T ShuffleOc.in}
+ addUserKnob {4 occc l "          control channel" t "Determines which channel from the Occlussion layer is used for your occlussion" -STARTLINE M {Red Green Blue Alpha}}
+ addUserKnob {26 dpass l "occ depth coordinates"}
+ addUserKnob {6 usedp l "use depth pass" +STARTLINE}
+ addUserKnob {7 orr l "origin radius" R 1 30}
+ orr 10
+ addUserKnob {26 occ3dcord l INVISIBLE +INVISIBLE}
+ addUserKnob {13 lcord l INVISIBLE +INVISIBLE}
+ lcord {0 0 260}
+ addUserKnob {13 ccord l INVISIBLE +INVISIBLE}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 in l "mask layer" t "Determines which layer from Occ_and_Mask input is used for your mask" T ShuffleM.in}
+ addUserKnob {4 maskCh l "          mask channel" t "Determines which channel from mask layer is used for your occlussion" -STARTLINE M {Red Green Blue Alpha}}
+ maskCh Alpha
+ addUserKnob {26 ""}
+ addUserKnob {26 version l "" +STARTLINE T "                                 by Chad Buehler & 3DM v1.0    "}
+ addUserKnob {32 bugs l " comments / bugs " t "click here to download the latest version, leave a comment/request or a bug." -STARTLINE T "start http://www.nukepedia.com/index.php?searchword=Buehler&ordering=&searchphrase=all&option=com_search"}
+ addUserKnob {20 Flare1}
+ addUserKnob {6 on1 l enable +STARTLINE}
+ on1 true
+ addUserKnob {14 t1 l translate R 0 100}
+ t1 {0 0}
+ addUserKnob {7 r1 l rotate R -180 180}
+ addUserKnob {6 lr1 l "lock rotation" -STARTLINE}
+ addUserKnob {14 s1 l scale R 0 100}
+ s1 {1 1}
+ addUserKnob {7 sp1 l spread t "This determines the distance from the origin/center.  \nExamples\n0 = origin\n1 = center\n2 = mirror of origin" R 0 10}
+ sp1 0.2
+ addUserKnob {4 la1 l "Limit Axis" M {Disabled "Y Axis only" "X Axis only"}}
+ addUserKnob {7 rs1 l "rotate orbit" R -180 180}
+ addUserKnob {26 ""}
+ addUserKnob {7 sat1 l saturation R 0 4}
+ sat1 1
+ addUserKnob {7 hueR1 l "hue rotation" R -180 180}
+ addUserKnob {7 bright1 l brightness R 0 4}
+ bright1 1
+ addUserKnob {14 b1 l blur R 0 100}
+ addUserKnob {4 mOp l operation M {Plus Screen}}
+ addUserKnob {20 TAct1 l "triggered actions" n 1}
+ TAct1 0
+ addUserKnob {6 TAF1on l enable +STARTLINE}
+ addUserKnob {41 AArea1 l "    Action Area" -STARTLINE T MAction.AArea1}
+ addUserKnob {41 srad1 l "    sample radius" -STARTLINE T MAction.srad1}
+ addUserKnob {14 TAsc1 l scale R 0 100}
+ TAsc1 1
+ addUserKnob {7 TArot1 l rotate R -180 180}
+ addUserKnob {7 TAsat1 l saturation R 0 4}
+ TAsat1 1
+ addUserKnob {7 TAhue1 l "hue rotation" R -180 180}
+ addUserKnob {7 TAbri1 l brightness}
+ TAbri1 1
+ addUserKnob {14 TAblur1 l blur R 0 100}
+ addUserKnob {4 leafDirF1 l "leaf direction" M {"x - same side" "x - opposite side" "y - same side" "y - opposite side"}}
+ addUserKnob {14 leafF1 l "          leaf" -STARTLINE R 0 100}
+ addUserKnob {41 size_15 l "leaf blur" T BlurL1.size}
+ addUserKnob {20 endGroup_13 l endGroup n -1}
+ addUserKnob {20 mask1 l mask n 1}
+ mask1 0
+ addUserKnob {6 m1On l enable +STARTLINE}
+ addUserKnob {4 TMmirrorF1 l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both "" ""}}
+ addUserKnob {14 mF1scale l scale R 0 100}
+ mF1scale 1
+ addUserKnob {41 size l blur T Blur6.size}
+ addUserKnob {20 endGroup_18 l endGroup n -1}
+ addUserKnob {26 cmf1 l "replicate flare"}
+ addUserKnob {20 cmf11 l 1 n 1}
+ cmf11 0
+ addUserKnob {6 rOn1a l "enable     " +STARTLINE}
+ addUserKnob {7 spr1a l "offset spread" R -1 1}
+ spr1a -0.1
+ addUserKnob {7 rm1a l rotate R -180 180}
+ addUserKnob {14 sm1a l scale R 0 100}
+ sm1a 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_5 l "overall saturation" T HueShift6.saturation}
+ addUserKnob {41 hue_rotation_5 l "hue rotation" T HueShift6.hue_rotation}
+ addUserKnob {41 brightness_5 l brightness T HueShift6.brightness}
+ addUserKnob {14 br1a l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m1aOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF1a l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF1ascale l scale R 0 100}
+ mF1ascale 1
+ addUserKnob {41 size_1 l "blur mask" T Blur26.size}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 cmf12 l 2 n 1}
+ cmf12 0
+ addUserKnob {6 rOn1b l enable +STARTLINE}
+ addUserKnob {7 spr1b l "offset spread" R -1 1}
+ spr1b -0.05
+ addUserKnob {7 rm1b l rotate R -180 180}
+ addUserKnob {14 sm1b l scale R 0 100}
+ sm1b 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_6 l "overall saturation" T HueShift7.saturation}
+ addUserKnob {41 hue_rotation_6 l "hue rotation" T HueShift7.hue_rotation}
+ addUserKnob {41 brightness_6 l brightness T HueShift7.brightness}
+ addUserKnob {14 br1b l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m1bOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF1b l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF1bscale l scale R 0 100}
+ mF1bscale 1
+ addUserKnob {41 size_2 l "blur mask" T Blur27.size}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {20 Flare2}
+ addUserKnob {6 on2 l enable +STARTLINE}
+ on2 true
+ addUserKnob {14 t2 l translate R 0 100}
+ t2 {0 0}
+ addUserKnob {7 r2 l rotate R -180 180}
+ addUserKnob {6 lr2 l "lock rotation" -STARTLINE}
+ addUserKnob {14 s2 l scale R 0 100}
+ s2 {1 1}
+ addUserKnob {7 sp2 l spread t "This determines the distance from the origin/center.  \nExamples\n0 = origin\n1 = center\n2 = mirror of origin" R 0 10}
+ sp2 0.6
+ addUserKnob {4 la2 l "Limit Axis" M {Disabled "Y Axis only" "X Axis only"}}
+ addUserKnob {7 rs2 l "rotate orbit" R -180 180}
+ addUserKnob {26 ""}
+ addUserKnob {7 sat2 l saturation R 0 4}
+ sat2 1
+ addUserKnob {7 hueR2 l "hue rotation" R -180 180}
+ addUserKnob {7 bright2 l brightness R 0 4}
+ bright2 1
+ addUserKnob {14 b2 l blur R 0 100}
+ addUserKnob {4 mOp2 l operation M {Plus Screen}}
+ addUserKnob {20 TAct2 l "triggered actions" n 1}
+ TAct2 0
+ addUserKnob {6 TAF2on l enable +STARTLINE}
+ addUserKnob {41 AArea2 l "    Action Area" -STARTLINE T MAction.AArea2}
+ addUserKnob {41 srad2 l "    sample radius" -STARTLINE T MAction.srad2}
+ addUserKnob {14 TAsc2 l scale R 0 100}
+ TAsc2 1
+ addUserKnob {7 TArot2 l rotate R -180 180}
+ addUserKnob {7 TAsat2 l saturation R 0 4}
+ TAsat2 1
+ addUserKnob {7 TAhue2 l "hue rotation" R -180 180}
+ addUserKnob {7 TAbri2 l brightness}
+ TAbri2 1
+ addUserKnob {14 TAblur2 l blur R 0 100}
+ addUserKnob {4 leafDirF2 l "leaf direction" M {"x - same side" "x - opposite side" "y - same side" "y - opposite side"}}
+ addUserKnob {14 leafF2 l "          leaf" -STARTLINE R 0 100}
+ addUserKnob {41 size_16 l "leaf blur" T BlurL2.size}
+ addUserKnob {20 endGroup_14 l endGroup n -1}
+ addUserKnob {20 mask2 l mask n 1}
+ mask2 0
+ addUserKnob {6 m2On l enable +STARTLINE}
+ addUserKnob {4 TMmirrorF2 l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF2scale l scale R 0 100}
+ mF2scale 1
+ addUserKnob {41 size_4 l blur T Blur9.size}
+ addUserKnob {20 endGroup_19 l endGroup n -1}
+ addUserKnob {26 cmf2 l "replicate flare"}
+ addUserKnob {20 cmf21 l 1 n 1}
+ cmf21 0
+ addUserKnob {6 rOn2a l "enable     " +STARTLINE}
+ addUserKnob {7 spr2a l "offset spread" R -1 1}
+ spr2a -0.1
+ addUserKnob {7 rm2a l rotate R -180 180}
+ addUserKnob {14 sm2a l scale R 0 100}
+ sm2a 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_7 l "overall saturation" T HueShift8.saturation}
+ addUserKnob {41 hue_rotation_7 l "hue rotation" T HueShift8.hue_rotation}
+ addUserKnob {41 brightness_7 l brightness T HueShift8.brightness}
+ addUserKnob {14 br2a l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m2aOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF2a l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF2ascale l scale R 0 100}
+ mF2ascale 1
+ addUserKnob {41 size_3 l "blur mask" T Blur28.size}
+ addUserKnob {20 endGroup_6 l endGroup n -1}
+ addUserKnob {20 cmf22 l 2 n 1}
+ cmf22 0
+ addUserKnob {6 rOn2b l "enable     " +STARTLINE}
+ addUserKnob {7 spr2b l "offset spread" R -1 1}
+ spr2b -0.05
+ addUserKnob {7 rm2b l rotate R -180 180}
+ addUserKnob {14 sm2b l scale R 0 100}
+ sm2b 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_8 l "overall saturation" T HueShift9.saturation}
+ addUserKnob {41 hue_rotation_8 l "hue rotation" T HueShift9.hue_rotation}
+ addUserKnob {41 brightness_8 l brightness T HueShift9.brightness}
+ addUserKnob {14 br2b l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m2bOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF2b l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF2bscale l scale R 0 100}
+ mF2bscale 1
+ addUserKnob {41 size_5 l "blur mask" T Blur29.size}
+ addUserKnob {20 endGroup_7 l endGroup n -1}
+ addUserKnob {20 Flare3}
+ addUserKnob {6 on3 l enable +STARTLINE}
+ on3 true
+ addUserKnob {14 t3 l translate R 0 100}
+ t3 {0 0}
+ addUserKnob {7 r3 l rotate R -180 180}
+ addUserKnob {6 lr3 l "lock rotation" -STARTLINE}
+ addUserKnob {14 s3 l scale R 0 100}
+ s3 {1 1}
+ addUserKnob {7 sp3 l spread t "This determines the distance from the origin/center.  \nExamples\n0 = origin\n1 = center\n2 = mirror of origin" R 0 10}
+ sp3 1
+ addUserKnob {4 la3 l "Limit Axis" M {Disabled "Y Axis only" "X Axis only"}}
+ addUserKnob {7 rs3 l "rotate orbit" R -180 180}
+ addUserKnob {26 ""}
+ addUserKnob {7 sat3 l saturation R 0 4}
+ sat3 1
+ addUserKnob {7 hueR3 l "hue rotation" R -180 180}
+ addUserKnob {7 bright3 l brightness R 0 4}
+ bright3 1
+ addUserKnob {14 b3 l blur R 0 100}
+ addUserKnob {4 mOp3 l operation M {Plus Screen}}
+ addUserKnob {20 TAct3 l "triggered actions" n 1}
+ TAct3 0
+ addUserKnob {6 TAF3on l enable +STARTLINE}
+ addUserKnob {41 AArea3 l "    Action Area" -STARTLINE T MAction.AArea3}
+ addUserKnob {41 srad3 l "    sample radius" -STARTLINE T MAction.srad3}
+ addUserKnob {14 TAsc3 l scale R 0 100}
+ TAsc3 1
+ addUserKnob {7 TArot3 l rotate R -180 180}
+ addUserKnob {7 TAsat3 l saturation R 0 4}
+ TAsat3 1
+ addUserKnob {7 TAhue3 l "hue rotation" R -180 180}
+ addUserKnob {7 TAbri3 l brightness}
+ TAbri3 1
+ addUserKnob {14 TAblur3 l blur R 0 100}
+ addUserKnob {4 leafDirF3 l "leaf direction" M {"x - same side" "x - opposite side" "y - same side" "y - opposite side"}}
+ addUserKnob {14 leafF3 l "          leaf" -STARTLINE R 0 100}
+ addUserKnob {41 size_17 l "leaf blur" T BlurL3.size}
+ addUserKnob {20 endGroup_15 l endGroup n -1}
+ addUserKnob {20 mask3 l mask n 1}
+ mask3 0
+ addUserKnob {6 m3On l enable +STARTLINE}
+ addUserKnob {4 TMmirrorF3 l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both}}
+ addUserKnob {14 mF3scale l scale R 0 100}
+ mF3scale 1
+ addUserKnob {41 size_6 l blur T Blur19.size}
+ addUserKnob {20 endGroup_20 l endGroup n -1}
+ addUserKnob {26 cmf3 l "replicate flare"}
+ addUserKnob {20 cmf31 l 1 n 1}
+ cmf31 0
+ addUserKnob {6 rOn3a l "enable     " +STARTLINE}
+ addUserKnob {7 spr3a l "offset spread" R -1 1}
+ spr3a -0.1
+ addUserKnob {7 rm3a l rotate R -180 180}
+ addUserKnob {14 sm3a l scale R 0 100}
+ sm3a 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_9 l "overall saturation" T HueShift10.saturation}
+ addUserKnob {41 hue_rotation_9 l "hue rotation" T HueShift10.hue_rotation}
+ addUserKnob {41 brightness_9 l brightness T HueShift10.brightness}
+ addUserKnob {14 br3a l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m3aOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF3a l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF3ascale l scale R 0 100}
+ mF3ascale 1
+ addUserKnob {41 size_7 l "blur mask" T Blur30.size}
+ addUserKnob {20 endGroup_4 l endGroup n -1}
+ addUserKnob {20 cmf32 l 2 n 1}
+ cmf32 0
+ addUserKnob {6 rOn3b l "enable     " +STARTLINE}
+ addUserKnob {7 spr3b l "offset spread" R -1 1}
+ spr3b -0.05
+ addUserKnob {7 rm3b l rotate R -180 180}
+ addUserKnob {14 sm3b l scale R 0 100}
+ sm3b 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_10 l "overall saturation" T HueShift11.saturation}
+ addUserKnob {41 hue_rotation_10 l "hue rotation" T HueShift11.hue_rotation}
+ addUserKnob {41 brightness_10 l brightness T HueShift11.brightness}
+ addUserKnob {14 br3b l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m3bOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF3b l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF3bscale l scale R 0 100}
+ mF3bscale 1
+ addUserKnob {41 size_8 l "blur mask" T Blur31.size}
+ addUserKnob {20 endGroup_5 l endGroup n -1}
+ addUserKnob {20 Flare4}
+ addUserKnob {6 on4 l enable +STARTLINE}
+ on4 true
+ addUserKnob {14 t4 l translate R 0 100}
+ t4 {0 0}
+ addUserKnob {7 r4 l rotate R -180 180}
+ addUserKnob {6 lr4 l "lock rotation" -STARTLINE}
+ addUserKnob {14 s4 l scale R 0 100}
+ s4 {1 1}
+ addUserKnob {7 sp4 l spread t "This determines the distance from the origin/center.  \nExamples\n0 = origin\n1 = center\n2 = mirror of origin" R 0 10}
+ sp4 1.4
+ addUserKnob {4 la4 l "Limit Axis" M {Disabled "Y Axis only" "X Axis only"}}
+ addUserKnob {7 rs4 l "rotate orbit" R -180 180}
+ addUserKnob {26 ""}
+ addUserKnob {7 sat4 l saturation R 0 4}
+ sat4 1
+ addUserKnob {7 hueR4 l "hue rotation" R -180 180}
+ addUserKnob {7 bright4 l brightness R 0 4}
+ bright4 1
+ addUserKnob {14 b4 l blur R 0 100}
+ addUserKnob {4 mOp4 l operation M {Plus Screen}}
+ addUserKnob {20 TAct4 l "triggered actions" n 1}
+ TAct4 0
+ addUserKnob {6 TAF4on l enable +STARTLINE}
+ addUserKnob {41 AArea4 l "    Action Area" -STARTLINE T MAction.AArea4}
+ addUserKnob {41 srad4 l "    sample radius" -STARTLINE T MAction.srad4}
+ addUserKnob {14 TAsc4 l scale R 0 100}
+ TAsc4 1
+ addUserKnob {7 TArot4 l rotate R -180 180}
+ addUserKnob {7 TAsat4 l saturation R 0 4}
+ TAsat4 1
+ addUserKnob {7 TAhue4 l "hue rotation" R -180 180}
+ addUserKnob {7 TAbri4 l brightness}
+ TAbri4 1
+ addUserKnob {14 TAblur4 l blur R 0 100}
+ addUserKnob {4 leafDirF4 l "leaf direction" M {"x - same side" "x - opposite side" "y - same side" "y - opposite side"}}
+ addUserKnob {14 leafF4 l "          leaf" -STARTLINE R 0 100}
+ addUserKnob {41 size_18 l "leaf blur" T BlurL4.size}
+ addUserKnob {20 endGroup_16 l endGroup n -1}
+ addUserKnob {20 mask4 l mask n 1}
+ mask4 0
+ addUserKnob {6 m4On l enable +STARTLINE}
+ addUserKnob {4 TMmirrorF4 l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both ""}}
+ addUserKnob {14 mF4scale l scale R 0 100}
+ mF4scale 1
+ addUserKnob {41 size_9 l blur T Blur20.size}
+ addUserKnob {20 endGroup_21 l endGroup n -1}
+ addUserKnob {26 cmf4 l "replicate flare"}
+ addUserKnob {20 cmf41 l 1 n 1}
+ cmf41 0
+ addUserKnob {6 rOn4a l "enable    " +STARTLINE}
+ addUserKnob {7 spr4a l "offset spread" R -1 1}
+ spr4a 0.1
+ addUserKnob {7 rm4a l rotate R -180 180}
+ addUserKnob {14 sm4a l scale R 0 100}
+ sm4a 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_11 l "overall saturation" T HueShift12.saturation}
+ addUserKnob {41 hue_rotation_11 l "hue rotation" T HueShift12.hue_rotation}
+ addUserKnob {41 brightness_11 l brightness T HueShift12.brightness}
+ addUserKnob {14 br4a l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m4aOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF4a l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both}}
+ addUserKnob {14 mF4ascale l scale R 0 100}
+ mF4ascale 1
+ addUserKnob {41 size_10 l "blur mask" T Blur32.size}
+ addUserKnob {20 endGroup_8 l endGroup n -1}
+ addUserKnob {20 cmf42 l 2 n 1}
+ cmf42 0
+ addUserKnob {6 rOn4b l "enable    " +STARTLINE}
+ addUserKnob {7 spr4b l "offset spread" R -1 1}
+ spr4b 0.05
+ addUserKnob {7 rm4b l rotate R -180 180}
+ addUserKnob {14 sm4b l scale R 0 100}
+ sm4b 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_12 l "overall saturation" T HueShift13.saturation}
+ addUserKnob {41 hue_rotation_12 l "hue rotation" T HueShift13.hue_rotation}
+ addUserKnob {41 brightness_12 l brightness T HueShift13.brightness}
+ addUserKnob {14 br4b l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m4bOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF4b l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both}}
+ addUserKnob {14 mF4bscale l scale R 0 100}
+ mF4bscale 1
+ addUserKnob {41 size_11 l "blur mask" T Blur33.size}
+ addUserKnob {20 endGroup_9 l endGroup n -1}
+ addUserKnob {20 Flare5}
+ addUserKnob {6 on5 l enable +STARTLINE}
+ on5 true
+ addUserKnob {14 t5 l translate R 0 100}
+ t5 {0 0}
+ addUserKnob {7 r5 l rotate R -180 180}
+ addUserKnob {6 lr5 l "lock rotation" -STARTLINE}
+ addUserKnob {14 s5 l scale R 0 100}
+ s5 {1 1}
+ addUserKnob {7 sp5 l spread t "This determines the distance from the origin/center.  \nExamples\n0 = origin\n1 = center\n2 = mirror of origin" R 0 10}
+ sp5 2.2
+ addUserKnob {4 la5 l "Limit Axis" M {Disabled "Y Axis only" "X Axis only"}}
+ addUserKnob {7 rs5 l "rotate orbit" R -180 180}
+ addUserKnob {26 ""}
+ addUserKnob {7 sat5 l saturation R 0 4}
+ sat5 1
+ addUserKnob {7 hueR5 l "hue rotation" R -180 180}
+ addUserKnob {7 bright5 l brightness R 0 4}
+ bright5 1
+ addUserKnob {14 b5 l blur R 0 100}
+ addUserKnob {4 mOp5 l operation M {Plus Screen ""}}
+ addUserKnob {20 TAct5 l "triggered actions" n 1}
+ TAct5 0
+ addUserKnob {6 TAF5on l enable +STARTLINE}
+ addUserKnob {41 AArea5 l "    Action Area" -STARTLINE T MAction.AArea5}
+ addUserKnob {41 srad5 l "    sample radius" -STARTLINE T MAction.srad5}
+ addUserKnob {14 TAsc5 l scale R 0 100}
+ TAsc5 1
+ addUserKnob {7 TArot5 l rotate R -180 180}
+ addUserKnob {7 TAsat5 l saturation R 0 4}
+ TAsat5 1
+ addUserKnob {7 TAhue5 l "hue rotation" R -180 180}
+ addUserKnob {7 TAbri5 l brightness}
+ TAbri5 1
+ addUserKnob {14 TAblur5 l blur R 0 100}
+ addUserKnob {4 leafDirF5 l "leaf direction" M {"x - same side" "x - opposite side" "y - same side" "y - opposite side"}}
+ addUserKnob {14 leafF5 l "          leaf" -STARTLINE R 0 100}
+ addUserKnob {41 size_19 l "leaf blur" T BlurL5.size}
+ addUserKnob {20 endGroup_17 l endGroup n -1}
+ addUserKnob {20 mask5 l mask n 1}
+ mask5 0
+ addUserKnob {6 m5On l enable +STARTLINE}
+ addUserKnob {4 TMmirrorF5 l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both}}
+ addUserKnob {14 mF5scale l scale R 0 100}
+ mF5scale 1
+ addUserKnob {41 size_12 l blur T Blur21.size}
+ addUserKnob {20 endGroup_22 l endGroup n -1}
+ addUserKnob {26 cmf5 l "replicate flare"}
+ addUserKnob {20 cmf51 l 1 n 1}
+ cmf51 0
+ addUserKnob {6 rOn5a l "enable    " +STARTLINE}
+ addUserKnob {7 spr5a l "offset spread" R -1 1}
+ spr5a -0.1
+ addUserKnob {7 rm5a l rotate R -180 180}
+ addUserKnob {14 sm5a l scale R 0 100}
+ sm5a 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_13 l "overall saturation" T HueShift14.saturation}
+ addUserKnob {41 hue_rotation_13 l "hue rotation" T HueShift14.hue_rotation}
+ addUserKnob {41 brightness_13 l brightness T HueShift14.brightness}
+ addUserKnob {14 br5a l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m5aOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF5a l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both}}
+ addUserKnob {14 mF5ascale l scale R 0 100}
+ mF5ascale 1
+ addUserKnob {41 size_13 l "blur mask" T Blur34.size}
+ addUserKnob {20 endGroup_10 l endGroup n -1}
+ addUserKnob {20 cmf52 l 2 n 1}
+ cmf52 0
+ addUserKnob {6 rOn5b l "enable    " +STARTLINE}
+ addUserKnob {7 spr5b l "offset spread" R -1 1}
+ spr5b 0.05
+ addUserKnob {7 rm5b l rotate R -180 180}
+ addUserKnob {14 sm5b l scale R 0 100}
+ sm5b 1
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation_14 l "overall saturation" T HueShift15.saturation}
+ addUserKnob {41 hue_rotation_14 l "hue rotation" T HueShift15.hue_rotation}
+ addUserKnob {41 brightness_14 l brightness T HueShift15.brightness}
+ addUserKnob {14 br5b l blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {6 m5bOn l "mask enable" +STARTLINE}
+ addUserKnob {4 TMmirrorF5b l "          mirror" -STARTLINE M {Disabled Horizontal Vertical Both}}
+ addUserKnob {14 mF5bscale l scale R 0 100}
+ mF5bscale 1
+ addUserKnob {41 size_14 l "blur mask" T Blur35.size}
+ addUserKnob {20 endGroup_11 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name Occ_and_Mask
+  xpos 1248
+  ypos -766
+  number 6
+ }
+set N22d82570 [stack 0]
+ Shuffle {
+  in mask
+  name ShuffleM
+  xpos 1248
+  ypos -38
+ }
+ Expression {
+  temp_name0 chan1
+  temp_expr0 "clamp(maskCh == 0 ? r : maskCh == 1 ? g : maskCh == 2 ? b : a)"
+  expr0 chan1
+  expr1 chan1
+  expr2 chan1
+  expr3 chan1
+  name Expression2
+  xpos 1248
+  ypos 396
+ }
+set N22d8eb60 [stack 0]
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR10.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR10.translate.y)" i}}
+  scale {{"(parent.TMmirrorF5 == 1 ||  parent.TMmirrorF5 == 3 ? -1 : 1) * parent.mF5bscale.w" i} {"(parent.TMmirrorF5 == 2 || parent.TMmirrorF5 == 3 ? -1 : 1) * parent.mF5bscale.h" i}}
+  center {{"parent.TFlareR10.center - translate.x + parent.TFlareR10.translate.x" i} {"parent.TFlareR10.center - translate.y + parent.TFlareR10.translate.y" i}}
+  name TransM5b
+  xpos 2164
+  ypos 766
+ }
+ Blur {
+  channels rgba
+  name Blur35
+  xpos 2164
+  ypos 792
+ }
+ Input {
+  inputs 0
+  name F5
+  xpos 2396
+  ypos 80
+  number 5
+ }
+set N22da5920 [stack 0]
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle6
+  xpos 2236
+  ypos 165
+ }
+ Crop {
+  box {{"(parent.leafDirF5 == 0 && parent.Origin.x < width/2 ? parent.leafF5.w : parent.leafDirF5 == 1 && parent.Origin.x > width/2 ? parent.leafF5.w : 0) * parent.MAction.OAct5" i} {"(parent.leafDirF5 == 2 && parent.Origin.y < height/2 ? parent.leafF5.h : parent.leafDirF5 == 3 && parent.Origin.y > height/2 ? parent.leafF5.h : 0) * parent.MAction.OAct5" i} {"width - ((parent.leafDirF5 == 0 && parent.Origin.x > width/2 ? parent.leafF5.w : parent.leafDirF5 == 1 && parent.Origin.x < width/2 ? parent.leafF5.w : 0) * parent.MAction.OAct5)" i x1 2048} {"height - ((parent.leafDirF5 == 2 && parent.Origin.y > height/2 ? parent.leafF5.h : parent.leafDirF5 == 3 && parent.Origin.y < height/2 ? parent.leafF5.h : 0) * parent.MAction.OAct5)" i x1 1556}}
+  name edgeLeaf5
+  xpos 2236
+  ypos 199
+  disable {{"parent.leafF5.w == 0 && parent.leafF5.h == 0 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {0 0}
+  name BlurL5
+  xpos 2236
+  ypos 233
+  disable {{"size.w == 0 && size.h == 0 ? 1 : 0" i}}
+ }
+ Invert {
+  channels rgba
+  name Invert6
+  xpos 2236
+  ypos 271
+ }
+ Transform {
+  rotate {{-TransformFlare5.rotate i}}
+  center {{width/2 i} {height/2 i}}
+  black_outside false
+  name Transform5
+  xpos 2236
+  ypos 305
+ }
+push $N22da5920
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge20
+  xpos 2396
+  ypos 305
+  disable {{"!TAF5on == 0 && edgeLeaf5.disable == 0 ? 0 : 1" i}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{root.format.width i}}
+  box_height {{root.format.height i}}
+  box_fixed true
+  resize none
+  pbb true
+  name Reformat5
+  xpos 2396
+  ypos 365
+ }
+set N22dd6040 [stack 0]
+ Transform {
+  translate {{"(la5 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t5.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la5 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t5.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr5 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r5 + rm5b + (parent.TAF5on == 1 ? (parent.TArot5 * parent.MAction.OAct5) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR10
+  tile_color 0xffff
+  xpos 2511
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr5b+parent.sp5-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s5+(parent.sm5b.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF5on == 1 ? ((parent.TAsc5.w-1) * parent.MAction.OAct5) : 0)" i} {"(parent.s5+(parent.sm5b.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF5on == 1 ? ((parent.TAsc5.h-1) * parent.MAction.OAct5) : 0)" i}}
+  center {{"TFlareR10.translate.x + TFlareR10.center.x" i} {"TFlareR10.translate.y + TFlareR10.center.y" i}}
+  name scalefr10
+  xpos 2511
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge30
+  xpos 2511
+  ypos 792
+  disable {{!m5bOn i}}
+ }
+ HueShift {
+  name HueShift15
+  xpos 2512
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br5b i} {parent.br5b i}}
+  name Blur18
+  xpos 2512
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off9
+  xpos 2512
+  ypos 987
+  disable {{rOn5b i}}
+ }
+push 0
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR9.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR9.translate.y)" i}}
+  scale {{"(parent.TMmirrorF5 == 1 ||  parent.TMmirrorF5 == 3 ? -1 : 1) * parent.mF5ascale.w" i} {"(parent.TMmirrorF5 == 2 || parent.TMmirrorF5 == 3 ? -1 : 1) * parent.mF5ascale.h" i}}
+  center {{"parent.TFlareR9.center - translate.x + parent.TFlareR9.translate.x" i} {"parent.TFlareR9.center - translate.y + parent.TFlareR9.translate.y" i}}
+  name TransM5a
+  xpos 2164
+  ypos 661
+ }
+ Blur {
+  channels rgba
+  name Blur34
+  xpos 2164
+  ypos 687
+ }
+push $N22dd6040
+ Transform {
+  translate {{"(la5 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t5.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la5 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t5.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr5 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r5 + rm5a + (parent.TAF5on == 1 ? (parent.TArot5 * parent.MAction.OAct5) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR9
+  tile_color 0xffff
+  xpos 2274
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr5a+parent.sp5-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s5+(parent.sm5a.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 )+ (parent.TAF5on == 1 ? ((parent.TAsc5.w-1) * parent.MAction.OAct5) : 0)" i} {"(parent.s5+(parent.sm5a.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF5on == 1 ? ((parent.TAsc5.h-1) * parent.MAction.OAct5) : 0)" i}}
+  center {{"TFlareR9.translate.x + TFlareR9.center.x" i} {"TFlareR9.translate.y + TFlareR9.center.y" i}}
+  name scalefr9
+  xpos 2274
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge29
+  xpos 2274
+  ypos 687
+  disable {{!m5aOn i}}
+ }
+ HueShift {
+  name HueShift14
+  xpos 2275
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0"}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br5a i} {parent.br5a i}}
+  name Blur17
+  xpos 2275
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off8
+  xpos 2275
+  ypos 987
+  disable {{rOn5a i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TransformFlare5.translate.x)" i} {"- (TransformFlare1.noSpread.y-TransformFlare5.translate.y)" i}}
+  scale {{"(parent.TMmirrorF5 == 1 ||  parent.TMmirrorF5 == 3 ? -1 : 1) * parent.mF5scale.w" i} {"(parent.TMmirrorF5 == 2 || parent.TMmirrorF5 == 3 ? -1 : 1) * parent.mF5scale.h" i}}
+  center {{"parent.TransformFlare5.center - translate.x + parent.TransformFlare5.translate.x" i} {"parent.TransformFlare5.center - translate.y + parent.TransformFlare5.translate.y" i}}
+  name TransM5
+  xpos 2164
+  ypos 714
+ }
+ Blur {
+  channels rgba
+  name Blur21
+  xpos 2164
+  ypos 740
+ }
+push $N22dd6040
+ Transform {
+  translate {{"(la5 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t5.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la5 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t5.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr5 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r5 + (parent.TAF5on == 1 ? (parent.TArot5 * parent.MAction.OAct5) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TransformFlare5
+  tile_color 0xffff
+  xpos 2397
+  ypos 554
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.sp5-2 i}}
+ }
+ Transform {
+  scale {{"parent.s5*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF5on == 1 ? ((parent.TAsc5.w-1) * parent.MAction.OAct5) : 0)" i} {"parent.s5*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF5on == 1 ? ((parent.TAsc5.h-1) * parent.MAction.OAct5) : 0)" i}}
+  center {{"TransformFlare5.translate.x + TransformFlare5.center.x" i} {"TransformFlare5.translate.y + TransformFlare5.center.y" i}}
+  name scalef5
+  xpos 2397
+  ypos 578
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge16
+  xpos 2397
+  ypos 740
+  disable {{!m5On i}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation {{mOp5+24 i}}
+  bbox B
+  name Merge13
+  xpos 2398
+  ypos 1029
+  disable {{"!\[exists parent.input5] == 0 && on5 ==1 ? 0 : 1" i}}
+ }
+ Transform {
+  translate {{parent.mt i} {parent.mt i}}
+  rotate {{"parent.rs5 + parent.mr" i}}
+  scale {{parent.ms i} {parent.ms i}}
+  center {{"cPointmOn == 1 ? Cent.x : input.format.width/2" i} {"cPointmOn == 1 ? Cent.y : input.format.height/2" i}}
+  name TranGroup5
+  xpos 2397
+  ypos 1071
+  disable {{"rotate == 0 && translate.x + translate.y == 0 &&\nscale.w\n== 1 && scale.h == 1? 1 : 0" i}}
+ }
+ HueShift {
+  saturation {{"parent.sat5 + (parent.TAF5on == 1 ? ((parent.TAsat5-1) * parent.MAction.OAct5) : 0)" i}}
+  hue_rotation {{"parent.hueR5 + (parent.TAF5on == 1 ? (parent.TAhue5 * parent.MAction.OAct5) : 0)" i}}
+  brightness {{"parent.bright5 + (parent.TAF5on == 1 ? ((parent.TAbri5-1) * parent.MAction.OAct5) : 0)" i}}
+  name HueShift5
+  xpos 2397
+  ypos 1125
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{"parent.b5 + (parent.TAF5on == 1 ? (parent.TAblur5.w * parent.MAction.OAct5) : 0)" i} {"parent.b5 + (parent.TAF5on == 1 ? (parent.TAblur5.h * parent.MAction.OAct5) : 0)" i}}
+  name Blur5
+  xpos 2397
+  ypos 1215
+  disable {{"size == 0" i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR8.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR8.translate.y)" i}}
+  scale {{"(parent.TMmirrorF4 == 1 ||  parent.TMmirrorF4 == 3 ? -1 : 1) * parent.mF4bscale.w" i} {"(parent.TMmirrorF4 == 2 || parent.TMmirrorF4 == 3 ? -1 : 1) * parent.mF4bscale.h" i}}
+  center {{"parent.TFlareR8.center - translate.x + parent.TFlareR8.translate.x" i} {"parent.TFlareR8.center - translate.y + parent.TFlareR8.translate.y" i}}
+  name TransM4b
+  xpos 1705
+  ypos 767
+ }
+ Blur {
+  channels rgba
+  name Blur33
+  xpos 1705
+  ypos 793
+ }
+ Input {
+  inputs 0
+  name F4
+  xpos 1937
+  ypos 80
+  number 4
+ }
+set N22eacf40 [stack 0]
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle5
+  xpos 1777
+  ypos 173
+ }
+ Crop {
+  box {{"(parent.leafDirF4 == 0 && parent.Origin.x < width/2 ? parent.leafF4.w : parent.leafDirF4 == 1 && parent.Origin.x > width/2 ? parent.leafF4.w : 0) * parent.MAction.OAct4" i} {"(parent.leafDirF4 == 2 && parent.Origin.y < height/2 ? parent.leafF4.h : parent.leafDirF4 == 3 && parent.Origin.y > height/2 ? parent.leafF4.h : 0) * parent.MAction.OAct4" i} {"width - ((parent.leafDirF4 == 0 && parent.Origin.x > width/2 ? parent.leafF4.w : parent.leafDirF4 == 1 && parent.Origin.x < width/2 ? parent.leafF4.w : 0) * parent.MAction.OAct4)" i x1 2048} {"height - ((parent.leafDirF4 == 2 && parent.Origin.y > height/2 ? parent.leafF4.h : parent.leafDirF4 == 3 && parent.Origin.y < height/2 ? parent.leafF4.h : 0) * parent.MAction.OAct4)" i x1 1556}}
+  name edgeLeaf4
+  xpos 1777
+  ypos 207
+  disable {{"parent.leafF4.w == 0 && parent.leafF4.h == 0 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {0 0}
+  name BlurL4
+  xpos 1777
+  ypos 241
+  disable {{"size.w == 0 && size.h == 0 ? 1 : 0" i}}
+ }
+ Invert {
+  channels rgba
+  name Invert5
+  xpos 1777
+  ypos 279
+ }
+ Transform {
+  rotate {{-TransformFlare4.rotate i}}
+  center {{width/2 i} {height/2 i}}
+  black_outside false
+  name Transform4
+  xpos 1777
+  ypos 313
+ }
+push $N22eacf40
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge19
+  xpos 1937
+  ypos 313
+  disable {{"!TAF4on == 0 && edgeLeaf4.disable == 0 ? 0 : 1" i}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{root.format.width i}}
+  box_height {{root.format.height i}}
+  box_fixed true
+  resize none
+  pbb true
+  name Reformat4
+  xpos 1937
+  ypos 365
+ }
+set N22edd3e0 [stack 0]
+ Transform {
+  translate {{"(la4 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t4.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la4 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t4.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr4 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r4 + rm4b + (parent.TAF4on == 1 ? (parent.TArot4 * parent.MAction.OAct4) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR8
+  tile_color 0xffff
+  xpos 2051
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr4b+parent.sp4-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s4+(parent.sm4b.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF4on == 1 ? ((parent.TAsc4.w-1) * parent.MAction.OAct4) : 0)" i} {"(parent.s4+(parent.sm4b.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF4on == 1 ? ((parent.TAsc4.h-1) * parent.MAction.OAct4) : 0)" i}}
+  center {{"TFlareR8.translate.x + TFlareR8.center.x" i} {"TFlareR8.translate.y + TFlareR8.center.y" i}}
+  name scalefr8
+  xpos 2051
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge28
+  xpos 2052
+  ypos 793
+  disable {{!m4bOn i}}
+ }
+ HueShift {
+  name HueShift13
+  xpos 2052
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br4b i} {parent.br4b i}}
+  name Blur16
+  xpos 2052
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off7
+  xpos 2052
+  ypos 987
+  disable {{rOn4b i}}
+ }
+push 0
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR7.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR7.translate.y)" i}}
+  scale {{"(parent.TMmirrorF4 == 1 ||  parent.TMmirrorF4 == 3 ? -1 : 1) * parent.mF4ascale.w" i} {"(parent.TMmirrorF4 == 2 || parent.TMmirrorF4 == 3 ? -1 : 1) * parent.mF4ascale.h" i}}
+  center {{"parent.TFlareR7.center - translate.x + parent.TFlareR7.translate.x" i} {"parent.TFlareR7.center - translate.y + parent.TFlareR7.translate.y" i}}
+  name TransM4a
+  xpos 1705
+  ypos 657
+ }
+ Blur {
+  channels rgba
+  name Blur32
+  xpos 1705
+  ypos 683
+ }
+push $N22edd3e0
+ Transform {
+  translate {{"(la4 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t4.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la4 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t4.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr4 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r4 + rm4a + (parent.TAF4on == 1 ? (parent.TArot4 * parent.MAction.OAct4) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR7
+  tile_color 0xffff
+  xpos 1814
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr4a+parent.sp4-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s4+(parent.sm4a.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF4on == 1 ? ((parent.TAsc4.w-1) * parent.MAction.OAct4) : 0)" i} {"(parent.s4+(parent.sm4a.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF4on == 1 ? ((parent.TAsc4.h-1) * parent.MAction.OAct4) : 0)" i}}
+  center {{"TFlareR7.translate.x + TFlareR7.center.x" i} {"TFlareR7.translate.y + TFlareR7.center.y" i}}
+  name scalefr7
+  xpos 1814
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge27
+  xpos 1815
+  ypos 683
+  disable {{!m4aOn i}}
+ }
+ HueShift {
+  name HueShift12
+  xpos 1815
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0"}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br4a i} {parent.br4a i}}
+  name Blur15
+  xpos 1815
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off6
+  xpos 1815
+  ypos 987
+  disable {{rOn4a i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TransformFlare4.translate.x)" i} {"- (TransformFlare1.noSpread.y-TransformFlare4.translate.y)" i}}
+  scale {{"(parent.TMmirrorF4 == 1 ||  parent.TMmirrorF4 == 3 ? -1 : 1) * parent.mF4scale.w" i} {"(parent.TMmirrorF4 == 2 || parent.TMmirrorF4 == 3 ? -1 : 1) * parent.mF4scale.h" i}}
+  center {{"parent.TransformFlare4.center - translate.x + parent.TransformFlare4.translate.x" i} {"parent.TransformFlare4.center - translate.y + parent.TransformFlare4.translate.y" i}}
+  name TransM4
+  xpos 1705
+  ypos 716
+ }
+ Blur {
+  channels rgba
+  name Blur20
+  xpos 1705
+  ypos 740
+ }
+push $N22edd3e0
+ Transform {
+  translate {{"(la4 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t4.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la4 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t4.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr4 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r4 + (parent.TAF4on == 1 ? (parent.TArot4 * parent.MAction.OAct4) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TransformFlare4
+  tile_color 0xffff
+  xpos 1938
+  ypos 554
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.sp4-2 i}}
+ }
+ Transform {
+  scale {{"parent.s4*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF4on == 1 ? ((parent.TAsc4.w-1) * parent.MAction.OAct4) : 0)" i} {"parent.s4*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1)  : 1 ) + (parent.TAF4on == 1 ? ((parent.TAsc4.h-1) * parent.MAction.OAct4) : 0)" i}}
+  center {{"TransformFlare4.translate.x + TransformFlare4.center.x" i} {"TransformFlare4.translate.y + TransformFlare4.center.y" i}}
+  name scalef4
+  xpos 1938
+  ypos 578
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge15
+  xpos 1939
+  ypos 740
+  disable {{!m4On i}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation {{mOp4+24 i}}
+  bbox B
+  name Merge12
+  xpos 1939
+  ypos 1029
+  disable {{"!\[exists parent.input4] == 0 && on4 ==1 ? 0 : 1" i}}
+ }
+ Transform {
+  translate {{parent.mt i} {parent.mt i}}
+  rotate {{"parent.rs4 + parent.mr" i}}
+  scale {{parent.ms i} {parent.ms i}}
+  center {{"cPointmOn == 1 ? Cent.x : input.format.width/2" i} {"cPointmOn == 1 ? Cent.y : input.format.height/2" i}}
+  name TranGroup4
+  xpos 1938
+  ypos 1071
+  disable {{"rotate == 0 && translate.x + translate.y == 0 &&\nscale.w\n== 1 && scale.h == 1? 1 : 0" i}}
+ }
+ HueShift {
+  saturation {{"parent.sat4 + (parent.TAF4on == 1 ? ((parent.TAsat4-1) * parent.MAction.OAct4) : 0)" i}}
+  hue_rotation {{"parent.hueR4 + (parent.TAF4on == 1 ? (parent.TAhue4 * parent.MAction.OAct4) : 0)" i}}
+  brightness {{"parent.bright4 + (parent.TAF4on == 1 ? ((parent.TAbri4-1) * parent.MAction.OAct4) : 0)" i}}
+  name HueShift4
+  xpos 1938
+  ypos 1125
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{"parent.b4 + (parent.TAF4on == 1 ? (parent.TAblur4.w * parent.MAction.OAct4) : 0)" i} {"parent.b4 + (parent.TAF4on == 1 ? (parent.TAblur4.h * parent.MAction.OAct4) : 0)" i}}
+  name Blur4
+  xpos 1938
+  ypos 1215
+  disable {{"size == 0" i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR6.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR6.translate.y)" i}}
+  scale {{"(parent.TMmirrorF3 == 1 ||  parent.TMmirrorF3 == 3 ? -1 : 1) * parent.mF3bscale.w" i} {"(parent.TMmirrorF3 == 2 || parent.TMmirrorF3 == 3 ? -1 : 1) * parent.mF3bscale.h" i}}
+  center {{"parent.TFlareR6.center - translate.x + parent.TFlareR6.translate.x" i} {"parent.TFlareR6.center - translate.y + parent.TFlareR6.translate.y" i}}
+  name TransM3b
+  xpos 1248
+  ypos 772
+ }
+ Blur {
+  channels rgba
+  name Blur31
+  xpos 1248
+  ypos 798
+ }
+ Input {
+  inputs 0
+  name F3
+  xpos 1490
+  ypos 80
+  number 3
+ }
+set N22fb3940 [stack 0]
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle4
+  xpos 1330
+  ypos 177
+ }
+ Crop {
+  box {{"(parent.leafDirF3 == 0 && parent.Origin.x < width/2 ? parent.leafF3.w : parent.leafDirF3 == 1 && parent.Origin.x > width/2 ? parent.leafF3.w : 0) * parent.MAction.OAct3" i} {"(parent.leafDirF3 == 2 && parent.Origin.y < height/2 ? parent.leafF3.h : parent.leafDirF3 == 3 && parent.Origin.y > height/2 ? parent.leafF3.h : 0) * parent.MAction.OAct3" i} {"width - ((parent.leafDirF3 == 0 && parent.Origin.x > width/2 ? parent.leafF3.w : parent.leafDirF3 == 1 && parent.Origin.x < width/2 ? parent.leafF3.w : 0) * parent.MAction.OAct3)" i x1 2048} {"height - ((parent.leafDirF3 == 2 && parent.Origin.y > height/2 ? parent.leafF3.h : parent.leafDirF3 == 3 && parent.Origin.y < height/2 ? parent.leafF3.h : 0) * parent.MAction.OAct3)" i x1 1556}}
+  name edgeLeaf3
+  xpos 1330
+  ypos 211
+  disable {{"parent.leafF3.w == 0 && parent.leafF3.h == 0 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {0 0}
+  name BlurL3
+  xpos 1330
+  ypos 245
+  disable {{"size.w == 0 && size.h == 0 ? 1 : 0" i}}
+ }
+ Invert {
+  channels rgba
+  name Invert4
+  xpos 1330
+  ypos 283
+ }
+ Transform {
+  rotate {{-TransformFlare3.rotate i}}
+  center {{width/2 i} {height/2 i}}
+  black_outside false
+  name Transform3
+  xpos 1330
+  ypos 317
+ }
+push $N22fb3940
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge18
+  xpos 1490
+  ypos 317
+  disable {{"!TAF3on == 0 && edgeLeaf3.disable == 0 ? 0 : 1" i}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{root.format.width i}}
+  box_height {{root.format.height i}}
+  box_fixed true
+  resize none
+  pbb true
+  name Reformat3
+  xpos 1490
+  ypos 365
+ }
+set N22fe3d90 [stack 0]
+ Transform {
+  translate {{"(la3 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t3.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la3 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t3.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr3 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r3 + rm3b + (parent.TAF3on == 1 ? (parent.TArot3 * parent.MAction.OAct3) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR6
+  tile_color 0xffff
+  xpos 1601
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr3b+parent.sp3-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s3+(parent.sm3b.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF3on == 1 ? ((parent.TAsc3.w-1) * parent.MAction.OAct3) : 0)" i} {"(parent.s3+(parent.sm3b.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF3on == 1 ? ((parent.TAsc3.h-1) * parent.MAction.OAct3) : 0)" i}}
+  center {{"TFlareR6.translate.x + TFlareR6.center.x" i} {"TFlareR6.translate.y + TFlareR6.center.y" i}}
+  name scalefr6
+  xpos 1601
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge26
+  xpos 1601
+  ypos 798
+  disable {{!m3bOn i}}
+ }
+ HueShift {
+  name HueShift11
+  xpos 1602
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br3b i} {parent.br3b i}}
+  name Blur14
+  xpos 1602
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off5
+  xpos 1602
+  ypos 987
+  disable {{rOn3b i}}
+ }
+push 0
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR5.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR5.translate.y)" i}}
+  scale {{"(parent.TMmirrorF3 == 1 ||  parent.TMmirrorF3 == 3 ? -1 : 1) * parent.mF3ascale.w" i} {"(parent.TMmirrorF3 == 2 || parent.TMmirrorF3 == 3 ? -1 : 1) * parent.mF3ascale.h" i}}
+  center {{"parent.TFlareR5.center - translate.x + parent.TFlareR5.translate.x" i} {"parent.TFlareR5.center - translate.y + parent.TFlareR5.translate.y" i}}
+  name TransM3a
+  xpos 1248
+  ypos 659
+ }
+ Blur {
+  channels rgba
+  name Blur30
+  xpos 1248
+  ypos 685
+ }
+push $N22fe3d90
+ Transform {
+  translate {{"(la3 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t3.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la3 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t3.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr3 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r3 + rm3a + (parent.TAF3on == 1 ? (parent.TArot3 * parent.MAction.OAct3) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR5
+  tile_color 0xffff
+  xpos 1358
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr3a+parent.sp3-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s3+(parent.sm3a.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF3on == 1 ? ((parent.TAsc3.w-1) * parent.MAction.OAct3) : 0)" i} {"(parent.s3+(parent.sm3a.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF3on == 1 ? ((parent.TAsc3.h-1) * parent.MAction.OAct3) : 0)" i}}
+  center {{"TFlareR5.translate.x + TFlareR5.center.x" i} {"TFlareR5.translate.y + TFlareR5.center.y" i}}
+  name scalefr5
+  xpos 1358
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge25
+  xpos 1358
+  ypos 685
+  disable {{!m3aOn i}}
+ }
+ HueShift {
+  name HueShift10
+  xpos 1359
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0"}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br3a i} {parent.br3a i}}
+  name Blur13
+  xpos 1359
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off4
+  xpos 1359
+  ypos 987
+  disable {{rOn3a i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TransformFlare3.translate.x)" i} {"- (TransformFlare1.noSpread.y-TransformFlare3.translate.y)" i}}
+  scale {{"(parent.TMmirrorF3 == 1 ||  parent.TMmirrorF3 == 3 ? -1 : 1) * parent.mF3scale.w" i} {"(parent.TMmirrorF3 == 2 || parent.TMmirrorF3 == 3 ? -1 : 1) * parent.mF3scale.h" i}}
+  center {{"parent.TransformFlare3.center - translate.x + parent.TransformFlare3.translate.x" i} {"parent.TransformFlare3.center - translate.y + parent.TransformFlare3.translate.y" i}}
+  name TransM3
+  xpos 1248
+  ypos 715
+ }
+ Blur {
+  channels rgba
+  name Blur19
+  xpos 1248
+  ypos 741
+ }
+push $N22fe3d90
+ Transform {
+  translate {{"(la3 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t3.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la3 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t3.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr3 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r3 + (parent.TAF3on == 1 ? (parent.TArot3 * parent.MAction.OAct3) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TransformFlare3
+  tile_color 0xffff
+  xpos 1491
+  ypos 554
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.sp3-2 i}}
+ }
+ Transform {
+  scale {{"parent.s3*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF3on == 1 ? ((parent.TAsc3.w-1) * parent.MAction.OAct3) : 0)" i} {"parent.s3*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF3on == 1 ? ((parent.TAsc3.h-1) * parent.MAction.OAct3) : 0)" i}}
+  center {{"TransformFlare3.translate.x + TransformFlare3.center.x" i} {"TransformFlare3.translate.y + TransformFlare3.center.y" i}}
+  name scalef3
+  xpos 1491
+  ypos 578
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge14
+  xpos 1491
+  ypos 741
+  disable {{!m3On i}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation {{mOp3+24 i}}
+  bbox B
+  name Merge11
+  xpos 1491
+  ypos 1029
+  disable {{"!\[exists parent.input3] == 0 && on3 ==1 ? 0 : 1" i}}
+ }
+ Transform {
+  translate {{parent.mt i} {parent.mt i}}
+  rotate {{"parent.rs3 + parent.mr" i}}
+  scale {{parent.ms i} {parent.ms i}}
+  center {{"cPointmOn == 1 ? Cent.x : input.format.width/2" i} {"cPointmOn == 1 ? Cent.y : input.format.height/2" i}}
+  name TranGroup3
+  xpos 1491
+  ypos 1071
+  disable {{"rotate == 0 && translate.x + translate.y == 0 &&\nscale.w\n== 1 && scale.h == 1? 1 : 0" i}}
+ }
+ HueShift {
+  saturation {{"parent.sat3 + (parent.TAF3on == 1 ? ((parent.TAsat3-1) * parent.MAction.OAct3) :0)" i}}
+  hue_rotation {{"parent.hueR3 + (parent.TAF3on == 1 ? (parent.TAhue3 * parent.MAction.OAct3) : 0)" i}}
+  brightness {{"parent.bright3 + (parent.TAF3on == 1 ? ((parent.TAbri3-1) * parent.MAction.OAct3) : 0)" i}}
+  name HueShift3
+  xpos 1491
+  ypos 1125
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{"parent.b3 + (parent.TAF3on == 1 ? (parent.TAblur3.w * parent.MAction.OAct3) : 0)" i} {"parent.b3 + (parent.TAF3on == 1 ? (parent.TAblur3.h * parent.MAction.OAct3) : 0)" i}}
+  name Blur3
+  xpos 1491
+  ypos 1215
+  disable {{"size == 0" i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR4.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR4.translate.y)" i}}
+  scale {{"(parent.TMmirrorF2 == 1 ||  parent.TMmirrorF2 == 3 ? -1 : 1) * parent.mF2bscale.w" i} {"(parent.TMmirrorF2 == 2 || parent.TMmirrorF2 == 3 ? -1 : 1) * parent.mF2bscale.h" i}}
+  center {{"parent.TFlareR4.center - translate.x + parent.TFlareR4.translate.x" i} {"parent.TFlareR4.center - translate.y + parent.TFlareR4.translate.y" i}}
+  name TransM2b
+  xpos 788
+  ypos 780
+ }
+ Blur {
+  channels rgba
+  name Blur29
+  xpos 788
+  ypos 804
+ }
+ Input {
+  inputs 0
+  name F2
+  xpos 1027
+  ypos 80
+  number 2
+ }
+set N230ba7c0 [stack 0]
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle3
+  xpos 867
+  ypos 179
+ }
+ Crop {
+  box {{"(parent.leafDirF2 == 0 && parent.Origin.x < width/2 ? parent.leafF2.w : parent.leafDirF2 == 1 && parent.Origin.x > width/2 ? parent.leafF2.w : 0) * parent.MAction.OAct2" i} {"(parent.leafDirF2 == 2 && parent.Origin.y < height/2 ? parent.leafF2.h : parent.leafDirF2 == 3 && parent.Origin.y > height/2 ? parent.leafF2.h : 0) * parent.MAction.OAct2" i} {"width - ((parent.leafDirF2 == 0 && parent.Origin.x > width/2 ? parent.leafF2.w : parent.leafDirF2 == 1 && parent.Origin.x < width/2 ? parent.leafF2.w : 0) * parent.MAction.OAct2)" i x1 2048} {"height - ((parent.leafDirF2 == 2 && parent.Origin.y > height/2 ? parent.leafF2.h : parent.leafDirF2 == 3 && parent.Origin.y < height/2 ? parent.leafF2.h : 0) * parent.MAction.OAct2)" i x1 1556}}
+  name edgeLeaf2
+  xpos 867
+  ypos 213
+  disable {{"parent.leafF2.w == 0 && parent.leafF2.h == 0 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {0 0}
+  name BlurL2
+  xpos 867
+  ypos 247
+  disable {{"size.w == 0 && size.h == 0 ? 1 : 0" i}}
+ }
+ Invert {
+  channels rgba
+  name Invert3
+  xpos 867
+  ypos 285
+ }
+ Transform {
+  rotate {{-TransformFlare2.rotate i}}
+  center {{width/2 i} {height/2 i}}
+  black_outside false
+  name Transform2
+  xpos 867
+  ypos 319
+ }
+push $N230ba7c0
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge17
+  xpos 1027
+  ypos 319
+  disable {{"!TAF2on == 0 && edgeLeaf2.disable == 0 ? 0 : 1" i}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{root.format.width i}}
+  box_height {{root.format.height i}}
+  box_fixed true
+  resize none
+  pbb true
+  name Reformat2
+  xpos 1027
+  ypos 365
+ }
+set N230eac10 [stack 0]
+ Transform {
+  translate {{"(la2 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t2.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la2 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t2.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr2 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r2 + rm2b + (parent.TAF2on == 1 ? (parent.TArot2 * parent.MAction.OAct2) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR4
+  tile_color 0xffff
+  xpos 1136
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr2b+parent.sp2-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s2+(parent.sm2b.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y]  : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF2on == 1 ? ((parent.TAsc2.w-1) * parent.MAction.OAct2) : 0)" i} {"(parent.s2+(parent.sm2b.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y]  : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF2on == 1 ? ((parent.TAsc2.h-1) * parent.MAction.OAct2) : 0)" i}}
+  center {{"TFlareR4.translate.x + TFlareR4.center.x" i} {"TFlareR4.translate.y + TFlareR4.center.y" i}}
+  name scalefr4
+  xpos 1136
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge24
+  xpos 1137
+  ypos 804
+  disable {{!m2bOn i}}
+ }
+ HueShift {
+  name HueShift9
+  xpos 1137
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br2b i} {parent.br2b i}}
+  name Blur12
+  xpos 1137
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off3
+  xpos 1137
+  ypos 987
+  disable {{rOn2b i}}
+ }
+push 0
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR3.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR3.translate.y)" i}}
+  scale {{"(parent.TMmirrorF2 == 1 ||  parent.TMmirrorF2 == 3 ? -1 : 1) * parent.mF2ascale.w" i} {"(parent.TMmirrorF2 == 2 || parent.TMmirrorF2 == 3 ? -1 : 1) * parent.mF2ascale.h" i}}
+  center {{"parent.TFlareR3.center - translate.x + parent.TFlareR3.translate.x" i} {"parent.TFlareR3.center - translate.y + parent.TFlareR3.translate.y" i}}
+  name TransM2a
+  xpos 788
+  ypos 657
+ }
+ Blur {
+  channels rgba
+  name Blur28
+  xpos 788
+  ypos 683
+ }
+push $N230eac10
+ Transform {
+  translate {{"(la2 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t2.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la2 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t2.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr2 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r2 + rm2a + (parent.TAF2on == 1 ? (parent.TArot2 * parent.MAction.OAct2) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR3
+  tile_color 0xffff
+  xpos 897
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr2a+parent.sp2-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s2+(parent.sm2a.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y]  : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF2on == 1 ? ((parent.TAsc2.w-1) * parent.MAction.OAct2) : 0)" i} {"(parent.s2+(parent.sm2a.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y]  : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF2on == 1 ? ((parent.TAsc2.h-1) * parent.MAction.OAct2) : 0)" i}}
+  center {{"TFlareR3.translate.x + TFlareR3.center.x" i} {"TFlareR3.translate.y + TFlareR3.center.y" i}}
+  name scalefr3
+  xpos 897
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge23
+  xpos 898
+  ypos 683
+  disable {{!m2aOn i}}
+ }
+ HueShift {
+  name HueShift8
+  xpos 898
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0"}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br2a i} {parent.br2a i}}
+  name Blur11
+  xpos 898
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off2
+  xpos 898
+  ypos 987
+  disable {{rOn2a i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TransformFlare2.translate.x)" i} {"- (TransformFlare1.noSpread.y-TransformFlare2.translate.y)" i}}
+  scale {{"(parent.TMmirrorF2 == 1 ||  parent.TMmirrorF2 == 3 ? -1 : 1) * parent.mF2scale.w" i} {"(parent.TMmirrorF2 == 2 || parent.TMmirrorF2 == 3 ? -1 : 1) * parent.mF2scale.h" i}}
+  center {{"parent.TransformFlare2.center - translate.x + parent.TransformFlare2.translate.x" i} {"parent.TransformFlare2.center - translate.y + parent.TransformFlare2.translate.y" i}}
+  name TransM2
+  xpos 788
+  ypos 715
+ }
+ Blur {
+  channels rgba
+  name Blur9
+  xpos 788
+  ypos 741
+ }
+push $N230eac10
+ Transform {
+  translate {{"(la2 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t2.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la2 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t2.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr2 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r2 + (parent.TAF2on == 1 ? (parent.TArot2 * parent.MAction.OAct2) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TransformFlare2
+  tile_color 0xffff
+  xpos 1028
+  ypos 554
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.sp2-2 i}}
+ }
+ Transform {
+  scale {{"parent.s2*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y]  : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF2on == 1 ? ((parent.TAsc2.w-1) * parent.MAction.OAct2) : 0)" i} {"parent.s2*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y]  : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF2on == 1 ? ((parent.TAsc2.h-1) * parent.MAction.OAct2) : 0)" i}}
+  center {{"TransformFlare2.translate.x + TransformFlare2.center.x" i} {"TransformFlare2.translate.y + TransformFlare2.center.y" i}}
+  name scalef2
+  xpos 1028
+  ypos 578
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge7
+  xpos 1029
+  ypos 741
+  disable {{!m2On i}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation {{mOp2+24 i}}
+  bbox B
+  name Merge10
+  xpos 1029
+  ypos 1029
+  disable {{"!\[exists parent.input2] == 0 && on2 ==1 ? 0 : 1" i}}
+ }
+ Transform {
+  translate {{parent.mt i} {parent.mt i}}
+  rotate {{"parent.rs2 + parent.mr" i}}
+  scale {{parent.ms i} {parent.ms i}}
+  center {{"cPointmOn == 1 ? Cent.x : input.format.width/2" i} {"cPointmOn == 1 ? Cent.y : input.format.height/2" i}}
+  name TranGroup2
+  xpos 1028
+  ypos 1071
+  disable {{"rotate == 0 && translate.x + translate.y == 0 &&\nscale.w\n== 1 && scale.h == 1? 1 : 0" i}}
+ }
+ HueShift {
+  saturation {{"parent.sat2 + (parent.TAF2on == 1 ? ((parent.TAsat2-1) * parent.MAction.OAct2) : 0)" i}}
+  hue_rotation {{"parent.hueR2 + (parent.TAF2on == 1 ? (parent.TAhue2 * parent.MAction.OAct2) :0)" i}}
+  brightness {{"parent.bright2 + (parent.TAF2on == 1 ? ((parent.TAbri2-1) * parent.MAction.OAct2) :0)" i}}
+  name HueShift2
+  xpos 1028
+  ypos 1125
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{"parent.b2 + (parent.TAF2on == 1 ? (parent.TAblur2.w * parent.MAction.OAct2) :0)" i} {"parent.b2 + (parent.TAF2on == 1 ? (parent.TAblur2.h * parent.MAction.OAct2) : 0)" i}}
+  name Blur2
+  xpos 1028
+  ypos 1215
+  disable {{"size == 0" i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR2.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR2.translate.y)" i}}
+  scale {{"(parent.TMmirrorF1 == 1 ||  parent.TMmirrorF1 == 3 ? -1 : 1) * parent.mF1bscale.w" i} {"(parent.TMmirrorF1 == 2 || parent.TMmirrorF1 == 3 ? -1 : 1) * parent.mF1bscale.h" i}}
+  center {{"parent.TFlareR2.center - translate.x + parent.TFlareR2.translate.x" i} {"parent.TFlareR2.center - translate.y + parent.TFlareR2.translate.y" i}}
+  name TransM1b
+  xpos 299
+  ypos 784
+ }
+ Blur {
+  channels rgba
+  name Blur27
+  xpos 299
+  ypos 810
+ }
+ Input {
+  inputs 0
+  name F1
+  xpos 541
+  ypos 80
+  number 1
+ }
+set N231c1620 [stack 0]
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle2
+  xpos 381
+  ypos 176
+ }
+ Crop {
+  box {{"(parent.leafDirF1 == 0 && parent.Origin.x < width/2 ? parent.leafF1.w : parent.leafDirF1 == 1 && parent.Origin.x > width/2 ? parent.leafF1.w : 0) * parent.MAction.OAct1" i} {"(parent.leafDirF1 == 2 && parent.Origin.y < height/2 ? parent.leafF1.h : parent.leafDirF1 == 3 && parent.Origin.y > height/2 ? parent.leafF1.h : 0) * parent.MAction.OAct1" i} {"width - ((parent.leafDirF1 == 0 && parent.Origin.x > width/2 ? parent.leafF1.w : parent.leafDirF1 == 1 && parent.Origin.x < width/2 ? parent.leafF1.w : 0) * parent.MAction.OAct1)" i x1 2048} {"height - ((parent.leafDirF1 == 2 && parent.Origin.y > height/2 ? parent.leafF1.h : parent.leafDirF1 == 3 && parent.Origin.y < height/2 ? parent.leafF1.h : 0) * parent.MAction.OAct1)" i x1 1556}}
+  name edgeLeaf1
+  xpos 381
+  ypos 210
+  disable {{"parent.leafF1.w == 0 && parent.leafF1.h == 0 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {0 0}
+  name BlurL1
+  xpos 381
+  ypos 244
+  disable {{"size.w == 0 && size.h == 0 ? 1 : 0" i}}
+ }
+ Invert {
+  channels rgba
+  name Invert2
+  xpos 381
+  ypos 282
+ }
+ Transform {
+  rotate {{-TransformFlare1.rotate i}}
+  center {{width/2 i} {height/2 i}}
+  black_outside false
+  name Transform1
+  xpos 381
+  ypos 316
+ }
+push $N231c1620
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge9
+  xpos 541
+  ypos 316
+  disable {{"!TAF1on == 0 && edgeLeaf1.disable == 0 ? 0 : 1" i}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{root.format.width i}}
+  box_height {{root.format.height i}}
+  box_fixed true
+  resize none
+  pbb true
+  name Reformat1
+  xpos 541
+  ypos 365
+ }
+set N231f1a70 [stack 0]
+ Transform {
+  translate {{"(la1 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t1.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la1 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t1.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr1 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r1 + rm1b + (parent.TAF1on == 1 ? (parent.TArot1 * parent.MAction.OAct1) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR2
+  tile_color 0xffff
+  xpos 656
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr1b+parent.sp1-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s1+(parent.sm1b.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF1on == 1 ? ((parent.TAsc1.w-1) * parent.MAction.OAct1) : 0)" i} {"(parent.s1+(parent.sm1b.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF1on == 1 ? ((parent.TAsc1.h-1) * parent.MAction.OAct1) : 0)" i}}
+  center {{"TFlareR2.translate.x + TFlareR2.center.x" i} {"TFlareR2.translate.y + TFlareR2.center.y" i}}
+  name scalefr2
+  xpos 656
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge22
+  xpos 656
+  ypos 810
+  disable {{!m1bOn i}}
+ }
+ HueShift {
+  name HueShift7
+  xpos 657
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br1b i} {parent.br1b i}}
+  name Blur10
+  xpos 657
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off1
+  xpos 657
+  ypos 987
+  disable {{rOn1b i}}
+ }
+push 0
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TFlareR1.translate.x)" i} {"- (TransformFlare1.noSpread.y-TFlareR1.translate.y)" i}}
+  scale {{"(parent.TMmirrorF1 == 1 ||  parent.TMmirrorF1 == 3 ? -1 : 1) * parent.mF1ascale.w" i} {"(parent.TMmirrorF1 == 2 || parent.TMmirrorF1 == 3 ? -1 : 1) * parent.mF1ascale.h" i}}
+  center {{"parent.TFlareR1.center - translate.x + parent.TFlareR1.translate.x" i} {"parent.TFlareR1.center - translate.y + parent.TFlareR1.translate.y" i}}
+  name TransM1a
+  xpos 299
+  ypos 657
+ }
+ Blur {
+  channels rgba
+  name Blur26
+  xpos 299
+  ypos 683
+ }
+push $N231f1a70
+ Transform {
+  translate {{"(la1 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread + xyLink2.x) - center.x))) + t1.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la1 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t1.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr1 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r1 + rm1a + (parent.TAF1on == 1 ? (parent.TArot1 * parent.MAction.OAct1) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TFlareR1
+  tile_color 0xffff
+  xpos 418
+  ypos 581
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.spr1a+parent.sp1-2 i}}
+ }
+ Transform {
+  scale {{"(parent.s1+(parent.sm1b.w-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF1on == 1 ? ((parent.TAsc1.w-1) * parent.MAction.OAct1) : 0)" i} {"(parent.s1+(parent.sm1b.h-1))*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1 ) + (parent.TAF1on == 1 ? ((parent.TAsc1.h-1) * parent.MAction.OAct1) : 0)" i}}
+  center {{"TFlareR1.translate.x + TFlareR1.center.x" i} {"TFlareR1.translate.y + TFlareR1.center.y" i}}
+  name scalefr1
+  xpos 418
+  ypos 605
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge21
+  xpos 419
+  ypos 683
+  disable {{!m1aOn i}}
+ }
+ HueShift {
+  name HueShift6
+  xpos 419
+  ypos 889
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.br1a i} {parent.br1a i}}
+  name Blur7
+  xpos 419
+  ypos 940
+  disable {{"size.w == 0 && size.h == 0" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name off
+  xpos 419
+  ypos 987
+  disable {{rOn1a i}}
+ }
+push $N22d8eb60
+ Transform {
+  translate {{"- (TransformFlare1.noSpread.x-TransformFlare1.translate.x)" i} {"- (TransformFlare1.noSpread.y-TransformFlare1.translate.y)" i}}
+  scale {{"(parent.TMmirrorF1 == 1 ||  parent.TMmirrorF1 == 3 ? -1 : 1) * parent.mF1scale.w" i} {"(parent.TMmirrorF1 == 2 || parent.TMmirrorF1 == 3 ? -1 : 1) * parent.mF1scale.h" i}}
+  center {{"parent.TransformFlare1.center - translate.x + parent.TransformFlare1.translate.x" i} {"parent.TransformFlare1.center - translate.y + parent.TransformFlare1.translate.y" i}}
+  name TransM1
+  xpos 299
+  ypos 718
+ }
+ Blur {
+  channels rgba
+  name Blur6
+  xpos 299
+  ypos 744
+ }
+push $N231f1a70
+ Transform {
+  translate {{"(la1 == 1 ? 0 : (-(((xyLink2.x - xyLink1.x)*spread +xyLink2.x) - center.x))) + t1.w + (parent.cPointmOn == 1 ? (parent.Cent.x - input.format.width/2)*2 : 0)" i} {"(la1 == 2 ? 0 : (-(((xyLink2.y - xyLink1.y)*spread + xyLink2.y) - center.y))) + t1.h + (parent.cPointmOn == 1 ? (parent.Cent.y - input.format.height/2)*2 : 0)" i}}
+  rotate {{"(lr1 == 1 ? 0 :(-(atan2(xyLink2.x - xyLink1.x, xyLink2.y - xyLink1.y)) * 180/ pi)) + r1 + (parent.TAF1on == 1 ? (parent.TArot1 * parent.MAction.OAct1) : 0)" i}}
+  center {{input.format.width/2 i} {input.format.height/2 i}}
+  name TransformFlare1
+  tile_color 0xffff
+  xpos 542
+  ypos 554
+  addUserKnob {20 Buehler l User}
+  addUserKnob {12 xyLink1}
+  xyLink1 {{"parent.cPointmOn == 1 ? parent.Cent.x : root.format.width/2" i} {"parent.cPointmOn == 1 ? parent.Cent.y : root.format.height/2" i}}
+  addUserKnob {12 xyLink2}
+  xyLink2 {{parent.Origin.x i} {parent.Origin.y i}}
+  addUserKnob {7 spread R 0.1 1}
+  spread {{parent.sp1-2 i}}
+  addUserKnob {12 noSpread}
+  noSpread {{"la1 == 1 ? 0 : xyLink2.x - center.x" i} {"la1 == 2 ? 0 :xyLink2.y - center.y" i}}
+ }
+ Transform {
+  scale {{"parent.s1*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1) + (parent.TAF1on == 1 ? ((parent.TAsc1.w-1) * parent.MAction.OAct1) : 0)" i} {"parent.s1*(\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1) + (parent.TAF1on == 1 ? ((parent.TAsc1.h-1) * parent.MAction.OAct1) : 0)" i}}
+  center {{"TransformFlare1.translate.x + TransformFlare1.center.x" i} {"TransformFlare1.translate.y + TransformFlare1.center.y" i}}
+  name scalef1
+  xpos 542
+  ypos 578
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge8
+  xpos 543
+  ypos 744
+  disable {{!m1On i}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation {{mOp+24 i}}
+  name Merger1
+  xpos 543
+  ypos 1029
+  disable {{"!\[exists parent.input1] == 0 && on1 ==1 ? 0 : 1" i}}
+ }
+ Transform {
+  translate {{parent.mt i} {parent.mt i}}
+  rotate {{"parent.rs1 + parent.mr" i}}
+  scale {{parent.ms i} {parent.ms i}}
+  center {{"cPointmOn == 1 ? Cent.x : input.format.width/2" i} {"cPointmOn == 1 ? Cent.y : input.format.height/2" i}}
+  name TranGroup1
+  xpos 542
+  ypos 1071
+  disable {{"rotate == 0 && translate.x + translate.y == 0 &&\nscale.w\n== 1 && scale.h == 1? 1 : 0" i}}
+ }
+ HueShift {
+  saturation {{"parent.sat1 + (parent.TAF1on == 1 ? ((parent.TAsat1-1) * parent.MAction.OAct1) : 0)" i}}
+  hue_rotation {{"parent.hueR1 + (parent.TAF1on == 1 ? (parent.TAhue1 * parent.MAction.OAct1) : 0)" i}}
+  brightness {{"parent.bright1 + (parent.TAF1on == 1 ? ((parent.TAbri1-1) * parent.MAction.OAct1) : 0)" i}}
+  name HueShift1
+  xpos 542
+  ypos 1125
+  disable {{"saturation == 1 && hue_rotation == 0 && brightness == 1 ? 1 : 0" i}}
+ }
+ Blur {
+  channels rgba
+  size {{"parent.b1 + (parent.TAF1on == 1 ? (parent.TAblur1.w * parent.MAction.OAct1) : 0)" i} {"parent.b1 + (parent.TAF1on == 1 ? (parent.TAblur1.h * parent.MAction.OAct1) : 0)" i}}
+  name Blur1
+  xpos 542
+  ypos 1215
+  disable {{"size == 0" i}}
+ }
+ Radial {
+  inputs 0
+  area {{"(width - width*centerA.w) + (parent.mCenterPT == 1 ? (parent.Cent.x-width/2) : 0)" i} {"(height - height*centerA.h) + (parent.mCenterPT == 1 ? (parent.Cent.y-height/2) : 0)" i} {"(width*centerA.w) + (parent.mCenterPT == 1 ? (parent.Cent.x-width/2) : 0)" i} {"(height*centerA.h) + (parent.mCenterPT == 1 ? (parent.Cent.y-height/2) : 0)" i}}
+  softness {{parent.centerSo i}}
+  name RadCenter
+  xpos 966
+  ypos -450
+  addUserKnob {20 User}
+  addUserKnob {14 centerA l center R 0 100}
+  centerA {{parent.centerS.w i} {parent.centerS.h i}}
+ }
+set N232b9bd0 [stack 0]
+push $N22d82570
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle1
+  xpos 1090
+  ypos -557
+ }
+ Crop {
+  box {{parent.edgeF.w i} {parent.edgeF.h i} {width-box.x i x1 2048} {height-box.y i x1 1556}}
+  softness {{parent.edgeS.w i} {parent.edgeS.h i}}
+  name edge
+  xpos 1090
+  ypos -523
+ }
+ Invert {
+  channels rgba
+  name Invert1
+  xpos 1090
+  ypos -486
+ }
+ Clamp {
+  channels rgba
+  name Cedge
+  xpos 1090
+  ypos -449
+ }
+set N232d8c50 [stack 0]
+ Merge2 {
+  inputs 2
+  name MAction
+  selected true
+  xpos 1090
+  ypos -378
+  addUserKnob {20 User}
+  addUserKnob {4 AArea l "Action Area Preview" t "This shows you where the action areas are" M {Off Center Edge Both}}
+  AArea Both
+  addUserKnob {26 ""}
+  addUserKnob {4 AArea1 l "Action Area" M {Off Center Edge Both}}
+  addUserKnob {14 srad1 l "sample radius" R 0 100}
+  srad1 {1 1}
+  addUserKnob {7 OAct1 l "Origin Action"}
+  OAct1 {{"AArea1 == 1 ? \[sample RadCenter alpha parent.Origin.x parent.Origin.y srad1.w srad1.h] : AArea1 == 2 ? \[sample Cedge alpha parent.Origin.x parent.Origin.y srad1.w srad1.h] : AArea1 == 3 ? \[sample MAction alpha parent.Origin.x parent.Origin.y srad1.w srad1.h] : 0" i}}
+  addUserKnob {4 AArea2 l "Action Area" M {Off Center Edge Both}}
+  addUserKnob {14 srad2 l "sample radius" R 0 100}
+  srad2 {1 1}
+  addUserKnob {7 OAct2 l "Origin Action"}
+  OAct2 {{"AArea2 == 1 ? \[sample RadCenter alpha parent.Origin.x parent.Origin.y srad2.w srad2.h] : AArea2 == 2 ? \[sample Cedge alpha parent.Origin.x parent.Origin.y srad2.w srad2.h] : AArea2 == 3 ? \[sample MAction alpha parent.Origin.x parent.Origin.y srad2.w srad2.h] : 0" i}}
+  addUserKnob {4 AArea3 l "Action Area" M {Off Center Edge Both}}
+  addUserKnob {14 srad3 l "sample radius" R 0 100}
+  srad3 {1 1}
+  addUserKnob {7 OAct3 l "Origin Action"}
+  OAct3 {{"AArea3 == 1 ? \[sample RadCenter alpha parent.Origin.x parent.Origin.y srad3.w srad3.h] : AArea3 == 2 ? \[sample Cedge alpha parent.Origin.x parent.Origin.y srad3.w srad3.h] : AArea3 == 3 ? \[sample MAction alpha parent.Origin.x parent.Origin.y srad3.w srad3.h] : 0" i}}
+  addUserKnob {4 AArea4 l "Action Area" M {Off Center Edge Both}}
+  addUserKnob {14 srad4 l "sample radius" R 0 100}
+  srad4 {1 1}
+  addUserKnob {7 OAct4 l "Origin Action"}
+  OAct4 {{"AArea4 == 1 ? \[sample RadCenter alpha parent.Origin.x parent.Origin.y srad4.w srad4.h] : AArea4 == 2 ? \[sample Cedge alpha parent.Origin.x parent.Origin.y srad4.w srad4.h] : AArea4 == 3 ? \[sample MAction alpha parent.Origin.x parent.Origin.y srad4.w srad4.h] : 0" i}}
+  addUserKnob {4 AArea5 l "Action Area" M {Off Center Edge Both}}
+  addUserKnob {14 srad5 l "sample radius" R 0 100}
+  srad5 {1 1}
+  addUserKnob {7 OAct5 l "Origin Action"}
+  OAct5 {{"AArea5 == 1 ? \[sample RadCenter alpha parent.Origin.x parent.Origin.y srad5.w srad5.h] : AArea5 == 2 ? \[sample Cedge alpha parent.Origin.x parent.Origin.y srad5.w srad5.h] : AArea5 == 3 ? \[sample MAction alpha parent.Origin.x parent.Origin.y srad5.w srad5.h] : 0" i}}
+ }
+push $N232d8c50
+push $N232b9bd0
+ Switch {
+  inputs 3
+  which {{max(parent.MAction.AArea-1,0) i}}
+  name Switch1
+  xpos 1090
+  ypos -323
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos 140
+  ypos -765
+  addUserKnob {20 User}
+  addUserKnob {14 bgsR l "bg sample radius" t "This controls the size of the sample area" R 0 100}
+  bgsR 10
+  addUserKnob {18 bgcS l "bg color sample" R 0 4}
+  bgcS {{"\[sample BG red parent.Origin.x parent.Origin.y bgsR.w bgsR.h]" i} {"\[sample BG green parent.Origin.x parent.Origin.y bgsR.w bgsR.h]" i} {"\[sample BG blue parent.Origin.x parent.Origin.y bgsR.w bgsR.h]" i}}
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name Fonly
+  xpos 140
+  ypos -121
+  disable {{!parent.Fonly i}}
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Merge6
+  xpos 140
+  ypos -22
+  disable {{"\$gui == 0 ? 1 : TApreview > 0 && MAction.AArea > 0 ? 0 : 1" i}}
+ }
+ Dot {
+  name Dot1
+  xpos 174
+  ypos 1017
+ }
+ Merge2 {
+  inputs 2
+  operation {{mOp+24 i}}
+  bbox B
+  mix {{"\[exists parent.input6]==1 ? (occE==1 && usedp == 0 ? \[sample OccM alpha parent.Origin.x parent.Origin.y] : occE==1 && usedp == 1 ? OccM.onTop : 1) : 1" i}}
+  name Merge1
+  xpos 542
+  ypos 1368
+  disable {{"!\[exists parent.input1] == 0 && on1 ==1 ? 0 : 1" i}}
+ }
+ Merge2 {
+  inputs 2
+  operation {{mOp2+24 i}}
+  bbox B
+  mix {{Merge1.mix i}}
+  name Merge2
+  xpos 1028
+  ypos 1368
+  disable {{"!\[exists parent.input2] == 0 && on2 ==1 ? 0 : 1" i}}
+ }
+ Merge2 {
+  inputs 2
+  operation {{mOp3+24 i}}
+  bbox B
+  mix {{Merge1.mix i}}
+  name Merge3
+  xpos 1491
+  ypos 1368
+  disable {{"!\[exists parent.input3] == 0 && on3 ==1 ? 0 : 1" i}}
+ }
+ Merge2 {
+  inputs 2
+  operation {{mOp4+24 i}}
+  bbox B
+  mix {{Merge1.mix i}}
+  name Merge4
+  xpos 1938
+  ypos 1368
+  disable {{"!\[exists parent.input4] == 0 && on4 ==1 ? 0 : 1" i}}
+ }
+ Merge2 {
+  inputs 2
+  operation {{mOp5+24 i}}
+  bbox B
+  mix {{Merge1.mix i}}
+  name Merge5
+  xpos 2397
+  ypos 1368
+  disable {{"!\[exists parent.input5] == 0 && on5 ==1 ? 0 : 1" i}}
+ }
+ Output {
+  name Output1
+  xpos 2397
+  ypos 1551
+ }
+push $N22d82570
+ Shuffle {
+  name ShuffleOc
+  xpos 1410
+  ypos -556
+ }
+ Expression {
+  expr3 "parent.usedp == 1 ? b : (clamp(1-(occc == 0 ? r : occc == 1 ? g : occc == 2 ? b : a)))"
+  name Expression1
+  xpos 1410
+  ypos -516
+  disable {{"!\[exists parent.input6]" i}}
+ }
+ Crop {
+  box {{"parent.Origin.x - (parent.orr)" i} {"parent.Origin.y - (parent.orr)" i} {"parent.Origin.x + (parent.orr)" i} {"parent.Origin.y + (parent.orr)" i}}
+  reformat true
+  name Crop1
+  xpos 1410
+  ypos -473
+  disable {{!parent.usedp i}}
+ }
+ Grade {
+  blackpoint {{"\[sample Occ_and_Mask red parent.Origin.x parent.Origin.y] - .0001" i}}
+  whitepoint 200
+  white_clamp true
+  name Grade1
+  xpos 1410
+  ypos -427
+  disable {{!parent.usedp i}}
+ }
+ Rectangle {
+  area {0 0 {width i} {height i}}
+  color {{"\[sample this.input r (width/2) (height/2) (width/2) (height/2)]" i} {"\[sample this.input g (width/2) (height/2) (width/2) (height/2)]" i} {"\[sample this.input b (width/2) (height/2) (width/2) (height/2)]" i} {"\[sample this.input a (width/2) (height/2) (width/2) (height/2)]" i}}
+  name Rectangle1
+  xpos 1410
+  ypos -373
+  disable {{!parent.usedp i}}
+ }
+ NoOp {
+  name OccM
+  xpos 1410
+  ypos -334
+  addUserKnob {20 User}
+  addUserKnob {7 DepthMixValue}
+  DepthMixValue {{"fnt * onTop"}}
+  addUserKnob {7 fnt l "in front"}
+  fnt {{"Dist - SampleDist<= 1"}}
+  addUserKnob {7 Dist R -1000 1000}
+  Dist {{"sqrt(((lcord.x - ccord.x) * (lcord.x - ccord.x)) + ((lcord.y - ccord.y) * (lcord.y - ccord.y)) + ((lcord.z - ccord.z) * (lcord.z - ccord.z)))"}}
+  addUserKnob {7 SampleDist R -1000 1000}
+  SampleDist {{"\[sample ShuffleOc red parent.Origin.x parent.Origin.y]"}}
+  addUserKnob {7 onTop R -1000 1000}
+  onTop {{"\[sample Rectangle1 red parent.orr/2 parent.orr/2]"}}
+ }
+end_group

@@ -1,0 +1,214 @@
+#! C:/Program Files/Nuke7.0v9/Nuke7.0.exe -nx
+version 7.0 v9
+Gizmo {
+ inputs 2
+ tile_color 0xffffff
+ addUserKnob {20 Pixel_control}
+ addUserKnob {26 spacer l "" +STARTLINE T "  "}
+ addUserKnob {26 pixel_control}
+ addUserKnob {41 size l Size T Blur2.size}
+ addUserKnob {41 filter T Blur2.filter}
+ addUserKnob {26 spacer_02 l "" +STARTLINE T "  "}
+ addUserKnob {26 Edge_control l "Edge control"}
+ addUserKnob {41 size_1 l "In Edge soft" T EdgeBlur1.size}
+ addUserKnob {41 filter_1 l filter T EdgeBlur1.filter}
+ addUserKnob {41 out l "Out Edge soft" T out_edge_soft.size}
+ addUserKnob {41 filter_2 l filter T out_edge_soft.filter}
+ addUserKnob {26 spacer_04 l "" +STARTLINE T "  "}
+ addUserKnob {26 spacer_05 l "" +STARTLINE T "  "}
+ addUserKnob {26 name_1 l "" +STARTLINE T "by SH\nseokhoroh@gmail.com"}
+}
+ StickyNote {
+  inputs 0
+  name StickyNote3
+  tile_color 0x323232ff
+  label MATTE
+  note_font "DejaVu Sans Bold Italic Bold Italic Bold Italic Bold Italic Bold Italic Bold Italic"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -371
+  ypos 561
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  tile_color 0x323232ff
+  label IMG
+  note_font "DejaVu Sans Bold Italic Bold Italic Bold Italic Bold Italic Bold Italic Bold Italic"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -537
+  ypos 163
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  tile_color 0x323232ff
+  label MATTE
+  note_font "DejaVu Sans Bold Italic Bold Italic Bold Italic Bold Italic Bold Italic"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -360
+  ypos 271
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote4
+  tile_color 0x323232ff
+  label Pixel_spread
+  note_font "DejaVu Sans Bold Italic Bold Italic Bold Italic Bold Italic Bold Italic Bold Italic"
+  note_font_size 20
+  note_font_color 0xffffffff
+  xpos -373
+  ypos 445
+ }
+ Input {
+  inputs 0
+  name matte
+  xpos -418
+  ypos 87
+ }
+ Shuffle {
+  name Shuffle3
+  xpos -418
+  ypos 170
+ }
+ Dot {
+  name Dot3
+  xpos -384
+  ypos 284
+ }
+ Input {
+  inputs 0
+  name IMG
+  label IMG
+  xpos -593
+  ypos 74
+  number 1
+ }
+ Dot {
+  name Dot4
+  xpos -559
+  ypos 170
+ }
+set N18420df0 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -593
+  ypos 275
+ }
+ Premult {
+  name Premult2
+  xpos -593
+  ypos 344
+ }
+set N184214d0 [stack 0]
+ EdgeBlur {
+  size 0
+  name EdgeBlur1
+  xpos -593
+  ypos 395
+ }
+push $N184214d0
+ Blur {
+  name Blur2
+  xpos -464
+  ypos 338
+ }
+ Unpremult {
+  name Unpremult2
+  xpos -464
+  ypos 450
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -593
+  ypos 450
+ }
+ Clamp {
+  name Clamp1
+  xpos -593
+  ypos 561
+ }
+set N18422600 [stack 0]
+ ColorCorrect {
+  saturation 0
+  contrast 0
+  gamma 5
+  gain 4
+  name ColorCorrect2
+  xpos -468
+  ypos 567
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle2
+  xpos -468
+  ypos 623
+ }
+push $N18422600
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos -593
+  ypos 617
+ }
+ Clamp {
+  name Clamp2
+  xpos -593
+  ypos 688
+ }
+ Premult {
+  name Premult3
+  xpos -593
+  ypos 776
+ }
+ EdgeBlur {
+  size 0
+  name out_edge_soft
+  xpos -593
+  ypos 856
+ }
+push $N18420df0
+ Dot {
+  name Dot6
+  xpos -854
+  ypos 170
+ }
+ Dot {
+  name Dot5
+  xpos -854
+  ypos 981
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos -593
+  ypos 978
+ }
+ Shuffle {
+  alpha black
+  name Shuffle1
+  xpos -593
+  ypos 1098
+ }
+ Output {
+  name Output1
+  xpos -593
+  ypos 1199
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -408
+  ypos 1187
+ }
+end_group

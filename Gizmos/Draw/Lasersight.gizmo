@@ -1,0 +1,354 @@
+#! /Applications/Nuke8.0v1/Nuke8.0v1.app/Contents/MacOS/libnuke-8.0.v1.dylib -nx
+version 8.0 v1
+Gizmo {
+ inputs 2
+ addUserKnob {20 About}
+ addUserKnob {26 About_1 l About: T "Feed a roto shape of about\n 4px wide into the laser shape.\n\nMost settings should be good\n from the start but the noise, \nglow and colour settings made \nneed tweaking on a shot by shot basis."}
+ addUserKnob {20 Global}
+ addUserKnob {6 GreenLaser l "Green Laser (Red on by default)" +STARTLINE}
+ addUserKnob {26 Edges}
+ addUserKnob {26 ""}
+ addUserKnob {41 Edgebluramount l "Input Edgeblur" T EdgeBlur1.size}
+ addUserKnob {41 PostBlursize l "Output Blur" T Blur8.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 Globalgrade l "Global Grade"}
+ addUserKnob {26 ""}
+ addUserKnob {41 channels T Grade7.channels}
+ addUserKnob {19 Grade7_blackpoint l blackpoint R -1 1}
+ Grade7_blackpoint {0 0 0 0}
+ addUserKnob {6 Grade7_blackpoint_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 Grade7_whitepoint l whitepoint R 0 4}
+ Grade7_whitepoint 0.22
+ addUserKnob {6 Grade7_whitepoint_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 Grade7_black l lift R -1 1}
+ Grade7_black {0 0 0 0}
+ addUserKnob {6 Grade7_black_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 Grade7_white l "Green Laser Gain" R 0 4}
+ Grade7_white {0.14666684 2.706666946 0.1466668397 1}
+ addUserKnob {6 Grade7_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {41 white_2 l "Red Laser Gain" T Grade7.white}
+ addUserKnob {19 Grade7_multiply l multiply R 0 4}
+ Grade7_multiply 4
+ addUserKnob {6 Grade7_multiply_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 Grade7_add l offset R -1 1}
+ Grade7_add {0 0 0 0}
+ addUserKnob {6 Grade7_add_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 Grade7_gamma l gamma R 0.2 5}
+ Grade7_gamma 0.2
+ addUserKnob {6 Grade7_gamma_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {8 Grade7_mix l mix}
+ Grade7_mix 0.125
+ addUserKnob {20 Glow}
+ addUserKnob {41 disable_1 l disable T Glow2.disable}
+ addUserKnob {41 channels_1 l channels T Glow2.channels}
+ addUserKnob {41 tint T Glow2.tint}
+ addUserKnob {41 tolerance T Glow2.tolerance}
+ addUserKnob {41 brightness T Glow2.brightness}
+ addUserKnob {41 saturation T Glow2.saturation}
+ addUserKnob {41 size T Glow2.size}
+ addUserKnob {41 mix T Glow2.mix}
+ addUserKnob {20 Noise1}
+ addUserKnob {6 Viewnoise1 l "View Noise 1" +STARTLINE}
+ addUserKnob {6 Noise1Disable l Disable +STARTLINE}
+ addUserKnob {41 mix_1 l "Stencil Amount" T Merge6.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 Noise1controls l "Noise1 Controls"}
+ addUserKnob {26 ""}
+ addUserKnob {12 Noise1_translate l translate}
+ Noise1_translate {{curve x1 0} {curve x1 0 l x170 15}}
+ addUserKnob {14 noise1xy l "noise xy" R 0 100}
+ noise1xy 1
+ addUserKnob {7 noise1z l "noise z"}
+ noise1z {{curve x1 0 l x170 0.76}}
+ addUserKnob {7 noise1gamma l "noise gamma"}
+ noise1gamma 0.245
+ addUserKnob {26 ""}
+ addUserKnob {26 NoiseContrast l "Noise Contrast"}
+ addUserKnob {26 ""}
+ addUserKnob {41 whitepoint T Grade6.whitepoint}
+ addUserKnob {41 white l gain T Grade6.white}
+ addUserKnob {41 gamma T Grade6.gamma}
+ addUserKnob {20 Noise2}
+ addUserKnob {6 Viewnoise2 l "View Noise 2" +STARTLINE}
+ addUserKnob {6 Noise2disable l Disable +STARTLINE}
+ addUserKnob {41 mix_2 l "Stencil Amount" T Merge7.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 Noise2controls l "Noise2 Controls"}
+ addUserKnob {26 ""}
+ addUserKnob {12 Noise2_translate l translate}
+ Noise2_translate {{curve x1 0} {curve x1 0 x112 15}}
+ addUserKnob {14 noise2xy l "noise xy" R 0 100}
+ noise2xy 90
+ addUserKnob {7 noise2z l "noise z"}
+ noise2z {{curve x1 0 l x112 0.76}}
+ addUserKnob {7 noise2gamma l "noise gamma"}
+ noise2gamma 0.32
+ addUserKnob {26 ""}
+ addUserKnob {26 Noise2contrast l "Noise Contrast"}
+ addUserKnob {26 ""}
+ addUserKnob {41 whitepoint_1 l whitepoint T Grade4.whitepoint}
+ addUserKnob {41 white_1 l gain T Grade4.white}
+ addUserKnob {41 gamma_1 l gamma T Grade4.gamma}
+}
+ Noise {
+  inputs 0
+  size {{parent.noise1xy}}
+  zoffset {{curve x1 0 l x170 0.76}}
+  gain 1
+  gamma {{parent.noise1gamma}}
+  translate {{curve x1 0} {curve x1 0 l x170 15}}
+  center {960 540}
+  name Original_Noise_1
+  xpos 94
+  ypos 487
+  disable true
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos -448
+  ypos 1042
+  number 1
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos -409
+  ypos 842
+ }
+ Noise {
+  inputs 0
+  size {{parent.noise2xy}}
+  zoffset {{parent.noise2z x1 0 l x112 0.76}}
+  gain 1
+  gamma {{parent.noise2gamma}}
+  translate {{parent.Noise2_translate} {parent.Noise2_translate}}
+  center {960 540}
+  name Noise2
+  xpos 410
+  ypos 640
+  disable {{parent.Noise2disable}}
+ }
+set N1f9780 [stack 0]
+ Grade {
+  channels rgba
+  whitepoint 0.26
+  white 2.25
+  gamma 5
+  black_clamp false
+  name Grade4
+  xpos 410
+  ypos 673
+ }
+ Clamp {
+  name Clamp3
+  xpos 410
+  ypos 697
+ }
+ Blur {
+  size 1
+  name Blur6
+  label "\[value size]"
+  xpos 410
+  ypos 733
+ }
+ Noise {
+  inputs 0
+  size {{parent.noise1xy i}}
+  zoffset {{parent.noise1z i x1 0 l x170 0.76}}
+  gain 1
+  gamma {{parent.noise1gamma i}}
+  translate {{parent.Noise1_translate} {parent.Noise1_translate}}
+  center {960 540}
+  name Noise1
+  xpos 209
+  ypos 486
+  disable {{parent.Noise1Disable i}}
+ }
+set N1dc0d790 [stack 0]
+ Grade {
+  channels rgba
+  whitepoint 0.15
+  white 4
+  gamma 4.6
+  black_clamp false
+  name Grade6
+  xpos 209
+  ypos 526
+ }
+ Clamp {
+  name Clamp4
+  xpos 209
+  ypos 550
+ }
+ Blur {
+  size 1
+  name Blur7
+  label "\[value size]"
+  xpos 209
+  ypos 586
+ }
+ Input {
+  inputs 0
+  name LaserShape
+  label "Laser Shape"
+  xpos -183
+  ypos 349
+ }
+ NoOp {
+  name NoOp2
+  label "Replace With Shape"
+  xpos -183
+  ypos 385
+ }
+ EdgeBlur {
+  size 1
+  name EdgeBlur1
+  xpos -183
+  ypos 421
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge6
+  xpos -183
+  ypos 598
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  mix 0.97
+  name Merge7
+  xpos -183
+  ypos 745
+ }
+set N19fac170 [stack 0]
+ Blur {
+  size 1.5
+  name Blur8
+  label "\[value size]"
+  xpos -183
+  ypos 802
+ }
+set N19fb16f0 [stack 0]
+ Grade {
+  blackpoint {{parent.Grade7_blackpoint.r} {parent.Grade7_blackpoint.g} {parent.Grade7_blackpoint.b} {parent.Grade7_blackpoint.a}}
+  whitepoint {{parent.Grade7_whitepoint.r} {parent.Grade7_whitepoint.g} {parent.Grade7_whitepoint.b} {parent.Grade7_whitepoint.a}}
+  black {{parent.Grade7_black.r} {parent.Grade7_black.g} {parent.Grade7_black.b} {parent.Grade7_black.a}}
+  white {4 0.2234667838 0.1466668099 1}
+  multiply {{parent.Grade7_multiply.r} {parent.Grade7_multiply.g} {parent.Grade7_multiply.b} {parent.Grade7_multiply.a}}
+  add {{parent.Grade7_add.r} {parent.Grade7_add.g} {parent.Grade7_add.b} {parent.Grade7_add.a}}
+  gamma {{parent.Grade7_gamma.r} {parent.Grade7_gamma.g} {parent.Grade7_gamma.b} {parent.Grade7_gamma.a}}
+  reverse {{parent.Grade7_reverse}}
+  black_clamp {{parent.Grade7_black_clamp}}
+  white_clamp {{parent.Grade7_white_clamp}}
+  inject {{parent.Grade7_inject}}
+  invert_mask {{parent.Grade7_invert_mask}}
+  fringe {{parent.Grade7_fringe}}
+  invert_unpremult {{parent.Grade7_invert_unpremult}}
+  mix {{parent.Grade7_mix}}
+  name Grade7
+  xpos -267
+  ypos 860
+ }
+push $N19fb16f0
+ Grade {
+  blackpoint {{parent.Grade7_blackpoint.r} {parent.Grade7_blackpoint.g} {parent.Grade7_blackpoint.b} {parent.Grade7_blackpoint.a}}
+  whitepoint {{parent.Grade7_whitepoint.r} {parent.Grade7_whitepoint.g} {parent.Grade7_whitepoint.b} {parent.Grade7_whitepoint.a}}
+  black {{parent.Grade7_black.r} {parent.Grade7_black.g} {parent.Grade7_black.b} {parent.Grade7_black.a}}
+  white {{parent.Grade7_white.r} {parent.Grade7_white.g} {parent.Grade7_white.b} {parent.Grade7_white.a}}
+  multiply {{parent.Grade7_multiply.r} {parent.Grade7_multiply.g} {parent.Grade7_multiply.b} {parent.Grade7_multiply.a}}
+  add {{parent.Grade7_add.r} {parent.Grade7_add.g} {parent.Grade7_add.b} {parent.Grade7_add.a}}
+  gamma {{parent.Grade7_gamma.r} {parent.Grade7_gamma.g} {parent.Grade7_gamma.b} {parent.Grade7_gamma.a}}
+  reverse {{parent.Grade7_reverse}}
+  black_clamp {{parent.Grade7_black_clamp}}
+  white_clamp {{parent.Grade7_white_clamp}}
+  inject {{parent.Grade7_inject}}
+  invert_mask {{parent.Grade7_invert_mask}}
+  fringe {{parent.Grade7_fringe}}
+  invert_unpremult {{parent.Grade7_invert_unpremult}}
+  mix {{parent.Grade7_mix}}
+  name Grade1
+  xpos -106
+  ypos 860
+ }
+ Switch {
+  inputs 2
+  which 1
+  name Switch1
+  xpos -183
+  ypos 894
+  disable {{parent.GreenLaser}}
+ }
+ Glow2 {
+  size 9.5
+  mix 0.53
+  name Glow2
+  xpos -183
+  ypos 946
+ }
+ TimeBlur {
+  divisions 12
+  shutter 0.35
+  shutteroffset centred
+  shuttercustomoffset 0
+  name TimeBlur2
+  xpos -183
+  ypos 970
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -183
+  ypos 1036
+ }
+set N19fd2450 [stack 0]
+push $N19fac170
+ Viewer {
+  inputs 2
+  frame 10
+  input_number 1
+  input_process false
+  name Viewer1
+  xpos 183
+  ypos 1033
+ }
+push $N19fd2450
+push $N1dc0d790
+ Switch {
+  inputs 2
+  which 1
+  name switchn1
+  xpos -183
+  ypos 1143
+  disable {{parent.Viewnoise1}}
+ }
+push $N1f9780
+ Switch {
+  inputs 2
+  which 1
+  name switchn2
+  xpos -183
+  ypos 1192
+  disable {{parent.Viewnoise2}}
+ }
+ Output {
+  name Output1
+  xpos -183
+  ypos 1250
+ }
+ Noise {
+  inputs 0
+  size 90
+  zoffset {{curve x1 0 l x112 0.76}}
+  gain 1
+  gamma 0.32
+  translate {{curve x1 0} {curve x1 0 x112 15}}
+  center {960 540}
+  name Noise3
+  xpos 305
+  ypos 641
+  disable true
+ }
+end_group

@@ -1,0 +1,213 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 Basic}
+ addUserKnob {6 noInput l "Ignore 'img'" t "if cheked, ignore the 'img' pipe" +STARTLINE}
+ addUserKnob {41 format T SphericalTransform1.format}
+ addUserKnob {26 div1 l "basic operations"}
+ addUserKnob {7 amount l Amount R 0 0.999}
+ amount 0.6
+ addUserKnob {7 smooth l smoothness}
+ smooth 0.4
+ addUserKnob {20 advanced l Advanced}
+ addUserKnob {41 color1 l "color 1" t "internal color" T Constant1.color}
+ addUserKnob {41 color2 l "color 2" T AddChannels1.color}
+ addUserKnob {26 div l "overall corrections"}
+ addUserKnob {41 saturation T ColorCorrect1.saturation}
+ addUserKnob {41 contrast T ColorCorrect1.contrast}
+ addUserKnob {41 gamma T ColorCorrect1.gamma}
+ addUserKnob {41 gain T ColorCorrect1.gain}
+ addUserKnob {41 offset T ColorCorrect1.offset}
+ addUserKnob {20 transform n 1}
+ transform 0
+ addUserKnob {41 translate T Transform1.translate}
+ addUserKnob {41 rotate T Transform1.rotate}
+ addUserKnob {41 scale T Transform1.scale}
+ addUserKnob {41 skew T Transform1.skew}
+ addUserKnob {41 center T Transform1.center}
+ addUserKnob {41 motionblur T Transform1.motionblur}
+ addUserKnob {41 shutter T Transform1.shutter}
+ addUserKnob {41 black_outside l "black outside" T Transform1.black_outside}
+ addUserKnob {41 shutteroffset l "shutter offset" T Transform1.shutteroffset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T Transform1.shuttercustomoffset}
+ addUserKnob {41 filter T Transform1.filter}
+ addUserKnob {41 matrix T Transform1.matrix}
+ addUserKnob {20 endGroup n -1}
+}
+ Constant {
+  inputs 0
+  channels {rgba.red rgba.green rgba.blue rgba.alpha}
+  color 1
+  format {{{SphericalTransform1.format}}}
+  name Constant1
+  xpos -154
+  ypos -120
+ }
+ Input {
+  inputs 0
+  name img
+  xpos -409
+  ypos -184
+ }
+set N471d2080 [stack 0]
+ Shuffle {
+  in alpha
+  red white
+  name Shuffle1
+  xpos -409
+  ypos -126
+ }
+ Shuffle {
+  in alpha
+  name Shuffle2
+  xpos -409
+  ypos -96
+ }
+ Switch {
+  inputs 2
+  which {{noInput}}
+  name Switch1
+  xpos -305
+  ypos -96
+ }
+ SphericalTransform {
+  input "Lat Long map"
+  rot_order YZX
+  output "Orthographic Sphere"
+  fix true
+  name SphericalTransform1
+  xpos -305
+  ypos -47
+  addUserKnob {20 User}
+ }
+set N471d2a10 [stack 0]
+ Dot {
+  name Dot1
+  xpos -360
+  ypos -38
+ }
+ Dot {
+  name Dot2
+  xpos -360
+  ypos 268
+ }
+push $N471d2a10
+ Transform {
+  center {354 293}
+  name Transform1
+  xpos -305
+  ypos 29
+ }
+ Blur {
+  size {{((smooth)*1000)+100}}
+  quality 30
+  name Blur1
+  xpos -305
+  ypos 72
+ }
+set N471d36d0 [stack 0]
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos -183
+  ypos 78
+ }
+ Invert {
+  clamp true
+  name Invert1
+  xpos -88
+  ypos 72
+ }
+set N471d3d30 [stack 0]
+ Remove {
+  name Remove1
+  xpos 61
+  ypos 72
+ }
+ AddChannels {
+  channels {rgba.red rgba.green rgba.blue rgba.alpha}
+  name AddChannels1
+  xpos 61
+  ypos 159
+ }
+push $N471d3d30
+ Merge2 {
+  inputs 2
+  operation in
+  sRGB true
+  name Merge2
+  xpos -88
+  ypos 159
+ }
+push $N471d36d0
+ Merge2 {
+  inputs 2
+  operation plus
+  sRGB true
+  name Merge1
+  xpos -305
+  ypos 159
+ }
+ ColorCorrect {
+  channels rgba
+  name ColorCorrect1
+  xpos -305
+  ypos 209
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos -305
+  ypos 265
+ }
+ Dot {
+  name Dot4
+  xpos -271
+  ypos 356
+ }
+set N471d5380 [stack 0]
+push $N471d5380
+ Invert {
+  name Invert2
+  xpos -418
+  ypos 347
+ }
+push $N471d2080
+ Dot {
+  name Dot5
+  xpos -474
+  ypos -181
+ }
+ ColorCorrect {
+  inputs 1+1
+  gamma {{((amount)-1)*-1}}
+  name ColorCorrect2
+  xpos -508
+  ypos 353
+ }
+ Dot {
+  name Dot3
+  xpos -474
+  ypos 430
+ }
+ Switch {
+  inputs 2
+  which {{noInput}}
+  name Switch2
+  xpos -305
+  ypos 427
+ }
+ Output {
+  name Output1
+  xpos -305
+  ypos 485
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -443
+  ypos 506
+ }
+end_group

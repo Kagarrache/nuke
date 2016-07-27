@@ -1,0 +1,74 @@
+#! C:/Program Files/Nuke8.0v1/nuke-8.0.v1.dll -nx
+version 8.0 v1
+Gizmo {
+ tile_color 0xff00ff
+ gl_color 0xf700f8ff
+ addUserKnob {20 KillGradient}
+ addUserKnob {41 screen_type l "screen type" T IBKColourV3_2.screen_type}
+ addUserKnob {41 Size l size T IBKColourV3_2.Size}
+ addUserKnob {41 off l darks T IBKColourV3_2.off}
+ addUserKnob {41 mult l lights T IBKColourV3_2.mult}
+ addUserKnob {41 erode T IBKColourV3_2.erode}
+ addUserKnob {41 multi l "patch black" T IBKColourV3_2.multi}
+ addUserKnob {26 ""}
+ addUserKnob {41 color l "pick bg color" T Constant1.color}
+ addUserKnob {26 ""}
+ addUserKnob {26 name_1 l "" +STARTLINE T "KillGradient by Sachin Kumar Chauhan v1.0"}
+ addUserKnob {26 ""}
+}
+ Input {
+  inputs 0
+  xpos -93
+  ypos 56
+ }
+ Dot {
+  name Dot3
+  xpos -59
+  ypos 96
+ }
+set Ncc26520 [stack 0]
+ Dot {
+  name Dot2
+  xpos -203
+  ypos 96
+ }
+ Dot {
+  name Dot1
+  xpos -203
+  ypos 290
+ }
+push $Ncc26520
+ IBKColourV3 {
+  name IBKColourV3_2
+  xpos -93
+  ypos 137
+  screen_type green
+  Size 1
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos 49
+  ypos 188
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge1
+  xpos -93
+  ypos 212
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge2
+  xpos -93
+  ypos 287
+ }
+ Output {
+  name Output1
+  xpos -93
+  ypos 387
+ }
+end_group

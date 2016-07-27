@@ -1,0 +1,1441 @@
+#! C:/Program Files/Nuke9.0v6/nuke-9.0.6.dll -nx
+version 9.0 v6
+Gizmo {
+ inputs 20
+ label "@b;<center>Layers=\[value LayerNum]<img src=\"Merge.png\"> "
+ note_font Verdana
+ addUserKnob {20 LayerCtrl}
+ addUserKnob {26 AboutDisplay l "@b;About Display"}
+ addUserKnob {41 DisplayOption T Controler.DisplayOption}
+ addUserKnob {41 LayerNum l "Layer's Number" t "The Max number is 20\nPlease do not beyond 20 layers" T CardNumber.which}
+ addUserKnob {41 num_spacing l "Layers' Spacing" T Controler.num_spacing}
+ addUserKnob {41 Gather T Controler.Gather}
+ addUserKnob {26 AboutTime l "@b;About Time"}
+ addUserKnob {41 TimeSpacing T Controler.TimeSpacing}
+ addUserKnob {26 AboutBorder l "@b;About Border"}
+ addUserKnob {41 borderSize T Controler.borderSize}
+ addUserKnob {41 size l "Blur Size" T border_blur.size}
+ addUserKnob {41 Opacity T Controler.borderOpacity}
+ addUserKnob {26 ""}
+ addUserKnob {26 Copyright l "@b;About Me"}
+ addUserKnob {26 text l "" +STARTLINE T "The Breakdown Accordion v01:\n\nMade by Garkay\nAt Post Production Office Group Shanghai\nNov/19/2015\n\nWelcome to my Blog:\nhttp://blog.163.com/garkay@126"}
+ addUserKnob {20 RenderCam}
+ addUserKnob {26 Camera_Lens l "Camera Lens"}
+ addUserKnob {41 projection_mode_1 l projection T FinalRenderCamera.projection_mode}
+ addUserKnob {41 focal_1 l "focal length" T FinalRenderCamera.focal}
+ addUserKnob {41 haperture l "horiz aperture" T FinalRenderCamera.haperture}
+ addUserKnob {41 vaperture l "vert aperture" T FinalRenderCamera.vaperture}
+ addUserKnob {41 near T FinalRenderCamera.near}
+ addUserKnob {41 far T FinalRenderCamera.far}
+ addUserKnob {41 win_translate l "window translate" T FinalRenderCamera.win_translate}
+ addUserKnob {41 win_scale l "window scale" T FinalRenderCamera.win_scale}
+ addUserKnob {41 winroll l "window roll" T FinalRenderCamera.winroll}
+ addUserKnob {41 focal_point l "focal distance" T FinalRenderCamera.focal_point}
+ addUserKnob {41 fstop T FinalRenderCamera.fstop}
+ addUserKnob {26 Camera_Transform l "Camera Transform"}
+ addUserKnob {41 display T FinalRenderCamera.display}
+ addUserKnob {41 transform T FinalRenderCamera.transform}
+ addUserKnob {41 xform_order l "transform order" T FinalRenderCamera.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T FinalRenderCamera.rot_order}
+ addUserKnob {41 translate T FinalRenderCamera.translate}
+ addUserKnob {41 rotate T FinalRenderCamera.rotate}
+ addUserKnob {41 scaling l scale T FinalRenderCamera.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T FinalRenderCamera.uniform_scale}
+ addUserKnob {41 skew T FinalRenderCamera.skew}
+ addUserKnob {41 pivot T FinalRenderCamera.pivot}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x8e8e3800
+  label border
+  note_font_size 42
+  xpos 286
+  ypos 279
+  bdwidth 512
+  bdheight 506
+ }
+ Camera2 {
+  inputs 0
+  translate {{curve x1 0 x210 1 x300 0} {curve x1 0 x210 0 x300 0} {curve x1 2.035 x210 2.9 x300 3.048}}
+  rotate {{curve x1 0 x210 0} {curve x1 0 x210 40 x300 0} {curve x1 0 x210 0}}
+  focal {{curve x1 50 x210 25}}
+  name FinalRenderCamera
+  xpos 4700
+  ypos 3138
+ }
+ Constant {
+  inputs 0
+  color 1
+  name Border_inside
+  xpos 573
+  ypos 391
+ }
+ Transform {
+  scale {{1-Controler.borderSize}}
+  center {{Border_inside.format.width/2} {Border_inside.format.height/2}}
+  name Transform1
+  xpos 573
+  ypos 484
+ }
+set N4efa3400 [stack 0]
+ Constant {
+  inputs 0
+  color 1
+  name Border_Constant
+  xpos 387
+  ypos 402
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge2
+  xpos 454
+  ypos 555
+ }
+ Blur {
+  size 2
+  name border_blur
+  xpos 454
+  ypos 611
+ }
+ Multiply {
+  value {{Controler.borderOpacity}}
+  name border_opacity
+  xpos 454
+  ypos 691
+ }
+ Dot {
+  name Dot2
+  xpos 488
+  ypos 838
+ }
+set N4efa2000 [stack 0]
+ Input {
+  inputs 0
+  name Input20
+  xpos 7569
+  ypos -478
+  number 19
+ }
+ Dot {
+  name Dot22
+  xpos 7603
+  ypos -26
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 7565
+  ypos 912
+  lifetimeStart 1
+  lifetimeEnd 300
+ }
+ set C4eaab400 [stack 0]
+ TimeClip {
+  time ""
+  first {{19*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip20
+  label 19*Controler.TimeSpacing
+  xpos 7564
+  ypos 1196
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.9*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard20
+  xpos 7565
+  ypos 1344
+ }
+ TransformGeo {
+  translate {0 0 {(0-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo20
+  xpos 7565
+  ypos 1522
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input19
+  xpos 7259
+  ypos -477
+  number 18
+ }
+ Dot {
+  name Dot21
+  xpos 7293
+  ypos -26
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 7256
+  ypos 912
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{18*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip19
+  label 18*Controler.TimeSpacing
+  xpos 7255
+  ypos 1196
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.8*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard19
+  xpos 7255
+  ypos 1345
+ }
+ TransformGeo {
+  translate {0 0 {(0.1-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo19
+  xpos 7255
+  ypos 1521
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input18
+  xpos 6994
+  ypos -475
+  number 17
+ }
+ Dot {
+  name Dot20
+  xpos 7028
+  ypos -27
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 6991
+  ypos 912
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{17*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip18
+  label 17*Controler.TimeSpacing
+  xpos 6990
+  ypos 1196
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.7*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard18
+  xpos 6990
+  ypos 1345
+ }
+ TransformGeo {
+  translate {0 0 {(0.2-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo18
+  xpos 6990
+  ypos 1522
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input17
+  xpos 6734
+  ypos -475
+  number 16
+ }
+ Dot {
+  name Dot19
+  xpos 6768
+  ypos -25
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 6731
+  ypos 912
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{16*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip17
+  label 16*Controler.TimeSpacing
+  xpos 6729
+  ypos 1196
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.6*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard17
+  xpos 6730
+  ypos 1345
+ }
+ TransformGeo {
+  translate {0 0 {(0.3-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo17
+  xpos 6730
+  ypos 1522
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input16
+  xpos 6485
+  ypos -476
+  number 15
+ }
+ Dot {
+  name Dot18
+  xpos 6519
+  ypos -24
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 6481
+  ypos 914
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{15*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip16
+  label 15*Controler.TimeSpacing
+  xpos 6480
+  ypos 1198
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.5*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard16
+  xpos 6481
+  ypos 1347
+ }
+ TransformGeo {
+  translate {0 0 {(0.4-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo16
+  xpos 6481
+  ypos 1524
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input15
+  xpos 5862
+  ypos -449
+  number 14
+ }
+ Dot {
+  name Dot17
+  xpos 5896
+  ypos -27
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 5858
+  ypos 928
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{14*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip15
+  label 14*Controler.TimeSpacing
+  xpos 5856
+  ypos 1198
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.4*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard15
+  xpos 5858
+  ypos 1358
+ }
+ TransformGeo {
+  translate {0 0 {(0.5-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo15
+  xpos 5858
+  ypos 1537
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input14
+  xpos 5564
+  ypos -450
+  number 13
+ }
+ Dot {
+  name Dot16
+  xpos 5598
+  ypos -27
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 5561
+  ypos 928
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{13*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip14
+  label 13*Controler.TimeSpacing
+  xpos 5558
+  ypos 1198
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.3*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard14
+  xpos 5558
+  ypos 1358
+ }
+ TransformGeo {
+  translate {0 0 {(0.6-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo14
+  xpos 5558
+  ypos 1538
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input13
+  xpos 5275
+  ypos -450
+  number 12
+ }
+ Dot {
+  name Dot15
+  xpos 5309
+  ypos -27
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 5271
+  ypos 928
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{12*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip13
+  label 12*Controler.TimeSpacing
+  xpos 5271
+  ypos 1198
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.2*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard13
+  xpos 5271
+  ypos 1361
+ }
+ TransformGeo {
+  translate {0 0 {(0.7-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo13
+  xpos 5271
+  ypos 1537
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input12
+  xpos 5020
+  ypos -452
+  number 11
+ }
+ Dot {
+  name Dot14
+  xpos 5052
+  ypos -29
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 5014
+  ypos 926
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{11*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip12
+  label 11*Controler.TimeSpacing
+  xpos 5014
+  ypos 1196
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1.1*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard12
+  xpos 5014
+  ypos 1359
+ }
+ TransformGeo {
+  translate {0 0 {(0.8-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo12
+  xpos 5014
+  ypos 1536
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input11
+  xpos 4758
+  ypos -453
+  number 10
+ }
+ Dot {
+  name Dot13
+  xpos 4792
+  ypos -29
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 4754
+  ypos 926
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{10*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip11
+  label 10*Controler.TimeSpacing
+  xpos 4754
+  ypos 1194
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {1*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard11
+  xpos 4754
+  ypos 1359
+ }
+ TransformGeo {
+  translate {0 0 {(0.9-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo11
+  xpos 4754
+  ypos 1536
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input10
+  xpos 4132
+  ypos -466
+  number 9
+ }
+ Dot {
+  name Dot12
+  xpos 4166
+  ypos -47
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 4131
+  ypos 916
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{9*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip10
+  label 9*Controler.TimeSpacing
+  xpos 4130
+  ypos 1192
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.9*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard10
+  xpos 4130
+  ypos 1348
+ }
+ TransformGeo {
+  translate {0 0 {(1-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo10
+  xpos 4130
+  ypos 1526
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input09
+  xpos 3844
+  ypos -466
+  number 8
+ }
+ Dot {
+  name Dot11
+  xpos 3878
+  ypos -50
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 3841
+  ypos 917
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{8*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip9
+  label 8*Controler.TimeSpacing
+  xpos 3840
+  ypos 1191
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.8*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard9
+  xpos 3840
+  ypos 1349
+ }
+ TransformGeo {
+  translate {0 0 {(1.1-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo9
+  xpos 3840
+  ypos 1526
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input08
+  xpos 3618
+  ypos -466
+  number 7
+ }
+ Dot {
+  name Dot10
+  xpos 3652
+  ypos -50
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 3615
+  ypos 917
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{7*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip8
+  label 7*Controler.TimeSpacing
+  xpos 3614
+  ypos 1192
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.7*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard8
+  xpos 3614
+  ypos 1349
+ }
+ TransformGeo {
+  translate {0 0 {(1.2-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo8
+  xpos 3614
+  ypos 1526
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input07
+  xpos 3366
+  ypos -470
+  number 6
+ }
+ Dot {
+  name Dot9
+  xpos 3400
+  ypos -51
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 3363
+  ypos 916
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{6*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip7
+  label 6*Controler.TimeSpacing
+  xpos 3363
+  ypos 1196
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.6*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard7
+  xpos 3362
+  ypos 1348
+ }
+ TransformGeo {
+  translate {0 0 {(1.3-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo7
+  xpos 3362
+  ypos 1525
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input06
+  xpos 3109
+  ypos -466
+  number 5
+ }
+ Dot {
+  name Dot8
+  xpos 3143
+  ypos -51
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 3105
+  ypos 916
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{5*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip6
+  label 5*Controler.TimeSpacing
+  xpos 3105
+  ypos 1197
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.5*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard6
+  xpos 3105
+  ypos 1348
+ }
+ TransformGeo {
+  translate {0 0 {(1.4-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo6
+  xpos 3105
+  ypos 1525
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input05
+  xpos 2266
+  ypos -484
+  number 4
+ }
+ Dot {
+  name Dot7
+  xpos 2300
+  ypos -64
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 2263
+  ypos 903
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{4*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip5
+  label 4*Controler.TimeSpacing
+  xpos 2262
+  ypos 1198
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.4*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard5
+  xpos 2262
+  ypos 1335
+ }
+ TransformGeo {
+  translate {0 0 {(1.5-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo5
+  xpos 2262
+  ypos 1512
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input04
+  xpos 1997
+  ypos -486
+  number 3
+ }
+ Dot {
+  name Dot6
+  xpos 2031
+  ypos -64
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 1993
+  ypos 903
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{3*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip4
+  label 3*Controler.TimeSpacing
+  xpos 1993
+  ypos 1190
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.3*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard4
+  xpos 1993
+  ypos 1335
+ }
+ TransformGeo {
+  translate {0 0 {(1.6-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo4
+  xpos 1993
+  ypos 1512
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input03
+  xpos 1716
+  ypos -475
+  number 2
+ }
+ Dot {
+  name Dot5
+  xpos 1750
+  ypos -56
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 1713
+  ypos 911
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{2*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip3
+  label 2*Controler.TimeSpacing
+  xpos 1713
+  ypos 1193
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.2*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard3
+  xpos 1712
+  ypos 1344
+ }
+ TransformGeo {
+  translate {0 0 {(1.7-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo3
+  xpos 1712
+  ypos 1520
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input02
+  xpos 1441
+  ypos -477
+  number 1
+ }
+ Dot {
+  name Dot4
+  xpos 1475
+  ypos -57
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 1437
+  ypos 911
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{1*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip2
+  label 1*Controler.TimeSpacing
+  xpos 1437
+  ypos 1190
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  translate {0 0 {.1*Controler.num_spacing}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard2
+  xpos 1437
+  ypos 1343
+ }
+ TransformGeo {
+  translate {0 0 {(1.8-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo2
+  xpos 1437
+  ypos 1520
+ }
+push $N4efa2000
+ Input {
+  inputs 0
+  name Input01
+  xpos 1196
+  ypos -475
+ }
+ Dot {
+  name Dot3
+  xpos 1230
+  ypos -51
+ }
+clone $C4eaab400 {
+  inputs 2
+  xpos 1192
+  ypos 917
+  selected false
+ }
+ TimeClip {
+  time ""
+  first {{0*Controler.TimeSpacing}}
+  last 1000
+  origlast 100
+  origset true
+  name TimeClip1
+  label 0*Controler.TimeSpacing
+  xpos 1192
+  ypos 1192
+  disable {{Controler.DisplayOption}}
+ }
+ Card2 {
+  rows 1
+  columns 1
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name BT_layercard1
+  xpos 1192
+  ypos 1349
+ }
+ TransformGeo {
+  translate {0 0 {(1.9-0.1*(20-Controler.TimeSpacing))*Controler.Gather}}
+  name TransformGeo21
+  xpos 1192
+  ypos 1526
+ }
+ Dot {
+  name Dot1
+  xpos 1226
+  ypos 1850
+ }
+set N51409c00 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo1
+  xpos 1437
+  ypos 1840
+ }
+set N51409800 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo2
+  xpos 1712
+  ypos 1840
+ }
+set N51409400 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo3
+  xpos 1993
+  ypos 1832
+ }
+set N51409000 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo4
+  xpos 2262
+  ypos 1832
+ }
+set N51408c00 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo5
+  xpos 3105
+  ypos 1845
+ }
+set N51408800 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo6
+  xpos 3362
+  ypos 1845
+ }
+set N51408400 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo7
+  xpos 3614
+  ypos 1846
+ }
+set N51408000 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo8
+  xpos 3840
+  ypos 1846
+ }
+set N51439c00 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo9
+  xpos 4130
+  ypos 1845
+ }
+set N51439800 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo10
+  xpos 4754
+  ypos 1856
+ }
+set N51439400 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo11
+  xpos 5014
+  ypos 1856
+ }
+set N51439000 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo12
+  xpos 5271
+  ypos 1858
+ }
+set N51438c00 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo13
+  xpos 5560
+  ypos 1858
+ }
+set N51438800 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo14
+  xpos 5858
+  ypos 1858
+ }
+set N51438400 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo15
+  xpos 6481
+  ypos 1844
+ }
+set N51438000 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo16
+  xpos 6733
+  ypos 1842
+ }
+set N545f1c00 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo17
+  xpos 6990
+  ypos 1842
+ }
+set N545f1800 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo18
+  xpos 7255
+  ypos 1842
+ }
+set N545f1400 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo19
+  xpos 7565
+  ypos 1842
+ }
+push $N545f1400
+push $N545f1800
+push $N545f1c00
+push $N51438000
+push $N51438400
+push $N51438800
+push $N51438c00
+push $N51439000
+push $N51439400
+push $N51439800
+push $N51439c00
+push $N51408000
+push $N51408400
+push $N51408800
+push $N51408c00
+push $N51409000
+push $N51409400
+push $N51409800
+push $N51409c00
+push $N51409c00
+ Switch {
+  inputs 21
+  which 15
+  name CardNumber
+  xpos 4329
+  ypos 2678
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  antialiasing high
+  motion_vectors_type distance
+  name ScanlineRender1
+  xpos 4329
+  ypos 3158
+ }
+ Output {
+  name Output1
+  xpos 4329
+  ypos 3509
+ }
+push $N4efa3400
+ Viewer {
+  frame_range 0-300
+  fps 25
+  name Viewer1
+  xpos 240
+  ypos 881
+ }
+ NoOp {
+  inputs 0
+  name Controler
+  selected true
+  xpos 726
+  ypos 1075
+  addUserKnob {20 Controler}
+  addUserKnob {4 DisplayOption t "One By One: \nAll different layers will appear one by one.\nComplete:\nAll different layers will appear at the same time." M {"One By One" Complete "" "" "" "" "" "" ""}}
+  addUserKnob {3 TimeSpacing t "how many frames every different layer will appear on spacing"}
+  TimeSpacing 15
+  addUserKnob {7 num_spacing t "the distance about every different layer" R 0.1 10}
+  num_spacing 1.45
+  addUserKnob {7 borderSize t "how big the birder is"}
+  borderSize 0.0015
+  addUserKnob {7 borderOpacity t "the Opacity Value of each layer's border"}
+  borderOpacity 0.5
+  addUserKnob {7 Gather t "This value you need to do some key frames.\nNormally just 2 key frames is enough.\n\nFor example:\n\nWhen you see whole thing you want in your camera,\nat this time, you can key frame to: 0\n\nAt the end, \nwhen you make the camera to see the layer that is going to be finishing, \nat this time, you can key frame to the value is same with \"Layers' Spacing\"." R 0 10}
+  Gather {{curve x235 0 s0 x300 1.45 s0}}
+ }
+end_group

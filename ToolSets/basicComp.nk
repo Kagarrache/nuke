@@ -1,0 +1,492 @@
+#! C:/Program Files/Nuke6.0v5/Nuke6.0.exe -nx
+version 6.0 v5
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="-8" y="-8" w="1296" h="1010" screen="0">
+        <splitter orientation="1">
+            <split size="808"></split>
+            <splitter orientation="1">
+                <split size="41"></split>
+                <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                    <page id="Toolbar.1"></page>
+                </dock>
+                <split size="763"></split>
+                <splitter orientation="2">
+                    <split size="471"></split>
+                    <dock id="" activePageId="Viewer.1">
+                        <page id="Viewer.1"></page>
+                    </dock>
+                    <split size="471"></split>
+                    <dock id="" activePageId="DAG.1">
+                        <page id="DAG.1"></page>
+                        <page id="Curve Editor.1"></page>
+                    </dock>
+                </splitter>
+            </splitter>
+            <split size="468"></split>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"></page>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name C:/Users/tom/Desktop/basicComp.nk
+ last_frame 1
+ fps 25
+ format "1944 1296 0 0 1944 1296 1 "
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode1
+ tile_color 0x885554ff
+ label RENDER-OUTPUT
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font_size 15
+ xpos -397
+ ypos -283
+ bdwidth 325
+ bdheight 339
+}
+BackdropNode {
+ inputs 0
+ name CORRECTOR
+ tile_color 0x1f8800ff
+ label "(fix Reflection / Refraction Pixels)"
+ xpos -698
+ ypos 179
+ bdwidth 236
+ bdheight 593
+}
+BackdropNode {
+ inputs 0
+ name BASIC_PASS_COMPING
+ xpos -397
+ ypos 180
+ bdwidth 1219
+ bdheight 664
+}
+Read {
+ inputs 0
+ file "\[value media_path.media]yourRender.exr"
+ format "1944 1296 0 0 1944 1296 1 "
+ name Read2
+ xpos -362
+ ypos -156
+}
+Dot {
+ name Input
+ label INPUT
+ note_font_color 0xff00ff
+ xpos -165
+ ypos -122
+}
+set Nb237d10 [stack 0]
+push $Nb237d10
+Dot {
+ name Dot4
+ xpos 25
+ ypos 150
+ hide_input true
+}
+Dot {
+ name Dot1
+ xpos 25
+ ypos 242
+}
+set Nb2381f0 [stack 0]
+Dot {
+ name Dot8
+ label "GET ORIG. ALPHA"
+ note_font_color 0xff0000ff
+ xpos 592
+ ypos 701
+ hide_input true
+}
+push $Nb2381f0
+add_layer {VRayRefraction VRayRefraction.red VRayRefraction.green VRayRefraction.blue}
+Shuffle {
+ in VRayRefraction
+ name Shuffle10
+ label REFRACT
+ xpos 423
+ ypos 369
+}
+push $Nb2381f0
+Dot {
+ name Dot3
+ xpos 576
+ ypos 443
+ hide_input true
+}
+add_layer {VRayRefractionFilter VRayRefractionFilter.red VRayRefractionFilter.green VRayRefractionFilter.blue}
+Shuffle {
+ in VRayRefractionFilter
+ name Shuffle11
+ label "REFRACT\nFILTER"
+ xpos 542
+ ypos 482
+}
+set Nb238bb0 [stack 0]
+Merge2 {
+ inputs 2
+ operation divide
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name rawRefraction
+ xpos 423
+ ypos 495
+}
+push $Nb238bb0
+Merge2 {
+ inputs 2
+ operation multiply
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name TotalRefr
+ xpos 423
+ ypos 630
+}
+push $Nb2381f0
+add_layer {VRayReflection VRayReflection.red VRayReflection.green VRayReflection.blue}
+Shuffle {
+ in VRayReflection
+ name Shuffle8
+ label REFLECT
+ xpos 165
+ ypos 361
+}
+push $Nb2381f0
+Dot {
+ name Dot2
+ xpos 309
+ ypos 441
+ hide_input true
+}
+add_layer {VRayReflectionFilter VRayReflectionFilter.red VRayReflectionFilter.green VRayReflectionFilter.blue}
+Shuffle {
+ in VRayReflectionFilter
+ name Shuffle9
+ label "REFLECT\nFILTER"
+ xpos 275
+ ypos 489
+}
+set Nb2397e0 [stack 0]
+Merge2 {
+ inputs 2
+ operation divide
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name rawReflection
+ xpos 165
+ ypos 502
+}
+push $Nb2397e0
+Merge2 {
+ inputs 2
+ operation multiply
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name TotalRefl
+ xpos 165
+ ypos 626
+}
+push $Nb2381f0
+add_layer {VRaySpecular VRaySpecular.red VRaySpecular.green VRaySpecular.blue}
+Shuffle {
+ in VRaySpecular
+ name Shuffle12
+ label SPECULAR
+ xpos -9
+ ypos 358
+}
+push $Nb2381f0
+add_layer {VRayLighting VRayLighting.red VRayLighting.green VRayLighting.blue}
+Shuffle {
+ in VRayLighting
+ name Shuffle7
+ label LIGHT
+ xpos -327
+ ypos 357
+}
+push $Nb2381f0
+add_layer {VRayDiffuseFilter VRayDiffuseFilter.red VRayDiffuseFilter.green VRayDiffuseFilter.blue}
+Shuffle {
+ in VRayDiffuseFilter
+ name Shuffle5
+ label DIFFUSE
+ xpos -243
+ ypos 357
+}
+Dot {
+ name Dot31
+ xpos -209
+ ypos 501
+}
+set Nb23a680 [stack 0]
+Merge2 {
+ inputs 2
+ operation divide
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name Merge11
+ label "LIGHT / DIFF"
+ xpos -327
+ ypos 491
+}
+push $Nb23a680
+Dot {
+ name Dot32
+ xpos -209
+ ypos 586
+}
+set N11f39a30 [stack 0]
+Merge2 {
+ inputs 2
+ operation multiply
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name rawLight2
+ label "RAW LIGHT * DIFF"
+ xpos -327
+ ypos 576
+}
+push $Nb237d10
+Dot {
+ name Dot6
+ label CORRECTOR
+ note_font_color 0xff0000ff
+ xpos -621
+ ypos 118
+ hide_input true
+}
+Shuffle {
+ name Shuffle13
+ xpos -655
+ ypos 247
+}
+set N11f3a180 [stack 0]
+push $N11f3a180
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayLighting
+ name Merge6
+ label "- LIGHT"
+ xpos -655
+ ypos 335
+}
+set N11f3a3f0 [stack 0]
+push $N11f3a3f0
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRaySpecular
+ name Merge7
+ label "- SPECULAR"
+ xpos -655
+ ypos 373
+}
+set N11f3a660 [stack 0]
+push $N11f3a660
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayReflection
+ name Merge8
+ label "- REFLECT"
+ xpos -655
+ ypos 411
+}
+set N11f3a8d0 [stack 0]
+push $N11f3a8d0
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayRefraction
+ name Merge9
+ label "- REFRACT"
+ xpos -655
+ ypos 449
+}
+set N11f3ab40 [stack 0]
+push $N11f3ab40
+add_layer {VRayGlobalIllumination VRayGlobalIllumination.red VRayGlobalIllumination.green VRayGlobalIllumination.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayGlobalIllumination
+ name Merge1
+ label "- GI"
+ xpos -655
+ ypos 487
+}
+set N11f3adb0 [stack 0]
+push $N11f3adb0
+add_layer {VRaySelfIllumination VRaySelfIllumination.red VRaySelfIllumination.green VRaySelfIllumination.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRaySelfIllumination
+ name Merge10
+ label "- SELF ILLUMINATION"
+ xpos -655
+ ypos 525
+}
+set N121f02b0 [stack 0]
+push $N121f02b0
+add_layer {VRayBackground VRayBackground.red VRayBackground.green VRayBackground.blue}
+Merge2 {
+ inputs 2
+ operation minus
+ Bchannels VRayBackground
+ name Merge4
+ label "- BACKGROUND"
+ xpos -655
+ ypos 563
+}
+Dot {
+ name Dot7
+ xpos -621
+ ypos 662
+}
+Merge2 {
+ inputs 2
+ operation plus
+ name Merge14
+ label CORRECTOR
+ note_font_color 0xff00ff
+ xpos -327
+ ypos 652
+}
+push $Nb2381f0
+Shuffle {
+ in VRayGlobalIllumination
+ name Shuffle6
+ label GI
+ xpos -159
+ ypos 357
+}
+push $Nb23a680
+Merge2 {
+ inputs 2
+ operation divide
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name Merge12
+ label "GI / DIFF"
+ xpos -157
+ ypos 491
+}
+push $N11f39a30
+Merge2 {
+ inputs 2
+ operation multiply
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name rawGI2
+ label "RAW GI * DIFF"
+ xpos -157
+ ypos 576
+}
+Merge2 {
+ inputs 2
+ operation plus
+ output rgb
+ name TotalLight2
+ xpos -251
+ ypos 747
+}
+Merge2 {
+ inputs 2
+ operation plus
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name Merge13
+ xpos -9
+ ypos 747
+}
+Merge2 {
+ inputs 2
+ operation plus
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name Merge2
+ xpos 165
+ ypos 747
+}
+Merge2 {
+ inputs 2
+ operation plus
+ output {rgba.red rgba.green rgba.blue -rgba.alpha}
+ name Merge3
+ xpos 423
+ ypos 747
+}
+Shuffle {
+ alpha black
+ name Shuffle2
+ label "KILL ALPHA"
+ xpos 423
+ ypos 778
+}
+Copy {
+ inputs 2
+ from0 rgba.alpha
+ to0 rgba.alpha
+ name Copy1
+ xpos 558
+ ypos 778
+}
+push $Nb2381f0
+Shuffle {
+ in VRayBackground
+ name Shuffle1
+ label BACKGROUND
+ xpos 683
+ ypos 380
+}
+Merge2 {
+ inputs 2
+ Bchannels rgb
+ name Merge5
+ xpos 683
+ ypos 784
+}
+Dot {
+ name FinComp
+ label "to DIFFERENCE checker"
+ note_font_color 0xff0000ff
+ xpos 937
+ ypos 788
+}
+set N11f3d240 [stack 0]
+Dot {
+ name Dot5
+ xpos -255
+ ypos -9
+ hide_input true
+}
+Merge2 {
+ inputs 2
+ operation difference
+ name DifferenceCheck
+ label "DIFFERENCE\nchecker"
+ xpos -199
+ ypos -26
+}
+push $N11f3d240
+Viewer {
+ inputs 2
+ frame 1
+ input_process false
+ name Viewer2
+ xpos 903
+ ypos 964
+}
+NoOp {
+ inputs 0
+ name media_path
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font_size 9
+ note_font_color 0x9e0000ff
+ xpos -361
+ ypos -210
+ addUserKnob {20 User}
+ addUserKnob {2 media l "Media Folder Directory:"}
+ media D:/pathToYourRender/
+}

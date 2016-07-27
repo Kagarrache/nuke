@@ -1,0 +1,317 @@
+set cut_paste_input [stack 0]
+version 8.0 v2
+BackdropNode {
+ inputs 0
+ name BackdropNode1
+ tile_color 0x388e8e00
+ label "alpha prep"
+ note_font_size 42
+ selected true
+ xpos 350
+ ypos -1132
+ bdwidth 373
+ bdheight 393
+}
+BackdropNode {
+ inputs 0
+ name Shadows
+ tile_color 0x8e8ea8ff
+ label "projection setup"
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font_size 42
+ selected true
+ xpos 380
+ ypos -725
+ bdwidth 563
+ bdheight 742
+}
+StickyNote {
+ inputs 0
+ name control
+ tile_color 0xff3fff
+ label UI
+ note_font "Verdana Bold Bold Bold"
+ note_font_size 70
+ selected true
+ xpos 553
+ ypos -858
+ addUserKnob {20 shadows}
+ addUserKnob {6 pam_format l "use my format" t "set your format in \"set your format node\".use only drop down list" +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {18 shad_color l "shadow color"}
+ addUserKnob {7 shad_blur l blur R 0 100}
+ addUserKnob {7 shad_opacity l opacity}
+ shad_opacity 1
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {6 shad_color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 trans_y l "shadow pos in y" t "Transform projector in Y axis."}
+ addUserKnob {7 shad_scale l "shadow scale" t "trasform projector in z axis"}
+ addUserKnob {13 shad_refine l "refine position" t "Transform projector in z.Rotate in x,y"}
+ addUserKnob {6 cdr_look l "loock at light" t "Card loocks at projector" +STARTLINE}
+ cdr_look true
+ addUserKnob {20 tab_3d l 3D}
+ addUserKnob {13 light_pos l "light Position" t "set to position of your light"}
+ light_pos {0 0.8 1.2}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 transform l "" +STARTLINE T "                        overall setap transformation"}
+ addUserKnob {13 setup_translate l translate}
+ addUserKnob {13 setup_rotate l rotate}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {12 parm_scale l "card scale"}
+ parm_scale {1 1}
+}
+Axis2 {
+ inputs 0
+ translate {{parent.control.setup_translate} {parent.control.setup_translate} {parent.control.setup_translate}}
+ rotate {{parent.control.setup_rotate} {parent.control.setup_rotate} {parent.control.setup_rotate}}
+ name system_transform1
+ tile_color 0x212121ff
+ selected true
+ xpos 823
+ ypos -68
+}
+set Ndac93a0 [stack 0]
+Axis2 {
+ translate {{parent.control.light_pos} {parent.control.light_pos} {parent.control.light_pos}}
+ rotate {{"-degrees(atan2 ((light1.translate.y-card1.translate.y),sqrt(pow2(light1.translate.z-card1.translate.z)+pow2(light1.translate.x-card1.translate.x))))"} {"(light1.translate.z-card1.translate.z)<=0?180-degrees(atan2 ((light1.translate.x-card1.translate.x),abs(light1.translate.z-card1.translate.z))):-degrees(atan2 ((card1.translate.x-light1.translate.x),abs(light1.translate.z-card1.translate.z)))"} {curve}}
+ name light1
+ tile_color 0x212121ff
+ selected true
+ xpos 405
+ ypos -68
+}
+set Ndac79b0 [stack 0]
+Camera2 {
+ translate {{parent.control.shad_refine.x} {parent.control.trans_y} {parent.control.shad_scale}}
+ rotate {{parent.control.shad_refine.y} {parent.control.shad_refine.z} 0}
+ name projector1
+ tile_color 0x212121ff
+ selected true
+ xpos 405
+ ypos -172
+}
+set Nda59f30 [stack 0]
+push 0
+Dot {
+ name Dot1
+ label img/alpha
+ note_font "Verdana Bold Bold Bold"
+ note_font_size 21
+ selected true
+ xpos 954
+ ypos -678
+}
+Reformat {
+ format {{{parent.format}}}
+ box_width 500
+ name reformat1
+ tile_color 0x212121ff
+ selected true
+ xpos 623
+ ypos -921
+ hide_input true
+ disable {{parent.control.pam_format}}
+}
+Reformat {
+ name Set_Your_Format
+ tile_color 0xff3fff
+ note_font "Verdana Bold"
+ note_font_size 12
+ note_font_color 0xfefefeff
+ selected true
+ xpos 508
+ ypos -922
+ disable {{parent.control.pam_format-1}}
+}
+Constant {
+ inputs 0
+ channels rgb
+ color {{parent.control.shad_color.r} {parent.control.shad_color.g} {parent.control.shad_color.b} 0}
+ format {{{parent.Set_Your_Format.format}}}
+ name shadow_color1
+ tile_color 0x212121ff
+ selected true
+ xpos 360
+ ypos -1041
+ postage_stamp false
+}
+Constant {
+ inputs 0
+ channels rgb
+ color {{parent.control.shad_color.r} {parent.control.shad_color.g} {parent.control.shad_color.b} 0}
+ format {{{parent.format}}}
+ name shadow_color2
+ tile_color 0x212121ff
+ selected true
+ xpos 454
+ ypos -1041
+ postage_stamp false
+}
+Switch {
+ inputs 2
+ which {{parent.control.pam_format}}
+ name Switch1
+ tile_color 0x212121ff
+ selected true
+ xpos 395
+ ypos -981
+}
+Copy {
+ inputs 2
+ from0 rgba.alpha
+ to0 rgba.alpha
+ name colpy_color1
+ tile_color 0x212121ff
+ selected true
+ xpos 395
+ ypos -927
+}
+Premult {
+ name fill_alpha1
+ tile_color 0x212121ff
+ selected true
+ xpos 395
+ ypos -882
+}
+Multiply {
+ value {{parent.control.shad_opacity}}
+ name opacity1
+ tile_color 0x212121ff
+ selected true
+ xpos 395
+ ypos -850
+}
+Blur {
+ size {{parent.control.shad_blur}}
+ name blur1
+ tile_color 0x212121ff
+ selected true
+ xpos 395
+ ypos -807
+}
+Transform {
+ scale {{parent.card1.scaling.x} {parent.card1.scaling.y}}
+ center {824 1131}
+ name transform1
+ tile_color 0x212121ff
+ selected true
+ xpos 395
+ ypos -771
+}
+Project3D {
+ inputs 2
+ name project3D1
+ tile_color 0x212121ff
+ selected true
+ xpos 395
+ ypos -585
+}
+push $cut_paste_input
+Dot {
+ name Dot5
+ label "receiving tex"
+ note_font "Verdana Bold Bold Bold"
+ note_font_size 21
+ selected true
+ xpos 954
+ ypos -582
+}
+MergeMat {
+ inputs 2
+ name mergemat1
+ tile_color 0x212121ff
+ note_font Verdana
+ selected true
+ xpos 560
+ ypos -585
+}
+Dot {
+ name Dot4
+ label "receiving geo"
+ note_font "Verdana Bold Bold Bold"
+ note_font_size 21
+ selected true
+ xpos 954
+ ypos -534
+ hide_input true
+}
+StickyNote {
+ inputs 0
+ name StickyNote1
+ tile_color 0xdbbcd1ff
+ label "-connect your image with alpha to\n \"image/alpha\" input\n-connect card that must cast shadows\n to \"you card\" input\n-connect geometry thet must receive\n shadows to \"receiving geo\" input\n-connect shadow receiving geometry\ntexture to \"receiving tex\" input\n-to take your receiving geometry to\nscene with shadows,connect it to\n \"take to scene\" input\n-to adjast your settings use UI node\n-to set your format use \"Set_Your_Format\"\nnode(only dropdown menu)\n___________________\ndon't touch black nodes\n_________________\nthank you and good luck"
+ note_font "Verdana Bold"
+ note_font_size 12
+ note_font_color 0xff
+ selected true
+ xpos 444
+ ypos -546
+}
+push $Nda59f30
+push $Ndac93a0
+push 0
+Dot {
+ name Dot2
+ label "your card"
+ note_font "Verdana Bold Bold Bold"
+ note_font_size 21
+ selected true
+ xpos 954
+ ypos -630
+}
+Dot {
+ name Dot6
+ selected true
+ xpos 847
+ ypos -630
+}
+TransformGeo {
+ inputs 3
+ scaling {{parent.control.parm_scale.x} {parent.control.parm_scale.y} 1}
+ rotate_x false
+ rotate_y {{parent.control.cdr_look}}
+ rotate_z {{parent.control.cdr_look}}
+ name card1
+ tile_color 0x212121ff
+ note_font Verdana
+ selected true
+ xpos 813
+ ypos -286
+}
+push $Ndac93a0
+push $Ndac79b0
+push 0
+Dot {
+ name Dot7
+ tile_color 0xe955ffff
+ label "take to scene"
+ note_font "Verdana Bold Bold Bold"
+ note_font_size 21
+ selected true
+ xpos 954
+ ypos -390
+}
+Dot {
+ name Dot3
+ selected true
+ xpos 602
+ ypos -390
+}
+Scene {
+ inputs 4
+ name scene1
+ tile_color 0x212121ff
+ selected true
+ xpos 578
+ ypos -302
+}
+Dot {
+ name Dot8
+ label look
+ note_font "Verdana Bold"
+ note_font_size 21
+ note_font_color 0x55ffffff
+ selected true
+ xpos 602
+ ypos 90
+}

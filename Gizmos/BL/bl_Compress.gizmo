@@ -1,0 +1,68 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l Compress}
+ addUserKnob {41 LowColor T lowval.value}
+ addUserKnob {41 HighValue T highval.value}
+}
+ Input {
+  inputs 0
+  name In
+  xpos -250
+  ypos 34
+ }
+set N2d394c90 [stack 0]
+ Multiply {
+  channels rgba
+  value 0
+  name Multiply6
+  xpos -145
+  ypos 34
+ }
+set N2d3949e0 [stack 0]
+ Add {
+  channels rgba
+  value {1 1 1 1}
+  name highval
+  xpos -195
+  ypos 88
+ }
+push $N2d3949e0
+ Add {
+  channels rgba
+  value {0 0 0 0}
+  name lowval
+  xpos -101
+  ypos 87
+ }
+set N2d394f40 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Center
+  xpos -156
+  ypos 143
+ }
+push $N2d394c90
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  xpos -250
+  ypos 193
+ }
+push $N2d394f40
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge4
+  xpos -216
+  ypos 273
+ }
+ Output {
+  name Output1
+  xpos -216
+  ypos 301
+ }
+end_group

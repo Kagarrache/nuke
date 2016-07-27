@@ -1,0 +1,115 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Alpha_Edge_v2\n\nIt gives edge of a roto or a key, you have the possibility to dilate or erode , blur or multiply the edge differently inside and outside. Simply the best alpha edge you can find for free\n\n\nfeel free to contact me at niccolo.barbero@gmail.com\n"
+ addUserKnob {20 User l DUCK_Alpha_Edge_v2}
+ addUserKnob {26 Alpha_edge_manager}
+ addUserKnob {26 ""}
+ addUserKnob {26 inner_edge_dilate}
+ addUserKnob {41 size T inner_edge_dialte.size}
+ addUserKnob {26 inner_edge_blur}
+ addUserKnob {41 size_1 l size T in_edge_blur.size}
+ addUserKnob {26 inner_edge_gain}
+ addUserKnob {41 value T i_edge_gain.value}
+ addUserKnob {26 outer_edge_dilate}
+ addUserKnob {41 size_2 l size T o_edge_dilate.size}
+ addUserKnob {26 outer_edge_blur}
+ addUserKnob {41 size_3 l size T out_edge_blur.size}
+ addUserKnob {26 outer_edge_gain}
+ addUserKnob {41 value_1 l value T o_edge_gain.value}
+ addUserKnob {26 overall_blur}
+ addUserKnob {41 size_4 l size T blur_all.size}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -182
+  ypos -179
+ }
+ Dot {
+  name Dot1
+  xpos -148
+  ypos -69
+ }
+set N3b960440 [stack 0]
+push $N3b960440
+ Dilate {
+  channels alpha
+  name inner_edge_dialte
+  xpos -437
+  ypos -15
+ }
+ Blur {
+  channels alpha
+  name in_edge_blur
+  xpos -437
+  ypos 67
+ }
+ Merge2 {
+  inputs 2
+  operation out
+  name Merge1
+  xpos -437
+  ypos 161
+ }
+ Multiply {
+  channels alpha
+  name i_edge_gain
+  selected true
+  xpos -437
+  ypos 314
+ }
+push $N3b960440
+ Dilate {
+  channels alpha
+  name o_edge_dilate
+  xpos 72
+  ypos 11
+ }
+ Blur {
+  channels alpha
+  name out_edge_blur
+  xpos 72
+  ypos 88
+ }
+push $N3b960440
+ Merge2 {
+  inputs 2
+  operation out
+  name Merge3
+  xpos 72
+  ypos 179
+ }
+ Multiply {
+  channels alpha
+  name o_edge_gain
+  xpos 72
+  ypos 287
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge2
+  xpos -190
+  ypos 433
+ }
+ Blur {
+  channels alpha
+  name blur_all
+  xpos -190
+  ypos 511
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -190
+  ypos 629
+ }
+ Output {
+  name Output1
+  xpos -190
+  ypos 729
+ }
+end_group

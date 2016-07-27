@@ -1,0 +1,27 @@
+#! /Applications/Nuke7.0v3/NukeX7.0v3.app/../Nuke7.0v3.app/Contents/MacOS/Nuke7.0v3 -nx
+version 7.0 v3
+Gizmo {
+ inputs 0
+ help "Allows the easy creation of a variety of Waveform Expressions for use in manipulating knob values."
+ addUserKnob {20 main l Main}
+ addUserKnob {26 unnamed_1 l "" +STARTLINE T " "}
+ addUserKnob {68 type l "Wave Type" t "Controls what type of wave to generate." M {Random Noise Sine Triangle Square Sawtooth/Sawtooth "Sawtooth/Sawtooth (Parabolic)" "Sawtooth/Sawtooth (Parabolic reversed)" "Sawtooth/Sawtooth (Exponential)" Bounce "" "" "" "" ""}}
+ addUserKnob {7 minVal l "Min Value" t "Minimum value you want the wave to reach." R 0 10}
+ addUserKnob {7 maxVal l "Max Value" t "Maximum value you want the wave to reach." -STARTLINE R 0 10}
+ maxVal 1
+ addUserKnob {7 waveLength l WaveLength t "Controls the frequency or cycle length of the wave. The number of frames before the pattern repeats." R 0 50}
+ waveLength 10
+ addUserKnob {7 offset l Offset t "Offsets the frame value to allow control of values at a certain frame" R 0 10}
+ addUserKnob {26 unnamed l "" +STARTLINE T " "}
+ addUserKnob {22 expButton l "Generate Expression" T "node = nuke.thisNode()\ntype = node.knob('type').getValue()\nexpText = node.knob('expText')\nexpFormula = node.knob('formula')\nexpResult = node.knob('expResult')\ndef setExp():\n    if type == 0: #Random\n        exp = 'random((frame+%s)/%s) * (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    if type == 1: #Noise\n        exp = '(noise((frame+%s)/%s)+1)/2 * (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    if type == 2: #Sine\n        exp = '(sin(2*pi*(frame+%s)/%s)+1)/2 * (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    if type == 3: #Triangle\n        exp = '(asin(sin(2*pi*(frame+%s)/%s))/pi+0.5) * (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    if type == 4: #Square\n        exp = 'int(sin(2*pi*(frame+%s)/%s)+1) * (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    if type == 5: #Sawtooth\n        exp = '((frame+%s) %% %s)/%s * (%s-%s) + %s' %(offset,waveLength,waveLength,maxVal,minVal,minVal)\n    if type == 6: #Sawtooth(Parabolic)\n        exp = 'sin((4.93480220054468*(frame+%s)/(pi*%s)) %% (pi/2)) * (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    if type == 7: #Sawtooth(Parabolic Reversed)\n        exp = 'cos((4.93480220054468*(frame+%s)/(pi*%s)) %% (pi/2)) * (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    if type == 8: #Sawtooth (Exponential)\n        exp = '(exp(2*pi*((frame+%s) %% %s)/%s)-1)/exp(2*pi) * (%s-%s) + %s' %(offset,waveLength,waveLength,maxVal,minVal,minVal)\n    if type == 9: #Bounce\n        exp = 'abs(sin(pi*(frame + %s)/%s))* (%s-%s) + %s' %(offset,waveLength,maxVal,minVal,minVal)\n    return exp\n\nwaveLength = 'waveLength'\noffset = 'offset'\nmaxVal = 'maxVal'\nminVal = 'minVal'\nexpResult.setExpression(setExp())\nexpFormula.setValue(setExp())\n\nwaveLength = node.knob('waveLength').getValue()\noffset = node.knob('offset').getValue()\nmaxVal = node.knob('maxVal').getValue()\nminVal = node.knob('minVal').getValue()\nexpText.setValue(setExp())" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {7 expResult l Result t "The calculated result of the wave at the given frame. Link to this value if you want to control the expression from this node."}
+ expResult {{"random((frame+offset)/waveLength) * (maxVal-minVal) + minVal"}}
+ addUserKnob {26 unnamed_2 l "" +STARTLINE T " "}
+ addUserKnob {1 expText l Expression t "The wave in expression form. For copying to another knobs expression value."}
+ expText "random((frame+0.0)/10.0) * (1.0-0.0) + 0.0"
+ addUserKnob {26 unnamed_3 l "" +STARTLINE T " "}
+ addUserKnob {1 formula l Formula t "The formula that generates the wave."}
+ formula "random((frame+offset)/waveLength) * (maxVal-minVal) + minVal"
+}
+end_group

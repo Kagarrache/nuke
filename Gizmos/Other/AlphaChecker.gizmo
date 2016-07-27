@@ -1,0 +1,122 @@
+#! C:/Program Files/Nuke9.0v3/nuke-9.0.3.dll -nx
+version 9.0 v3
+Gizmo {
+ inputs 2
+ addUserKnob {20 User}
+ addUserKnob {4 checkType l CheckType M {"Grey BG" "Alpha Overlay" "Red Overlay"}}
+ checkType "Red Overlay"
+ addUserKnob {7 redMix l "Red Mix"}
+ redMix 1
+ addUserKnob {7 alphaMix l "Alpha Mix"}
+ alphaMix 1
+}
+ Input {
+  inputs 0
+  name Alpha
+  xpos -334
+  ypos -265
+ }
+ Dot {
+  name Dot1
+  xpos -297
+  ypos -44
+ }
+set N3586400 [stack 0]
+ Dot {
+  name Dot4
+  xpos -297
+  ypos 280
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -769
+  ypos -277
+  number 1
+ }
+ Dot {
+  name Dot2
+  xpos -732
+  ypos -127
+ }
+set N3587800 [stack 0]
+ Dot {
+  name Dot10
+  xpos -412
+  ypos -127
+ }
+ Grade {
+  inputs 1+1
+  white {1 0 0 1}
+  white_panelDropped true
+  mix {{parent.redMix}}
+  name Grade1
+  xpos -449
+  ypos 283
+ }
+push $N3586400
+ Dot {
+  name Dot7
+  xpos -667
+  ypos 185
+ }
+push $N3587800
+ Merge2 {
+  inputs 2
+  mix {{parent.alphaMix}}
+  name Merge2
+  xpos -769
+  ypos 274
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color 0.1
+  name Constant1
+  xpos -1250
+  ypos 241
+ }
+push $N3586400
+ Dot {
+  name Dot3
+  xpos -961
+  ypos 72
+ }
+push $N3587800
+ Dot {
+  name Dot9
+  xpos -1043
+  ypos -127
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -1080
+  ypos 156
+ }
+ Premult {
+  name Premult1
+  xpos -1080
+  ypos 219
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -1080
+  ypos 270
+ }
+ Switch {
+  inputs 3
+  which {{parent.checkType}}
+  name Switch1
+  xpos -769
+  ypos 531
+ }
+ Output {
+  name Output1
+  xpos -769
+  ypos 674
+ }
+end_group

@@ -1,0 +1,75 @@
+#! /Applications/Nuke5.1v4b4/Nuke5.1v4b4.app/Contents/MacOS/Nuke5.1v4b4 -nx
+version 5.1400
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {7 vibrancy R 0 3}
+ vibrancy 1
+ addUserKnob {41 mode l "luminance math" T Saturation5.mode}
+ addUserKnob {41 value l "adjust effect" t "adjusts the matte used to drive the vibrancy.\n'view matte' to see the effect.\nDefault is 1" T Gamma1.value}
+ addUserKnob {26 ""}
+ addUserKnob {6 viewMatte l "view matte" t "Shows the matte used to drive the vibrancy" +STARTLINE}
+ addUserKnob {6 invertMask l "invert mask" -STARTLINE}
+ addUserKnob {41 mix T Saturation5.mix}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -373
+  ypos 182
+ }
+set N1955da30 [stack 0]
+ Expression {
+  channel0 {none none none rgba.alpha}
+  expr0 1-max(min(r,g,b),1-max(r,g,b))
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  name Neutrals
+  label (max)
+  xpos -232
+  ypos 343
+ }
+ Invert {
+  name Invert1
+  selected true
+  xpos -232
+  ypos 412
+  disable {{!invertMask i}}
+ }
+ Gamma {
+  channels alpha
+  name Gamma1
+  xpos -232
+  ypos 470
+ }
+set N19562b00 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -232
+  ypos 556
+ }
+push $N19562b00
+push $N1955da30
+ Saturation {
+  inputs 1+1
+  channels rgba
+  saturation {{vibrancy i}}
+  name Saturation5
+  xpos -373
+  ypos 545
+ }
+ Switch {
+  inputs 2
+  which {{viewMatte i}}
+  name Switch1
+  xpos -373
+  ypos 629
+ }
+ Output {
+  name Output1
+  xpos -373
+  ypos 695
+ }
+end_group

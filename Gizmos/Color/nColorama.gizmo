@@ -1,0 +1,44 @@
+#! C:/Program Files/Nuke7.0v9/Nuke7.0.exe -nx
+version 7.0 v9
+Gizmo {
+ inputs 2
+ addUserKnob {20 User l Gamma}
+ addUserKnob {41 gamma T Grade1.gamma}
+}
+ Input {
+  inputs 0
+  name Source
+  xpos -342
+  ypos -87
+ }
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos -342
+  ypos -7
+ }
+ Grade {
+  name Grade1
+  xpos -205
+  ypos -7
+ }
+ Input {
+  inputs 0
+  name Gradient
+  xpos -60
+  ypos -99
+  number 1
+ }
+ STMap {
+  inputs 2
+  uv rgb
+  name STMap1
+  xpos -60
+  ypos -13
+ }
+ Output {
+  name Output1
+  xpos -60
+  ypos 87
+ }
+end_group

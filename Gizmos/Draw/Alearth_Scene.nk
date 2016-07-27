@@ -1,0 +1,260 @@
+#! C:/Program Files/Nuke7.0v4/Nuke7.0.exe -nx
+version 7.0 v4
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="-8" y="-8" w="1936" h="1176" screen="0">
+        <splitter orientation="1">
+            <split size="1337"/>
+            <splitter orientation="1">
+                <split size="1293"/>
+                <dock id="" activePageId="DAG.1">
+                    <page id="DAG.1"/>
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                </dock>
+                <split size="40"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                    <page id="Toolbar.1"/>
+                </dock>
+            </splitter>
+            <split size="579"/>
+            <splitter orientation="2">
+                <split size="40"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar_Custom Toolbar.1">
+                    <page id="Toolbar_Custom Toolbar.1"/>
+                </dock>
+                <split size="260"/>
+                <dock id="" activePageId="com.ohufx.SearchReplace">
+                    <page id="com.ohufx.SearchReplace"/>
+                </dock>
+                <split size="807"/>
+                <dock id="" hideTitles="1" activePageId="Properties.1">
+                    <page id="Properties.1"/>
+                </dock>
+            </splitter>
+        </splitter>
+    </window>
+    <window x="1920" y="150" w="1712" h="1084" screen="1">
+        <splitter orientation="2">
+            <split size="1050"/>
+            <dock id="" activePageId="Viewer.1">
+                <page id="Viewer.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name C:/Users/Alex/Desktop/alEarth_v1.0/alEarth_scene.nk
+ frame 97
+ format "1920 1080 0 0 1920 1080 1 HD"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+}
+StickyNote {
+ inputs 0
+ name StickyNote2
+ label planetLowRes
+ xpos -662
+ ypos -3661
+}
+StickyNote {
+ inputs 0
+ name StickyNote3
+ label planetHighRes
+ xpos -669
+ ypos -3573
+}
+StickyNote {
+ inputs 0
+ name StickyNote5
+ label cityLightslowRes
+ xpos -664
+ ypos -3412
+}
+StickyNote {
+ inputs 0
+ name StickyNote4
+ label cityLightsHighRes
+ xpos -665
+ ypos -3318
+}
+StickyNote {
+ inputs 0
+ name StickyNote6
+ label cloudsHighRes
+ xpos -664
+ ypos -3077
+}
+StickyNote {
+ inputs 0
+ name StickyNote7
+ label cloudsLowRes
+ xpos -666
+ ypos -3176
+}
+StickyNote {
+ inputs 0
+ name StickyNote9
+ label cam
+ xpos -678
+ ypos -2943
+}
+StickyNote {
+ inputs 0
+ name StickyNote8
+ label light
+ xpos -677
+ ypos -2838
+}
+StickyNote {
+ inputs 0
+ name StickyNote10
+ label moveAxis
+ xpos -675
+ ypos -2751
+}
+Axis2 {
+ inputs 0
+ name mainMoveAxis
+ tile_color 0xb7ff42ff
+ xpos -740
+ ypos -2741
+}
+Dot {
+ name Dot9
+ xpos -611
+ ypos -2717
+}
+DirectLight {
+ inputs 0
+ color 0.49
+ intensity 8.8
+ translate {-0.00233839266 0.3967133164 -2.86579752}
+ rotate {-8.821101374 179.1648368 -166.2846163}
+ depthmap_slope_bias 0.01
+ name DirectLight3
+ xpos -741
+ ypos -2835
+}
+Dot {
+ name Dot8
+ xpos -618
+ ypos -2811
+}
+Camera2 {
+ inputs 0
+ translate {2.326512337 0.7599999905 1.370316148}
+ rotate {0 58.32606574 0}
+ name Camera2
+ xpos -740
+ ypos -2935
+}
+Dot {
+ name Dot7
+ xpos -614
+ ypos -2911
+}
+Read {
+ inputs 0
+ file C:/Users/Alex/Desktop/alEarth_v1.0/textures/cloud_combined_8192.tif
+ format "8192 4096 0 0 8192 4096 1 "
+ origset true
+ name Read1
+ xpos -749
+ ypos -3083
+}
+Dot {
+ name Dot6
+ xpos -608
+ ypos -3050
+}
+Read {
+ inputs 0
+ file "\[file dirname \[value root.name]]/textures/cloud_combined_2048.tif"
+ format "2048 1024 0 0 2048 1024 1 "
+ origset true
+ name Read15
+ xpos -752
+ ypos -3184
+}
+Dot {
+ name Dot5
+ xpos -601
+ ypos -3151
+}
+Read {
+ inputs 0
+ file "\[file dirname \[value root.name]]/textures/dnb_land_ocean_ice.2012.13500x6750.jpg"
+ format "13500 6750 0 0 13500 6750 1 "
+ origset true
+ name Read12
+ xpos -753
+ ypos -3324
+}
+Dot {
+ name Dot3
+ xpos -593
+ ypos -3291
+}
+Read {
+ inputs 0
+ file "\[file dirname \[value root.name]]/textures/dnb_land_ocean_ice.2012.3600x1800.jpg"
+ format "3600 1800 0 0 3600 1800 1 "
+ origset true
+ name Read13
+ xpos -752
+ ypos -3418
+}
+set N17d42ab0 [stack 0]
+Dot {
+ name Dot4
+ xpos -606
+ ypos -3385
+}
+Read {
+ inputs 0
+ file "\[file dirname \[value root.name]]/textures/world.200412.3x21600x10800.jpg"
+ format "21600 10800 0 0 21600 10800 1 "
+ origset true
+ name Read11
+ xpos -756
+ ypos -3581
+}
+Dot {
+ name Dot2
+ xpos -599
+ ypos -3548
+}
+Read {
+ inputs 0
+ file "\[file dirname \[value root.name]]/textures/world.200412.3x5400x2700.png"
+ format "5400 2700 0 0 5400 2700 1 "
+ origset true
+ name Read9
+ xpos -756
+ ypos -3675
+}
+Dot {
+ name Dot1
+ xpos -578
+ ypos -3642
+}
+alEarth {
+ inputs 9
+ name alEarth2
+ label "\nVersion 1.3\ncreated by \nAlexander Leiker"
+ xpos 17
+ ypos -3175
+}
+push 0
+push $N17d42ab0
+Viewer {
+ inputs 3
+ roi {0.238499999 -0.126000002 0.4564999938 0.1159999967}
+ input_process false
+ name Viewer1
+ xpos -394
+ ypos -2748
+}

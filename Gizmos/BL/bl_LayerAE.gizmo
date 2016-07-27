@@ -1,0 +1,469 @@
+#! C:/Program Files/Nuke6.1v3/Nuke6.1.exe -nx
+version 6.1 v3
+Gizmo {
+ inputs 2
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l LayerAE}
+ addUserKnob {7 Opacity}
+ Opacity 1
+ addUserKnob {4 Mode M {Normal Dissolve Darken Multiply "Color Burn" Add Lighten Screen "Color Dodge" Overlay "Soft Light" "Hard Light" "Linear Light" Difference Exclusion Hue Saturation Color Luminosity Substractive Freeze Heat Interpolation "Intense Light" "Luminance Model" ""}}
+ Mode Color
+}
+ Input {
+  inputs 0
+  name Foreground
+  xpos -188
+  ypos 394
+ }
+set N1a5eadb0 [stack 0]
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace10
+  xpos 1584
+  ypos 687
+ }
+ Input {
+  inputs 0
+  name Background
+  xpos 200
+  ypos 396
+  number 1
+ }
+set N1a5dbbd0 [stack 0]
+ MergeExpression {
+  inputs 2
+  expr0 "Ab * Br"
+  expr1 "Ab * Bg"
+  expr2 "Ab * Bb"
+  channel3 alpha
+  expr3 "Ab * Ba"
+  name LUMINANCE_MODEL1
+  xpos 1584
+  ypos 759
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "2 * Ar + Br - 1"
+  expr1 "2 * Ag + Bg - 1"
+  expr2 "2 * Ab + Bb - 1"
+  channel3 alpha
+  expr3 Aa
+  name INTENSE_LIGHT1
+  xpos 1435
+  ypos 759
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "0.5 - 0.25 - cos(PI * Br) - 0.25 * cos(PI * Ar)"
+  expr1 "0.5 - 0.25 - cos(PI * Bg) - 0.25 * cos(PI * Ag)"
+  expr2 "0.5 - 0.25 - cos(PI * Bb) - 0.25 * cos(PI * Ab)"
+  channel3 alpha
+  expr3 Aa
+  name INTERPOLATION1
+  xpos 1306
+  ypos 760
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "(Br==0)? 0 : 1-(1-Ar) * (1-Ar) / Br"
+  expr1 "(Bg==0)? 0 : 1-(1-Ag) * (1-Ag) / Bg"
+  expr2 "(Bb==0)? 0 : 1-(1-Ab) * (1-Ab) / Bb"
+  channel3 alpha
+  expr3 Aa
+  name HEAT1
+  xpos 1176
+  ypos 758
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "(Ar==0)? 0 : 1 - (1-Br) * (1-Br) / Ar"
+  expr1 "(Ag==0)? 0 : 1 - (1-Bg) * (1-Bg) / Ag"
+  expr2 "(Ab==0)? 0 : 1 - (1-Bb) * (1-Bb) / Ab"
+  channel3 alpha
+  expr3 Aa
+  name FREEZE1
+  xpos 1051
+  ypos 757
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "Ar + Br - 1"
+  expr1 "Ag + Bg - 1"
+  expr2 "Ab + Bb - 1"
+  channel3 alpha
+  expr3 Aa
+  name SUBSTRACTIVE1
+  xpos 925
+  ypos 758
+ }
+push $N1a5eadb0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace12
+  xpos 677
+  ypos 762
+ }
+push $N1a5dbbd0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace11
+  xpos 776
+  ypos 760
+ }
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  name ShuffleCopy5
+  xpos 725
+  ypos 812
+ }
+ Colorspace {
+  colorspace_in HSL
+  name LUMINOSITY1
+  xpos 725
+  ypos 840
+ }
+push $N1a5eadb0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace14
+  xpos 458
+  ypos 768
+ }
+push $N1a5dbbd0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace13
+  xpos 557
+  ypos 766
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  name ShuffleCopy6
+  xpos 506
+  ypos 818
+ }
+ Colorspace {
+  colorspace_in HSL
+  name COLOR1
+  xpos 506
+  ypos 846
+ }
+push $N1a5eadb0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace16
+  xpos 260
+  ypos 769
+ }
+push $N1a5dbbd0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace15
+  xpos 354
+  ypos 768
+ }
+ ShuffleCopy {
+  inputs 2
+  green green
+  name ShuffleCopy7
+  xpos 303
+  ypos 820
+ }
+ Colorspace {
+  colorspace_in HSL
+  name SATURATION1
+  xpos 303
+  ypos 848
+ }
+push $N1a5eadb0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace18
+  xpos 50
+  ypos 770
+ }
+push $N1a5dbbd0
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace17
+  xpos 149
+  ypos 768
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy8
+  xpos 98
+  ypos 820
+ }
+ Colorspace {
+  colorspace_in HSL
+  name HUE1
+  xpos 98
+  ypos 848
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge4
+  xpos -170
+  ypos 789
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge3
+  xpos -67
+  ypos 761
+ }
+ Multiply {
+  channels rgba
+  value 2
+  name Multiply3
+  xpos -67
+  ypos 789
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name EXCLUSION1
+  xpos -119
+  ypos 834
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 abs(Ar-Br)
+  expr1 abs(Ag-Bg)
+  expr2 abs(Ab-Bb)
+  channel3 alpha
+  expr3 abs(Aa-Ba)
+  name DIFFERENCE1
+  xpos -284
+  ypos 800
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "(Br==1)? 1 : Ar*Ar/(1-Br)"
+  expr1 "(Bg==1)? 1 : Ag*Ag/(1-Bg)"
+  expr2 "(Bb==1)? 1 : Ab*Ab/(1-Bb)"
+  channel3 alpha
+  expr3 Aa
+  name LINEAR_LIGHT1
+  xpos -401
+  ypos 804
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "(Ar<0.5)? 2*Ar*Br : 1-2*(1-Ar)*(1-Br)"
+  expr1 "(Ag<0.5)? 2*Ag*Bg : 1-2*(1-Ag)*(1-Bg)"
+  expr2 "(Ab<0.5)? 2*Ab*Bb : 1-2*(1-Ab)*(1-Bb)"
+  channel3 alpha
+  expr3 Ba
+  name HARD_LIGHT1
+  xpos -523
+  ypos 804
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 2*Ar*Br+Br*Br-2*Br*Br*Ar
+  expr1 2*Ag*Bg+Bg*Bg-2*Bg*Bg*Ag
+  expr2 2*Ab*Bb+Bb*Bb-2*Bb*Bb*Ab
+  channel3 alpha
+  expr3 Ba
+  name SOFT_LIGHT1
+  xpos -643
+  ypos 805
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "(Br<0.5)? 2*Ar*Br : 1-2*(1-Ar)*(1-Br)"
+  expr1 "(Bg<0.5)? 2*Ag*Bg : 1-2*(1-Ag)*(1-Bg)"
+  expr2 "(Bb<0.5)? 2*Ab*Bb : 1-2*(1-Ab)*(1-Bb)"
+  channel3 alpha
+  expr3 Ba
+  name OVERLAY1
+  xpos -760
+  ypos 807
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "(Ar==1)? 1 : Br / (1-Ar)"
+  expr1 "(Ag==1)? 1 : Bg / (1-Ag)"
+  expr2 "(Ab==1)? 1 : Bb / (1-Ab)"
+  channel3 alpha
+  expr3 Ba
+  name COLOR_DODGE1
+  xpos -883
+  ypos 807
+ }
+push $N1a5eadb0
+ Invert {
+  channels rgba
+  name Invert3
+  xpos -1126
+  ypos 800
+ }
+push $N1a5dbbd0
+ Invert {
+  channels rgba
+  name Invert4
+  xpos -1026
+  ypos 799
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name ADD2
+  xpos -1072
+  ypos 844
+ }
+ Invert {
+  channels rgba
+  name SCREEN1
+  xpos -1072
+  ypos 872
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Merge2 {
+  inputs 2
+  operation max
+  name LIGHTEN1
+  xpos -1256
+  ypos 819
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Merge2 {
+  inputs 2
+  operation plus
+  name ADD3
+  xpos -1386
+  ypos 818
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ MergeExpression {
+  inputs 2
+  expr0 "(Ar==0)? 0 : 1.0-(1-Br)/Ar"
+  expr1 "(Ag==0)? 0 : 1.0-(1-Bg)/Ag"
+  expr2 "(Ab==0)? 0 : 1.0-(1-Bb)/Ab"
+  channel3 alpha
+  expr3 Ba
+  name COLOR_BURN1
+  xpos -1521
+  ypos 820
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Merge2 {
+  inputs 2
+  operation multiply
+  name MULT1
+  xpos -1648
+  ypos 822
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Merge2 {
+  inputs 2
+  operation min
+  name DARKEN1
+  xpos -1775
+  ypos 821
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Multiply {
+  channels rgba
+  value 0
+  name Multiply4
+  xpos -1863
+  ypos 737
+ }
+ Expression {
+  channel0 rgba
+  expr0 random(x,y,1)
+  channel1 none
+  channel2 none
+  name Expression2
+  xpos -1863
+  ypos 765
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  expr0 Br
+  expr1 Bg
+  expr2 Bb
+  channel3 alpha
+  expr3 Ba-Aa+(1-Ba)
+  name DISSOLVE1
+  xpos -1921
+  ypos 830
+ }
+ Premult {
+  name Premult2
+  xpos -1921
+  ypos 858
+ }
+push $N1a5eadb0
+push $N1a5dbbd0
+ Merge2 {
+  inputs 2
+  name NORMAL1
+  xpos -2096
+  ypos 808
+ }
+ Switch {
+  inputs 25
+  which {{parent.Mode}}
+  name Switch2
+  xpos 303
+  ypos 1122
+ }
+push $N1a5dbbd0
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.Opacity}}
+  name Dissolve1
+  selected true
+  xpos 200
+  ypos 1199
+ }
+ Output {
+  name Output1
+  xpos 303
+  ypos 1271
+ }
+end_group

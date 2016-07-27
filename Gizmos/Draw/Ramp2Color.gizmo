@@ -1,0 +1,63 @@
+#! /Applications/Nuke8.0v1/Nuke8.0v1.app/Contents/MacOS/libnuke-8.0.v1.dylib -nx
+version 8.0 v1
+Gizmo {
+ inputs 0
+ postage_stamp true
+ addUserKnob {20 User}
+ addUserKnob {41 color_1 l "color 1" T color1.color}
+ addUserKnob {41 color_2 l "color 2" T color2.color}
+ addUserKnob {41 p0 l "point 0" T Ramp1.p0}
+ addUserKnob {41 p1 l "point 1" T Ramp1.p1}
+ addUserKnob {41 type T Ramp1.type}
+ addUserKnob {41 format T color1.format}
+}
+ Ramp {
+  inputs 0
+  p0 {100 0}
+  p1 {100 1080}
+  name Ramp1
+  xpos 437
+  ypos -258
+ }
+ Constant {
+  inputs 0
+  color {1 0 0 0}
+  name color1
+  xpos 639
+  ypos -327
+ }
+ Dot {
+  name Dot1
+  xpos 673
+  ypos -255
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  format {{{parent.color1.format}}}
+  name color2
+  xpos 547
+  ypos -330
+ }
+ Merge2 {
+  inputs 2+1
+  operation out
+  name Merge3
+  xpos 547
+  ypos -258
+ }
+set N24462dd0 [stack 0]
+ Output {
+  name Output1
+  xpos 547
+  ypos -158
+ }
+push $N24462dd0
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 547
+  ypos -234
+ }
+end_group

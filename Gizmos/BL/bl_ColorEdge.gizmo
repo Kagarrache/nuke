@@ -1,0 +1,447 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l "Color Edge"}
+ addUserKnob {4 Type M {Sobel Babu Simple Prewitt}}
+ Type Simple
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x8e8e3800
+  label Sobel
+  note_font_size 42
+  xpos 63
+  ypos 115
+  bdwidth 987
+  bdheight 405
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x8e8e3800
+  label Simple
+  note_font_size 42
+  xpos 2285
+  ypos 192
+  bdwidth 204
+  bdheight 298
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x46461bff
+  label Babu
+  note_font_size 42
+  xpos 1099
+  ypos 119
+  bdwidth 1091
+  bdheight 486
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x8e8e3800
+  label Prewitt
+  note_font_size 42
+  xpos 2643
+  ypos 160
+  bdwidth 193
+  bdheight 336
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 1458
+  ypos -10
+ }
+add_layer {rgba rgba.beta}
+ Add {
+  channels rgba
+  name Add1
+  xpos 1458
+  ypos 36
+ }
+set N5ba85800 [stack 0]
+ Dot {
+  name Dot1
+  xpos 2719
+  ypos 247
+ }
+ EdgeDetectWrapper {
+  edgedetector prewitt
+  channels {rgba.red -rgba.green -rgba.blue}
+  output rgba.red
+  name EdgeDetectWrapper1
+  xpos 2685
+  ypos 325
+ }
+ EdgeDetectWrapper {
+  edgedetector prewitt
+  channels {-rgba.red rgba.green -rgba.blue}
+  output rgba.green
+  name EdgeDetectWrapper2
+  xpos 2685
+  ypos 363
+ }
+ EdgeDetectWrapper {
+  edgedetector prewitt
+  channels {-rgba.red -rgba.green rgba.blue}
+  output rgba.blue
+  name EdgeDetectWrapper3
+  xpos 2685
+  ypos 401
+ }
+ EdgeDetectWrapper {
+  edgedetector prewitt
+  channels alpha
+  name EdgeDetectWrapper4
+  xpos 2685
+  ypos 439
+ }
+push $N5ba85800
+ NoOp {
+  name NoOp5
+  xpos 2295
+  ypos 306
+ }
+set N5ba86820 [stack 0]
+ Dilate {
+  channels rgba
+  size 1
+  name Dilate4
+  xpos 2295
+  ypos 373
+ }
+push $N5ba86820
+ Dilate {
+  channels rgba
+  size -1
+  name Dilate5
+  xpos 2399
+  ypos 372
+ }
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge9
+  xpos 2295
+  ypos 399
+ }
+push $N5ba85800
+ NoOp {
+  name NoOp6
+  xpos 1458
+  ypos 273
+ }
+set N5ba872e0 [stack 0]
+ Transform {
+  rotate -135
+  center {{width/2 i} {height/2 i}}
+  name Transform7
+  xpos 1851
+  ypos 376
+ }
+set N5ba87590 [stack 0]
+ bl_Convolve {
+  name bl_Convolve10
+  xpos 1901
+  ypos 425
+  kernel BabuV
+ }
+ Transform {
+  rotate 135
+  center {{width/2 i} {height/2 i}}
+  name Transform5
+  xpos 1901
+  ypos 451
+ }
+ set C5ba8bb70 [stack 0]
+push $N5ba87590
+ bl_Convolve {
+  name bl_Convolve11
+  xpos 1791
+  ypos 422
+  kernel BabuH
+ }
+clone $C5ba8bb70 {
+  xpos 1791
+  ypos 448
+  selected false
+ }
+push $N5ba872e0
+push $N5ba872e0
+ Transform {
+  rotate 45
+  center {{width/2 i} {height/2 i}}
+  name Transform6
+  xpos 1620
+  ypos 369
+ }
+set N5ba906b0 [stack 0]
+ bl_Convolve {
+  name bl_Convolve12
+  xpos 1674
+  ypos 421
+  kernel BabuV
+ }
+ Transform {
+  rotate -45
+  center {{width/2 i} {height/2 i}}
+  name Transform2
+  xpos 1674
+  ypos 447
+ }
+ set C5ba94c90 [stack 0]
+ CopyBBox {
+  inputs 2
+  name CopyBBox2
+  xpos 1674
+  ypos 473
+ }
+push $N5ba872e0
+push $N5ba906b0
+ bl_Convolve {
+  name bl_Convolve13
+  xpos 1562
+  ypos 421
+  kernel BabuH
+ }
+clone $C5ba94c90 {
+  xpos 1562
+  ypos 447
+  selected false
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 1562
+  ypos 473
+ }
+push $N5ba872e0
+ Reformat {
+  type scale
+  flip true
+  filter Impulse
+  name Reformat10
+  xpos 1458
+  ypos 370
+ }
+ bl_Convolve {
+  name bl_Convolve14
+  xpos 1458
+  ypos 396
+  kernel BabuH
+ }
+ Reformat {
+  type scale
+  flip true
+  filter Impulse
+  name Reformat14
+  xpos 1458
+  ypos 422
+ }
+push $N5ba872e0
+ Reformat {
+  type scale
+  flop true
+  filter Impulse
+  name Reformat15
+  xpos 1339
+  ypos 370
+ }
+ bl_Convolve {
+  name bl_Convolve15
+  xpos 1339
+  ypos 396
+  kernel BabuV
+ }
+ Reformat {
+  type scale
+  flop true
+  filter Impulse
+  name Reformat16
+  xpos 1339
+  ypos 422
+ }
+push 0
+push $N5ba872e0
+ bl_Convolve {
+  name bl_Convolve16
+  xpos 1109
+  ypos 390
+  kernel BabuH
+ }
+push $N5ba872e0
+ bl_Convolve {
+  name bl_Convolve17
+  xpos 1208
+  ypos 389
+  kernel BabuV
+ }
+ Merge2 {
+  inputs 8+1
+  operation average
+  name Merge8
+  xpos 1458
+  ypos 522
+ }
+push $N5ba85800
+ NoOp {
+  name NoOp2
+  xpos 483
+  ypos 227
+ }
+set N5c443c70 [stack 0]
+ Transform {
+  rotate -135
+  center {{width/2 i} {height/2 i}}
+  name Transform1
+  xpos 876
+  ypos 330
+ }
+set N5c443f20 [stack 0]
+ bl_Convolve {
+  name bl_Convolve1
+  xpos 926
+  ypos 379
+  kernel sobelV
+ }
+clone $C5ba8bb70 {
+  xpos 926
+  ypos 405
+  selected false
+ }
+push $N5c443f20
+ bl_Convolve {
+  name bl_Convolve2
+  xpos 816
+  ypos 376
+  kernel sobelH
+ }
+clone $C5ba8bb70 {
+  xpos 816
+  ypos 402
+  selected false
+ }
+push $N5c443c70
+ Transform {
+  rotate 45
+  center {{width/2 i} {height/2 i}}
+  name Transform3
+  xpos 645
+  ypos 323
+ }
+set N5c44d040 [stack 0]
+ bl_Convolve {
+  name bl_Convolve3
+  xpos 697
+  ypos 378
+  kernel sobelV
+ }
+clone $C5ba94c90 {
+  xpos 697
+  ypos 404
+  selected false
+ }
+push $N5c44d040
+ bl_Convolve {
+  name bl_Convolve4
+  xpos 587
+  ypos 375
+  kernel sobelH
+ }
+clone $C5ba94c90 {
+  xpos 587
+  ypos 401
+  selected false
+ }
+push $N5c443c70
+ Reformat {
+  type scale
+  flip true
+  filter Impulse
+  name Reformat1
+  xpos 483
+  ypos 324
+ }
+ bl_Convolve {
+  name bl_Convolve5
+  xpos 483
+  ypos 350
+  kernel sobelV
+ }
+ Reformat {
+  type scale
+  flip true
+  filter Impulse
+  name Reformat2
+  xpos 483
+  ypos 376
+ }
+push $N5c443c70
+ Reformat {
+  type scale
+  flop true
+  filter Impulse
+  name Reformat3
+  xpos 364
+  ypos 324
+ }
+ bl_Convolve {
+  name bl_Convolve6
+  xpos 364
+  ypos 350
+  kernel sobelV
+ }
+ Reformat {
+  type scale
+  flop true
+  filter Impulse
+  name Reformat4
+  xpos 364
+  ypos 376
+ }
+push 0
+push $N5c443c70
+ bl_Convolve {
+  name bl_Convolve7
+  xpos 134
+  ypos 344
+  kernel sobelH
+ }
+push $N5c443c70
+ bl_Convolve {
+  name bl_Convolve8
+  xpos 233
+  ypos 343
+  kernel sobelV
+ }
+ Merge2 {
+  inputs 8+1
+  operation average
+  name Merge1
+  xpos 483
+  ypos 448
+ }
+ Switch {
+  inputs 4
+  which {{parent.Type i}}
+  name Switch2
+  xpos 1458
+  ypos 678
+ }
+ Crop {
+  box {{NoOp6.format.x} {NoOp6.format.y} {NoOp6.format.w} {NoOp6.format.h}}
+  reformat true
+  crop false
+  name Crop1
+  xpos 1458
+  ypos 704
+ }
+ Output {
+  name Output
+  xpos 1458
+  ypos 781
+ }
+end_group

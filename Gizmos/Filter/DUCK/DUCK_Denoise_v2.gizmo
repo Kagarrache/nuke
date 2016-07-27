@@ -1,0 +1,142 @@
+#! /Applications/Nuke8.0v3/Nuke8.0v3.app/Contents/MacOS/libnuke-8.0.v3.dylib -nx
+version 8.0 v3
+Gizmo {
+ help "DUCK_Denoise_v2\n\nIt hepls to denoise a footage, since it is  not based on analisys, it just provides a  denoise for blak/white and coloured dots. It doesn’t make a recostruction of the denoised pixels but it helps to fix visually the problem.\n\nfeel free to contac me at niccolo.barbero@gmail.com"
+ addUserKnob {20 User l DUCK_Denoise_v2}
+ addUserKnob {26 ""}
+ addUserKnob {26 black_noise_removal}
+ addUserKnob {41 size T w_d_m.size}
+ addUserKnob {26 white_noise_removal}
+ addUserKnob {41 size_1 l size T black_d_rem.size}
+ addUserKnob {26 colored_noise_removal}
+ addUserKnob {41 size_3 l size T c_n_rem1.size}
+ addUserKnob {41 size_2 l size T color_nr.size}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -260
+  ypos -108
+ }
+ Colorspace {
+  colorspace_out YCbCr
+  name Colorspace1
+  xpos -260
+  ypos -17
+ }
+set N2eda82b0 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name Shuffle1_Y
+  xpos -590
+  ypos 37
+ }
+set N2ed9d060 [stack 0]
+push $N2ed9d060
+ Blur {
+  name w_d_m
+  selected true
+  xpos -480
+  ypos 102
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name Merge1
+  xpos -590
+  ypos 181
+ }
+set N2ed54300 [stack 0]
+push $N2ed54300
+ Blur {
+  name black_d_rem
+  xpos -480
+  ypos 234
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge2
+  xpos -590
+  ypos 301
+ }
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle3
+  xpos -590
+  ypos 373
+ }
+push $N2eda82b0
+ Shuffle {
+  red green
+  blue green
+  alpha black
+  name Shuffle1_CB
+  xpos -260
+  ypos 349
+ }
+ Blur {
+  name color_nr
+  xpos -260
+  ypos 415
+ }
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle1
+  xpos -260
+  ypos 493
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge3
+  xpos -590
+  ypos 493
+ }
+push $N2eda82b0
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name Shuffle1_CR
+  xpos -40
+  ypos 469
+ }
+ Blur {
+  name c_n_rem1
+  xpos -40
+  ypos 531
+ }
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name Shuffle2
+  xpos -40
+  ypos 589
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge4
+  xpos -590
+  ypos 589
+ }
+ Colorspace {
+  colorspace_in YCbCr
+  name Colorspace2
+  xpos -590
+  ypos 661
+ }
+ Output {
+  name Output1
+  xpos -590
+  ypos 733
+ }
+end_group

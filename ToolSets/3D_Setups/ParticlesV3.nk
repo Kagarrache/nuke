@@ -1,0 +1,179 @@
+set cut_paste_input [stack 0]
+version 6.3 v1
+CheckerBoard2 {
+ inputs 0
+ name CheckerBoard1
+ selected true
+ xpos -4
+ ypos -301
+ postage_stamp false
+}
+Grade {
+ gamma {0.9275000691 1 -0.4500000477 1}
+ name Grade2
+ selected true
+ xpos -4
+ ypos -270
+}
+Card2 {
+ rotate {-90 0 0}
+ scaling {1 2 1}
+ uniform_scale 10
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card1
+ selected true
+ xpos -4
+ ypos -232
+}
+TransformGeo {
+ rotate {0 0 {parent.ParticleBounce1.bounceaxis_rotate.z i}}
+ name TransformGeo1
+ selected true
+ xpos -4
+ ypos -208
+}
+CheckerBoard2 {
+ inputs 0
+ name CheckerBoard2
+ selected true
+ xpos -349
+ ypos -259
+ postage_stamp false
+}
+Grade {
+ gamma {-0.4500000477 1 -0.0005000829697 1}
+ name Grade1
+ selected true
+ xpos -349
+ ypos -235
+}
+Card2 {
+ translate {{parent.ParticleBounce2.bounceaxis_translate.x i} {parent.ParticleBounce2.bounceaxis_translate.y i} 0}
+ rotate {-90 0 0}
+ scaling {1 2 1}
+ uniform_scale 10
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card2
+ selected true
+ xpos -349
+ ypos -179
+}
+TransformGeo {
+ rotate {0 0 {parent.ParticleBounce2.bounceaxis_rotate.z i}}
+ pivot {6.73 -4 0}
+ name TransformGeo2
+ selected true
+ xpos -349
+ ypos -155
+}
+push $cut_paste_input
+Radial {
+ area {1231 271.5 1435 455}
+ color {0.2900000215 0.6591999531 1 1}
+ name Radial1
+ selected true
+ xpos 80
+ ypos -377
+}
+Crop {
+ box {1230 272 1434 454}
+ reformat true
+ crop false
+ name Crop1
+ selected true
+ xpos 80
+ ypos -353
+}
+Constant {
+ inputs 0
+ channels alpha
+ color 1
+ format "512 512 0 0 512 512 1 square_512"
+ name Constant1
+ selected true
+ xpos -169
+ ypos -507
+ postage_stamp false
+}
+Ramp {
+ p0 {134 212}
+ p1 {134 -8}
+ name Ramp1
+ selected true
+ xpos -169
+ ypos -471
+}
+Sphere {
+ translate {0 8 0}
+ name Sphere1
+ selected true
+ xpos -169
+ ypos -409
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ rate 485
+ rate_channel rgba.red
+ lifetime 51
+ velocity 0.044
+ size 0.09
+ name ParticleEmitter1
+ selected true
+ xpos -169
+ ypos -353
+}
+ParticleGravity {
+ name ParticleGravity1
+ selected true
+ xpos -169
+ ypos -263
+}
+ParticleBounce {
+ in_new_channels {b}
+ in_bounce 0.46
+ bounceaxis_rotate {0 0 {cos(frame/8)*10 i}}
+ bounceaxis_uniform_scale 10
+ name ParticleBounce1
+ selected true
+ xpos -169
+ ypos -215
+}
+ParticleBounce {
+ in_new_channels {b}
+ in_bounce 0.46
+ bounceaxis_translate {6.750791073 -3.971090317 0}
+ bounceaxis_rotate {0 0 {(cos(frame/8)*10)*-1 i}}
+ bounceaxis_uniform_scale 10
+ name ParticleBounce2
+ selected true
+ xpos -169
+ ypos -169
+}
+Scene {
+ inputs 3
+ name Scene1
+ selected true
+ xpos -159
+ ypos -82
+}

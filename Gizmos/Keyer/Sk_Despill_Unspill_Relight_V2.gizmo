@@ -1,0 +1,1874 @@
+#! C:/Program Files/Nuke8.0v5/nuke-8.0.v5.dll -nx
+version 8.0 v5
+Gizmo {
+ inputs 6
+ addUserKnob {20 screen_settings l "Screen Settings"}
+ addUserKnob {20 screen_type_start_group l "Screen type and algorithms" n 1}
+ addUserKnob {41 screenType l "Screen Type" T Despill_Unspill_Relight.screenType}
+ addUserKnob {41 despill_algorithms l "      Despill Algorithms" T Despill_Unspill_Relight.despill_algorithms}
+ addUserKnob {41 mode l "      luminance math" -STARTLINE T Saturation3.mode}
+ addUserKnob {7 limit_percent l "Limit Percentage" R 0 2}
+ limit_percent 1
+ addUserKnob {6 use_keyer_despill l "Use Keyer Despill Map" +STARTLINE}
+ addUserKnob {6 use_keyer_despilled_plate l "Use Keyer Despilled Plate" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 rVal l "Degrain Spill Map" T DegrainSimple1.rVal}
+ addUserKnob {20 screen_type_end_group n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 unspill_replace_start_group l "Unspill or Replace Color" n 1}
+ unspill_replace_start_group 0
+ addUserKnob {6 replaceC l "Replace Color" +STARTLINE}
+ addUserKnob {41 white l gain T replaceColor.white}
+ addUserKnob {41 mix T replaceColor.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 unspill_GS l "Unspill Greenscreen" +STARTLINE}
+ addUserKnob {41 value l "subtract green" T multiply_subtract_green.value}
+ addUserKnob {41 value_1 l "add red" T multiply_add_red.value}
+ addUserKnob {41 value_2 l "add blue" T multiply_add_blue.value}
+ addUserKnob {26 ""}
+ addUserKnob {6 use_unspill_BS l "Unspill Bluescreen" +STARTLINE}
+ addUserKnob {41 value_3 l "subtract blue" T multiply_subtract_blue.value}
+ addUserKnob {41 value_4 l "add green" T multiply_add_green.value}
+ addUserKnob {41 value_5 l "add red" T multiply_add_red1.value}
+ addUserKnob {20 colorcorrect_despilled_plate_start_group l "Color Correct Despilled Plate" n 1}
+ colorcorrect_despilled_plate_start_group 0
+ addUserKnob {26 ""}
+ addUserKnob {26 grade_spill_map l "" +STARTLINE T "Grade Spill Map"}
+ addUserKnob {41 multiply T Grade_splill_map.multiply}
+ addUserKnob {41 gamma T Grade_splill_map.gamma}
+ addUserKnob {26 ""}
+ addUserKnob {26 cc_despilled_plate_text l "" +STARTLINE T "CC Despilled plate"}
+ addUserKnob {20 master l "@b;master" n 1}
+ master 0
+ addUserKnob {41 saturation T CC_despilled_plate.saturation}
+ addUserKnob {41 saturation_panelDropped l "panel dropped state" T CC_despilled_plate.saturation_panelDropped}
+ addUserKnob {41 contrast T CC_despilled_plate.contrast}
+ addUserKnob {41 contrast_panelDropped l "panel dropped state" T CC_despilled_plate.contrast_panelDropped}
+ addUserKnob {41 gamma_1 l gamma T CC_despilled_plate.gamma}
+ addUserKnob {41 gamma_panelDropped l "panel dropped state" T CC_despilled_plate.gamma_panelDropped}
+ addUserKnob {41 gain T CC_despilled_plate.gain}
+ addUserKnob {41 gain_panelDropped l "panel dropped state" T CC_despilled_plate.gain_panelDropped}
+ addUserKnob {41 offset T CC_despilled_plate.offset}
+ addUserKnob {41 offset_panelDropped l "panel dropped state" T CC_despilled_plate.offset_panelDropped}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 shadows l "@b;shadows" n 1}
+ shadows 0
+ addUserKnob {41 shadows.saturation l saturation T CC_despilled_plate.shadows.saturation}
+ addUserKnob {41 shadows.saturation_panelDropped l "panel dropped state" T CC_despilled_plate.shadows.saturation_panelDropped}
+ addUserKnob {41 shadows.contrast l contrast T CC_despilled_plate.shadows.contrast}
+ addUserKnob {41 shadows.contrast_panelDropped l "panel dropped state" T CC_despilled_plate.shadows.contrast_panelDropped}
+ addUserKnob {41 shadows.gamma l gamma T CC_despilled_plate.shadows.gamma}
+ addUserKnob {41 shadows.gamma_panelDropped l "panel dropped state" T CC_despilled_plate.shadows.gamma_panelDropped}
+ addUserKnob {41 shadows.gain l gain T CC_despilled_plate.shadows.gain}
+ addUserKnob {41 shadows.gain_panelDropped l "panel dropped state" T CC_despilled_plate.shadows.gain_panelDropped}
+ addUserKnob {41 shadows.offset l offset T CC_despilled_plate.shadows.offset}
+ addUserKnob {41 shadows.offset_panelDropped l "panel dropped state" T CC_despilled_plate.shadows.offset_panelDropped}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 midtones l "@b;midtones" n 1}
+ midtones 0
+ addUserKnob {41 midtones.saturation l saturation T CC_despilled_plate.midtones.saturation}
+ addUserKnob {41 midtones.saturation_panelDropped l "panel dropped state" T CC_despilled_plate.midtones.saturation_panelDropped}
+ addUserKnob {41 midtones.contrast l contrast T CC_despilled_plate.midtones.contrast}
+ addUserKnob {41 midtones.contrast_panelDropped l "panel dropped state" T CC_despilled_plate.midtones.contrast_panelDropped}
+ addUserKnob {41 midtones.gamma l gamma T CC_despilled_plate.midtones.gamma}
+ addUserKnob {41 midtones.gamma_panelDropped l "panel dropped state" T CC_despilled_plate.midtones.gamma_panelDropped}
+ addUserKnob {41 midtones.gain l gain T CC_despilled_plate.midtones.gain}
+ addUserKnob {41 midtones.gain_panelDropped l "panel dropped state" T CC_despilled_plate.midtones.gain_panelDropped}
+ addUserKnob {41 midtones.offset l offset T CC_despilled_plate.midtones.offset}
+ addUserKnob {41 midtones.offset_panelDropped l "panel dropped state" T CC_despilled_plate.midtones.offset_panelDropped}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 highlights l "@b;highlights" n 1}
+ highlights 0
+ addUserKnob {41 highlights.saturation l saturation T CC_despilled_plate.highlights.saturation}
+ addUserKnob {41 highlights.saturation_panelDropped l "panel dropped state" T CC_despilled_plate.highlights.saturation_panelDropped}
+ addUserKnob {41 highlights.contrast l contrast T CC_despilled_plate.highlights.contrast}
+ addUserKnob {41 highlights.contrast_panelDropped l "panel dropped state" T CC_despilled_plate.highlights.contrast_panelDropped}
+ addUserKnob {41 highlights.gamma l gamma T CC_despilled_plate.highlights.gamma}
+ addUserKnob {41 highlights.gamma_panelDropped l "panel dropped state" T CC_despilled_plate.highlights.gamma_panelDropped}
+ addUserKnob {41 highlights.gain l gain T CC_despilled_plate.highlights.gain}
+ addUserKnob {41 highlights.gain_panelDropped l "panel dropped state" T CC_despilled_plate.highlights.gain_panelDropped}
+ addUserKnob {41 highlights.offset l offset T CC_despilled_plate.highlights.offset}
+ addUserKnob {41 highlights.offset_panelDropped l "panel dropped state" T CC_despilled_plate.highlights.offset_panelDropped}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 colorcorrect_despilled_plate_end_group n -1}
+ addUserKnob {20 unspill_replace_end_group n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 relight_start_group l "Relight Foreground" n 1}
+ relight_start_group 0
+ addUserKnob {6 relight l "Relight " +STARTLINE}
+ addUserKnob {6 preview_relight l "Preview Relight" -STARTLINE}
+ addUserKnob {41 multiply_1 l "background intensity" T background_grade.multiply}
+ addUserKnob {41 size_1 l "background blur" T background_blur.size}
+ addUserKnob {41 size l "luminance map blur" T Blur_relightmap.size}
+ addUserKnob {41 mix_1 l "add mix" T relight_mix.mix}
+ addUserKnob {20 relight_end_group n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 transform_foreground_start_group l "Transform Foreground" n 1}
+ transform_foreground_start_group 0
+ addUserKnob {41 translate T Transform2.translate}
+ addUserKnob {41 rotate T Transform2.rotate}
+ addUserKnob {41 scale T Transform2.scale}
+ addUserKnob {41 center T Transform2.center}
+ addUserKnob {20 transform_foreground_end_group n -1}
+ addUserKnob {26 ""}
+ addUserKnob {6 premultiply l Premult +STARTLINE}
+ addUserKnob {6 comp_outside l "Comp Outside The Gizmo" t "untick this checkbox only for preview!" +STARTLINE}
+ comp_outside true
+ addUserKnob {6 invert_mask l "Invert Mask     " +STARTLINE}
+ addUserKnob {6 disable_mask l "Disable Mask" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 copyright l "" +STARTLINE T "SK_Despill_Unspill_Relight_v2 - by Salvatore Carvelli"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x5962f2ff
+  label "                                  UNSPLILL --- Bluescreen"
+  note_font_size 62
+  xpos 56
+  ypos -104
+  bdwidth 1632
+  bdheight 977
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0x388e8e00
+  label "Original Channels shuffled"
+  note_font_size 42
+  xpos 1068
+  ypos 3
+  bdwidth 574
+  bdheight 316
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0xe8c671ff
+  label BACKGROUND
+  note_font_size 42
+  xpos -1859
+  ypos 2497
+  bdwidth 470
+  bdheight 389
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x6e9472ff
+  label "RELIGHT "
+  note_font_size 42
+  xpos -801
+  ypos 2456
+  bdwidth 733
+  bdheight 439
+ }
+ set C3d74c960 [stack 0]
+clone $C3d74c960 {
+  inputs 0
+  xpos -3185
+  ypos 2444
+  selected false
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x8e96efff
+  label "despill algorithms for bluescreen"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 42
+  xpos -1286
+  ypos -2267
+  bdwidth 784
+  bdheight 427
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x388e8e00
+  label "Original Channels shuffled"
+  note_font_size 42
+  xpos -5151
+  ypos 68
+  bdwidth 574
+  bdheight 316
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x7171c600
+  label "Grading the plate \nHere....if necessary!"
+  note_font_size 42
+  xpos 318
+  ypos 1828
+  bdwidth 437
+  bdheight 238
+ }
+ set C3d74ad60 [stack 0]
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0xcdd1fcff
+  label "Tansform the plate \nHere..."
+  note_font_size 42
+  xpos 318
+  ypos 2094
+  bdwidth 437
+  bdheight 238
+ }
+ set C3d74a660 [stack 0]
+clone $C3d74a660 {
+  inputs 0
+  xpos -4122
+  ypos 2172
+  selected false
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0x8e8e3800
+  label "                                  UNSPLILL --- Greenscreen"
+  note_font_size 62
+  xpos -5200
+  ypos 17
+  bdwidth 1632
+  bdheight 977
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  xpos -3485
+  ypos -2355
+  bdwidth 3243
+  bdheight 612
+ }
+clone $C3d74ad60 {
+  inputs 0
+  xpos -4122
+  ypos 1892
+  selected false
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0xaaaaaa00
+  label output
+  note_font Verdana
+  note_font_size 52
+  xpos -1572
+  ypos 4022
+  bdwidth 391
+  bdheight 286
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x8e9642ff
+  label "despill algorithms for greenscreen"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 42
+  xpos -3032
+  ypos -2274
+  bdwidth 804
+  bdheight 438
+ }
+ Input {
+  inputs 0
+  name Plate
+  xpos -1870
+  ypos -3458
+ }
+set N3ee4e310 [stack 0]
+ Dot {
+  name Dot87
+  xpos -1751
+  ypos -3456
+ }
+ Input {
+  inputs 0
+  name despill_from_keyer
+  xpos -1664
+  ypos -3288
+  number 4
+ }
+set N3ee4ed60 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge7
+  xpos -1784
+  ypos -3288
+ }
+ Saturation {
+  saturation 0
+  name Saturation3
+  xpos -1784
+  ypos -3192
+ }
+ set C3ee4f0d0 [stack 0]
+push $N3ee4ed60
+ ShuffleCopy {
+  inputs 2
+  alpha red
+  name ShuffleCopy5
+  xpos -1664
+  ypos -3192
+ }
+ Dot {
+  name Dot38
+  xpos -1631
+  ypos -2056
+ }
+set N3ee4f440 [stack 0]
+ Dot {
+  name Dot86
+  xpos -1751
+  ypos -1901
+ }
+set N3ee4c420 [stack 0]
+ Dot {
+  name Dot89
+  xpos -1751
+  ypos -1846
+ }
+set N3ee4b9d0 [stack 0]
+push $N3ee4f440
+ Dot {
+  name Dot90
+  xpos -1511
+  ypos -1896
+ }
+ Input {
+  inputs 0
+  name Keyer
+  xpos -2230
+  ypos -3474
+  number 1
+ }
+ Dot {
+  name Dot94
+  xpos -2197
+  ypos -3402
+ }
+set N3ee4fe90 [stack 0]
+ Input {
+  inputs 0
+  name Mask
+  xpos -1976
+  ypos -3572
+  number 3
+ }
+ Dot {
+  name Dot95
+  xpos -1943
+  ypos -3370
+ }
+push $N3ee4fe90
+ Constant {
+  inputs 0
+  color {1 1 1 1}
+  name Constant2
+  xpos -2094
+  ypos -3493
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos -2099
+  ypos -3404
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy6
+  xpos -2099
+  ypos -3378
+  disable {{disable_mask}}
+ }
+ Invert {
+  channels alpha
+  clamp true
+  name Invert1
+  xpos -2099
+  ypos -3331
+  disable {{!parent.invert_mask}}
+ }
+ Dot {
+  name Dot80
+  xpos -2066
+  ypos -3279
+ }
+ ChannelMerge {
+  inputs 2
+  operation in
+  name ChannelMerge2
+  xpos -2230
+  ypos -3293
+ }
+ Expression {
+  channel0 {-rgba.red -rgba.green -rgba.blue none}
+  expr0 0
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  expr1 0
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  expr2 0
+  channel3 {rgba.alpha none none rgba.alpha}
+  expr3 a==0?0:a
+  name AlphaError1
+  label "To avid Gizmo being in state of\nerror without something plugged in input."
+  xpos -2230
+  ypos -3206
+ }
+ Dot {
+  name Dot88
+  xpos -2197
+  ypos -2984
+ }
+push $N3ee4e310
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  label "copy tha fine alpha keyed in the flow\n"
+  note_font_size 15
+  xpos -1870
+  ypos -3006
+ }
+ Dot {
+  name Dot6
+  xpos -1837
+  ypos -2646
+ }
+set N3ee51330 [stack 0]
+ Dot {
+  name Dot2
+  xpos -1837
+  ypos -2296
+ }
+set N3ee516a0 [stack 0]
+ Dot {
+  name Dot103
+  xpos -1194
+  ypos -2301
+ }
+set N3ee51a10 [stack 0]
+push $N3ee51a10
+ Dot {
+  name Dot3
+  xpos -911
+  ypos -2301
+ }
+set N3ee51d80 [stack 0]
+ Dot {
+  name Dot35
+  xpos -911
+  ypos -2126
+ }
+set N3ee52460 [stack 0]
+ Expression {
+  expr2 b>g*limit_percent?g*limit_percent:b
+  expr3 b-g*limit_percent
+  name GreenLimitsBlue1
+  xpos -944
+  ypos -2054
+  addUserKnob {20 User}
+  addUserKnob {7 LimitPercentage l "fine tune" R 0.5 1.5}
+  LimitPercentage {{RedLimitsGreen.LimitPercentage}}
+ }
+push $N3ee52460
+ Dot {
+  name Dot34
+  xpos -1103
+  ypos -2126
+ }
+ Expression {
+  expr2 b>r*limit_percent?r*limit_percent:b
+  expr3 b-r*limit_percent
+  name RedLimitsBlue
+  xpos -1136
+  ypos -2057
+  addUserKnob {20 User}
+  addUserKnob {7 LimitPercentage l "fine tune" R 0.5 1.5}
+  LimitPercentage {{RedLimitsGreen.LimitPercentage}}
+ }
+push $N3ee52460
+ Dot {
+  name Dot36
+  xpos -685
+  ypos -2126
+ }
+ Expression {
+  expr2 b>(g+r)/2*limit_percent?(g+r)/2*limit_percent:b
+  expr3 b-(r+g)*limit_percent/2
+  name RedAndGreenLimitBlue
+  xpos -718
+  ypos -2061
+  addUserKnob {20 User}
+  addUserKnob {7 LimitPercentage l "fine tune" R 0.5 1.5}
+  LimitPercentage {{RedLimitsGreen.LimitPercentage}}
+ }
+ Switch {
+  inputs 3
+  which {{Despill_Unspill_Relight.despill_algorithms}}
+  name SwitchBlue
+  xpos -944
+  ypos -1970
+ }
+set N3f412ef0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge8
+  xpos -1227
+  ypos -1986
+ }
+ set C3ee557f0 [stack 0]
+clone $C3ee4f0d0 {
+  xpos -1227
+  ypos -1934
+  selected false
+ }
+push $N3f412ef0
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.alpha
+  name Copy4
+  xpos -944
+  ypos -1940
+ }
+ set C3ee55110 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy4
+  xpos -944
+  ypos -1898
+  disable {{!use_keyer_despill}}
+ }
+ set C3ee55480 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  alpha alpha2
+  name ShuffleCopy6
+  xpos -944
+  ypos -1848
+  disable {{!use_keyer_despilled_plate}}
+ }
+ set C3ee55b60 [stack 0]
+ Dot {
+  name Dot5
+  xpos -911
+  ypos -1531
+ }
+push $N3ee4b9d0
+push $N3ee4c420
+push $N3ee516a0
+ Dot {
+  name Dot91
+  xpos -2153
+  ypos -2301
+ }
+set N3ee53c70 [stack 0]
+push $N3ee53c70
+ Dot {
+  name Dot1
+  xpos -2591
+  ypos -2301
+ }
+set N3f811f80 [stack 0]
+ Dot {
+  name Dot20
+  xpos -2591
+  ypos -2161
+ }
+set N3f812d40 [stack 0]
+ Expression {
+  expr1 g>b*limit_percent?b*limit_percent:g
+  expr3 g-b*limit_percent
+  name BlueLimitsGreen
+  xpos -2624
+  ypos -2074
+  addUserKnob {20 User}
+  addUserKnob {7 LimitPercentage l "fine tune" R 0.5 1.5}
+  LimitPercentage {{RedLimitsGreen.LimitPercentage}}
+ }
+push $N3f812d40
+ Dot {
+  name Dot19
+  xpos -2831
+  ypos -2161
+ }
+ Expression {
+  expr1 g>r*limit_percent?r*limit_percent:g
+  expr3 g-r*limit_percent
+  name RedLimitsGreen
+  xpos -2864
+  ypos -2058
+  addUserKnob {20 User}
+  addUserKnob {7 LimitPercentage l "fine tune" R 0.5 1.5}
+  LimitPercentage 1
+ }
+push $N3f812d40
+ Dot {
+  name Dot21
+  xpos -2351
+  ypos -2161
+ }
+ Expression {
+  expr1 g>(b+r)/2*limit_percent?(b+r)/2*limit_percent:g
+  expr3 g-(r+b)*limit_percent/2
+  name RedAveBlueLimitsGreen
+  xpos -2384
+  ypos -2074
+  addUserKnob {20 User}
+  addUserKnob {7 LimitPercentage l "fine tune" R 0.5 1.5}
+  LimitPercentage {{RedLimitsGreen.LimitPercentage}}
+ }
+ Switch {
+  inputs 3
+  which {{Despill_Unspill_Relight.despill_algorithms}}
+  name SwitchGreen
+  xpos -2624
+  ypos -1998
+ }
+set N3f4156d0 [stack 0]
+clone $C3ee557f0 {
+  inputs 2
+  xpos -2186
+  ypos -1998
+  selected false
+ }
+clone $C3ee4f0d0 {
+  xpos -2186
+  ypos -1943
+  selected false
+ }
+push $N3f4156d0
+clone $C3ee55110 {
+  inputs 2
+  xpos -2624
+  ypos -1949
+  selected false
+ }
+clone $C3ee55480 {
+  inputs 2
+  xpos -2624
+  ypos -1898
+  selected false
+ }
+clone $C3ee55b60 {
+  inputs 2
+  xpos -2624
+  ypos -1848
+  selected false
+ }
+ Dot {
+  name Dot4
+  xpos -2591
+  ypos -1531
+ }
+ Switch {
+  inputs 2
+  which {{Despill_Unspill_Relight.screenType}}
+  name Switch_screen_algorithm
+  xpos -1742
+  ypos -1533
+ }
+add_layer {spill_map spill_map.red}
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  out spill_map
+  name Shuffle1
+  label "shuffle the spill map"
+  note_font_size 27
+  note_font_color 0xffffffff
+  xpos -1742
+  ypos -996
+ }
+ DegrainSimple {
+  channels spill_map
+  rVal 0
+  gVal 0
+  bVal 0
+  name DegrainSimple1
+  xpos -1742
+  ypos -915
+ }
+ Dot {
+  name Dot82
+  xpos -1705
+  ypos -421
+ }
+set N3f8141e0 [stack 0]
+ Grade {
+  channels spill_map
+  white_clamp true
+  name Grade_splill_map
+  xpos -1544
+  ypos -284
+ }
+set N3f8118a0 [stack 0]
+ Erode {
+  channels spill_map
+  size -10.5
+  blur 3
+  name Erode1
+  xpos -1674
+  ypos -204
+ }
+push $N3f8118a0
+ Dilate {
+  channels spill_map
+  size 3
+  name Dilate2
+  xpos -1544
+  ypos -191
+ }
+set N3f810ae0 [stack 0]
+ Blur {
+  channels spill_map
+  size 1
+  name Blur3
+  xpos -1630
+  ypos -135
+ }
+ Shuffle {
+  in spill_map
+  name Shuffle4
+  xpos -1630
+  ypos -74
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos -1679
+  ypos 2632
+  number 2
+ }
+set N3f8160d0 [stack 0]
+ Grade {
+  name background_grade
+  xpos -715
+  ypos 2632
+ }
+ set C3f817200 [stack 0]
+ Blur {
+  size 10
+  name background_blur
+  xpos -715
+  ypos 2696
+ }
+ set C3f816b20 [stack 0]
+ Dot {
+  name Dot69
+  xpos -678
+  ypos 2810
+ }
+push $N3f8141e0
+ Dot {
+  name Dot81
+  xpos -1705
+  ypos 1689
+ }
+set N3f818a10 [stack 0]
+push $N3f810ae0
+ Dot {
+  name Dot83
+  xpos -1511
+  ypos 1587
+ }
+set N3f817fc0 [stack 0]
+push $N3f8141e0
+ Dot {
+  name Dot66
+  xpos -280
+  ypos -421
+ }
+set N3f818d80 [stack 0]
+ Dot {
+  name Dot48
+  xpos -280
+  ypos -77
+ }
+set N3f8190f0 [stack 0]
+ Dot {
+  name Dot50
+  xpos -431
+  ypos -77
+ }
+ Dot {
+  name Dot51
+  xpos -431
+  ypos 1183
+ }
+set N3f819460 [stack 0]
+ Dot {
+  name Dot99
+  xpos -191
+  ypos 1183
+ }
+set N3f8159f0 [stack 0]
+ Shuffle {
+  in spill_map
+  name Shuffle5
+  xpos -224
+  ypos 1286
+ }
+ set C3f81d240 [stack 0]
+ Grade {
+  whitepoint {{(white.r+white.g+white.b)/3}}
+  black_clamp false
+  name replaceColor
+  xpos -224
+  ypos 1345
+ }
+ set C3f81ac70 [stack 0]
+push $N3f819460
+ Merge2 {
+  inputs 2
+  operation screen
+  name Merge9
+  xpos -464
+  ypos 1345
+ }
+ set C3f81c7f0 [stack 0]
+ Dot {
+  name Dot58
+  xpos -431
+  ypos 1463
+ }
+push $N3ee51330
+ Dot {
+  name Dot46
+  xpos 2209
+  ypos -2651
+ }
+ Dot {
+  name Dot47
+  xpos 2173
+  ypos 1307
+ }
+ Expression {
+  channel0 {-rgba.red -rgba.green -rgba.blue none}
+  expr0 0
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  expr1 0
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  expr2 0
+  channel3 {rgba.alpha none none rgba.alpha}
+  expr3 a==0?0:a
+  name AlphaError2
+  label "To avid Gizmo being in state of\nerror without something plugged in input."
+  xpos 1849
+  ypos 1293
+ }
+push $N3f8159f0
+push $N3f8190f0
+ Dot {
+  name Dot52
+  label "copy the spill map"
+  note_font_size 21
+  note_font_color 0xff
+  xpos -294
+  ypos 1043
+ }
+push $N3f818d80
+ Dot {
+  name Dot67
+  xpos 529
+  ypos -421
+ }
+ Dot {
+  name Dot53
+  xpos 529
+  ypos 119
+ }
+set N3f81d920 [stack 0]
+ Dot {
+  name Dot54
+  xpos 169
+  ypos 119
+ }
+ Shuffle {
+  in spill_map
+  red blue
+  green blue
+  alpha blue
+  out rgb
+  name ShuffleRed1
+  tile_color 0xff0000ff
+  xpos 136
+  ypos 150
+ }
+ Multiply {
+  value 0
+  name multiply_add_red1
+  tile_color 0xff0000ff
+  xpos 136
+  ypos 284
+ }
+push $N3ee51d80
+ Dot {
+  name Dot44
+  xpos 1108
+  ypos -2301
+ }
+ Dot {
+  name Dot55
+  xpos 1108
+  ypos 84
+ }
+set N3f81c110 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name ShuffleRed2
+  tile_color 0xff0000ff
+  xpos 1075
+  ypos 187
+ }
+ Dot {
+  name Dot56
+  xpos 1108
+  ypos 364
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge4
+  xpos 136
+  ypos 362
+ }
+ Dot {
+  name Dot57
+  xpos 169
+  ypos 819
+ }
+push $N3f81c110
+ Dot {
+  name Dot7
+  xpos 1348
+  ypos 84
+ }
+set N3f81bda0 [stack 0]
+ Dot {
+  name Dot60
+  xpos 1468
+  ypos 84
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name ShuffleBlue2
+  tile_color 0xffff
+  xpos 1435
+  ypos 187
+ }
+ Dot {
+  name Dot61
+  xpos 1468
+  ypos 434
+ }
+push $N3f81d920
+ Dot {
+  name Dot8
+  xpos 769
+  ypos 119
+ }
+ Shuffle {
+  in spill_map
+  red blue
+  green blue
+  alpha blue
+  out rgb
+  name ShuffleBlue1
+  tile_color 0xffff
+  xpos 736
+  ypos 152
+ }
+ Multiply {
+  name multiply_subtract_blue
+  tile_color 0xffff
+  xpos 736
+  ypos 283
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos 736
+  ypos 432
+ }
+ Dot {
+  name Dot62
+  xpos 769
+  ypos 749
+ }
+push $N3f81bda0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name ShuffleGreen1
+  tile_color 0xff00ff
+  xpos 1315
+  ypos 187
+ }
+ Dot {
+  name Dot63
+  xpos 1348
+  ypos 539
+ }
+set N3f81f4a0 [stack 0]
+push $N3f81d920
+ Shuffle {
+  in spill_map
+  red alpha
+  green red
+  blue red
+  alpha green
+  out rgb
+  name ShuffleGreen2
+  tile_color 0xff00ff
+  xpos 496
+  ypos 152
+ }
+ Multiply {
+  value 0
+  name multiply_add_green
+  tile_color 0xff00ff
+  xpos 496
+  ypos 284
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge6
+  xpos 496
+  ypos 537
+ }
+push $N3f81f4a0
+ Dot {
+  name Dot64
+  xpos 1348
+  ypos 644
+ }
+ ShuffleCopy {
+  inputs 2
+  green green
+  name ShuffleCopy1
+  tile_color 0xff00ff
+  label "change the new green channel with the original"
+  xpos 496
+  ypos 636
+ }
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  name ShuffleCopy2
+  tile_color 0xffff
+  label "change the new blue channel with the original"
+  xpos 496
+  ypos 741
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy3
+  tile_color 0xff0000ff
+  label "change the new red channel with the original"
+  xpos 496
+  ypos 811
+ }
+ Copy {
+  inputs 2
+  from0 spill_map.red
+  to0 spill_map.red
+  name Copy3
+  label "copy the spill map"
+  note_font_size 21
+  note_font_color 0xffffffff
+  xpos 496
+  ypos 1010
+ }
+ Switch {
+  inputs 2
+  which {{!use_unspill_BS}}
+  name unplill_switch1
+  label "use or not use Unsplill"
+  note_font_size 31
+  xpos 496
+  ypos 1153
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  from3 rgba.alpha
+  to3 rgba.alpha
+  name CopyAlpha1
+  label "copy the alpha from the pulled key"
+  note_font_size 21
+  note_font_color 0xffffffff
+  xpos 496
+  ypos 1261
+ }
+ Switch {
+  inputs 2
+  which {{replaceC}}
+  name Switch2
+  xpos 496
+  ypos 1461
+ }
+ set C3f5fe430 [stack 0]
+ ColorCorrect {
+  inputs 1+1
+  maskChannelMask spill_map.red
+  name CC_despilled_plate
+  xpos 496
+  ypos 1601
+ }
+ set C3faf3400 [stack 0]
+ Copy {
+  inputs 2
+  from0 spill_map.red
+  to0 spill_map.red
+  name Copy5
+  xpos 496
+  ypos 1681
+ }
+ set C3faf22d0 [stack 0]
+ Grade {
+  name Grade2
+  xpos 496
+  ypos 1928
+ }
+ set C3faf2640 [stack 0]
+ Transform {
+  center {1024 724}
+  name Transform2
+  xpos 496
+  ypos 2212
+ }
+ set C3faf3ae0 [stack 0]
+set N3faf3ae0 [stack 0]
+ Dot {
+  name Dot76
+  xpos 158
+  ypos 2214
+ }
+ Dot {
+  name Dot73
+  xpos 158
+  ypos 2599
+ }
+set N3faf0070 [stack 0]
+ Dot {
+  name Dot72
+  xpos -82
+  ypos 2599
+ }
+set N3faf3e50 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  label "shuffle keyer alpha"
+  xpos -235
+  ypos 2591
+ }
+ set C3faf03e0 [stack 0]
+ Dot {
+  name Dot71
+  xpos -438
+  ypos 2600
+ }
+push $N3faf3e50
+ Dot {
+  name Dot70
+  xpos -82
+  ypos 2669
+ }
+ Shuffle {
+  in spill_map
+  name Shuffle3
+  label "shuffle the splil map"
+  xpos -234
+  ypos 2660
+ }
+ set C3faf0ac0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  xpos -475
+  ypos 2666
+ }
+ set C3faf48a0 [stack 0]
+ Blur {
+  size 1
+  name Blur_relightmap
+  xpos -475
+  ypos 2738
+ }
+ set C3faf0e30 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge1
+  xpos -475
+  ypos 2807
+ }
+ set C3faf7fa0 [stack 0]
+ Dot {
+  name Dot68
+  xpos -442
+  ypos 2999
+ }
+set N3faf59d0 [stack 0]
+ Dot {
+  name Dot84
+  xpos -442
+  ypos 3569
+ }
+push $N3faf3ae0
+push $N3faf59d0
+push $N3faf0070
+ Merge2 {
+  inputs 2
+  operation plus
+  name relight_mix
+  xpos 125
+  ypos 2997
+ }
+ set C3faf60b0 [stack 0]
+ Switch {
+  inputs 2
+  which {{!relight}}
+  name relight_switch
+  xpos 496
+  ypos 2997
+ }
+ set C3f5fbc50 [stack 0]
+ Premult {
+  name Premult1
+  xpos 496
+  ypos 3396
+  disable {{!parent.premultiply}}
+ }
+ set C3faf5d40 [stack 0]
+set N3faf5d40 [stack 0]
+ Dot {
+  name Dot49
+  xpos 722
+  ypos 3398
+ }
+ Switch {
+  inputs 2
+  which {{preview_relight}}
+  name relight_preview_switch1
+  xpos 689
+  ypos 3561
+ }
+ set C3f5fb510 [stack 0]
+ Dot {
+  name Dot10
+  xpos 722
+  ypos 3638
+ }
+push $N3faf5d40
+ Dot {
+  name Dot31
+  xpos 529
+  ypos 3474
+ }
+push $N3f8160d0
+ Dot {
+  name Dot40
+  xpos -1646
+  ypos 3264
+ }
+set N3faf4c10 [stack 0]
+ Dot {
+  name Dot79
+  xpos -1031
+  ypos 3264
+ }
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos -1064
+  ypos 3482
+ }
+ set C3faf5660 [stack 0]
+ Dot {
+  name Dot74
+  xpos -1031
+  ypos 3638
+ }
+ Switch {
+  inputs 2
+  which {{parent.comp_outside}}
+  name Switch1
+  xpos 496
+  ypos 3636
+ }
+ set C3f5fb8b0 [stack 0]
+ Dot {
+  name Dot78
+  xpos 529
+  ypos 4104
+ }
+push $N3f8160d0
+clone $C3f817200 {
+  xpos -2660
+  ypos 2630
+  selected false
+ }
+clone $C3f816b20 {
+  xpos -2660
+  ypos 2675
+  selected false
+ }
+ Dot {
+  name Dot14
+  xpos -2623
+  ypos 2788
+ }
+push $N3ee51330
+ Dot {
+  name Dot9
+  xpos -5591
+  ypos -2616
+ }
+ Dot {
+  name Dot11
+  xpos -5543
+  ypos 1777
+ }
+ Expression {
+  channel0 {-rgba.red -rgba.green -rgba.blue none}
+  expr0 0
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  expr1 0
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  expr2 0
+  channel3 {rgba.alpha none none rgba.alpha}
+  expr3 a==0?0:a
+  name AlphaError
+  label "To avid Gizmo being in state of\nerror without something plugged in input."
+  xpos -5264
+  ypos 1763
+ }
+push $N3f818a10
+push $N3f817fc0
+push $N3f8141e0
+ Dot {
+  name Dot65
+  xpos -3431
+  ypos -399
+ }
+set N3faf9b20 [stack 0]
+ Dot {
+  name Dot43
+  xpos -3431
+  ypos -61
+ }
+set N3fafa200 [stack 0]
+ Dot {
+  name Dot33
+  xpos -3311
+  ypos -61
+ }
+ Dot {
+  name Dot12
+  xpos -3311
+  ypos 1234
+ }
+set N3faf78c0 [stack 0]
+ Dot {
+  name Dot93
+  xpos -3551
+  ypos 1234
+ }
+set N3fafa570 [stack 0]
+clone $C3f81d240 {
+  xpos -3584
+  ypos 1302
+  selected false
+ }
+clone $C3f81ac70 {
+  xpos -3584
+  ypos 1361
+  selected false
+ }
+push $N3faf78c0
+clone $C3f81c7f0 {
+  inputs 2
+  xpos -3344
+  ypos 1361
+  selected false
+ }
+ Dot {
+  name Dot92
+  xpos -3311
+  ypos 1471
+ }
+push $N3fafa570
+push $N3fafa200
+ Dot {
+  name Dot30
+  label "copy the spill map"
+  note_font_size 21
+  note_font_color 0xff
+  xpos -3431
+  ypos 1094
+ }
+push $N3faf9b20
+ Dot {
+  name Dot45
+  xpos -3911
+  ypos -399
+ }
+ Dot {
+  name Dot18
+  xpos -3911
+  ypos 184
+ }
+set N3faf7c30 [stack 0]
+ Dot {
+  name Dot208
+  xpos -4271
+  ypos 184
+ }
+ Shuffle {
+  in spill_map
+  red blue
+  green blue
+  alpha blue
+  out rgb
+  name ShuffleRed5
+  tile_color 0xff0000ff
+  xpos -4304
+  ypos 217
+ }
+ Multiply {
+  value 0
+  name multiply_add_red
+  tile_color 0xff0000ff
+  xpos -4304
+  ypos 351
+ }
+push $N3f811f80
+ Dot {
+  name Dot22
+  xpos -5111
+  ypos -2301
+ }
+ Dot {
+  name Dot32
+  xpos -5111
+  ypos -61
+ }
+ Dot {
+  name Dot23
+  xpos -5111
+  ypos 149
+ }
+set N3fafd900 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name ShuffleRed4
+  tile_color 0xff0000ff
+  xpos -5144
+  ypos 252
+ }
+ Dot {
+  name Dot199
+  xpos -5111
+  ypos 429
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge106
+  xpos -4304
+  ypos 427
+ }
+ Dot {
+  name Dot29
+  xpos -4271
+  ypos 884
+ }
+push $N3faf7c30
+ Dot {
+  name Dot212
+  xpos -3671
+  ypos 184
+ }
+ Shuffle {
+  in spill_map
+  red blue
+  green blue
+  alpha blue
+  out rgb
+  name ShuffleBlue4
+  tile_color 0xffff
+  xpos -3704
+  ypos 217
+ }
+ Multiply {
+  value 0
+  name multiply_add_blue
+  tile_color 0xffff
+  xpos -3704
+  ypos 351
+ }
+push $N3fafd900
+ Dot {
+  name Dot24
+  xpos -4871
+  ypos 149
+ }
+set N3fafeda0 [stack 0]
+ Dot {
+  name Dot25
+  xpos -4751
+  ypos 149
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name ShuffleBlue3
+  tile_color 0xffff
+  xpos -4784
+  ypos 252
+ }
+ Dot {
+  name Dot210
+  xpos -4751
+  ypos 499
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge108
+  xpos -3704
+  ypos 497
+ }
+ Dot {
+  name Dot28
+  xpos -3671
+  ypos 814
+ }
+push $N3fafeda0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name ShuffleGreen5
+  tile_color 0xff00ff
+  xpos -4904
+  ypos 252
+ }
+ Dot {
+  name Dot26
+  xpos -4871
+  ypos 604
+ }
+set N3fafea30 [stack 0]
+push $N3faf7c30
+ Shuffle {
+  in spill_map
+  red alpha
+  green red
+  blue red
+  alpha green
+  out rgb
+  name ShuffleGreen6
+  tile_color 0xff00ff
+  xpos -3944
+  ypos 217
+ }
+ Multiply {
+  name multiply_subtract_green
+  tile_color 0xff00ff
+  xpos -3944
+  ypos 351
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge107
+  xpos -3944
+  ypos 602
+ }
+push $N3fafea30
+ Dot {
+  name Dot27
+  xpos -4871
+  ypos 709
+ }
+ ShuffleCopy {
+  inputs 2
+  green green
+  name ShuffleCopy7
+  tile_color 0xff00ff
+  label "change the new green channel with the original"
+  xpos -3944
+  ypos 701
+ }
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  name ShuffleCopy8
+  tile_color 0xffff
+  label "change the new blue channel with the original"
+  xpos -3944
+  ypos 806
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy16
+  tile_color 0xff0000ff
+  label "change the new red channel with the original"
+  xpos -3944
+  ypos 876
+ }
+ Copy {
+  inputs 2
+  from0 spill_map.red
+  to0 spill_map.red
+  name Copy7
+  label "copy the spill map"
+  note_font_size 21
+  note_font_color 0xffffffff
+  xpos -3944
+  ypos 1060
+ }
+ Switch {
+  inputs 2
+  which {{!unspill_GS}}
+  name unplill_switch
+  label "use or not use Unsplill"
+  note_font_size 31
+  xpos -3944
+  ypos 1204
+ }
+clone $C3f5fe430 {
+  inputs 2
+  xpos -3944
+  ypos 1469
+  selected false
+ }
+clone $C3faf3400 {
+  inputs 1+1
+  xpos -3944
+  ypos 1582
+  selected false
+ }
+clone $C3faf22d0 {
+  inputs 2
+  xpos -3944
+  ypos 1665
+  selected false
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  from3 rgba.alpha
+  to3 rgba.alpha
+  name CopyAlpha
+  label "copy the alpha from the pulled key"
+  note_font_size 21
+  note_font_color 0xffffffff
+  xpos -3944
+  ypos 1731
+ }
+clone $C3faf2640 {
+  xpos -3944
+  ypos 1992
+  selected false
+ }
+clone $C3faf3ae0 {
+  xpos -3944
+  ypos 2290
+  selected false
+ }
+set N3feacfe0 [stack 0]
+ Dot {
+  name Dot39
+  xpos -3571
+  ypos 2292
+ }
+ Dot {
+  name Dot13
+  xpos -3571
+  ypos 2567
+ }
+set N3feaeed0 [stack 0]
+ Dot {
+  name Dot17
+  xpos -3101
+  ypos 2565
+ }
+set N3feaf920 [stack 0]
+clone $C3faf03e0 {
+  xpos -2989
+  ypos 2557
+  selected false
+ }
+ Dot {
+  name Dot15
+  xpos -2803
+  ypos 2565
+ }
+push $N3feaf920
+ Dot {
+  name Dot16
+  xpos -3103
+  ypos 2667
+ }
+clone $C3faf0ac0 {
+  xpos -2983
+  ypos 2659
+  selected false
+ }
+clone $C3faf48a0 {
+  inputs 2
+  xpos -2836
+  ypos 2665
+  selected false
+ }
+clone $C3faf0e30 {
+  xpos -2836
+  ypos 2730
+  selected false
+ }
+clone $C3faf7fa0 {
+  inputs 2
+  xpos -2836
+  ypos 2785
+  selected false
+ }
+ Dot {
+  name Dot37
+  xpos -2786
+  ypos 3002
+ }
+set N3feb4150 [stack 0]
+ Dot {
+  name Dot85
+  xpos -2786
+  ypos 3598
+ }
+push $N3feacfe0
+push $N3feb4150
+push $N3feaeed0
+clone $C3faf60b0 {
+  inputs 2
+  xpos -3608
+  ypos 2999
+  selected false
+ }
+clone $C3f5fbc50 {
+  inputs 2
+  xpos -3948
+  ypos 2999
+  selected false
+ }
+clone $C3faf5d40 {
+  xpos -3944
+  ypos 3453
+  selected false
+ }
+set N3feb2260 [stack 0]
+ Dot {
+  name Dot41
+  xpos -4109
+  ypos 3455
+ }
+clone $C3f5fb510 {
+  inputs 2
+  xpos -4142
+  ypos 3596
+  selected false
+ }
+ Dot {
+  name Dot42
+  xpos -4109
+  ypos 3695
+ }
+push $N3feb2260
+ Dot {
+  name Dot75
+  xpos -3911
+  ypos 3509
+ }
+push $N3faf4c10
+ Dot {
+  name Dot77
+  xpos -2531
+  ypos 3264
+ }
+clone $C3faf5660 {
+  inputs 2
+  xpos -2564
+  ypos 3507
+  selected false
+ }
+ Dot {
+  name Dot96
+  xpos -2531
+  ypos 3695
+ }
+clone $C3f5fb8b0 {
+  inputs 2
+  xpos -3944
+  ypos 3693
+  selected false
+ }
+ Dot {
+  name Dot97
+  xpos -3911
+  ypos 4104
+ }
+ Switch {
+  inputs 2
+  which {{Despill_Unspill_Relight.screenType}}
+  name SwitchMain1
+  xpos -1424
+  ypos 4102
+ }
+ Output {
+  name Output1
+  xpos -1424
+  ypos 4202
+ }
+ NoOp {
+  inputs 0
+  name Despill_Unspill_Relight
+  note_font_size 211
+  note_font_color 0xc1ffff
+  xpos -1941
+  ypos -3984
+  addUserKnob {20 controls l Controls}
+  addUserKnob {4 screenType l "screen type" M {green blue "" "" ""}}
+  addUserKnob {4 despill_algorithms l "Despill Algorithms" M {average "red limit" "green/blue limit"}}
+ }
+end_group

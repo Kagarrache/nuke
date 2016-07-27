@@ -1,0 +1,188 @@
+#! C:/Program Files/Nuke6.0v3/Nuke6.0.exe -nx
+version 6.0 v3
+Gizmo {
+ inputs 2
+ help "If need to use blur switch to \"0\" \nIf need to use time offset switch to \"1\"\nTime offeset to patch it form differnt frame from the time."
+ lock_connections true
+ addUserKnob {20 DNRR}
+ addUserKnob {41 size l "Blue size" T Blur1.size}
+ addUserKnob {41 filter l Filter T Blur1.filter}
+ addUserKnob {41 Switch t "0 for blur method and 1 for frameoffset " T Switch1.which}
+ addUserKnob {41 Patch_ l "TIME OFFSET" t "Time offeset to patch it form differnt frame from the time" T TimeOffset1.time_offset}
+ addUserKnob {26 DNRR l "Dust&RigRemoval v1" T ""}
+}
+ Input {
+  inputs 0
+  name ROTO_PAINT
+  xpos -380
+  ypos -330
+  number 1
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+  addUserKnob {20 Snapshots_1 l Snapshots}
+  addUserKnob {22 addSnapshot_1 l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+ Dot {
+  name Dot1
+  xpos -346
+  ypos -200
+ }
+set N67d4250 [stack 0]
+ RotoPaint {
+  toolbar_source_transform_center {1024 778}
+  cliptype none
+  curves {AnimTree: "" {
+
+ Version: 1.1
+
+ Flag: 0
+
+ RootNode: 1
+
+ Node: {
+
+  NodeName: "Root" {
+
+   Flag: 512
+
+   NodeType: 1
+
+   NumOfAttributes: 10
+
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 
+
+  }
+
+  NumOfChildren: 0
+
+ }
+
+}
+
+}
+  locked false
+  center {1024 778}
+  source_transform_center {1024 778}
+  name RotoPaint1
+  xpos -380
+  ypos -10
+ }
+push $N67d4250
+ Input {
+  inputs 0
+  name PLATE
+  xpos 109
+  ypos -484
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+set N67d4c10 [stack 0]
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos -85
+  ypos -441
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+set N67d4e80 [stack 0]
+ TimeOffset {
+  time_offset 20
+  name TimeOffset1
+  selected true
+  xpos -213
+  ypos -156
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  xpos -255
+  ypos -86
+ }
+push $N67d4e80
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos -85
+  ypos -86
+ }
+push $N67d4250
+push $N67d4e80
+ Blur {
+  channels rgba
+  size 24
+  name Blur1
+  xpos -214
+  ypos -303
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+ Unpremult {
+  name Unpremult1
+  xpos -214
+  ypos -250
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+push $N67d4c10
+ Keymix {
+  inputs 3
+  channels rgb
+  name Keymix1
+  xpos -28
+  ypos -204
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+push $N67d4c10
+ Copy {
+  inputs 2
+  from0 -rgba.alpha
+  to0 -rgba.alpha
+  channels rgb
+  name Copy1
+  xpos 109
+  ypos -217
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+ Switch {
+  inputs 2
+  name Switch1
+  xpos 109
+  ypos -86
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 109
+  ypos -16
+ }
+ Output {
+  name Output1
+  xpos 109
+  ypos 145
+  addUserKnob {20 Snapshots}
+  addUserKnob {22 addSnapshot l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+  addUserKnob {20 Snapshots_1 l Snapshots}
+  addUserKnob {22 addSnapshot_1 l "Add Snapshot" t "Create a new snapshot.\nThe current values will be stored in a new button" -STARTLINE T OhuKnobs.addSnapshot(nuke.thisNode())}
+  addUserKnob {26 ""}
+ }
+ Output {
+  name Output2
+  xpos 109
+  ypos 245
+ }
+end_group

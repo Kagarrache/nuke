@@ -1,0 +1,642 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ note_font Verdana
+ mapsize {0.15 0.15}
+ addUserKnob {20 Settings}
+ addUserKnob {4 preset M {none nature01 narute02 forest01 forest02 city01 city02 "" ""}}
+ preset nature01
+ addUserKnob {41 in l contrast T Conrtast.in}
+ addUserKnob {41 saturation T StickyNote1.saturation}
+ addUserKnob {20 glow n 1}
+ glow 0
+ addUserKnob {41 tint l colour T Glow6.tint}
+ addUserKnob {41 addskyglow -STARTLINE T StickyNote1.addskyglow}
+ addUserKnob {41 glowsize T StickyNote1.glowsize}
+ addUserKnob {41 tolerance T StickyNote1.tolerance}
+ addUserKnob {41 brightness T StickyNote1.brightness}
+ addUserKnob {41 saturation_1 l saturation T StickyNote1.saturation_1}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 grain n 1}
+ grain 0
+ addUserKnob {41 red_size l "gain size" T Group1.red_size}
+ addUserKnob {41 addgrain -STARTLINE T StickyNote1.addgrain}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix T StickyNote1.mix}
+ addUserKnob {6 clamp -STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x7171c600
+  label forest
+  note_font_size 35
+  xpos 105
+  ypos -479
+  bdwidth 110
+  bdheight 256
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x7171c600
+  label nature2
+  note_font_size 35
+  xpos -25
+  ypos -484
+  bdwidth 110
+  bdheight 256
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x7171c600
+  label forest2
+  note_font_size 35
+  xpos 243
+  ypos -478
+  bdwidth 110
+  bdheight 256
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x7171c600
+  label "  city"
+  note_font_size 35
+  xpos 370
+  ypos -478
+  bdwidth 110
+  bdheight 256
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x7171c600
+  label " city2"
+  note_font_size 35
+  xpos 485
+  ypos -479
+  bdwidth 110
+  bdheight 256
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x7171c600
+  label nature
+  note_font_size 35
+  xpos -147
+  ypos -480
+  bdwidth 96
+  bdheight 251
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 161
+  ypos -625
+ }
+ Dot {
+  name Dot1
+  xpos 195
+  ypos -599
+ }
+set N915d570 [stack 0]
+add_layer {rgba redguard1.glow}
+ Saturation {
+  saturation {{parent.StickyNote1.saturation+.6 i}}
+  mix {{parent.StickyNote1.mix i}}
+  name Saturation6
+  xpos 496
+  ypos -389
+ }
+ HueCorrect {
+  hue {sat {curve 1 1 1 1 0.9352941513 0.9352941513 1}
+    lum {curve 0.2289216518 0.2289216518 0.2289216518 0.2289216518 0.2289216518 0.2289216518 0.2289216518 s0}
+    red {curve 0.6872549057 0.6872549057 0.6872549057 0.6872549057 0.6872549057 0.6872549057 0.6872549057 s0}
+    green {curve 1.13480401 1.13480401 1.13480401 1.13480401 1.13480401 1.13480401 1.13480401 s0}
+    blue {curve x-0.03173065186 1.215686321 1.215686321 1.215686321 1.215686321 1.129411817 1.129411817 1.215686321 s0}
+    r_sup {}
+    g_sup {}
+    b_sup {}
+    sat_thrsh {}}
+  mix {{parent.StickyNote1.mix i}}
+  name HueCorrect6
+  xpos 496
+  ypos -365
+ }
+ ColorCorrect {
+  gamma 0.62
+  gain 0.6
+  shadows.gamma 1.1
+  shadows.gain 1.1
+  mix {{parent.StickyNote1.mix i}}
+  name ColorCorrect6
+  xpos 496
+  ypos -341
+ }
+ Glow {
+  tint {1 0.18000001 0}
+  tolerance {{parent.StickyNote1.tolerance+0.015 i}}
+  brightness {{parent.StickyNote1.brightness+1.22 i}}
+  saturation {{parent.StickyNote1.saturation_1+0.53 i}}
+  size {{parent.StickyNote1.glowsize+2 i}}
+  mix {{(parent.StickyNote1.mix==1)+parent.StickyNote1.mix/3 i}}
+  name Glow6
+  xpos 496
+  ypos -317
+  disable {{parent.StickyNote1.addskyglow+-1 i}}
+ }
+ CCrosstalk {
+  crossover {red {curve C 0 0.8585783839}
+    green {curve C 0 x1.049999952 1}
+    blue {curve C 0 1.08774507}
+    R->G {}
+    R->B {curve C 0 x0.5237980485 0.06862747669 x1 0}
+    G->R {}
+    G->B {curve C -0.004166603088 0}
+    B->R {curve C 0 x0.501331687 0.1279411912 x1 0.2735294104}
+    B->G {curve C 0.001225590706 0}}
+  name CCrosstalk6
+  xpos 496
+  ypos -293
+ }
+push $N915d570
+ Saturation {
+  saturation {{parent.StickyNote1.saturation+.6 i}}
+  mix {{parent.StickyNote1.mix i}}
+  name Saturation5
+  xpos 381
+  ypos -388
+ }
+ HueCorrect {
+  hue {sat {curve 1 1 1 1 0.9892157316 0.9892157316 1}
+    lum {curve 0.1426471472 0.1426471472 0.1426471472 0.1426471472 0.1372549534 0.1372549534 0.1426471472 s0}
+    red {curve 0.7789216042 0.7789216042 0.7789216042 0.7789216042 0.7789216042 0.7789216042 0.7789216042 s0}
+    green {curve 1.13480401 1.13480401 1.13480401 1.13480401 1.13480401 1.13480401 1.13480401 s0}
+    blue {curve x-0.03173065186 1.215686321 1.215686321 1.215686321 1.215686321 1.129411817 1.129411817 1.215686321 s0}
+    r_sup {}
+    g_sup {}
+    b_sup {}
+    sat_thrsh {}}
+  mix {{parent.StickyNote1.mix i}}
+  name HueCorrect5
+  xpos 381
+  ypos -364
+ }
+ ColorCorrect {
+  gamma 0.8
+  gain 0.6
+  shadows.gamma 1.1
+  shadows.gain 1.1
+  mix {{parent.StickyNote1.mix i}}
+  name ColorCorrect5
+  xpos 381
+  ypos -340
+ }
+ Glow {
+  tint {{parent.Glow6.tint.r i} {parent.Glow6.tint.g i} {parent.Glow6.tint.b i}}
+  tolerance {{parent.StickyNote1.tolerance+0.015 i}}
+  brightness {{parent.StickyNote1.brightness+1.22 i}}
+  saturation {{parent.StickyNote1.saturation_1+0.53 i}}
+  size {{parent.StickyNote1.glowsize+2 i}}
+  mix {{(parent.StickyNote1.mix==1)+parent.StickyNote1.mix/3 i}}
+  name Glow3
+  xpos 381
+  ypos -316
+  disable {{parent.StickyNote1.addskyglow+-1 i}}
+ }
+ CCrosstalk {
+  crossover {red {curve C 0 1 s0.7799999714}
+    green {curve C 0 x1.042067289 1 s0.9399999976}
+    blue {curve C 0 x0.833172977 0.855882287}
+    R->G {}
+    R->B {curve C -0.001470565796 x0.3783653378 -0.01914358139 x1 0}
+    G->R {curve C 0 x0.4374091625 -0.01764702797 x1 0}
+    G->B {curve C 0.009313702583 s0.1000000015 0}
+    B->R {}
+    B->G {curve C 0 x0.4533897638 0 x1 0}}
+  mix {{parent.StickyNote1.mix i}}
+  name CCrosstalk5
+  xpos 381
+  ypos -292
+ }
+push $N915d570
+ Saturation {
+  saturation {{parent.StickyNote1.saturation+.3 i}}
+  mix {{parent.StickyNote1.mix i}}
+  name Saturation3
+  xpos 268
+  ypos -389
+ }
+ HueCorrect {
+  hue {sat {}
+    lum {curve 0.4661766291 0.4661766291 0.4661766291 0.4661766291 0.4661766291 0.4661766291 0.4661766291 s0}
+    red {curve 0.859803915 0.859803915 0.859803915 0.859803915 0.859803915 0.859803915 0.859803915 s0}
+    green {curve 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 s0}
+    blue {curve 1.501470566 1.501470566 1.501470566 1.501470566 1.501470566 1.501470566 1.501470566 s0}
+    r_sup {}
+    g_sup {}
+    b_sup {}
+    sat_thrsh {curve 0.05637264252 0.05637264252 0.05637264252 0.05637264252 0.05637264252 0.05637264252 0.05637264252 s0}}
+  mix {{parent.StickyNote1.mix i}}
+  name HueCorrect3
+  xpos 268
+  ypos -365
+ }
+ ColorCorrect {
+  gamma 0.75
+  gain 0.26
+  midtones.gamma 0.9
+  midtones.gain 0.9
+  mix {{parent.StickyNote1.mix i}}
+  name ColorCorrect3
+  xpos 268
+  ypos -341
+ }
+ Glow {
+  tint {{parent.Glow6.tint.r i} {parent.Glow6.tint.g i} {parent.Glow6.tint.b i}}
+  tolerance {{parent.StickyNote1.tolerance+0.435 i}}
+  brightness {{parent.StickyNote1.brightness+2.88 i}}
+  saturation {{parent.StickyNote1.saturation_1+1 i}}
+  size {{parent.StickyNote1.glowsize+6 i}}
+  mix {{(parent.StickyNote1.mix==1)+parent.StickyNote1.mix/3 i}}
+  name Glow4
+  xpos 268
+  ypos -317
+  disable {{parent.StickyNote1.addskyglow+-1 i}}
+ }
+ CCrosstalk {
+  crossover {red {}
+    green {curve C 0 x0.4947114587 0.5080882311 x1 0.90710783}
+    blue {curve C 0 x1.015625 1}
+    R->G {}
+    R->B {curve C 0 x0.4999999404 -0.02034306526 x1 0}
+    G->R {curve C 0 x0.5079326034 0.04436278343 x1 0}
+    G->B {}
+    B->R {curve C 0 x0.4693704247 -0.02303910255 s-0.5 x1 0}
+    B->G {}}
+  mix {{parent.StickyNote1.mix i}}
+  name CCrosstalk3
+  xpos 268
+  ypos -293
+ }
+push $N915d570
+ Saturation {
+  saturation {{parent.StickyNote1.saturation+.4 i}}
+  mix {{parent.StickyNote1.mix i}}
+  name Saturation2
+  xpos 122
+  ypos -386
+ }
+ HueCorrect {
+  hue {sat {}
+    lum {curve 0.104902029 0.104902029 0.104902029 0.104902029 0.104902029 0.104902029 0.104902029 s0}
+    red {curve 0.859803915 0.859803915 0.859803915 0.859803915 0.859803915 0.859803915 0.859803915 s0}
+    green {curve 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 s0}
+    blue {curve 1.501470566 1.501470566 1.501470566 1.501470566 1.501470566 1.501470566 1.501470566 s0}
+    r_sup {}
+    g_sup {}
+    b_sup {}
+    sat_thrsh {curve 0.1588236094 0.1588236094 0.1588236094 0.1588236094 0.1588236094 0.1588236094 0.1588236094 s0}}
+  mix {{parent.StickyNote1.mix i}}
+  name HueCorrect2
+  xpos 122
+  ypos -362
+ }
+ ColorCorrect {
+  gamma 0.9
+  gain 0.5
+  midtones.gamma 0.9
+  midtones.gain 0.9
+  mix {{parent.StickyNote1.mix i}}
+  name ColorCorrect2
+  xpos 122
+  ypos -338
+ }
+ Glow {
+  tint {{parent.Glow6.tint.r i} {parent.Glow6.tint.g i} {parent.Glow6.tint.b i}}
+  tolerance {{parent.StickyNote1.tolerance+0.435 i}}
+  brightness {{parent.StickyNote1.brightness+2.88 i}}
+  saturation {{parent.StickyNote1.saturation_1+1 i}}
+  size {{parent.StickyNote1.glowsize+6 i}}
+  mix {{(parent.StickyNote1.mix==1)+parent.StickyNote1.mix/3 i}}
+  name Glow2
+  xpos 122
+  ypos -314
+  disable {{parent.StickyNote1.addskyglow+-1 i}}
+ }
+ CCrosstalk {
+  crossover {red {curve C 0 1.098529339 s1.919999957}
+    green {curve C 0 x0.9812498689 1 s1.549999952}
+    blue {curve C 0 1 s0.8600000143}
+    R->G {}
+    R->B {curve C 0 x0.4788461328 -0.03651952744 x1 0}
+    G->R {curve C 0 x0.4788461328 0.01740205288 x1 0}
+    G->B {}
+    B->R {}
+    B->G {}}
+  mix {{parent.StickyNote1.mix i}}
+  name CCrosstalk2
+  xpos 122
+  ypos -290
+ }
+push $N915d570
+ Saturation {
+  saturation {{(parent.StickyNote1.saturation+.5) i}}
+  mix {{parent.StickyNote1.mix i}}
+  name Saturation4
+  xpos -15
+  ypos -399
+ }
+ HueCorrect {
+  hue {sat {}
+    lum {curve 0.3799020052 0.3799020052 0.3799020052 0.3799020052 0.3799020052 0.3799020052 0.3799020052 s0}
+    red {curve 0.784313798 0.784313798 0.784313798 0.784313798 0.784313798 0.784313798 0.784313798 s0}
+    green {curve 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 s0}
+    blue {curve 1.512254953 1.512254953 1.512254953 1.512254953 1.512254953 1.512254953 1.512254953 s0}
+    r_sup {}
+    g_sup {}
+    b_sup {curve 0.4014706612 0.4014706612 0.4014706612 0.4014706612 0.4014706612 0.4014706612 0.4014706612 s0}
+    sat_thrsh {}}
+  mix {{parent.StickyNote1.mix i}}
+  name HueCorrect4
+  xpos -15
+  ypos -375
+ }
+ ColorCorrect {
+  contrast 0.78
+  gamma 0.63
+  gain 0.27
+  midtones.gamma 1.1
+  mix {{parent.StickyNote1.mix i}}
+  name ColorCorrect4
+  xpos -15
+  ypos -351
+ }
+ Glow {
+  tint {{parent.Glow6.tint.r i} {parent.Glow6.tint.g i} {parent.Glow6.tint.b i}}
+  tolerance {{parent.StickyNote1.tolerance+0.025 i}}
+  brightness {{parent.StickyNote1.brightness+2.09 i}}
+  saturation {{parent.StickyNote1.saturation_1+0.6 i}}
+  size {{parent.StickyNote1.glowsize+3 i}}
+  mix {{(parent.StickyNote1.mix==1)+parent.StickyNote1.mix/3 i}}
+  name Glow5
+  xpos -15
+  ypos -327
+  disable {{parent.StickyNote1.addskyglow+-1 i}}
+ }
+ CCrosstalk {
+  crossover {red {}
+    green {curve C 0 0.8585783839 s0.6800000072}
+    blue {curve C 0 0.78039217}
+    R->G {}
+    R->B {}
+    G->R {curve C 0 s0.150000006 0}
+    G->B {curve C 0 x0.5079326034 0.1360294819 x1 0}
+    B->R {}
+    B->G {}}
+  mix {{parent.StickyNote1.mix i}}
+  name CCrosstalk4
+  xpos -15
+  ypos -303
+ }
+push $N915d570
+ Saturation {
+  saturation {{(parent.StickyNote1.saturation+.5) i}}
+  mix {{parent.StickyNote1.mix i}}
+  name Saturation1
+  xpos -137
+  ypos -395
+ }
+ HueCorrect {
+  hue {sat {}
+    lum {curve 0.5362745523 0.5362745523 0.5362745523 0.5362745523 0.5362745523 0.5362745523 0.5362745523 s0}
+    red {curve 0.784313798 0.784313798 0.784313798 0.784313798 0.784313798 0.784313798 0.784313798 s0}
+    green {curve 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 1.188725471 s0}
+    blue {curve 1.512254953 1.512254953 1.512254953 1.512254953 1.512254953 1.512254953 1.512254953 s0}
+    r_sup {}
+    g_sup {}
+    b_sup {curve 0.9622548819 0.9622548819 0.9622548819 0.9622548819 0.9622548819 0.9622548819 0.9622548819 s0}
+    sat_thrsh {}}
+  mix {{parent.StickyNote1.mix i}}
+  name HueCorrect1
+  xpos -137
+  ypos -371
+ }
+ ColorCorrect {
+  contrast 0.78
+  gamma 0.63
+  gain 0.27
+  shadows.gamma 1.2
+  shadows.gain 1.1
+  midtones.gamma 1.1
+  mix {{parent.StickyNote1.mix i}}
+  name ColorCorrect1
+  xpos -137
+  ypos -347
+ }
+ Glow {
+  tint {{parent.Glow6.tint.r i} {parent.Glow6.tint.g i} {parent.Glow6.tint.b i}}
+  tolerance {{parent.StickyNote1.tolerance+0.025 i}}
+  brightness {{parent.StickyNote1.brightness+3.09 i}}
+  saturation {{parent.StickyNote1.saturation_1+0.6 i}}
+  size {{parent.StickyNote1.glowsize+5 i}}
+  mix {{(parent.StickyNote1.mix==1)+parent.StickyNote1.mix/3 i}}
+  name Glow1
+  xpos -137
+  ypos -323
+  disable {{parent.StickyNote1.addskyglow+-1 i}}
+ }
+ CCrosstalk {
+  crossover {red {curve C 0 x1.081730723 0.8936274052}
+    green {curve C 0 0.7911764383}
+    blue {curve C 0 1.014950991}
+    R->G {curve C 0.002514958382 0}
+    R->B {curve C -0.0001995563507 0}
+    G->R {curve C 0.005409121513 0}
+    G->B {}
+    B->R {curve C -0.006862640381 0}
+    B->G {curve C -0.001470565796 0}}
+  mix {{parent.StickyNote1.mix i}}
+  name CCrosstalk1
+  xpos -137
+  ypos -299
+ }
+push $N915d570
+ Switch {
+  inputs 7
+  which {{preset i}}
+  name Switch1
+  xpos 52
+  ypos -222
+ }
+ Histogram {
+  mix {{parent.StickyNote1.mix i}}
+  name Conrtast
+  xpos 52
+  ypos -182
+ }
+ Group {
+  name Group1
+  help "Adds synthetic grain. Push \"presets\" to get predefined types of grain, these are the correct size for 2K scans.\n\nYou can also adjust the sliders to match a sample piece of grain. Find a sample with a rather constant background, blur it to remove the grain, and use as input to this. View with a wipe in the viewer so you can make a match. It helps to view and match each of the red, green, blue separately."
+  label "Kodak FX214"
+  note_font Verdana
+  xpos 52
+  ypos -141
+  disable {{parent.StickyNote1.addgrain+-1 i}}
+  mapsize {0.15 0.15}
+  addUserKnob {20 "" l User}
+  addUserKnob {3 seed t "Change this value to make different instances of this operator produce different noise"}
+  seed 134
+  addUserKnob {35 presets l "" -STARTLINE M {"presets/Kodak 5248" "knobs this \{red_size 3.30 green_size 2.90 blue_size 2.5 red_i 0.60 green_i 0.60 blue_i 0.60 red_m 0.42 green_m 0.46 blue_m 0.85 black 0.00 label \{Kodak 5248\}\}" "presets/Kodak 5279" "knobs this \{red_size 2.70 green_size 2.60 blue_size 2.40 red_i 1.00 green_i 0.76 blue_i 0.65 red_m 0.37 green_m 0.60 blue_m 1.65 black 0.00 label \{Kodak 5279\}\}" "presets/Kodak FX214" "knobs this \{red_size 1.87 green_size 2.60 blue_size 2.44 red_i 1 green_i 0.76 blue_i 0.79 red_m 0.41 green_m 0.60 blue_m 1.80 black 0.00 label \{Kodak FX214\}\}" "presets/Kodak GT5274" "knobs this \{red_size 0.04 green_size 0.10 blue_size 0.90 red_i 0.90 green_i 0.76 blue_i 0.81 red_m 0.49 green_m 0.50 blue_m 1.55 black 0.00 label \{Kodak GT5274\}\}" "presets/Kodak 5217" "knobs this \{red_size 0.23 green_size 1.20 blue_size 1.40 red_i 0.60 green_i 0.86 blue_i 0.60 red_m 0.48 green_m 0.42 blue_m 0.87 black 0.00 label \{Kodak 5217\}\}" "presets/Kodak 5218" "knobs this \{red_size 0.10 green_size 1.60 blue_size 1.91 red_i 0.60 green_i 0.86 blue_i 0.73 red_m 0.38 green_m 0.17 blue_m 0.87 black 0.00 label \{Kodak 5218\}\}" presets/other "knobs this \{label other\}"}}
+  addUserKnob {26 "" l "@b;Size"}
+  addUserKnob {14 red_size l red R 0 100}
+  red_size 1
+  addUserKnob {14 green_size l green R 0 100}
+  green_size {{red_size i}}
+  addUserKnob {14 blue_size l blue R 0 100}
+  blue_size {{red_size i}}
+  addUserKnob {26 "" l "@b;Irregularity"}
+  addUserKnob {7 red_i l red}
+  red_i 1
+  addUserKnob {7 green_i l green}
+  green_i 0.76
+  addUserKnob {7 blue_i l blue}
+  blue_i 0.79
+  addUserKnob {26 "" l "@b;Intensity"}
+  addUserKnob {7 red_m l red t "Amount of grain to add to a white pixel"}
+  red_m 0.41
+  addUserKnob {7 green_m l green}
+  green_m 0.6
+  addUserKnob {7 blue_m l blue}
+  blue_m 1.8
+  addUserKnob {18 black t "Amount of grain to add everywhere"}
+  black {0 0 0}
+  addUserKnob {18 minimum t "Minimum black level" R 0 0.01}
+  minimum {0 0 0}
+  addUserKnob {26 "" l "@b;Mask"}
+  addUserKnob {6 maskgrain l "Apply only through alpha" -STARTLINE}
+  addUserKnob {41 maskinvert l "Invert alpha" -STARTLINE T Copy1.invert_mask}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos 0
+  }
+set N9418760 [stack 0]
+  Noise {
+   output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   cliptype none
+   replace true
+   size {{parent.red_size.w} {parent.red_size.h}}
+   zoffset {{frame+seed+red_i/2}}
+   octaves 2
+   gamma 1
+   xrotate {{red_i*45}}
+   yrotate {{red_i*45}}
+   name red
+   xpos 220
+  }
+  Noise {
+   output {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+   cliptype none
+   replace true
+   size {{parent.green_size.w} {parent.green_size.h}}
+   zoffset {{frame+2*seed+green_i/2}}
+   octaves 2
+   gamma 1
+   xrotate {{green_i*45}}
+   yrotate {{green_i*45}}
+   name green
+   xpos 220
+   ypos 43
+  }
+  Noise {
+   output {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+   cliptype none
+   replace true
+   size {{parent.blue_size.w} {parent.blue_size.h}}
+   zoffset {{frame+3*seed+blue_i/2}}
+   octaves 2
+   gamma 1
+   xrotate {{blue_i*45}}
+   yrotate {{blue_i*45}}
+   name blue
+   xpos 220
+   ypos 86
+  }
+push $N9418760
+  MergeExpression {
+   inputs 2
+   expr0 max(minimum.r,r+(2*Ar-1)*(r*red_m+black.r))
+   expr1 max(minimum.g,g+(2*Ag-1)*(g*green_m+black.g))
+   expr2 max(minimum.b,b+(2*Ab-1)*(b*blue_m+black.b))
+   name MergeExpression1
+   xpos 220
+   ypos 168
+  }
+set N9419220 [stack 0]
+push $N9418760
+  Copy {
+   inputs 2
+   channels rgb
+   maskChannelInput rgba.alpha
+   name Copy1
+   xpos 0
+   ypos 154
+  }
+push $N9419220
+  Switch {
+   inputs 2
+   which {{maskgrain}}
+   name Switch1
+   xpos 0
+   ypos 241
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 286
+  }
+ end_group
+ Clamp {
+  name Clamp1
+  xpos 52
+  ypos -105
+  disable {{parent.clamp+-1 i}}
+ }
+ Output {
+  name Output1
+  xpos 52
+  ypos -64
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  tile_color 0x55ff7fff
+  label Controller
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 25
+  xpos -226
+  ypos -135
+  addUserKnob {20 control}
+  addUserKnob {7 saturation R -0.5 0.5}
+  addUserKnob {20 glow n 1}
+  addUserKnob {6 addskyglow +STARTLINE}
+  addskyglow true
+  addUserKnob {7 glowsize R -5 5}
+  addUserKnob {7 tolerance R -0.1 0.1}
+  addUserKnob {7 brightness R -2 2}
+  addUserKnob {7 saturation_1 l saturation R -0.5 0.5}
+  addUserKnob {20 endGroup n -1}
+  addUserKnob {20 grain n 1}
+  addUserKnob {6 addgrain +STARTLINE}
+  addUserKnob {20 endGroup_1 l endGroup n -1}
+  addUserKnob {26 ""}
+  addUserKnob {16 mix}
+  mix 1
+ }
+end_group

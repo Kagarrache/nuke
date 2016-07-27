@@ -1,0 +1,1408 @@
+#! C:/Program Files/Nuke7.0v4/Nuke7.0.exe -nx
+version 7.0 v4
+Gizmo {
+ tile_color 0x421010ff
+ addUserKnob {20 User l Instagram}
+ addUserKnob {4 filter l Filter M {Normal Amaro Mayfair Rise Hudson Valencia "X-Pro II" Sierra Willow Lo-Fi Earlybird Sutro Toaster Brannan Inkwell Walden Hefe Nashville 1977 Kelvin}}
+ addUserKnob {6 clarity l Clarity -STARTLINE}
+ addUserKnob {6 sqaready l Squaready -STARTLINE}
+ sqaready true
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Instagram for Nuke v1.0"}
+ addUserKnob {22 link l DerekVFX T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0xaaaaaa00
+  label Normal
+  note_font_size 42
+  xpos -896
+  ypos 124
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode17
+  tile_color 0xaaaaaa00
+  label Hefe
+  note_font_size 42
+  xpos 6195
+  ypos 133
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0xaaaaaa00
+  label Amaro
+  note_font_size 42
+  xpos -461
+  ypos 124
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0xaaaaaa00
+  label "Mayfair Temp"
+  note_font_size 42
+  xpos -22
+  ypos 124
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode19
+  tile_color 0xaaaaaa00
+  label Rise
+  note_font_size 42
+  xpos 418
+  ypos 125
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0xaaaaaa00
+  label "Hudson Temp"
+  note_font_size 42
+  xpos 863
+  ypos 125
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode16
+  tile_color 0xaaaaaa00
+  label Valencia
+  note_font_size 42
+  xpos 1314
+  ypos 125
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0xaaaaaa00
+  label "X-Pro II"
+  note_font_size 42
+  xpos 1766
+  ypos 125
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0xaaaaaa00
+  label Sierra
+  note_font_size 42
+  xpos 2215
+  ypos 124
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0xaaaaaa00
+  label "Willow Temp"
+  note_font_size 42
+  xpos 2659
+  ypos 126
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0xaaaaaa00
+  label Earlybird
+  note_font_size 42
+  xpos 3544
+  ypos 127
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0xaaaaaa00
+  label Toaster
+  note_font_size 42
+  xpos 4424
+  ypos 130
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode14
+  tile_color 0xaaaaaa00
+  label "Brannan Temp"
+  note_font_size 42
+  xpos 4867
+  ypos 131
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode15
+  tile_color 0xaaaaaa00
+  label Inkwell
+  note_font_size 42
+  xpos 5311
+  ypos 132
+  bdwidth 419
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode20
+  tile_color 0xaaaaaa00
+  label Walden
+  note_font_size 42
+  xpos 5754
+  ypos 133
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode18
+  tile_color 0xaaaaaa00
+  label Nashville
+  note_font_size 42
+  xpos 6643
+  ypos 134
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0xaaaaaa00
+  label 1977
+  note_font_size 42
+  xpos 7087
+  ypos 135
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0xaaaaaa00
+  label Kelvin
+  note_font_size 42
+  xpos 7526
+  ypos 136
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0xaaaaaa00
+  label "Sutro Temp"
+  note_font_size 42
+  xpos 3984
+  ypos 127
+  bdwidth 420
+  bdheight 676
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode13
+  tile_color 0xaaaaaa00
+  label Lo-Fi
+  note_font_size 42
+  xpos 3101
+  ypos 126
+  bdwidth 420
+  bdheight 676
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -800
+  ypos -1808
+ }
+set N1932edb0 [stack 0]
+ Reformat {
+  type "to box"
+  box_width {{input.width>input.height?input.height:input.width}}
+  box_height {{input.width>input.height?input.height:input.width}}
+  box_fixed true
+  resize height
+  name Reformat1
+  xpos -680
+  ypos -1723
+ }
+push $N1932edb0
+ Reformat {
+  type "to box"
+  box_width {{input.width>input.height?input.height:input.width}}
+  box_height {{input.width>input.height?input.height:input.width}}
+  box_fixed true
+  name Reformat2
+  xpos -586
+  ypos -1722
+ }
+ Switch {
+  inputs 2
+  which {{(Input1.width/Input1.height)>1?1:0 x6 1}}
+  name Switch2
+  xpos -680
+  ypos -1638
+ }
+push $N1932edb0
+ Switch {
+  inputs 2
+  which {{parent.sqaready x6 0}}
+  name squareadySwitch
+  xpos -800
+  ypos -1576
+ }
+ Dot {
+  name Dot1
+  xpos -766
+  ypos -1511
+ }
+set N1957e3c0 [stack 0]
+ Dot {
+  name Dot62
+  xpos 7656
+  ypos 167
+ }
+ ColorLookup {
+  lut {master {curve L 0 1}
+    red {curve L 0 x0.001245144289 0.001564018661 x0.01704470441 0.02965698391 R x0.0355557166 0.07642753422 x0.05641395599 0.1462562084 x0.126920417 0.4110940397 x0.1971628517 0.5670009851 x0.3351559937 0.7257856131 L l x0.991102159 0.9473065734}
+    green {curve L 0 x0.001396224136 0.001487282338 x0.01308258064 0.01453876775 R x0.05349435285 0.0607652925 x0.06656792015 0.07975328714 x0.08178373426 0.09706483036 x0.09347835183 0.1179114357 x0.1459353864 0.2021412104 x0.4446127117 0.645919919 L x0.9977868795 0.9999998808}
+    blue {curve L 0 x0.000339950202 0 x0.002957038814 0 R x0.02833040617 0 x0.02892628871 0 x0.05427351594 0 x0.08260479569 0.0001165069843 x0.1368312389 0.01724469848 x0.453189671 0.5875237584 x0.9528363943 0.9940827489 L x1 1}
+    alpha {}}
+  name ColorLookup3
+  xpos 7622
+  ypos 287
+ }
+ Dot {
+  name Dot63
+  xpos 7656
+  ypos 783
+ }
+push $N1957e3c0
+ Dot {
+  name Dot60
+  xpos 7217
+  ypos 166
+ }
+ Dot {
+  name Dot20
+  xpos 7217
+  ypos 274
+ }
+set N1957f860 [stack 0]
+ Keyer {
+  invert true
+  operation "luminance key"
+  range {0.01278376809 0.05578141966 1 1}
+  name Keyer1
+  xpos 7111
+  ypos 381
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.0822827071 0.04091518745 0.05126946792 0}
+  name Constant1
+  xpos 7352
+  ypos 229
+ }
+ Transform {
+  center {960 540}
+  black_outside false
+  name Transform1
+  xpos 7352
+  ypos 301
+ }
+push $N1957f860
+ Merge2 {
+  inputs 2
+  operation copy
+  name Merge2
+  xpos 7352
+  ypos 354
+ }
+ Grade {
+  name Grade1
+  xpos 7352
+  ypos 390
+ }
+push $N1957f860
+ ColorLookup {
+  lut {master {}
+    red {curve 0.08228267729 x0.001272736466 0.0822827071 x0.1101092547 0.2885265052 x0.1794521958 0.4208202362 x0.3351559937 0.6427221894 x0.7529420853 0.7529420853 x0.991102159 0.7529420853 x0.9999999404 0.7529420853}
+    green {curve 0.04091518745 x0.001351417857 0.04091518745 x0.1340645552 0.187427938 x0.4446127117 0.5103266835 x0.9822503328 0.9822502732}
+    blue {curve 0.05126946792 x0.0002890733304 0.05126945302 x0.0003035269619 0.05126946792 x0.05126944557 0.05126945302 x0.1264119744 0.2177994251 x0.453189671 0.6345717907 x0.991102159 0.6583747864 x0.9999999404 0.6583747864}
+    alpha {}}
+  name ColorLookup2
+  xpos 7183
+  ypos 347
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  bbox B
+  name Merge1
+  xpos 7183
+  ypos 459
+ }
+ ColorCorrect {
+  saturation 0.78
+  name ColorCorrect2
+  xpos 7183
+  ypos 483
+ }
+ Dot {
+  name Dot61
+  xpos 7217
+  ypos 782
+ }
+push $N1957e3c0
+ Dot {
+  name Dot58
+  xpos 6773
+  ypos 165
+ }
+ ColorLookup {
+  lut {master {}
+    red {curve L 0 x0.001610873733 0.0006113899872 x0.008303988725 0 x0.01882481948 0.004787814803 x0.07688806951 0.05795245618 x0.1117073596 0.1404727995 x0.1653318554 0.2460907251 x0.3349418342 0.5067642331 x0.991102159 0.9911020994 x1 1}
+    green {curve L 0 x0.001380325179 0.0005506846355 x0.01649673656 0.01763574407 x0.06000043824 0.1003759876 x0.1226997748 0.1807259321 x0.2313255817 0.3043287694 x0.4507088959 0.520027101 x0.9999998808 0.7991027236 x0.9999999404 0.7991027236 x1 1}
+    blue {curve L 0.05286062509 x0.0003035269328 0.05448025838 x0.0003396611719 0.05404391885 x0.01111432817 0.07663334906 x0.02616693079 0.1084072143 x0.04509580508 0.1306544244 x0.1143083945 0.1982718706 x0.4555087984 0.4111942947 x0.991102159 0.6172064543 x0.9999999404 0.6172064543 x1 1}
+    alpha {}}
+  name ColorLookup4
+  xpos 6739
+  ypos 334
+ }
+ Invert {
+  name Invert1
+  xpos 6739
+  ypos 358
+ }
+ Toe2 {
+  lift 0.175
+  name Toe1
+  xpos 6739
+  ypos 394
+ }
+ Invert {
+  name Invert2
+  xpos 6739
+  ypos 422
+ }
+ ColorCorrect {
+  highlights.gain {1.220000029 0.9700000286 0.7200000286 0.9700000286}
+  name ColorCorrect3
+  xpos 6739
+  ypos 458
+ }
+ Dot {
+  name Dot59
+  xpos 6773
+  ypos 781
+ }
+push $N1957e3c0
+ Dot {
+  name Dot56
+  xpos 6325
+  ypos 164
+ }
+ ColorLookup {
+  lut {master {}
+    red {curve C 0 x0.001319151022 0.0008274723659 x0.05595121533 0.04587481171 x0.168216452 0.2222158611 x0.3255009353 0.4889140129 x1 1}
+    green {curve C 0 x0.001430912875 0.0005745332455 x0.08076506853 0.03820704669 x0.123360306 0.09168057144 x0.4425853491 0.5368775725 x1 1}
+    blue {curve C 0 x0.0004509543942 0.0001228561596 x0.02778989077 0.005612636451 x0.1155240834 0.0493946746 x0.4445521832 0.4526859522 x1 1}
+    alpha {}}
+  name ColorLookup5
+  xpos 6291
+  ypos 357
+ }
+set N19642c20 [stack 0]
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  softness 39.5
+  name Crop6
+  xpos 6420
+  ypos 396
+ }
+push $N19642c20
+ Merge2 {
+  inputs 2
+  operation min
+  mix 0.37
+  name Merge3
+  xpos 6291
+  ypos 451
+ }
+ Dot {
+  name Dot57
+  xpos 6325
+  ypos 780
+ }
+push $N1957e3c0
+ Dot {
+  name Dot23
+  xpos 5884
+  ypos 164
+ }
+ Dot {
+  name Dot25
+  xpos 5884
+  ypos 299
+ }
+set N19643d50 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial2
+  xpos 5761
+  ypos 345
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.18
+  gamma 1.66
+  name Grade2
+  xpos 5761
+  ypos 369
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur1
+  xpos 5761
+  ypos 393
+ }
+push $N19643d50
+ ColorLookup {
+  lut {master {curve L 0 1}
+    red {curve 0 x0.007528336253 0.009011399001 x0.04693435878 0.07497640699 x0.1391445398 0.3062168658 x0.1841577291 0.4146635234 x0.1896868795 0.4273652732 x0.3396336734 0.6718135476 x1 1}
+    green {curve 0 x0.01021011267 0.04871699214 x0.03438871354 0.1133777127 x0.09563115239 0.2559321225 x0.1009331122 0.2644720972 x0.1947036833 0.4328887165 x0.4452521801 0.6964127421 x1 1}
+    blue {curve 0 x0.01122131012 0.1443156451 x0.01682277955 0.1632249355 x0.09026819468 0.2917920053 x0.1112471595 0.3192426264 x0.1600957513 0.3701149821 x0.434338659 0.551568985 x1 1}
+    alpha {}}
+  name ColorLookup6
+  xpos 5976
+  ypos 409
+ }
+push $N19643d50
+ ColorLookup {
+  lut {master {}
+    red {curve 0.001821162063 x0.005260533653 0.005016443785 x0.02149316669 0.01511795912 x0.09132869542 0.08332182467 x0.2200582027 0.3743368089 x0.2555233538 0.4290702045 x0.3876253664 0.5968589783 x0.991102159 0.9646859765 x0.9999998808 0.9646862149}
+    green {curve 0.009721217677 x0.004484101664 0.01881169155 x0.03405052423 0.05905316025 x0.1072194874 0.1417192668 x0.2387099713 0.369428277 x0.2854438126 0.444817692 x0.5421110392 0.6531062722 x0.9999998808 0.8879230618 x0.9999999404 0.8879231811}
+    blue {curve 0.04231141508 x0.002278787317 0.05823912844 x0.01933684945 0.06881666183 x0.01942762174 0.08988953382 x0.02620117366 0.08245084435 x0.2514685988 0.3155350387 x0.4198268354 0.3919124901 x0.9999998808 0.6583747864 x0.9999999404 0.6583747864}
+    alpha {}}
+  name ColorLookup1
+  xpos 5850
+  ypos 409
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge4
+  xpos 5850
+  ypos 492
+ }
+ Dot {
+  name Dot24
+  xpos 5884
+  ypos 780
+ }
+push $N1957e3c0
+ Dot {
+  name Dot53
+  xpos 5441
+  ypos 163
+ }
+ Colorspace {
+  colorspace_out CIE-LCH
+  name Colorspace1
+  xpos 5407
+  ypos 215
+ }
+ Shuffle {
+  green red
+  blue red
+  name Shuffle1
+  xpos 5407
+  ypos 243
+ }
+ ColorLookup {
+  lut {master {}
+    red {curve L 0 x0.01103717554 0.0011318326 x0.2286812365 0.0464614071 x0.2419284731 0.05276046321 x0.3530216813 0.1396477669 x0.3998987377 0.2000860274 x0.4082232118 0.2191990614 x0.535367012 0.3716783524 x0.9547699094 0.9622012377 x0.9867556095 0.9861983657 x1 1}
+    green {curve L 0 x0.2286812365 0.0464614071 x0.2419284731 0.05276046321 x0.3530216813 0.1396477669 x0.3998987377 0.2000860274 x0.4082232118 0.2191990614 x0.535367012 0.3716783524 x0.9547699094 0.9622012377 x0.9867556095 0.9861983657 x1 1}
+    blue {curve L 0 x0.2286812365 0.0464614071 x0.2419284731 0.05276046321 x0.3530216813 0.1396477669 x0.3998987377 0.2000860274 x0.4082232118 0.2191990614 x0.535367012 0.3716783524 x0.9547699094 0.9622012377 x0.9867556095 0.9861983657 x1 1}
+    alpha {}}
+  name ColorLookup8
+  xpos 5407
+  ypos 267
+ }
+ Dot {
+  name Dot52
+  xpos 5441
+  ypos 779
+ }
+push $N1957e3c0
+ Dot {
+  name Dot9
+  xpos 4997
+  ypos 162
+ }
+ Dot {
+  name Dot36
+  xpos 4997
+  ypos 388
+ }
+set N22fa5aa0 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial11
+  xpos 4874
+  ypos 447
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.43
+  gamma 0.575
+  white_clamp true
+  name Grade17
+  xpos 4874
+  ypos 471
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur10
+  xpos 4874
+  ypos 495
+ }
+push $N22fa5aa0
+ Grade {
+  blackpoint {0.04691364244 0.06236333027 0.04359382391 0}
+  whitepoint {0.2300608158 0.2931077778 0.2617831826 0}
+  black {0.0450347662 0.05821919069 0.04381075501 0}
+  white {0.309107542 0.3639911115 0.2335814685 0}
+  multiply {0.5 0.6800000072 0.8999999762 0.6100000143}
+  add {0.01807236485 0.0004932313459 0.01474589668 0}
+  gamma {0.8799999356 0.7600000501 0.8799999356 0.8399999738}
+  name Grade16
+  xpos 5060
+  ypos 488
+ }
+push $N22fa5aa0
+ ColorLookup {
+  lut {master {}
+    red {curve L 0 x0.01105865836 0.02761776745 x0.05335819349 0.05335819349 x0.09936876595 0.1161603108 x0.2638899088 0.474825561 x0.3209753931 0.6077638865 x0.3425725102 0.7020326257 x1 1}
+    green {curve L 0 x0.01334748138 0.006129979622 x0.03072642908 0.03072642908 x0.08575619757 0.08361170441 x0.1903221458 0.3823434412 x0.2622286677 0.5100236535 x0.45350191 0.720207274 x1 1}
+    blue {curve L 0 x0.01773735881 0.03151876852 x0.07189454138 0.08403788507 x0.1548000872 0.268248558 x0.1932826936 0.3418889046 x0.4612991214 0.5279822946 x1 1}
+    alpha {}}
+  name ColorLookup22
+  xpos 4963
+  ypos 463
+ }
+ Saturation {
+  saturation 0.76
+  name Saturation1
+  xpos 4963
+  ypos 487
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  invert_mask true
+  name Merge11
+  xpos 4963
+  ypos 564
+ }
+ Dot {
+  name Dot33
+  xpos 4997
+  ypos 778
+ }
+push $N1957e3c0
+ Dot {
+  name Dot14
+  xpos 4554
+  ypos 161
+ }
+ Dot {
+  name Dot31
+  xpos 4554
+  ypos 288
+ }
+set N19712e90 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial3
+  xpos 4444
+  ypos 347
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.43
+  gamma 0.575
+  white_clamp true
+  name Grade3
+  xpos 4444
+  ypos 371
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur2
+  xpos 4444
+  ypos 395
+ }
+push $N19712e90
+ ColorLookup {
+  lut {master {curve 0 1}
+    red {curve 0 x0.01105865836 0.3737465143 x0.1661180556 0.5712460279 x0.1984104812 0.6206883192 x0.3436955512 0.7243406177 x0.9989649653 0.9903651476 x1 1}
+    green {curve 0 x0.01334748138 0.08272954822 x0.1161485016 0.3438651264 x0.2479726821 0.5146712065 x0.4510731399 0.693410933 x0.9989685416 0.9816395044 x1 1}
+    blue {curve 0 x0.01773735881 0.04518620297 x0.1056887433 0.175327003 x0.2569254041 0.3525010943 x0.4393291473 0.4705628455 x0.965996027 0.6737838387 x1 1}
+    alpha {}}
+  name ColorLookup9
+  xpos 4657
+  ypos 447
+ }
+push $N19712e90
+ ColorLookup {
+  lut {master {}
+    red {curve 0.02121900953 x0.03646194562 0.07313444465 x0.05606743321 0.09705040604 x0.1069967076 0.1134795249 x0.223999396 0.3369504213 x0.9994066358 0.9734451771 x0.9999998808 0.9734449983 x0.9999999404 0.9734449983 x1.000593185 1}
+    green {curve 0.0003035269328 x0.01704321429 0.006170858163 x0.07245635241 0.02760771662 x0.1092072651 0.04691617191 x0.1828167588 0.104327552 x0.9994066358 0.9646861553 x0.9999998808 0.9646863341 x0.9999999404 0.9646863341 x1.000593185 1}
+    blue {curve 0.04518621042 x0.01502969861 0.04518619552 x0.02093892917 0.04518619925 x0.05470659956 0.05596066266 x0.1301064193 0.09227008373 x0.9911020994 0.6724430323 x1 1}
+    alpha {curve 0 1}}
+  name ColorLookup10
+  xpos 4520
+  ypos 434
+ }
+ ColorCorrect {
+  saturation 1.03
+  gain {1.033333302 0.9333333969 1.033333302 1}
+  name ColorCorrect4
+  xpos 4520
+  ypos 458
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge5
+  xpos 4520
+  ypos 573
+ }
+ Dot {
+  name Dot15
+  xpos 4554
+  ypos 777
+ }
+push $N1957e3c0
+ Dot {
+  name Dot16
+  xpos 4114
+  ypos 158
+ }
+ Dot {
+  name Dot42
+  xpos 4114
+  ypos 276
+ }
+set N2481edb0 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial4
+  xpos 3994
+  ypos 374
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.43
+  gamma 0.575
+  white_clamp true
+  name Grade4
+  xpos 3994
+  ypos 398
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur3
+  xpos 3994
+  ypos 422
+ }
+push $N2481edb0
+ ColorLookup {
+  lut {master {}
+    red {curve 0 x0.008077725768 0.008648497984 x0.1176364869 0.1119328514 x0.1411493421 0.1397810578 x0.3553382456 0.4039157331 x0.771661222 0.6908473372 x1 1}
+    green {curve 0 x0.01188009698 0.007070076652 x0.09063512087 0.06567376852 x0.1104166955 0.0719679296 x0.1456096023 0.0958558917 x0.2795328796 0.2560134828 x0.4423862994 0.3533186316 x0.8002565503 0.5726946592 x1 1}
+    blue {curve 0 x0.01933428459 0.02055344917 x0.07605758309 0.07951565832 x0.09504637122 0.08906009048 x0.1030654013 0.1001709774 x0.1158351824 0.1073488966 x0.2200695872 0.1876832396 x0.4416895509 0.2742560506 x0.4863515198 0.3125665784 x1 1}
+    alpha {}}
+  name ColorLookup11
+  xpos 4207
+  ypos 422
+ }
+push $N2481edb0
+ ColorLookup {
+  lut {master {curve 0 L 1}
+    red {curve 0.0007512293523 x0.06683255732 0.01791235991 x0.3039507568 0.1856909096 L x0.9999998808 0.7707450986 x0.9999999404 0.723056972 1}
+    green {curve 0 x0.07494195551 0.01379957423 x0.2291749567 0.06611312181 x0.3029212356 0.1307784915 L x0.9999998808 0.6772194505 x0.9999999404 0.4800727665 1}
+    blue {curve 0 x0.005083449185 0.006247398909 x0.04266577587 0.01245763153 x0.126379177 0.03586737812 x0.2640884519 0.1126332283 x0.9995954633 0.370647192 L x0.9999998808 0.5744864941 x1 1}
+    alpha {}}
+  name ColorLookup7
+  xpos 4080
+  ypos 423
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge6
+  xpos 4080
+  ypos 517
+ }
+ Dot {
+  name Dot17
+  xpos 4114
+  ypos 774
+ }
+push $N1957e3c0
+ Dot {
+  name Dot11
+  xpos 3674
+  ypos 158
+ }
+ Dot {
+  name Dot10
+  xpos 3674
+  ypos 325
+ }
+set N5deabcd0 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial7
+  xpos 3558
+  ypos 361
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.26
+  gamma 2.08
+  white_clamp true
+  name Grade7
+  xpos 3558
+  ypos 385
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur6
+  xpos 3558
+  ypos 409
+ }
+push $N5deabcd0
+ ColorLookup {
+  lut {master {}
+    red {curve 0 x0.007528336253 0.03970237821 x0.07203871012 0.1831395328 x0.1512053162 0.333368063 x0.374867171 0.5912086368 x1 1}
+    green {curve 0 x0.01021011267 0.01505195722 x0.05280002952 0.09145618975 x0.1074599475 0.1912953556 x0.2795577645 0.463350147 x0.4336544275 0.569956243 x1 1}
+    blue {curve 0 x0.01682277955 0.02755014598 x0.01731643826 0.04095476866 x0.09817588329 0.1271444559 x0.2227460295 0.2625841796 x0.4279139042 0.4420000613 x1 1}
+    alpha {}}
+  name ColorLookup16
+  xpos 3742
+  ypos 392
+ }
+push $N5deabcd0
+ ColorLookup {
+  lut {master {}
+    red {curve L x0.05269050971 0.01475758664 x0.2109905779 0.1207965389 x0.9999238253 0.5198019743}
+    green {curve L x0.01918359287 0.0009232279845 x0.1610714346 0.04259850457 x0.9999998808 0.4541689754}
+    blue {curve L x0.01281384658 0.006319065578 x0.1163977385 0.02070655674 x0.9999999404 0.3068795204}
+    alpha {}}
+  name ColorLookup15
+  xpos 3640
+  ypos 400
+ }
+ Toe2 {
+  lift {0.02192722633 0.003306729719 0.008714321069 0}
+  name Toe2
+  xpos 3640
+  ypos 430
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge9
+  xpos 3640
+  ypos 510
+ }
+ Dot {
+  name Dot12
+  xpos 3674
+  ypos 774
+ }
+push $N1957e3c0
+ Dot {
+  name Dot4
+  xpos 3231
+  ypos 157
+ }
+ Dot {
+  name Dot13
+  xpos 3231
+  ypos 340
+ }
+set N22fa1950 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial10
+  xpos 3104
+  ypos 443
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.26
+  gamma 2.08
+  white_clamp true
+  name Grade15
+  xpos 3104
+  ypos 467
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur9
+  xpos 3104
+  ypos 491
+ }
+push $N22fa1950
+ ColorLookup {
+  lut {master {}
+    red {curve 0 x0.008077725768 0.00248579029 x0.09766244888 0.07634245604 x0.1522576064 0.1644034833 x0.3165825605 0.4673846662 x0.337035656 0.499327749 x0.9558172226 0.9750127792 x1 1}
+    green {curve 0 x0.01188009698 0.003832751187 x0.08576676995 0.06093532965 x0.1239441782 0.1142013818 x0.2606811225 0.3771691024 x0.4502005875 0.6465206146 x0.9883668423 0.9888929725 x1 1}
+    blue {curve 0 x0.01933428459 0.006870499812 x0.07170589268 0.04423841089 x0.1186704859 0.1037481427 x0.1984942257 0.2542695105 x0.4621294439 0.6419314742 x0.825586319 0.8854576945 x1 1}
+    alpha {}}
+  name ColorLookup21
+  xpos 3197
+  ypos 452
+ }
+ Grade {
+  inputs 1+1
+  blackpoint {0.03275863454 0.04797394946 0.03597774729 0}
+  whitepoint {0.3285422027 0.4661439657 0.3835058212 0}
+  black {0.00873770006 0.0144913476 0.01140043233 0}
+  white {0.1118262187 0.2257096022 0.1569471657 0}
+  gamma 0.93
+  invert_mask true
+  name Grade14
+  xpos 3197
+  ypos 563
+ }
+ Dot {
+  name Dot34
+  xpos 3231
+  ypos 773
+ }
+push $N1957e3c0
+ Dot {
+  name Dot26
+  xpos 2789
+  ypos 157
+ }
+ Colorspace {
+  colorspace_out YPbPr
+  name Colorspace2
+  xpos 2755
+  ypos 408
+ }
+ Gamma {
+  value 0.62
+  name Gamma1
+  xpos 2755
+  ypos 432
+ }
+ Shuffle {
+  green red
+  blue red
+  name Shuffle2
+  xpos 2755
+  ypos 468
+ }
+ Grade {
+  whitepoint {0.3785837591 0.3785837591 0.3785837591 0}
+  white {0.5128318667 0.4756705761 0.4766629338 0}
+  name Grade13
+  xpos 2755
+  ypos 492
+ }
+ Dot {
+  name Dot27
+  xpos 2789
+  ypos 773
+ }
+push $N1957e3c0
+ Dot {
+  name Dot8
+  xpos 2345
+  ypos 155
+ }
+ Dot {
+  name Dot51
+  xpos 2345
+  ypos 259
+ }
+set N5e0f9b20 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial9
+  xpos 2220
+  ypos 326
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.26
+  gamma 0.88
+  white_clamp true
+  name Grade11
+  xpos 2220
+  ypos 350
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur8
+  xpos 2220
+  ypos 374
+ }
+push $N5e0f9b20
+ Grade {
+  blackpoint {0.001307609142 0.001525591942 0.0003685684642 0}
+  whitepoint {0.04523786902 0.05436912179 0.03454244137 0}
+  black {0.004520534072 0.005300136749 0.01162582729 0}
+  white {0.03563700244 0.04510720819 0.0469837077 0}
+  add {0 0 0.001000000047 0}
+  gamma 0.99
+  name Grade12
+  xpos 2409
+  ypos 383
+ }
+push $N5e0f9b20
+ ColorLookup {
+  lut {master {}
+    red {curve 0 x0.01105865836 0.0432635881 x0.03756033629 0.1150934696 x0.04599525407 0.1307678968 x0.09511122108 0.2500432134 x0.19289653 0.4067694247 x0.3143303096 0.503182888 x1 1}
+    green {curve 0 x0.008746184409 0.03382749856 x0.01334748138 0.04370473325 x0.02956791595 0.08259490877 x0.08016698062 0.188534528 x0.23792772 0.3788820803 x0.2648241818 0.4051406384 x0.4502005875 0.5054912567 x1 1}
+    blue {curve 0 x0.006742672063 0.03777411953 x0.01489067078 0.05904040858 x0.01773735881 0.06485991925 x0.06153291464 0.1560906619 x0.09597802907 0.1862695813 x0.1873377264 0.3034443557 x0.4621294439 0.4675916135 x1 1}
+    alpha {}}
+  name ColorLookup20
+  xpos 2311
+  ypos 386
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  invert_mask true
+  name Merge10
+  xpos 2311
+  ypos 478
+ }
+ Dot {
+  name Dot29
+  xpos 2345
+  ypos 771
+ }
+push $N1957e3c0
+ Dot {
+  name Dot7
+  xpos 1896
+  ypos 156
+ }
+ Dot {
+  name Dot50
+  xpos 1896
+  ypos 317
+ }
+set N5d7933e0 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial6
+  xpos 1781
+  ypos 379
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.26
+  gamma 0.88
+  white_clamp true
+  name Grade6
+  xpos 1781
+  ypos 403
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur5
+  xpos 1781
+  ypos 427
+ }
+push $N5d7933e0
+ ColorLookup {
+  lut {master {}
+    red {curve x0.01105865836 0.005077551119 x0.04249118268 0.0233159326 x0.1405189782 0.1261215657 x0.1576500237 0.1472754925 x0.170415163 0.1642152667 x0.3351559937 0.392200768 x0.3735734522 0.4448311627 x0.5645454526 0.6696742773 x1 1}
+    green {curve x0.01334748138 0.00589400949 x0.04160844162 0.02269420773 x0.1007013246 0.07869880646 x0.1164086387 0.09567603469 x0.1318217516 0.1144115925 x0.2760479152 0.3052743077 x0.4446127117 0.5436786413 x0.6228135228 0.7269154787 x1 1}
+    blue {curve x-0.0002371165901 0.009148597717 x0.01773735881 0.03989618644 x0.03269883618 0.05741499364 x0.09119668603 0.1152295545 x0.09469854087 0.1176887453 x0.1073555127 0.1291307807 x0.2270919681 0.2246386409 x0.3808845878 0.3369396627 x0.453189671 0.3953372836 x1 1}
+    alpha {}}
+  name ColorLookup18
+  xpos 1862
+  ypos 430
+ }
+ ColorLookup {
+  inputs 1+1
+  lut {master {}
+    red {curve x0.005077551585 0 x0.04096166044 2.731743189e-005 x0.2113563567 0.03777797148 x0.2893625796 0.1333375573 x0.9130189419 0.5403820276 x1 1}
+    green {curve x0.00589400949 0 x0.05556289479 0.0005372427986 x0.1472462416 0.02005501278 x0.2692335248 0.122999616 x0.9133130312 0.5461449027 x1 1}
+    blue {curve x0.009554215707 0.01161224488 x0.09360485524 0.01277221739 x0.1360054463 0.04482965544 x0.9131714702 0.3883834779 x1 1}
+    alpha {curve 0 1}}
+  invert_mask true
+  name ColorLookup19
+  xpos 1862
+  ypos 491
+ }
+ Dot {
+  name Dot30
+  xpos 1896
+  ypos 772
+ }
+push $N1957e3c0
+ Dot {
+  name Dot54
+  xpos 1444
+  ypos 156
+ }
+ ColorLookup {
+  lut {master {}
+    red {curve 0.006512090098 x0.007528336253 0.02572988719 x0.03870948404 0.08159936965 x0.110765405 0.2114635408 x0.3342054486 0.4885086119 x0.3802311122 0.5274609923 x0.9999998808 0.9911020994 x1 1}
+    green {curve 0 x0.01021011267 0.009334073402 x0.01348208822 0.0139719788 x0.04084090889 0.05279018357 x0.08755205572 0.1314842552 x0.2808368206 0.425806433 x0.336561203 0.4651829302 x0.445584327 0.6006935239 x1 1}
+    blue {curve 0.006512090098 x0.01157258265 0.02842320874 x0.01682277955 0.0347179994 x0.02502619475 0.0495002754 x0.06953147054 0.1139496118 x0.2249889672 0.2981272042 x0.2419820875 0.3014852107 x0.4467434287 0.4885193706 x0.9911020994 0.9911020994 x1 1}
+    alpha {}}
+  name ColorLookup17
+  xpos 1410
+  ypos 282
+ }
+ Dot {
+  name Dot55
+  xpos 1444
+  ypos 772
+ }
+push $N1957e3c0
+ Dot {
+  name Dot2
+  xpos 993
+  ypos 156
+ }
+ Dot {
+  name Dot28
+  xpos 993
+  ypos 459
+ }
+set N22fa5730 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial12
+  xpos 877
+  ypos 492
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.26
+  gamma 0.88
+  white_clamp true
+  name Grade19
+  xpos 877
+  ypos 516
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur11
+  xpos 877
+  ypos 540
+ }
+push $N22fa5730
+ ColorLookup {
+  lut {master {}
+    red {curve 0 x0.01105865836 0.03699531779 x0.03756033629 0.0752145499 x0.04291376844 0.0839882046 x0.1082163081 0.1796642691 x0.2866592705 0.4359016716 x0.3268000185 0.4644415379 x1 1}
+    green {curve 0 x0.008746184409 0.01360650361 x0.01334748138 0.02194369584 x0.02957234904 0.05225257948 x0.08998543769 0.1533868462 x0.2019606978 0.37473014 x0.4401103854 0.5908244848 x1 1}
+    blue {curve 0 x0.006742672063 0.01455369685 x0.01506482065 0.03822594881 x0.01773735881 0.04446409643 x0.07927826792 0.2116149217 x0.1620901376 0.4112787545 x0.4397312105 0.6952819824 x1 1}
+    alpha {}}
+  name ColorLookup23
+  xpos 959
+  ypos 540
+ }
+ Grade {
+  inputs 1+1
+  blackpoint {0.08701085299 0.1054486111 0.1176599562 0}
+  whitepoint {0.3693111539 0.4840321839 0.5435619354 0}
+  black {0.04187329486 0.03086794913 0.03015469573 0}
+  white {0.09616292268 0.1435405165 0.1705362946 0}
+  invert_mask true
+  name Grade18
+  xpos 959
+  ypos 601
+ }
+ Dot {
+  name Dot35
+  xpos 993
+  ypos 772
+ }
+push $N1957e3c0
+ Dot {
+  name Dot21
+  xpos 548
+  ypos 156
+ }
+ Dot {
+  name Dot43
+  xpos 548
+  ypos 328
+ }
+set N223c2290 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial5
+  xpos 429
+  ypos 373
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.1
+  gamma 0.575
+  white_clamp true
+  name Grade5
+  xpos 429
+  ypos 397
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur4
+  xpos 429
+  ypos 421
+ }
+push $N223c2290
+ ColorLookup {
+  lut {master {}
+    red {curve L 0 x0.01098926459 0.05031197146 x0.1454133987 0.4072174132 x0.2005668432 0.4765474796 x0.3351559937 0.5564440489 x1 1}
+    green {curve L 0 x0.01313986164 0.03982543573 x0.1041506752 0.2927089036 x0.2539828122 0.4884714186 x0.4446127117 0.6266486645 x1 1}
+    blue {curve L 0 x0.01947860233 0.06206929684 x0.09527178854 0.215884462 x0.2669917643 0.4120546579 x0.453189671 0.5275506973 x1 1}
+    alpha {}}
+  name ColorLookup14
+  xpos 614
+  ypos 383
+ }
+push $N223c2290
+ ColorLookup {
+  lut {master {curve l 0 0.8557213545}
+    red {curve 0 x0.001223488711 0.009700710885 x0.03677463531 0.06451525539 x0.1083167419 0.191147089 x0.3455649018 0.5584139228 L x0.999260366 0.9812744856 x1 1}
+    green {curve 0 x0.001332146232 0.009315937757 x0.04778523371 0.05029186606 x0.07992268354 0.08926747739 L x0.4593254924 0.6308537722 x0.9992591143 0.9822503328 x1 1}
+    blue {curve 0 x0.0002698017634 0.01490649488 x0.0365000926 0.04807278514 x0.04769527912 0.05452581495 x0.05799391493 0.0644357875 x0.1112838164 0.2424783707 L x0.433353126 0.5135540962 x0.9862997532 0.9295406342 x1 1}
+    alpha {}}
+  name ColorLookup13
+  xpos 514
+  ypos 381
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge7
+  xpos 514
+  ypos 501
+ }
+ Dot {
+  name Dot22
+  xpos 548
+  ypos 772
+ }
+push $N1957e3c0
+ Dot {
+  name Dot3
+  xpos 108
+  ypos 155
+ }
+ Grade {
+  blackpoint {0.007528336253 0.01021011267 0.01682277955 0}
+  whitepoint {0.3436955512 0.4510731399 0.4393291473 0}
+  black {0.02748137712 0.02500460297 0.03579739481 0}
+  white {0.4766278863 0.5761342049 0.5496397614 0}
+  name Grade10
+  xpos 74
+  ypos 324
+ }
+ Dot {
+  name Dot32
+  xpos 108
+  ypos 771
+ }
+push $N1957e3c0
+ Dot {
+  name Dot5
+  xpos -331
+  ypos 155
+ }
+ Dot {
+  name Dot49
+  xpos -331
+  ypos 238
+ }
+set N5e20c2c0 [stack 0]
+ Radial {
+  replace true
+  area {2 0 {input.width} {input.height}}
+  name Radial8
+  xpos -448
+  ypos 400
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.25
+  gamma 0.355
+  white_clamp true
+  name Grade9
+  xpos -448
+  ypos 424
+ }
+ Blur {
+  size {{input.width/6}}
+  name Blur7
+  xpos -448
+  ypos 448
+ }
+push $N5e20c2c0
+ ColorLookup {
+  lut {master {}
+    red {curve 0 x0.007528336253 0.03006090783 x0.04021815583 0.116013743 x0.1317304075 0.3638775945 x0.1453416049 0.3990640044 x0.2003511637 0.4566088915 x0.3336430788 0.5745747685 x0.7233346701 0.7626590133 x1 1}
+    green {curve 0 x0.01021011267 0.0177189298 x0.01208147686 0.02117745765 x0.09646837413 0.2870572805 x0.1133028343 0.3523001373 x0.1488482654 0.401609093 x0.2801344097 0.554464221 x0.4374876618 0.6828644872 x0.7546051741 0.8344573975 x1 1}
+    blue {curve 0 x0.007971224375 0.0405811891 x0.01682277955 0.07551467419 x0.08617220819 0.2885816395 x0.1068172976 0.3309399486 x0.2202944905 0.4360934198 x0.4148775041 0.4970820844 x1 1}
+    alpha {}}
+  name ColorLookup12
+  xpos -264
+  ypos 381
+ }
+push $N5e20c2c0
+ Grade {
+  blackpoint {0.04288841411 0.05885415524 0.04685191065 0}
+  whitepoint {0.5885281563 0.8021211624 0.6116024852 0}
+  black {0.04869746044 0.03741564229 0.06983904541 0}
+  white {0.6115990877 0.8289171457 0.5451991558 0}
+  multiply {1.159999967 0.9399999976 1.850000024 1}
+  add {0.01274134312 0.02548268624 0.01450143475 0}
+  gamma {1 0.8999999762 1 1}
+  name Grade8
+  xpos -365
+  ypos 376
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge8
+  xpos -365
+  ypos 607
+ }
+ Dot {
+  name Dot6
+  xpos -331
+  ypos 771
+ }
+push $N1957e3c0
+ Dot {
+  name Dot18
+  xpos -766
+  ypos 155
+ }
+ NoOp {
+  name NoOp2
+  xpos -800
+  ypos 418
+ }
+ Dot {
+  name Dot19
+  xpos -766
+  ypos 771
+ }
+ Switch {
+  inputs 20
+  which {{parent.filter}}
+  name Switch1
+  xpos -800
+  ypos 2839
+ }
+set N18fe3bc0 [stack 0]
+ Dot {
+  name Dot44
+  xpos -766
+  ypos 2948
+ }
+set N2497dcf0 [stack 0]
+push $N2497dcf0
+ Blur {
+  channels rgba
+  size {{parent.clarity*input.width/10}}
+  name Blur15
+  xpos -627
+  ypos 3002
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge43
+  xpos -627
+  ypos 3157
+ }
+push $N2497dcf0
+ Merge2 {
+  inputs 2
+  operation multiply
+  output {rgba.red rgba.green rgba.blue rgba.alpha}
+  name Merge44
+  xpos -800
+  ypos 3306
+ }
+ Output {
+  name Output1
+  xpos -800
+  ypos 3330
+ }
+ Radial {
+  inputs 0
+  replace true
+  area {0 0 {input.width} {input.height}}
+  name Radial1
+  xpos -385
+  ypos -1681
+ }
+ NoOp {
+  name NoOp1
+  xpos -385
+  ypos -1642
+  hide_input true
+ }
+push $N18fe3bc0
+ Viewer {
+  input_process false
+  translate {-0.7200000286 0.2910000086}
+  name Viewer1
+  xpos 8744
+  ypos 5405
+ }
+end_group

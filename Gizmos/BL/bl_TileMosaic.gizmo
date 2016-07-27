@@ -1,0 +1,139 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l TileMosaic}
+ addUserKnob {41 size T bl_Mosaic1.size}
+ addUserKnob {4 type M {Rectangle Radial}}
+ addUserKnob {7 smooth}
+ smooth 0.1
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 Angle T Emboss2.Angle}
+ addUserKnob {41 value T Multiply1.value}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 176
+  ypos 181
+ }
+set N2d491f00 [stack 0]
+ Dot {
+  name Dot3
+  xpos 320
+  ypos 185
+ }
+set N41ced730 [stack 0]
+ bl_Mosaic {
+  name bl_Mosaic1
+  xpos 286
+  ypos 306
+  size 30
+  filter Simon
+ }
+push $N41ced730
+ Dot {
+  name Dot4
+  xpos 435
+  ypos 185
+ }
+set N2d48f150 [stack 0]
+ Dot {
+  name Dot5
+  xpos 535
+  ypos 185
+ }
+add_layer {rgba rgba.beta}
+ Radial {
+  replace true
+  area {20 20 {"width -20" i} {height-20 i}}
+  softness {{parent.smooth i}}
+  name Radial1
+  xpos 501
+  ypos 230
+ }
+push $N2d48f150
+ Rectangle {
+  replace true
+  area {20 20 {width-20 i} {"height - 20" i}}
+  softness {{"parent.smooth * (width/2)" i}}
+  name Rectangle1
+  xpos 401
+  ypos 232
+ }
+ Switch {
+  inputs 2
+  which {{parent.type i}}
+  name Switch1
+  xpos 401
+  ypos 258
+ }
+ Crop {
+  box {0 0 {Input.width} {Input.height}}
+  name Crop1
+  selected true
+  xpos 401
+  ypos 284
+ }
+ Tile {
+  rows {{parent.bl_Mosaic1.size.h i}}
+  columns {{parent.bl_Mosaic1.size.w i}}
+  filter Impulse
+  name Tile1
+  xpos 401
+  ypos 310
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  xpos 286
+  ypos 385
+ }
+set N2d48d110 [stack 0]
+ Emboss {
+  channels rgba
+  name Emboss2
+  xpos 396
+  ypos 379
+ }
+ Expression {
+  expr0 "(r  - 0.5) * 2"
+  expr1 "(g  - 0.5) * 2"
+  expr2 "(b  - 0.5) * 2"
+  expr3 "(a  - 0.5) * 2"
+  name Expression3
+  xpos 396
+  ypos 417
+ }
+ Multiply {
+  channels rgba
+  name Multiply1
+  xpos 396
+  ypos 443
+ }
+push $N2d48d110
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge1
+  xpos 286
+  ypos 443
+ }
+push $N2d491f00
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix i}}
+  name Dissolve1
+  xpos 176
+  ypos 443
+ }
+ Output {
+  name Output
+  xpos 176
+  ypos 469
+ }
+end_group

@@ -1,0 +1,65 @@
+Gizmo {
+ inputs 0
+ help "COCO_CurveGen 1.1\ncreated by Nicolas Leu\n© Nicolas Leu - 2015\nwww.nicolasleu.com\nmail@nicolasleu.com"
+ knobChanged "\nn = nuke.thisNode()\n\nif n.knob('curvetype') == 'randomCurve':\n    n.knob('seed').setEnabled(False)\n    n.knob('floorswitch').setEnabled(False)\nelif n.knob('curvetype') == 'noiseCurve':\n    n.knob('seed').setEnabled(False)\n    n.knob('floorswitch').setEnabled(False)\nelse:\n    n.knob('seed').setEnabled(True)\n    n.knob('floorswitch').setEnabled(True)\n\n\n"
+ tile_color 0x5000ffff
+ addUserKnob {20 CocoCurveGen}
+ addUserKnob {41 curvetype l "curve type" T CurveGenerator.curvetype}
+ addUserKnob {26 curveModifiers l "curve modifiers"}
+ addUserKnob {41 waveLength T CurveGenerator.waveLength}
+ addUserKnob {41 offsetX T CurveGenerator.offsetX}
+ addUserKnob {41 offsetY T CurveGenerator.offsetY}
+ addUserKnob {41 maxVal l "max value" T CurveGenerator.maxVal}
+ addUserKnob {41 minVal l "min value" T CurveGenerator.minVal}
+ addUserKnob {26 rndCurveAttr l "random curve attributes"}
+ addUserKnob {41 floorswitch l "floor curves" T CurveGenerator.floorswitch}
+ addUserKnob {41 seed T CurveGenerator.seed}
+ addUserKnob {26 output}
+ addUserKnob {41 outputValue l "output value" T CurveGenerator.outputValue}
+}
+ NoOp {
+  inputs 0
+  name CurveGenerator
+  knobChanged "\nn = nuke.thisNode()\n\nif n.knob('curvetype').value() == 'randomCurve':\n    n.knob('seed').setEnabled(True)\n    n.knob('floorswitch').setEnabled(True)\n\nelif n.knob('curvetype').value() == 'noiseCurve':\n    n.knob('seed').setEnabled(True)\n    n.knob('floorswitch').setEnabled(True)\n\nelse:\n    n.knob('seed').setEnabled(False)\n    n.knob('floorswitch').setEnabled(False)\n\n\n\n"
+  selected true
+  xpos 657
+  ypos 37
+  addUserKnob {20 Values}
+  addUserKnob {52 knobChangedInstructions l knC T "nuke.thisNode().knob('knobChanged').setValue('''\nn = nuke.thisNode()\n\nif n.knob('curvetype').value() == 'randomCurve':\n    n.knob('seed').setEnabled(True)\n    n.knob('floorswitch').setEnabled(True)\n\nelif n.knob('curvetype').value() == 'noiseCurve':\n    n.knob('seed').setEnabled(True)\n    n.knob('floorswitch').setEnabled(True)\n\nelse:\n    n.knob('seed').setEnabled(False)\n    n.knob('floorswitch').setEnabled(False)\n\n\n\n''')" +STARTLINE}
+  addUserKnob {6 floorswitch l "floor curves" +STARTLINE}
+  addUserKnob {4 curvetype M {sine square triangle sawtooth bounce randomCurve noiseCurve "" "" "" "" "" "" ""}}
+  addUserKnob {7 waveLength R 0 50}
+  waveLength 25
+  addUserKnob {7 offsetX R -25 25}
+  addUserKnob {7 offsetY R -25 25}
+  addUserKnob {7 maxVal R 25 -25}
+  maxVal 1
+  addUserKnob {7 minVal R 25 -25}
+  addUserKnob {7 seed R 0 50}
+  addUserKnob {20 Output}
+  addUserKnob {7 outputValue}
+  outputValue {{"\[value curvetype]"}}
+  addUserKnob {12 circle l "outputValue circle"}
+  circle {{"(((sin(((frame*(pi*2/(waveLength/2))/2)+offsetX))+1)/2) * ((maxVal-minVal) ) + minVal)+offsetY" i} {"(((cos(((frame*(pi*2/(waveLength/2))/2)+offsetX))+1)/2) * ((maxVal-minVal) ) + minVal)+offsetY" i}}
+  addUserKnob {20 curves}
+  addUserKnob {7 sine}
+  sine {{"(((sin(((frame*(pi*2/(waveLength/2))/2)+offsetX))+1)/2) * ((maxVal-minVal) ) + minVal)+offsetY" i}}
+  addUserKnob {7 square}
+  square {{"(((((sin(((frame*(pi*2/(waveLength/2))/2)+offsetX))+1)/2) * (maxVal-minVal) ) + minVal) > ((maxVal/2)+(minVal/2)) ? maxVal : minVal)+offsetY" i}}
+  addUserKnob {7 triangle}
+  triangle {{"(((((2*asin(sin(2*pi*(frame/waveLength)+offsetX)))/pi) / 2)+0.5) * ((maxVal-minVal) ) + minVal)+offsetY" i}}
+  addUserKnob {7 sawtooth}
+  sawtooth {{"((1/waveLength)*(((frame-1)+offsetX) % waveLength) * ((maxVal-minVal) ) + minVal)+offsetY" i}}
+  addUserKnob {7 randomCurve}
+  randomCurve {{"floorswitch==1?((random(seed,floor(frame/waveLength)+offsetX)) * ((maxVal-minVal) ) + minVal)+offsetY:((random(seed,(frame/waveLength)+offsetX)) * ((maxVal-minVal) ) + minVal)+offsetY" i}}
+  addUserKnob {7 noiseCurve}
+  noiseCurve {{"floorswitch==1?(((1*(noise(seed,floor(frame/waveLength)+offsetX))+1 ) /2 ) * ((maxVal-minVal) ) + minVal)+offsetY:(((1*(noise(seed,(frame/waveLength)+offsetX))+1 ) /2 ) * ((maxVal-minVal) ) + minVal)+offsetY" i}}
+  addUserKnob {7 bounce}
+  bounce {{"((sin(((frame/waveLength)*pi)+offsetX)>0?sin(((frame/waveLength)*pi)+offsetX):cos((((frame/waveLength)*pi)+offsetX)+(pi/2))) * ((maxVal-minVal) ) + minVal)+offsetY" i}}
+ }
+ Output {
+  name Output1
+  xpos 657
+  ypos 97
+ }
+end_group

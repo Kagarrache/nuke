@@ -1,0 +1,595 @@
+Gizmo {
+ name SeondaryColour
+ note_font Arial
+ mapsize {0.15 0.15}
+ addUserKnob {20 User l Grade}
+ addUserKnob {18 RedKnob l Red R 0 2}
+ RedKnob {1 0 0}
+ addUserKnob {22 suppressR l suppress -STARTLINE T "n=nuke.thisNode()\nn\['RedKnob'].setValue(\[0.18,0.18,0.18])"}
+ addUserKnob {18 GreenKnob l Green R 0 2}
+ GreenKnob {0 1 0}
+ addUserKnob {22 suppressG l suppress -STARTLINE T "n=nuke.thisNode()\nn\['GreenKnob'].setValue(\[0.18,0.18,0.18])"}
+ addUserKnob {18 BlueKnob l Blue R 0 2}
+ BlueKnob {0 0 1}
+ addUserKnob {22 suppressB l suppress -STARTLINE T "n=nuke.thisNode()\nn\['BlueKnob'].setValue(\[0.18,0.18,0.18])"}
+ addUserKnob {26 ""}
+ addUserKnob {18 CyanKnob l Cyan R 0 2}
+ CyanKnob {0 1 1}
+ addUserKnob {22 suppressC l suppress -STARTLINE T "n=nuke.thisNode()\nn\['CyanKnob'].setValue(\[0.18,0.18,0.18])"}
+ addUserKnob {18 MagentaKnob l Magenta R 0 2}
+ MagentaKnob {1 0 1}
+ addUserKnob {22 suppressM l suppress -STARTLINE T "n=nuke.thisNode()\nn\['MagentaKnob'].setValue(\[0.18,0.18,0.18])"}
+ addUserKnob {18 YellowKnob l Yellow R 0 2}
+ YellowKnob {1 1 0}
+ addUserKnob {22 suppressY l suppress -STARTLINE T "n=nuke.thisNode()\nn\['YellowKnob'].setValue(\[0.18,0.18,0.18])"}
+ addUserKnob {26 ""}
+ addUserKnob {18 BlackKnob l Black R -0.5 0.5}
+ BlackKnob {0 0 0}
+ addUserKnob {18 NeutralKnob l Neutral R 0 2}
+ NeutralKnob 1
+ addUserKnob {18 WhiteKnob l White R 0 2}
+ WhiteKnob 1
+ addUserKnob {26 ""}
+ addUserKnob {6 blackClampMaster l "black clamp" +STARTLINE}
+ blackClampMaster true
+ addUserKnob {6 whiteClampMaster l "white clamp" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 vibrancy T vibrancy1.vibrancy}
+ addUserKnob {20 vibrancyControls l "vibrancy controls" n 1}
+ vibrancyControls 0
+ addUserKnob {41 mode l "luminance math" T vibrancy1.mode}
+ addUserKnob {41 value l "adjust effect" T vibrancy1.value}
+ addUserKnob {41 viewMatte l "view matte" T vibrancy1.viewMatte}
+ addUserKnob {41 invertMask l "invert mask" -STARTLINE T vibrancy1.invertMask}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {6 unpremultbyAlpha l "unpremult by alpha" t "use this to unpremult by alpha\nother channels might be available in future\nversions of Nuke (when you can add expressions to channels etc)" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {4 ViewWhat l "View what" M {Result RGB CMY BNW "" "" "" ""}}
+ addUserKnob {4 ViewCMYas l "CMY as" -STARTLINE M {CMY RGB ""}}
+ addUserKnob {20 WNSplit l "W-N Split"}
+ addUserKnob {41 range T scKeyer1.range}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -1249
+  ypos 543
+ }
+ Unpremult {
+  name scUnpremult1
+  xpos -1249
+  ypos 610
+  disable {{!unpremultbyAlpha i}}
+ }
+ NoOp {
+  name scSource
+  xpos -1249
+  ypos 672
+ }
+ Dot {
+  name Dot12
+  xpos -1218
+  ypos 780
+ }
+set N9b7bd30 [stack 0]
+ Dot {
+  name Dot11
+  xpos -1341
+  ypos 780
+ }
+ Dot {
+  name Dot10
+  xpos -1490
+  ypos 780
+ }
+set N179a9ea0 [stack 0]
+ Dot {
+  name Dot9
+  xpos -1694
+  ypos 780
+ }
+set N222303e0 [stack 0]
+ Dot {
+  name Dot24
+  xpos -2540
+  ypos 780
+ }
+ Dot {
+  name Dot25
+  xpos -2540
+  ypos 2707
+ }
+push $N9b7bd30
+ Dot {
+  name Dot8
+  xpos -1079
+  ypos 780
+ }
+set N17b241a0 [stack 0]
+ Dot {
+  name Dot6
+  xpos -912
+  ypos 780
+ }
+set N2225f510 [stack 0]
+ Dot {
+  name Dot4
+  xpos -742
+  ypos 780
+ }
+set N24602e20 [stack 0]
+ Expression {
+  channel0 rgb
+  expr0 min(r,g,b)
+  channel1 none
+  channel2 none
+  channel3 {none none none -rgba.alpha}
+  name scExpression1
+  label min
+  xpos -773
+  ypos 872
+ }
+ Dot {
+  name Dot14
+  xpos -742
+  ypos 1026
+ }
+set N17b12db0 [stack 0]
+ Dot {
+  name Dot19
+  xpos -742
+  ypos 1097
+ }
+set N17ae8100 [stack 0]
+ Dot {
+  name Dot15
+  xpos -742
+  ypos 1143
+ }
+set N24602320 [stack 0]
+ Dot {
+  name Dot17
+  xpos -742
+  ypos 1210
+ }
+ Keyer {
+  operation "luminance key"
+  name scKeyer1
+  xpos -873
+  ypos 1192
+ }
+push $N24602320
+ Dot {
+  name Dot16
+  xpos -1010
+  ypos 1143
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name scCopy1
+  xpos -1041
+  ypos 1192
+ }
+ Dot {
+  name Dot20
+  xpos -1010
+  ypos 1272
+ }
+set N241023f0 [stack 0]
+ Dot {
+  name Dot21
+  xpos -930
+  ypos 1272
+ }
+ Premult {
+  name White
+  xpos -961
+  ypos 1350
+ }
+ Dot {
+  name Dot31
+  xpos -930
+  ypos 1995
+ }
+set N17d9df20 [stack 0]
+push $N241023f0
+ Premult {
+  invert true
+  name Neutral
+  xpos -1041
+  ypos 1350
+ }
+ Dot {
+  name Dot30
+  xpos -1010
+  ypos 1762
+ }
+set N203941a0 [stack 0]
+push $N24602e20
+ Dot {
+  name Dot2
+  xpos -540
+  ypos 780
+ }
+ Expression {
+  channel0 rgb
+  expr0 1-max(r,g,b)
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  channel3 {none none none -rgba.alpha}
+  name scExpression2
+  label max
+  xpos -571
+  ypos 852
+ }
+ Dot {
+  name Dot27
+  xpos -540
+  ypos 1441
+ }
+set N206149b0 [stack 0]
+ Dot {
+  name Dot26
+  xpos -540
+  ypos 2258
+ }
+ Copy {
+  inputs 2
+  from0 rgba.green
+  to0 rgba.green
+  name scCopy2
+  xpos -1041
+  ypos 2240
+ }
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.blue
+  name scCopy3
+  xpos -961
+  ypos 2472
+ }
+push $N9b7bd30
+ Shuffle {
+  red blue
+  green red
+  blue green
+  name BRG
+  label "120deg HueShift back"
+  xpos -1249
+  ypos 886
+ }
+push $N179a9ea0
+ Merge2 {
+  inputs 2
+  operation min
+  name scMin
+  label "CMY incWhite \n"
+  xpos -1521
+  ypos 886
+ }
+set N9bd70b0 [stack 0]
+ Dot {
+  name Dot13
+  xpos -1349
+  ypos 956
+ }
+push $N17b12db0
+ Dot {
+  name Dot18
+  xpos -1206
+  ypos 1026
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name CMY
+  label "CMY only"
+  xpos -1380
+  ypos 1090
+ }
+ set C9be0220 [stack 0]
+set N9be0220 [stack 0]
+ Dot {
+  name Dot23
+  xpos -1349
+  ypos 1355
+ }
+set N24607440 [stack 0]
+ Shuffle {
+  red blue
+  green red
+  blue green
+  name scShuffle1
+  xpos -1380
+  ypos 2079
+ }
+push $N9be0220
+push $N2225f510
+ Shuffle {
+  red green
+  green blue
+  blue red
+  name GBR
+  label "120deg HueShift back"
+  xpos -943
+  ypos 881
+ }
+push $N17b241a0
+ Merge2 {
+  inputs 2
+  operation min
+  name scMin1
+  label "CMY incWhite \nHue rotated"
+  xpos -1110
+  ypos 868
+ }
+ Dot {
+  name Dot33
+  xpos -1079
+  ypos 990
+ }
+set N17d9cc50 [stack 0]
+push $N17ae8100
+clone $C9be0220 {
+  inputs 2
+  xpos -1110
+  ypos 1079
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name CMYwView
+  label "Combined both Hues\n"
+  xpos -1287
+  ypos 1298
+ }
+ Switch {
+  inputs 2
+  which {{ViewCMYas i}}
+  name scSwitch1
+  xpos -1287
+  ypos 2222
+ }
+push $N222303e0
+ Dot {
+  name Dot1
+  xpos -1694
+  ypos 967
+ }
+push $N9bd70b0
+push $N17d9cc50
+ Dot {
+  name Dot34
+  xpos -1444
+  ypos 990
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  name CMYw1
+  label "Combined both Hues\n"
+  xpos -1521
+  ypos 1094
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name RGB
+  label "RGB only"
+  xpos -1725
+  ypos 1184
+ }
+set N2212bd50 [stack 0]
+ Dot {
+  name Dot3
+  label "RGB\n"
+  xpos -1694
+  ypos 2236
+ }
+push $N2212bd50
+ Dot {
+  name Dot22
+  xpos -2296
+  ypos 1202
+ }
+ Dot {
+  name Dot5
+  xpos -2296
+  ypos 1350
+ }
+set N22137d90 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name red2
+  xpos -2452
+  ypos 1413
+ }
+ Grade {
+  multiply {{RedKnob i} {RedKnob i} {RedKnob i} {curve i}}
+  black_clamp {{blackClampMaster i}}
+  white_clamp {{whiteClampMaster i}}
+  name red1
+  xpos -2452
+  ypos 1498
+  postage_stamp true
+ }
+push $N22137d90
+ Shuffle {
+  red green
+  blue green
+  alpha black
+  name green2
+  xpos -2330
+  ypos 1412
+ }
+ Grade {
+  multiply {{GreenKnob i} {GreenKnob i} {GreenKnob i} {GreenKnob i}}
+  black_clamp {{blackClampMaster i}}
+  white_clamp {{whiteClampMaster i}}
+  name green1
+  xpos -2330
+  ypos 1492
+  postage_stamp true
+ }
+push $N22137d90
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name blue2
+  xpos -2229
+  ypos 1415
+ }
+ Grade {
+  multiply {{BlueKnob i} {BlueKnob i} {BlueKnob i} {BlueKnob i}}
+  black_clamp {{blackClampMaster i}}
+  white_clamp {{whiteClampMaster i}}
+  name blue1
+  xpos -2229
+  ypos 1491
+  postage_stamp true
+ }
+push $N24607440
+ Dot {
+  name Dot7
+  xpos -1983
+  ypos 1365
+ }
+set N221723d0 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha black
+  name cyan2
+  xpos -2114
+  ypos 1418
+ }
+ Grade {
+  multiply {{CyanKnob i} {CyanKnob i} {CyanKnob i} {CyanKnob i}}
+  black_clamp {{blackClampMaster i}}
+  white_clamp {{whiteClampMaster i}}
+  name cyan
+  xpos -2114
+  ypos 1482
+  postage_stamp true
+ }
+push $N221723d0
+ Shuffle {
+  green red
+  blue red
+  alpha black
+  name magenta2
+  xpos -2007
+  ypos 1418
+ }
+ Grade {
+  multiply {{MagentaKnob i} {MagentaKnob i} {MagentaKnob i} {MagentaKnob i}}
+  black_clamp {{blackClampMaster i}}
+  white_clamp {{whiteClampMaster i}}
+  name magenta
+  xpos -2007
+  ypos 1480
+  postage_stamp true
+ }
+push $N221723d0
+ Shuffle {
+  red green
+  blue green
+  alpha black
+  name yellow2
+  xpos -1908
+  ypos 1419
+ }
+ Grade {
+  multiply {{YellowKnob i} {YellowKnob i} {YellowKnob i} {YellowKnob i}}
+  black_clamp {{blackClampMaster i}}
+  white_clamp {{whiteClampMaster i}}
+  name yellow
+  xpos -1908
+  ypos 1477
+  postage_stamp true
+ }
+push $N203941a0
+ Dot {
+  name Dot29
+  xpos -1911
+  ypos 1762
+ }
+ Multiply {
+  value {{NeutralKnob i} {NeutralKnob i} {NeutralKnob i} {NeutralKnob i}}
+  name NeutralG
+  xpos -1942
+  ypos 1856
+ }
+push 0
+push $N17d9df20
+ Multiply {
+  value {{WhiteKnob i} {WhiteKnob i} {WhiteKnob i} {curve i}}
+  name WhiteG
+  xpos -1932
+  ypos 1977
+ }
+push $N206149b0
+ Dot {
+  name Dot28
+  xpos -1541
+  ypos 1441
+ }
+ Grade {
+  multiply {{BlackKnob i} {BlackKnob i} {BlackKnob i} {BlackKnob i}}
+  black_clamp {{blackClampMaster i}}
+  white_clamp {{whiteClampMaster i}}
+  name Black
+  xpos -1572
+  ypos 1886
+  postage_stamp true
+ }
+ Dot {
+  name Dot32
+  xpos -1541
+  ypos 2126
+ }
+ Merge2 {
+  inputs 9+1
+  operation plus
+  name scMerge4
+  xpos -2136
+  ypos 2121
+ }
+ vibrancy {
+  name vibrancy1
+  xpos -2136
+  ypos 2184
+ }
+ Switch {
+  inputs 4
+  which {{ViewWhat i}}
+  name scSwitch2
+  xpos -2136
+  ypos 2485
+ }
+ ShuffleCopy {
+  inputs 2
+  name scShuffleCopy10
+  xpos -2136
+  ypos 2702
+ }
+ Premult {
+  name scPremult11
+  xpos -2136
+  ypos 2788
+  disable {{!unpremultbyAlpha i}}
+ }
+ Output {
+  name Output1
+  xpos -2136
+  ypos 2871
+ }
+end_group

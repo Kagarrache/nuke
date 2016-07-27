@@ -1,0 +1,667 @@
+Gizmo {
+ inputs 3
+ onCreate "n = nuke.thisNode()\nn\['levels'].setFlag(0x00000002)\nn\['levels'].setFlag(0x00000004)\nn\['levels'].setRange(3,30)"
+ knobChanged "n = nuke.thisNode()\n\nif n\['result'].value() == 'Distorted Source':\n    n\['mix'].setVisible(True)\n    n\['multiply'].setVisible(False)\nelse:\n    n\['mix'].setVisible(False)\n    n\['multiply'].setVisible(True)\n\nif n\['enable_aberration'].value() == 1:\n    n\['levels'].setEnabled(True)\n    n\['strength'].setEnabled(True)\nelse:\n    n\['levels'].setEnabled(False)\n    n\['strength'].setEnabled(False)\n\nif n\['distort_from'].value() == 'Noise':\n    n\['noise_size'].setVisible(True)\n    n\['noise_speed'].setVisible(True)\nelse:\n    n\['noise_size'].setVisible(False)\n    n\['noise_speed'].setVisible(False)\n\nif n\['levels'].value() < 3:\n    n\['levels'].setValue(3)\n\nif n\['blur_map'].value() <= 0:\n    n\['blur_map'].setValue(0)\n\nif n\['distort_from'].value() == 'Dist Map' and n.input(1) == None:\n\tn\['map_channels'].setEnabled(False)\nelse:\n\tn\['map_channels'].setEnabled(True)\n\nif n.input(2) == None:\n\tn\['mask'].setEnabled(False)\n\tn\['invert_mask'].setEnabled(False)\n\tn\['fringe_mask'].setEnabled(False)\nelse:\n\tn\['mask'].setEnabled(True)\n\tn\['invert_mask'].setEnabled(True)\n\tn\['fringe_mask'].setEnabled(True)"
+ tile_color 0xa57aaaff
+ addUserKnob {20 X_Distort}
+ addUserKnob {26 distortion_text l <b>Distortion}
+ addUserKnob {41 channels t "The channels that are going to be distorted." T Copy_Source.channels}
+ addUserKnob {14 distort t "The amount of distortion that is going to be applied." R -100 100}
+ distort 20
+ addUserKnob {14 blur t "The amount of blur that is going to be applied." R -100 100}
+ addUserKnob {7 direction t "The direction of the generated vector map:\n\n· <b>At 0:</b> Pixels will be attracted to the brighter areas.\n· <b>At 0.5:</b> Pixels will be attracted to the darker areas.\n· <b>At 0.25 or .75:</b> Pixels will spin around the bright ans dark areas.\n\nThis pattern repeats, so a value of 1 will produce the same result as a value of 0 and a value of 0.5 will produce the same result as a value of 1.5."}
+ direction 0.25
+ addUserKnob {68 filter t "• <b>Impulse</b> - remapped pixels carry their original values.\n• <b>Cubic</b> - remapped pixels receive some smoothing.\n• <b>Keys</b> - remapped pixels receive some smoothing, plus minor sharpening (as shown by the negative -y portions of the curve).\n• <b>Simon</b> - remapped pixels receive some smoothing, plus medium sharpening (as shown by the negative -y portions of the curve).\n• <b>Rifman</b> - remapped pixels receive some smoothing, plus significant sharpening (as shown by the negative -y portions of the curve).\n• <b>Mitchell</b> - remapped pixels receive some smoothing, plus blurring to hide pixelation.\n• <b>Parzen</b> - remapped pixels receive the greatest smoothing of all filters.\n• <b>Notch</b> - remapped pixels receive flat smoothing (which tends to hide moire patterns).\n• <b>Lanczos4</b>, <b>Lanczos6</b>, and <b>Sinc4</b> - remapped pixels receive sharpening which can be useful for scaling down. Lanczos4 provides the least sharpening and Sinc4 the most." M {Impulse Cubic Keys Simon Rifman Mitchell Parzen Notch Lanczos4 Lanczos6 Sinc4 ""}}
+ filter Cubic
+ addUserKnob {68 method l " " t "The order in which Blur and Distortion will be applied. Distorting after the blur gives sharper results. Blurring after the distortion gives smoother edges." -STARTLINE M {"Blur then Distort" "Distort then Blur" "" "" "" ""}}
+ method "Distort then Blur"
+ addUserKnob {26 space_1 l "" +STARTLINE T " "}
+ addUserKnob {26 dist_map_text l "<b>Distortion Map"}
+ addUserKnob {41 map_channels l channels t "The channels that will be used to create the distortion map." T Copy_Map.Bchannels}
+ addUserKnob {68 distort_from l "distort from" t "Choose where do you want to create the distortion map from:\n\n<b>· Source</b> will distort the image using the information on the original image. \n<b>· Dist Map</b> will distort the image using the information on the secondary input of this node. \n<b>· Noise</b> will generate an animated fractal that will be used to create the distortion map." M {Source "Dist Map" Noise "" ""}}
+ addUserKnob {6 invert_map l invert t "Invert the distortion map. Should have the same effect as multiplying the distort and blur values for -1." -STARTLINE}
+ addUserKnob {6 fringe_map l fringe t "Use 4*(1-map)*map to create the distortion map.\n\nThis will have the effect deforming to both bright and dark areas at the same time." -STARTLINE}
+ addUserKnob {6 clamp_map l clamp t "Clamp any values from the distortion map below 0 or bigger than 1 before distorting." -STARTLINE}
+ addUserKnob {6 vector_map l INVISIBLE -STARTLINE +INVISIBLE}
+ addUserKnob {14 noise_size l size t "The size of the noise map that is going to be generated." +HIDDEN R 0 100}
+ noise_size 50
+ addUserKnob {7 noise_speed l speed t "The rate of change of the noise over time. Currently this setting doesn't support animation (it may cause jittering)." -STARTLINE +HIDDEN}
+ noise_speed 1
+ addUserKnob {7 blur_map l "blur map" t "Filter the map to make it smoother and get rid of the high frequency distortions. Decrease this value to make a smoother distortion." R 0 100}
+ blur_map 50
+ addUserKnob {6 smooth t "Use a logarithmic scale instead of a linear scale for controlling the noise. It also decreases the overall distortion the higher the distortion map frequencies are.\n\nIn other words: this makes the distortion much more user friendly and easy to control." -STARTLINE}
+ smooth true
+ addUserKnob {26 space_2 l "" +STARTLINE T " "}
+ addUserKnob {26 aberration l <b>Aberration}
+ addUserKnob {26 enable -STARTLINE T ""}
+ addUserKnob {6 enable_aberration l " " t "Enable the chromatic aberration settings.\nChromatic Aberration will cause different colors to be distorted separately to get a leaking color effect." -STARTLINE}
+ addUserKnob {3 levels t "When distorting red, green and blue channels, this will create intermediate sublevels to make the blending smoother.\n\nKeep in mind that the rendertime is directly proportional to this level, so having 10 layers will make the render x10 slower.\n\nIt is recomended that you try to use the \"blur\" setting above before drastically increasing this setting." -STARTLINE +DISABLED R 3 30}
+ levels 7
+ addUserKnob {18 strength t "The ratio by which each channel will be distorted. The channel will be distorted by the distortion value times this ratio.\n\nSettings you can try:\n· <b>Red-Blue</b>: r:2 g:1 b:0.5\n· <b>Purple Fringe</b>: r:1 g:2 b:0.9\n· <b>Blue-Yellow</b>: r:1 g:0.9 b:1.5" +DISABLED}
+ strength {1.2 1 0.8}
+ addUserKnob {6 strength_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 space_3 l "" +STARTLINE T " "}
+ addUserKnob {26 output_text l "" +STARTLINE}
+ addUserKnob {26 space_4 l " " T " "}
+ addUserKnob {41 mask t "Use this channel from the Mask input to blend the output with the Source input." T Copy_Mask.A}
+ addUserKnob {6 invert_mask l invert t "Inverts the use of the mask channel so that the distortion is limited to the non-white areas of the mask." -STARTLINE +DISABLED}
+ addUserKnob {6 fringe_mask l fringe t "Distorts on the edges of the mask." -STARTLINE +DISABLED}
+ addUserKnob {68 result t "Decide what is going to be the output of this node:\n\n<b>· Distorted Source:</b> Outputs the source with the applied distortion.\n<b>· Vector Map:</b> Outputs the raw distortion map. This can be used with and IDistort, for example.\n<b>· Normal Map:</b> Outputs a normalised vector map between 0 and 1, with 0.5 meaning no distortion." M {"Distorted Source" "Vector Map" "Normal Map" "" "" ""}}
+ addUserKnob {7 mix t "Dissolves between the original image at 0 and the full expressions effect at 1." -STARTLINE}
+ mix 1
+ addUserKnob {7 multiply t "Adjust the resulting map. Specially useful when exporting normal maps." -STARTLINE +HIDDEN R 0 10}
+ multiply 1
+ addUserKnob {22 onKnobChange l INVISIBLE +INVISIBLE T "n = nuke.thisNode()\n\nif n\['result'].value() == 'Distorted Source':\n    n\['mix'].setVisible(True)\n    n\['multiply'].setVisible(False)\nelse:\n    n\['mix'].setVisible(False)\n    n\['multiply'].setVisible(True)\n\nif n\['enable_aberration'].value() == 1:\n    n\['levels'].setEnabled(True)\n    n\['strength'].setEnabled(True)\nelse:\n    n\['levels'].setEnabled(False)\n    n\['strength'].setEnabled(False)\n\nif n\['distort_from'].value() == 'Noise':\n    n\['noise_size'].setVisible(True)\n    n\['noise_speed'].setVisible(True)\nelse:\n    n\['noise_size'].setVisible(False)\n    n\['noise_speed'].setVisible(False)\n\nif n\['levels'].value() < 3:\n    n\['levels'].setValue(3)\n\nif n\['blur_map'].value() <= 0:\n    n\['blur_map'].setValue(0)\n\nif n\['distort_from'].value() == 'Dist Map' and n.input(1) == None:\n\tn\['map_channels'].setEnabled(False)\nelse:\n\tn\['map_channels'].setEnabled(True)\n\nif n.input(2) == None:\n\tn\['mask'].setEnabled(False)\n\tn\['invert_mask'].setEnabled(False)\n\tn\['fringe_mask'].setEnabled(False)\nelse:\n\tn\['mask'].setEnabled(True)\n\tn\['invert_mask'].setEnabled(True)\n\tn\['fringe_mask'].setEnabled(True)" +STARTLINE}
+ addUserKnob {22 onNodeCreate l INVISIBLE -STARTLINE +INVISIBLE T "n = nuke.thisNode()\nn\['levels'].setFlag(0x00000002)\nn\['levels'].setFlag(0x00000004)\nn\['levels'].setRange(3,30)"}
+ addUserKnob {20 about l About}
+ addUserKnob {26 about_1 l "" t "A bunny:\n(\\(\\ \n( - -)\n((') (')" +STARTLINE T "<br>\n<b>Xavier Martín © 2016</b>"}
+ addUserKnob {26 ""}
+ addUserKnob {26 website l "" +STARTLINE T "<a href=\"http://www.xaviermartinvfx.com\"><span style=\"color:#C8C8C8;\">www.xaviermartinvfx.com</span></a>"}
+ addUserKnob {26 space4_1 l "" +STARTLINE T <br>}
+ addUserKnob {22 version l <center>version</center> T "nuke.message('X_Distort Gizmo <i>v3.0</i><br><b>Xavier Martín © 2016</b>')" +STARTLINE}
+ addUserKnob {22 help_documentation l <center>?</center> -STARTLINE T "nuke.message('You can find more documentation<br>on <a href=\"http://www.nukepedia.com/gizmos/transform/x_distort\"><span style=\"color:#BCBCBC;\">Nukepedia</span></a> or my <a href=\"http://www.xaviermartinvfx.com/x_distort/\"><span style=\"color:#BCBCBC;\">website</span></a>.')"}
+}
+ Input {
+  inputs 0
+  name Mask
+  xpos -478
+  ypos 258
+  number 2
+  addUserKnob {20 User}
+  addUserKnob {3 input_test}
+  input_test {{"\[string first \[value Copy_Mask.A] \[channels this]] >-1"}}
+ }
+ Dot {
+  inputs 0
+  name Dot10
+  xpos -368
+  ypos 301
+  hide_input true
+ }
+ ChannelMerge {
+  inputs 2
+  operation plus
+  B none
+  name Copy_Mask
+  xpos -478
+  ypos 284
+ }
+ Expression {
+  channel0 alpha
+  expr0 4*(1-a)*a
+  channel1 none
+  channel2 none
+  channel3 none
+  name Fringe2
+  xpos -478
+  ypos 336
+  disable {{1-parent.fringe_mask}}
+ }
+ Invert {
+  channels alpha
+  name Invert2
+  xpos -478
+  ypos 362
+  disable {{1-parent.invert_mask}}
+ }
+ Constant {
+  inputs 0
+  channels alpha
+  color 1
+  name Constant1
+  xpos -342
+  ypos 303
+  postage_stamp false
+ }
+ Switch {
+  inputs 2
+  which {{parent.Mask.input_test}}
+  name Switch2
+  xpos -342
+  ypos 368
+ }
+ Input {
+  inputs 0
+  name Source
+  xpos -12
+  ypos -131
+ }
+set Nf524c000 [stack 0]
+ Dot {
+  name Dot3
+  xpos 22
+  ypos -105
+ }
+set Nf5279c00 [stack 0]
+ Noise {
+  replace true
+  size {{noise_size.w} {noise_size.h}}
+  zoffset {{noise_speed*frame/fps}}
+  gamma 1
+  center {1024 778}
+  name Noise1
+  xpos -374
+  ypos -109
+ }
+ Input {
+  inputs 0
+  name Dist_Map
+  xpos -232
+  ypos -171
+  number 1
+ }
+push $Nf5279c00
+ Switch {
+  inputs 3
+  which {{distort_from}}
+  name Switch1
+  xpos -232
+  ypos -109
+ }
+set Nf5279000 [stack 0]
+push $Nf5279000
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels none
+  Bchannels rgb
+  output {forward.u forward.v none backward.u}
+  name Copy_Map
+  xpos -232
+  ypos -83
+ }
+set Nf5278c00 [stack 0]
+ Remove {
+  operation keep
+  channels {forward.u forward.v none -backward.v}
+  name Clear1
+  xpos -122
+  ypos -83
+ }
+ Multiply {
+  channels forward
+  value 0.01
+  name Multiply6
+  xpos -122
+  ypos 73
+ }
+ Expression {
+  channel0 {forward.u -forward.v}
+  expr0 4*(1-forward.u)*forward.u
+  channel1 {-forward.u forward.v}
+  expr1 4*(1-forward.v)*forward.v
+  channel2 none
+  channel3 none
+  name Fringe3
+  xpos -122
+  ypos 130
+  disable {{1-fringe_map}}
+ }
+ Invert {
+  channels forward
+  name Invert3
+  xpos -122
+  ypos 172
+  disable {{1-invert_map}}
+ }
+ Dot {
+  name Dot4
+  xpos -88
+  ypos 269
+ }
+push $Nf5278c00
+ Saturation {
+  channels motion
+  saturation 0
+  mode Average
+  name Average
+  xpos -232
+  ypos -45
+ }
+push $Nf5278c00
+push $Nf5278c00
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels {forward.u forward.v none backward.u}
+  Bchannels {forward.u forward.v none backward.u}
+  output {forward.u forward.v none backward.u}
+  name Detect_Chnl
+  xpos -375
+  ypos -83
+ }
+ Saturation {
+  channels motion
+  saturation 0
+  mode Average
+  name Average1
+  xpos -375
+  ypos -45
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels {forward.u -forward.v}
+  Bchannels {forward.u -forward.v}
+  output {forward.u -forward.v}
+  name Normalize
+  xpos -232
+  ypos -7
+ }
+ Remove {
+  operation keep
+  channels {forward.u -forward.v none -backward.v}
+  name Clear
+  xpos -232
+  ypos 31
+ }
+ Expression {
+  channel0 {forward.u -forward.v}
+  expr0 4*(1-forward.u)*forward.u
+  channel1 none
+  channel2 none
+  channel3 none
+  name Fringe1
+  xpos -232
+  ypos 69
+  disable {{1-fringe_map}}
+ }
+ Invert {
+  channels {forward.u -forward.v}
+  name Invert1
+  xpos -232
+  ypos 95
+  disable {{1-invert_map}}
+ }
+ Clamp {
+  channels {forward.u -forward.v}
+  name Clamp1
+  xpos -232
+  ypos 133
+  disable {{1-clamp_map}}
+ }
+ Dot {
+  name Dot8
+  xpos -198
+  ypos 171
+ }
+set N7fcd0c00 [stack 0]
+ Matrix {
+  channels {forward.u -forward.v none -backward.u}
+  matrix {
+      {0 1 0}
+      {0 0 0}
+      {0 -1 0}
+    }
+  name YMatrix
+  xpos -232
+  ypos 189
+ }
+push $N7fcd0c00
+ Dot {
+  name Dot2
+  xpos -308
+  ypos 171
+ }
+ Matrix {
+  channels {forward.u -forward.v none -backward.u}
+  matrix {
+      {0 0 0}
+      {-1 0 1}
+      {0 0 0}
+    }
+  name XMatrix
+  xpos -342
+  ypos 189
+ }
+ Dot {
+  name Dot1
+  xpos -308
+  ypos 237
+ }
+ Copy {
+  inputs 2
+  from0 forward.u
+  to0 forward.v
+  name Join
+  xpos -232
+  ypos 227
+ }
+ Switch {
+  inputs 2
+  which {{vector_map}}
+  name Switch5
+  xpos -232
+  ypos 265
+ }
+ Expression {
+  temp_name0 ds
+  temp_expr0 -sin(direction*2*pi)
+  temp_name1 dc
+  temp_expr1 -cos(direction*2*pi)
+  temp_name2 u
+  temp_expr2 forward.u
+  temp_name3 v
+  temp_expr3 forward.v
+  channel0 {forward.u -forward.v}
+  expr0 u*dc+v*ds
+  channel1 {-forward.u forward.v}
+  expr1 -u*ds+v*dc
+  channel2 none
+  channel3 none
+  name Expression1
+  xpos -232
+  ypos 291
+ }
+ Blur {
+  size {{blur_map+1}}
+  quality {{ceil(blur_map+1)}}
+  name Blur1
+  xpos -232
+  ypos 317
+ }
+ ChannelMerge {
+  inputs 2
+  operation plus
+  B none
+  bbox B
+  name Copy_Mask1
+  xpos -232
+  ypos 355
+ }
+ Premult {
+  channels forward
+  name Premult1
+  xpos -232
+  ypos 407
+ }
+ NoTimeBlur {
+  name NoTimeBlur2
+  xpos -232
+  ypos 445
+  disable {{"1- enable_aberration"}}
+ }
+ Multiply {
+  channels forward
+  value {{"smoothstep(.5,0,frame-int(frame))*strength.r + (1-smoothstep(.5,0,frame-int(frame))-smoothstep(.5,1,frame-int(frame)))*strength.g + smoothstep(.5,1,frame-int(frame))*strength.b"}}
+  name Multiply4
+  xpos -232
+  ypos 471
+  disable {{"1- enable_aberration"}}
+ }
+set N7fd39400 [stack 0]
+ Multiply {
+  value {{"smooth*distort.w == 0 ? distort.w*100*multiply : distort.w*blur_map*2"} {"smooth*distort.h == 0 ? distort.h*100*multiply : distort.h*blur_map*2"} 1 1}
+  name Multiply5
+  xpos -382
+  ypos 471
+ }
+ Shuffle {
+  in forward
+  blue black
+  alpha black
+  name Shuffle1
+  xpos -382
+  ypos 509
+ }
+set N7fd38c00 [stack 0]
+ Expression {
+  expr0 (r/(abs(r)+20))*.5+.5
+  expr1 (g/(abs(g)+20))*.5+.5
+  expr2 1
+  channel3 none
+  name Expression2
+  xpos -516
+  ypos 509
+ }
+ Remove {
+  operation keep
+  channels {rgba.red rgba.green rgba.blue none}
+  name Remove2
+  xpos -516
+  ypos 535
+ }
+ Dot {
+  name Dot15
+  xpos -482
+  ypos 941
+ }
+push $N7fd38c00
+ Remove {
+  operation keep
+  channels {rgba.red rgba.green -rgba.blue none}
+  name Remove1
+  xpos -382
+  ypos 535
+ }
+ Dot {
+  name Dot14
+  xpos -348
+  ypos 941
+ }
+push $N7fd39400
+ Dot {
+  name Dot13
+  xpos -198
+  ypos 518
+ }
+ Dot {
+  name Dot5
+  xpos -122
+  ypos 518
+ }
+set N7fd6ac00 [stack 0]
+ Dot {
+  name Dot6
+  xpos -122
+  ypos 622
+ }
+set N7fd6a800 [stack 0]
+ Dot {
+  name Dot7
+  xpos -122
+  ypos 700
+ }
+push $N7fd6a800
+push $N7fd6ac00
+push $Nf5279c00
+ Remove {
+  operation keep
+  channels rgb
+  name Copy_Source
+  xpos -12
+  ypos -87
+ }
+ NoTimeBlur {
+  name NoTimeBlur1
+  xpos -12
+  ypos 379
+  disable {{"1- enable_aberration"}}
+ }
+ Multiply {
+  channels rgb
+  value {{smoothstep(.5,0,frame-int(frame))} {1-smoothstep(.5,0,frame-int(frame))-smoothstep(.5,1,frame-int(frame))} {smoothstep(.5,1,frame-int(frame))} {smoothstep(.5,0,frame)}}
+  value_panelDropped true
+  name Multiply1
+  xpos -12
+  ypos 405
+  disable {{"1- enable_aberration"}}
+ }
+ Copy {
+  inputs 2
+  channels forward
+  bbox B
+  name Copy1
+  xpos -12
+  ypos 501
+  disable {{"parent.method + (blur==0)"}}
+ }
+ VectorBlur {
+  channels {{{Copy_Source.channels}}}
+  uv forward
+  scale {{"smooth*blur.w == 0 ? blur.w*100 : blur.w*(min(blur_map,50))*2"} {"smooth*blur.h == 0 ? blur.h*100 : blur.h*(min(blur_map,50))*2"}}
+  offset -1
+  name VectorBlur1
+  xpos -12
+  ypos 553
+  disable {{"parent.method + (blur==0)"}}
+ }
+ AdjBBox {
+  numpixels -1
+  name AdjBBox1
+  xpos -12
+  ypos 579
+  disable {{parent.method}}
+ }
+ Copy {
+  inputs 2
+  channels forward
+  bbox B
+  name Copy2
+  xpos -12
+  ypos 605
+  disable {{(distort==0)}}
+ }
+ IDistort {
+  channels {{{Copy_Source.channels}}}
+  uv forward
+  uv_scale {{"smooth*distort.w == 0 ? distort.w*100 : distort.w*(min(blur_map,50))*2"} {"smooth*distort.h == 0 ? distort.h*100 : distort.h*(min(blur_map,50))*2"}}
+  filter {{parent.filter}}
+  name IDistort1
+  xpos -12
+  ypos 657
+  disable {{"distort == 0"}}
+ }
+ Copy {
+  inputs 2
+  channels forward
+  bbox B
+  name Copy3
+  xpos -12
+  ypos 683
+  disable {{"1-parent.method + (blur==0)"}}
+ }
+ VectorBlur {
+  channels {{{Copy_Source.channels}}}
+  uv forward
+  scale {{parent.VectorBlur1.scale.w} {parent.VectorBlur1.scale.h}}
+  offset -1
+  name VectorBlur2
+  xpos -12
+  ypos 735
+  disable {{"1-parent.method + (parent.blur == 0)"}}
+ }
+set N7fdcbc00 [stack 0]
+ TimeBlur {
+  divisions {{levels}}
+  shutter 1.49999999
+  shutteroffset start
+  shuttercustomoffset 0
+  name TimeBlur1
+  xpos -12
+  ypos 837
+  disable {{"1- enable_aberration"}}
+ }
+set N7fdcb800 [stack 0]
+push $N7fdcb800
+ Dot {
+  name Dot11
+  xpos -112
+  ypos 841
+ }
+push $N7fdcbc00
+ NoTimeBlur {
+  name NoTimeBlur3
+  xpos -324
+  ypos 735
+ }
+ Multiply {
+  value 0
+  name Multiply3
+  xpos -324
+  ypos 761
+ }
+ Add {
+  value 1
+  name Add1
+  xpos -324
+  ypos 799
+ }
+ Multiply {
+  channels rgb
+  value {{smoothstep(.5,0,frame-int(frame))} {1-smoothstep(.5,0,frame-int(frame))-smoothstep(.5,1,frame-int(frame))} {smoothstep(.5,1,frame-int(frame))} {smoothstep(.5,0,frame)}}
+  value_panelDropped true
+  name Multiply2
+  xpos -324
+  ypos 837
+ }
+ TimeBlur {
+  divisions {{levels}}
+  shutter 1.4999999
+  shutteroffset start
+  shuttercustomoffset 0
+  name TimeBlur2
+  xpos -324
+  ypos 863
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  bbox A
+  metainput A
+  name Merge2
+  xpos -146
+  ypos 863
+ }
+ Switch {
+  inputs 2
+  which {{"1- enable_aberration"}}
+  name Switch3
+  xpos -12
+  ypos 863
+ }
+push $Nf524c000
+ Dot {
+  name Dot9
+  xpos 132
+  ypos -127
+ }
+ Dot {
+  name Dot12
+  xpos 132
+  ypos 839
+ }
+set N7fdff000 [stack 0]
+ Merge2 {
+  inputs 2
+  operation copy
+  bbox B
+  Achannels none
+  Bchannels none
+  output none
+  also_merge rgb
+  name Merge1
+  xpos 98
+  ypos 857
+ }
+push $N7fdff000
+ Dissolve {
+  inputs 2
+  which {{parent.mix}}
+  name Dissolve1
+  xpos 263
+  ypos 857
+ }
+ Switch {
+  inputs 3
+  which {{result}}
+  name Switch4
+  xpos 263
+  ypos 937
+ }
+ Output {
+  name Output1
+  xpos 263
+  ypos 992
+ }
+end_group

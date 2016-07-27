@@ -1,0 +1,50 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ help "Mask3DGradient creates a gradient mate betveen two point in 3D space based on a World position pass. Also may be useful in work with Object Position and similar data passes which contains position cordinate. Feed it as input.\nAvoid using same values for 'From' and 'To'!\n------\nv002\nIvan Kokov. Pixomondo Shanghai. 2012\nbutafor@inbox.ru\nivan.kokov@sha.pixomondo.com"
+ addUserKnob {20 User}
+ addUserKnob {41 From T Mask3DGradient_ik.From}
+ addUserKnob {41 To T Mask3DGradient_ik.To}
+ addUserKnob {41 ReplaceRGB l "Replace RGB / Keep original (generate matte in alpha only)" T Mask3DGradient_ik.ReplaceRGB}
+ addUserKnob {41 IgnoreByAlpha l "Ignore outside by alpha" T Mask3DGradient_ik.IgnoreByAlpha}
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "v002 © Ivan Kokov. Pixomondo Shanghai. 2012"}
+}
+ Input {
+  inputs 0
+  name InputWorldPos
+  xpos -77
+  ypos -353
+ }
+add_layer {rgba redguard1.glow rgba.beta}
+ Expression {
+  temp_name0 DistF
+  temp_expr0 "sqrt(pow2(From.r - r) + pow2(From.g - g) + pow2(From.b - b))"
+  temp_name1 DistT
+  temp_expr1 "sqrt(pow2(To.r - r) + pow2(To.g - g) + pow2(To.b - b))"
+  temp_name2 DistFT
+  temp_expr2 "sqrt(pow2(From.r - To.r) + pow2(From.g - To.g) + pow2(From.b - To.b))"
+  temp_name3 F
+  temp_expr3 "acos(clamp((pow2(DistF) + pow2(DistFT) - pow2(DistT))/(2 * DistF * DistFT), -1, 1))"
+  expr0 "ReplaceRGB ? (IgnoreByAlpha ? (clamp( (DistF * cos(F)) / DistFT)*a) : clamp( (DistF * cos(F)) / DistFT) ) : r"
+  expr1 "ReplaceRGB ? (IgnoreByAlpha ? (clamp( (DistF * cos(F)) / DistFT)*a) : clamp( (DistF * cos(F)) / DistFT) ) : g"
+  expr2 "ReplaceRGB ? (IgnoreByAlpha ? (clamp( (DistF * cos(F)) / DistFT)*a) : clamp( (DistF * cos(F)) / DistFT) ) : b"
+  expr3 "IgnoreByAlpha ? (clamp( (DistF * cos(F)) / DistFT)*a) : clamp( (DistF * cos(F)) / DistFT)"
+  name Mask3DGradient_ik
+  selected true
+  xpos -77
+  ypos -313
+  addUserKnob {20 User}
+  addUserKnob {18 From}
+  From {0 0 0}
+  addUserKnob {18 To}
+  To {100 100 100}
+  addUserKnob {6 ReplaceRGB l "Replace RGB / Keep original (generate matte in alpha only)" +STARTLINE}
+  addUserKnob {6 IgnoreByAlpha l "Ignore outside by alpha" +STARTLINE}
+ }
+ Output {
+  name Output1
+  xpos -77
+  ypos -213
+ }
+end_group

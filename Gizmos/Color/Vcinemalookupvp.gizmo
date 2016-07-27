@@ -1,0 +1,48 @@
+#! /Applications/Nuke6.0v6-32/Nuke6.0v6.app/Contents/MacOS/Nuke6.0v6 -nx
+version 6.0 v6
+Gizmo {
+ help "vCinemaLookup STAGE1\n\nLog2Lin node followed by Vectorfield node.\n\nWith included 3d look-up table log_to_lin_D65.vf simulates how would input look on Baselight with default Arri laser profile.\n\n2D LUT sections provide posibility to bring in your Cineon LUT settings, if it's different from default settings.\n\n--\ndeveloped by Vit Sedlacek (c)2010\nwww.vitsedlacek.com"
+ tile_color 0x379164ff
+ addUserKnob {20 vCinemaLookup}
+ addUserKnob {20 log2lin l "2D LUT" n 1}
+ addUserKnob {41 black T linToLog.black}
+ addUserKnob {41 white T linToLog.white}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {41 log_gamma l gamma_ T dummyGamma.value}
+ addUserKnob {20 vflut l "3D LUT" n 1}
+ addUserKnob {41 vfield_file l "vectorfield file" T LUT.vfield_file}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 info l "" +STARTLINE T "developed by Vit Sedlacek (c)2010\nwww.vitsedlacek.com"}
+}
+ Input {
+  inputs 0
+  name input
+  xpos -260
+  ypos -419
+ }
+ Log2Lin {
+  operation lin2log
+  gamma {{parent.dummyGamma.value.main i} {parent.dummyGamma.value.main i} {parent.dummyGamma.value.main i}}
+  name linToLog
+  xpos -260
+  ypos -377
+ }
+ Vectorfield {
+  name LUT
+  xpos -260
+  ypos -324
+ }
+ Output {
+  name Output1
+  xpos -260
+  ypos -241
+ }
+ Multiply {
+  inputs 0
+  value 0.6
+  name dummyGamma
+  xpos -382
+  ypos -384
+ }
+end_group

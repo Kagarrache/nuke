@@ -1,0 +1,140 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name J_Nodo_RoJo_No
+ tile_color 0x870606ff
+ gl_color 0xffffffff
+ note_font "URW Gothic L Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font_color 0xffffffff
+ selected true
+ xpos -1117
+ ypos 711
+ addUserKnob {20 J_Nodo_RoJo}
+ addUserKnob {26 Titile l "<div style=\"color:#FF0000;\"> <div style=\" font-weight: bold;\"> <div style=\" font-size:18px;\">J_Nodo_RoJo</div>"}
+ addUserKnob {22 Bezier T "nuke.root().begin()\nnuke.createNode(\"Bezier\")" +STARTLINE}
+ addUserKnob {22 Roto -STARTLINE T "nuke.root().begin()\nnuke.createNode(\"Roto\")"}
+ addUserKnob {26 ""}
+ addUserKnob {26 TexturePosition l "<div style=\" font-weight: bold;\"> <div style=\" font-size:12px;\">Texture_Position</div>" -STARTLINE}
+ addUserKnob {41 translate T Transform106.translate}
+ addUserKnob {41 rotate T Transform106.rotate}
+ addUserKnob {41 scale T Transform106.scale}
+ addUserKnob {41 filter T Transform106.filter}
+ addUserKnob {41 black_outside l "black outside" -STARTLINE T Transform106.black_outside}
+ addUserKnob {41 clamp -STARTLINE T Transform106.clamp}
+ addUserKnob {41 motionblur T Transform106.motionblur}
+ addUserKnob {41 shutter T Transform106.shutter}
+ addUserKnob {26 ""}
+ addUserKnob {26 Texture_Color l "<div style=\" font-weight: bold;\"> <div style=\" font-size:12px;\">Texture_Color</div>"}
+ addUserKnob {41 disable_3 l disable T Grade36.disable}
+ addUserKnob {41 multiply T Grade36.multiply}
+ addUserKnob {41 gamma T Grade36.gamma}
+ addUserKnob {26 ""}
+ addUserKnob {26 AlphaEdgeBlur l "<div style=\" font-weight: bold;\"> <div style=\" font-size:12px;\">AlphaEdgeBlur</div>" -STARTLINE}
+ addUserKnob {41 disable_1 l disable T EdgeBlur1.disable}
+ addUserKnob {41 EdgeBlur_size T EdgeBlur1.size}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix l "<div style=\" font-weight: bold;\"> <div style=\" font-size:18px;\">Mix</div>" T Keymix1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {20 Advanced_Rebuild n 1}
+ Advanced_Rebuild 0
+ addUserKnob {26 AdvancedRebuild l "<div style=\"color:#FF0000;\"> <div style=\" font-weight: bold;\"> <div style=\" font-size:12px;\">Advanced_Rebuild.</div>" -STARTLINE}
+ addUserKnob {41 disable_2 l disable T TimeOffset1.disable}
+ addUserKnob {41 time_offset l "time offset (frames)" T TimeOffset1.time_offset}
+ addUserKnob {26 ""}
+ addUserKnob {41 disable_4 l disable T Multiply1.disable}
+ addUserKnob {3 curframe l "<div style=\"color:#FF0000;\"> <div style=\" font-weight: bold;\"> <div style=\" font-size:18px;\">Switch</div>"}
+ addUserKnob {22 set_current_frame -STARTLINE T nuke.thisNode().knob('curframe').setValue(nuke.frame())}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 Jonathan_Vleeschower l "Jonathan_Vleeschower " -STARTLINE T "\n\n\n"}
+ addUserKnob {26 CleanPlate_WireRemoval_Advanced_Rebuild_2015 l "" -STARTLINE T "Clean Plate,Wire removal,and Advanced Rebuild 2015"}
+}
+ Input {
+  inputs 0
+  name Bezier_Mask
+  note_font "URW Gothic L"
+  note_font_size 10
+  xpos 219
+  ypos 207
+  number 1
+ }
+ Multiply {
+  value {{t==Multiply1.rt?1:0}}
+  name Multiply1
+  xpos 219
+  ypos 295
+  disable true
+  addUserKnob {20 User}
+  addUserKnob {3 rt l "<div style=\"color:#FF0000;\"> <div style=\" font-weight: bold;\"> <div style=\" font-size:12px;\">Switch.</div>"}
+  rt {{(curframe)}}
+ }
+ EdgeBlur {
+  size 7
+  name EdgeBlur1
+  xpos 219
+  ypos 394
+ }
+ Dot {
+  name Dot17
+  xpos 253
+  ypos 502
+ }
+ Input {
+  inputs 0
+  name Plate
+  xpos -46
+  ypos -214
+ }
+ Dot {
+  name Dot15
+  xpos -12
+  ypos 72
+ }
+set N6b49dc00 [stack 0]
+ Dot {
+  name Dot1
+  xpos -156
+  ypos 72
+ }
+ TimeOffset {
+  time ""
+  name TimeOffset1
+  xpos -190
+  ypos 175
+  disable true
+ }
+ Transform {
+  center {1024 540}
+  filter Rifman
+  name Transform106
+  xpos -190
+  ypos 279
+ }
+ Grade {
+  name Grade36
+  xpos -190
+  ypos 380
+  disable true
+ }
+ Dot {
+  name Dot16
+  xpos -156
+  ypos 502
+ }
+push $N6b49dc00
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix1
+  xpos -46
+  ypos 492
+  addUserKnob {20 User}
+  addUserKnob {41 mix_1 l mix T Keymix1.mix}
+ }
+ Output {
+  name Output1
+  xpos -46
+  ypos 798
+ }
+end_group

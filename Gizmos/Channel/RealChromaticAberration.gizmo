@@ -1,0 +1,46 @@
+#! /Applications/Nuke8.0v1/Nuke8.0v1.app/Contents/MacOS/libnuke-8.0.v1.dylib -nx
+version 8.0 v1
+Gizmo {
+ tile_color 0xffb500ff
+ gl_color 0xff
+ addUserKnob {20 Real_Chromatic_Aberration l RealChromaticAberration t "Generates realistic chromatic aberration along the edges."}
+ addUserKnob {7 amount l "Red Channel Shift" R 1 1.03}
+ amount 1
+ addUserKnob {7 amount2 l "Blue Channel Shift" R 0.974 1}
+ amount2 1
+ addUserKnob {26 ""}
+ addUserKnob {26 Version l "         " t "Created by Damian Binder." T "Real Chromatic Aberration V.1"}
+ addUserKnob {26 Tip l "Tip: " T "By sliding the red channel up \nand the blue channel down you get \na realistic combination: \nBlue + Cyan and Red + Yellow."}
+}
+ Input {
+  inputs 0
+  name Source
+  label Input
+  xpos -23
+  ypos -480
+ }
+ Reformat {
+  name Reformat1
+  xpos -23
+  ypos -448
+ }
+ GodRays {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  scale {{((parent.GodRays2.scale-2)*1)+2*amount}}
+  name GodRays1
+  xpos -23
+  ypos -374
+ }
+ GodRays {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  scale {{((parent.GodRays1.scale-2)*1)+2*amount2}}
+  name GodRays2
+  xpos -23
+  ypos -302
+ }
+ Output {
+  name Output1
+  xpos -23
+  ypos -250
+ }
+end_group

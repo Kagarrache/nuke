@@ -1,0 +1,102 @@
+#! /usr/local/Nuke6.1v3/Nuke6.1 -nx
+version 6.1 v3
+Gizmo {
+ help "TNT_Line by Michael Habenicht\nwww.tinitron.de\n\nDraw a line from Point 0 to Point 1"
+ addUserKnob {20 User}
+ addUserKnob {20 info l TNT_Line n 1}
+ info 0
+ addUserKnob {26 txt l "" +STARTLINE T "by Michael Habenicht\nwww.tinitron.de\n\nDraw a line from Point 0 to Point 1"}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {41 output T RotoPaint1.output}
+ addUserKnob {41 format T RotoPaint1.format}
+ addUserKnob {41 cliptype l "clip to" -STARTLINE T RotoPaint1.cliptype}
+ addUserKnob {41 replace -STARTLINE T RotoPaint1.replace}
+ addUserKnob {26 divider1 l "" +STARTLINE}
+ addUserKnob {12 p0 l "Point 0"}
+ p0 {10 10}
+ addUserKnob {12 p1 l "Point 1"}
+ p1 {190 190}
+ addUserKnob {26 divider2 l Attributes}
+ addUserKnob {19 RotoPaint1_color l color}
+ RotoPaint1_color 1
+ addUserKnob {8 RotoPaint1_opacity l opacity}
+ RotoPaint1_opacity 1
+ addUserKnob {8 RotoPaint1_brush_size l "brush size" R 1 1000}
+ RotoPaint1_brush_size 10
+ addUserKnob {8 RotoPaint1_brush_spacing l "brush spacing"}
+ RotoPaint1_brush_spacing 0.05000000075
+ addUserKnob {8 RotoPaint1_brush_hardness l "brush hardness"}
+ RotoPaint1_brush_hardness 0.2
+ addUserKnob {8 RotoPaint1_writeon_start l "write on start"}
+ addUserKnob {8 RotoPaint1_writeon_end l "write on end"}
+ RotoPaint1_writeon_end 1
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 132
+  ypos -122
+ }
+ RotoPaint {
+  curves {AnimTree: "" {
+ Version: 1.2
+ Flag: 0
+ RootNode: 1
+ Node: {
+  NodeName: "Root" {
+   Flag: 512
+   NodeType: 1
+   Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 1024 S 0 778 
+   NumOfAttributes: 10
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 
+  }
+  NumOfChildren: 1
+  Node: {
+   NodeName: "Paint1" {
+    Flag: 512
+    NodeType: 5
+    CubicCurve: "" {
+     Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 1035.5 S 0 757 
+     Type: 3 Flag: 2080 Dim: 3
+     NumOfPoints: 2
+     0 L 0 4096 0.5 2 0 0 "parent.p0.x" 1 0 772 L 0 4096 0.5 2 0 0 "parent.p0.y" 1 0 528 S 0 0 0 0 L 0 4096 0.5 2 0 0 "parent.p1.x" 1 0 1318.2 L 0 4096 0.5 2 0 0 "parent.p1.y" 1 0 955.2 S 0 0 0 
+     NumOfAttributes: 46
+     "vis" S 0 1 "r" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_color.r" 1 0 1 "g" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_color.g" 1 0 1 "b" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_color.b" 1 0 1 "a" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_color.a" 1 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_opacity" 1 0 1 "bs" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_brush_size" 1 0 10 "bsp" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_brush_spacing" 1 0 0.05 "h" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_brush_hardness" 1 0 0.2 "src" S 0 0 "bm" S 0 0 "dt" S 0 0 "ds" S 0 0 "dh" S 0 0 "bt" S 0 0 "bu" S 0 0 "inv" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 1024 "spy" S 0 778 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "ws" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_writeon_start" 1 0 0 "we" L 0 4096 0.5 2 0 0 "parent.RotoPaint1_writeon_end" 1 0 1 "ep1" S 0 0 "ep2" S 0 0 "ep3" S 0 0 "tt" S 0 14 "nv" S 0 1 "view1" S 0 1 
+    }
+   }
+   NumOfChildren: 0
+  }
+ }
+}
+}
+  toolbox {selectAll {
+  { brush dt 0 bu 0 ltt 0 tt 14 }
+} }
+  toolbar_show_paint_selection true
+  toolbar_brush_hardness 0.200000003
+  toolbar_lifetime_type all
+  toolbar_source_transform_scale {1 1}
+  toolbar_source_transform_center {320 240}
+  color {{parent.RotoPaint1_color.r} {parent.RotoPaint1_color.g} {parent.RotoPaint1_color.b} {parent.RotoPaint1_color.a}}
+  opacity {{parent.RotoPaint1_opacity}}
+  lifetime_type "all frames"
+  center {1035.5 757}
+  motionblur_on true
+  brush_size {{parent.RotoPaint1_brush_size}}
+  brush_spacing {{parent.RotoPaint1_brush_spacing}}
+  brush_hardness {{parent.RotoPaint1_brush_hardness}}
+  dynamic_transparency false
+  buildup false
+  writeon_start {{parent.RotoPaint1_writeon_start}}
+  writeon_end {{parent.RotoPaint1_writeon_end}}
+  source_black_outside true
+  name RotoPaint1
+  xpos 132
+  ypos -88
+ }
+ Output {
+  name Output1
+  xpos 132
+  ypos 18
+ }
+end_group

@@ -1,0 +1,179 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Twirl}
+ addUserKnob {7 value R -720 720}
+ addUserKnob {7 softness R 0 3}
+ softness 1
+ addUserKnob {14 Scale R 0 100}
+ Scale 1
+ addUserKnob {12 Center}
+ Center {256 256}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 312
+  ypos 68
+ }
+set N7c0d950 [stack 0]
+ Dot {
+  name Dot3
+  xpos 346
+  ypos 384
+ }
+set N14ad38c0 [stack 0]
+ Dot {
+  name Dot1
+  xpos 346
+  ypos 449
+ }
+push $N7c0d950
+ Multiply {
+  value 0
+  name Multiply5
+  xpos 520
+  ypos 62
+ }
+set N14ad0dc0 [stack 0]
+ Reformat {
+  type "to box"
+  box_width 512
+  box_height 512
+  box_fixed true
+  name Reformat5
+  xpos 520
+  ypos 100
+ }
+ Radial {
+  area {0 0 512 512}
+  softness {{parent.NoOp3.softness.main i}}
+  name Radial6
+  xpos 520
+  ypos 126
+ }
+ ColorLookup {
+  lut {master {curve C 0 s2.450000048 1 s0.05999999866}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup3
+  xpos 520
+  ypos 152
+ }
+set N14ad1880 [stack 0]
+push $N14ad1880
+ Ramp {
+  replace true
+  p0 {0 0}
+  p1 {0 {height i}}
+  name Ramp4
+  xpos 630
+  ypos 152
+ }
+ Multiply {
+  channels rgb
+  value 2
+  name Multiply6
+  xpos 630
+  ypos 178
+ }
+ Add {
+  channels rgb
+  value -1
+  name Add3
+  xpos 630
+  ypos 204
+ }
+set N14ad25f0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge5
+  xpos 520
+  ypos 316
+ }
+push $N14ad25f0
+ Reformat {
+  type scale
+  box_width 512
+  box_height 256
+  resize distort
+  center false
+  turn true
+  name Reformat6
+  xpos 630
+  ypos 230
+ }
+push $N14ad1880
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge6
+  xpos 630
+  ypos 315
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.green
+  name Copy5
+  xpos 520
+  ypos 342
+ }
+ Transform {
+  translate {{parent.NoOp3.Center.main.x-(width/2) i} {parent.NoOp3.Center.main.y-(height/2) i}}
+  scale {{parent.NoOp3.Scale.main.w i} {parent.NoOp3.Scale.main.h i}}
+  center {{width/2 i} {height/2 i}}
+  name Transform3
+  xpos 520
+  ypos 380
+ }
+push $N14ad38c0
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.v
+  from1 rgba.green
+  to1 forward.u
+  name Copy6
+  xpos 410
+  ypos 367
+ }
+ IDistort {
+  channels rgb
+  uv forward
+  uv_scale {{parent.NoOp3.value.main i}}
+  name IDistort3
+  xpos 410
+  ypos 419
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 410
+  ypos 445
+ }
+ Output {
+  name Output
+  xpos 410
+  ypos 471
+ }
+push $N14ad0dc0
+ NoOp {
+  name NoOp3
+  xpos 666
+  ypos 68
+  hide_input true
+  addUserKnob {20 User}
+  addUserKnob {7 value R -100 100}
+  value {{parent.value.main}}
+  addUserKnob {7 softness}
+  softness {{parent.softness.main}}
+  addUserKnob {14 Scale R 0 100}
+  Scale {{parent.Scale.main}}
+  addUserKnob {12 Center}
+  Center {{parent.Center.main.x} {parent.Center.main.y}}
+ }
+end_group

@@ -1,0 +1,124 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ help "Mask3DCubical creates a cubical 3D matte based on a World position pass. Also may be useful in work with Object Position and similar data passes which contains position cordinate. Feed it as input.\n------\nv002\nIvan Kokov. Pixomondo Shanghai. 2012\nbutafor@inbox.ru\nivan.kokov@sha.pixomondo.com"
+ addUserKnob {20 User}
+ addUserKnob {41 Position T Mask3DCubical_ik.Position}
+ addUserKnob {41 Softness T Mask3DCubical_ik.Softness}
+ addUserKnob {41 rotate l Rotation T Axis1.rotate}
+ addUserKnob {41 rot_order l "Rotation order" -STARTLINE T Axis1.rot_order}
+ addUserKnob {41 ReplaceRGB l "Replace RGB by additional mattes / Keep original (generate matte in alpha only)" T Mask3DCubical_ik.ReplaceRGB}
+ addUserKnob {41 IgnoreByAlpha l "Ignore outside by alpha" T Mask3DCubical_ik.IgnoreByAlpha}
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "v002 © Ivan Kokov. Pixomondo Shanghai. 2012"}
+}
+ Axis2 {
+  inputs 0
+  name Axis1
+  xpos -376
+  ypos -361
+ }
+ Input {
+  inputs 0
+  name InputWorldPos
+  xpos -496
+  ypos -448
+ }
+ Dot {
+  name Dot2
+  xpos -462
+  ypos -408
+ }
+set N1b39ab10 [stack 0]
+ Dot {
+  name Dot3
+  xpos -578
+  ypos -408
+ }
+ Dot {
+  name Dot1
+  xpos -578
+  ypos -184
+ }
+set N1b49eed0 [stack 0]
+push $N1b49eed0
+push $N1b39ab10
+add_layer {rgba redguard1.glow rgba.beta}
+ Add {
+  channels rgb
+  value {{-parent.Mask3DCubical_ik.Position i} {-parent.Mask3DCubical_ik.Position i} {-parent.Mask3DCubical_ik.Position i} 0}
+  name Add1
+  xpos -496
+  ypos -367
+ }
+ ColorMatrix {
+  matrix {
+      {{parent.Axis1.world_matrix.0 i} {parent.Axis1.world_matrix.1 i} {parent.Axis1.world_matrix.2 i}}
+      {{parent.Axis1.world_matrix.4 i} {parent.Axis1.world_matrix.5 i} {parent.Axis1.world_matrix.6 i}}
+      {{parent.Axis1.world_matrix.8 i} {parent.Axis1.world_matrix.9 i} {parent.Axis1.world_matrix.10 i}}
+    }
+  name ColorMatrix1
+  label "apply rotation, scale and  scew"
+  xpos -496
+  ypos -343
+ }
+ Add {
+  channels rgb
+  value {{parent.Mask3DCubical_ik.Position i} {parent.Mask3DCubical_ik.Position i} {parent.Mask3DCubical_ik.Position i} 0}
+  name Add2
+  xpos -496
+  ypos -307
+ }
+ Expression {
+  temp_name0 matteR
+  temp_expr0 "r > Position.r ? (1- ((r - Position.r) / Softness.r)) : (1-((-r + Position.r) / Softness.r))"
+  temp_name1 matteG
+  temp_expr1 "g > Position.g ? (1- ((g - Position.g) / Softness.g)) : (1-((-g + Position.g) / Softness.g))"
+  temp_name2 matteB
+  temp_expr2 "b > Position.b ? (1- ((b - Position.b) / Softness.b)) : (1-((-b + Position.b) / Softness.b))"
+  temp_name3 Mask3D
+  temp_expr3 "clamp(matteR) * clamp(matteB) * clamp(matteG)"
+  expr0 "ReplaceRGB ? matteR : r "
+  expr1 "ReplaceRGB ? matteG : g"
+  expr2 "ReplaceRGB ? matteB : b"
+  expr3 Mask3D
+  name Mask3DCubical_ik
+  selected true
+  xpos -496
+  ypos -244
+  addUserKnob {20 User}
+  addUserKnob {18 Position R 0 10}
+  Position {0 0 0}
+  addUserKnob {18 Softness R 0 10}
+  Softness {100 100 100}
+  addUserKnob {6 ReplaceRGB l "Replace RGB by additional mattes / Keep original (generate matte in alpha only)" +STARTLINE}
+  addUserKnob {6 IgnoreByAlpha l "Ignore outside by alpha" +STARTLINE}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  from1 rgba.green
+  to1 rgba.green
+  from2 rgba.blue
+  to2 rgba.blue
+  name Copy1
+  xpos -497
+  ypos -205
+  disable {{parent.Mask3DCubical_ik.ReplaceRGB i}}
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  invert_mask true
+  name Multiply1
+  xpos -497
+  ypos -100
+  disable {{!parent.Mask3DCubical_ik.IgnoreByAlpha i}}
+ }
+ Output {
+  name Output1
+  xpos -497
+  ypos 74
+ }
+end_group

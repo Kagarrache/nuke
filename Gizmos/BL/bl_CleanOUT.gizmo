@@ -1,0 +1,47 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l CleanOUT}
+ addUserKnob {41 channels l keep T Remove2.channels}
+ addUserKnob {6 crop +STARTLINE}
+ crop true
+ addUserKnob {6 clamp +STARTLINE}
+ clamp true
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 336
+  ypos 337
+ }
+ Crop {
+  box {0 0 {width i} {height i}}
+  reformat true
+  crop false
+  name Crop6
+  xpos 336
+  ypos 396
+  disable {{1-parent.crop i}}
+ }
+ Remove {
+  operation keep
+  channels rgb
+  name Remove2
+  selected true
+  xpos 336
+  ypos 422
+ }
+add_layer {rgba rgba.beta}
+ Clamp {
+  channels rgb
+  name clp
+  xpos 336
+  ypos 448
+  disable {{1-parent.clamp i}}
+ }
+ Output {
+  name Output1
+  xpos 336
+  ypos 529
+ }
+end_group

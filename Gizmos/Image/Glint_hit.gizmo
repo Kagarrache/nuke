@@ -1,0 +1,949 @@
+#! C:/Program Files/Nuke9.0v4/nuke-9.0.4.dll -nx
+version 9.0 v4
+Gizmo {
+ tile_color 0x1812ffff
+ addUserKnob {20 Glint_hit}
+ addUserKnob {41 channels T Convolve1.channels}
+ addUserKnob {4 mode M {option_1 option_2 option_3 option_4}}
+ addUserKnob {41 mutiply l control_glint T Multiply5.value}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 use_input_channels l "use input channels" -STARTLINE T Convolve1.use_input_channels}
+ addUserKnob {41 normalize -STARTLINE T Convolve1.normalize}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 Glint_hit_v01 l "" +STARTLINE T "Glint_hit_v01\n@\[Lu anh tuan]"}
+}
+ Constant {
+  inputs 0
+  channels rgb
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant5
+  xpos 172
+  ypos 271
+ }
+ Radial {
+  area {81 -55 175 311}
+  name Radial9
+  xpos 172
+  ypos 343
+ }
+ Grade {
+  multiply 1.02
+  gamma {0.2 0.136896 0.096999 0.2}
+  gamma_panelDropped true
+  name Grade9
+  xpos 172
+  ypos 369
+ }
+ Shuffle {
+  name Shuffle3
+  xpos 172
+  ypos 395
+ }
+set N23060400 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  xpos -86
+  ypos 401
+ }
+ Grade {
+  multiply 0.5
+  name Grade11
+  xpos -86
+  ypos 427
+ }
+push $N23060400
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge3
+  xpos -86
+  ypos 453
+ }
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle2
+  xpos -86
+  ypos 479
+ }
+ Blur {
+  channels rgba
+  size 27
+  name Blur5
+  xpos -86
+  ypos 505
+ }
+ Transform {
+  scale 1.22
+  center {128 128}
+  clamp true
+  name Transform27
+  xpos -86
+  ypos 531
+ }
+ Grade {
+  multiply 1.46
+  gamma {1 0.861657 0.776229 1}
+  gamma_panelDropped true
+  name Grade12
+  xpos 14
+  ypos 531
+ }
+set N23118800 [stack 0]
+ Transform {
+  scale 2.25
+  center {130 123}
+  name Transform30
+  xpos -63
+  ypos 631
+ }
+set N23118400 [stack 0]
+ Transform {
+  scale 1.32
+  center {127 130}
+  clamp true
+  name Transform31
+  xpos -63
+  ypos 682
+ }
+push $N23118400
+push $N23118800
+ Transform {
+  scale 1.75
+  center {130 123}
+  name Transform29
+  xpos -63
+  ypos 583
+ }
+push $N23118800
+ Transform {
+  scale 1.36
+  center {130 123}
+  name Transform28
+  xpos 49
+  ypos 592
+ }
+push 0
+push $N23118800
+push $N23060400
+ Merge2 {
+  inputs 6+1
+  operation plus
+  name Plus7
+  xpos 172
+  ypos 682
+ }
+set N23169400 [stack 0]
+ Transform {
+  rotate 90
+  center {128 128}
+  name Transform32
+  xpos 292
+  ypos 701
+ }
+push $N23169400
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus8
+  xpos 172
+  ypos 739
+ }
+ Blur {
+  channels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  size 50
+  mix 0.095
+  name Blur6
+  xpos 172
+  ypos 765
+ }
+ Multiply {
+  value 0.0005
+  name Multiply5
+  xpos 172
+  ypos 791
+ }
+ Rectangle {
+  area {124.7000046 125.8000031 131.0999985 131.4000092}
+  name Rectangle5
+  xpos 172
+  ypos 845
+ }
+ Crop {
+  box {0 0 256 256}
+  name Crop5
+  xpos 172
+  ypos 893
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant4
+  xpos -420
+  ypos -483
+ }
+set N231a5800 [stack 0]
+ Radial {
+  area {117 -3 139 255}
+  name Radial8
+  xpos -314
+  ypos -412
+ }
+ Grade {
+  gamma {1 0.542858 0.523445 1}
+  gamma_panelDropped true
+  name Grade8
+  xpos -314
+  ypos -386
+ }
+set N231a5000 [stack 0]
+ Transform {
+  translate {21.79999924 -16.79999924}
+  rotate -31.34547234
+  scale 0.29
+  center {128 130}
+  name Transform14
+  xpos 3
+  ypos -339
+ }
+set N231a4c00 [stack 0]
+push $N231a5000
+ Transform {
+  translate {-23.39999962 14.39999962}
+  rotate -31.34547234
+  scale 0.29
+  center {128 130}
+  name Transform13
+  xpos -110
+  ypos -341
+ }
+set N231a4800 [stack 0]
+push 0
+push $N231a5000
+ Transform {
+  translate {-16 -27}
+  rotate 55.84734726
+  scale 0.29
+  center {128 130}
+  name Transform12
+  xpos -229
+  ypos -344
+ }
+set N231a4400 [stack 0]
+push $N231a5000
+ Transform {
+  translate {15.5 23}
+  rotate 55.84734726
+  scale 0.29
+  center {128 130}
+  name Transform11
+  xpos -365
+  ypos -346
+ }
+set N231a4000 [stack 0]
+ Merge2 {
+  inputs 4+1
+  operation plus
+  name Plus4
+  xpos -208
+  ypos -222
+ }
+set N2332bc00 [stack 0]
+ Transform {
+  scale 5.17
+  center {127 129}
+  name Transform24
+  xpos 580
+  ypos -164
+ }
+push $N2332bc00
+ Transform {
+  scale 4.45
+  center {127 129}
+  name Transform23
+  xpos 516
+  ypos -162
+ }
+push $N2332bc00
+ Transform {
+  scale 3.8
+  center {127 129}
+  name Transform22
+  xpos 433
+  ypos -160
+ }
+push $N2332bc00
+ Transform {
+  scale 3.24
+  center {127 129}
+  name Transform21
+  xpos 348
+  ypos -159
+ }
+push $N2332bc00
+ Transform {
+  scale 2.81
+  center {127 129}
+  name Transform20
+  xpos 249
+  ypos -165
+ }
+push $N2332bc00
+ Transform {
+  scale 2.48
+  center {127 129}
+  name Transform19
+  xpos 114
+  ypos -169
+ }
+push $N2332bc00
+ Transform {
+  scale 2.05
+  center {127 129}
+  name Transform18
+  xpos 8
+  ypos -176
+ }
+push $N2332bc00
+ Transform {
+  scale 1.7
+  center {127 129}
+  name Transform17
+  xpos -105
+  ypos -184
+ }
+push $N2332bc00
+ Transform {
+  scale 1.24
+  center {127 129}
+  name Transform16
+  xpos -208
+  ypos -187
+ }
+push 0
+push $N2332bc00
+ Transform {
+  scale 1.44
+  center {128 128}
+  name Transform15
+  xpos -312
+  ypos -187
+ }
+push $N231a4c00
+push $N231a4800
+push $N231a4400
+push 0
+push $N231a4000
+push $N231a5800
+ Radial {
+  area {64 64 192 192}
+  name Radial7
+  xpos -546
+  ypos -429
+ }
+ Grade {
+  whitepoint 1.04
+  multiply 1.12
+  gamma {0.055785 0.109404 0.2 0.2}
+  gamma_panelDropped true
+  name Grade7
+  xpos -546
+  ypos -403
+ }
+ Transform {
+  scale 1.3
+  center {128 128}
+  name Transform25
+  xpos -546
+  ypos -377
+ }
+ Merge2 {
+  inputs 5+1
+  operation plus
+  name Plus3
+  xpos -501
+  ypos -229
+ }
+ Merge2 {
+  inputs 11+1
+  operation plus
+  name Plus5
+  xpos -312
+  ypos 4
+ }
+ Blur {
+  channels rgba
+  size 20
+  mix 0.072
+  name Blur4
+  xpos -312
+  ypos 30
+ }
+set N233b9c00 [stack 0]
+push $N233b9c00
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle6
+  xpos -581
+  ypos 39
+ }
+ Grade {
+  multiply 0.5
+  name Grade14
+  xpos -583
+  ypos 65
+ }
+push $N233b9c00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos -583
+  ypos 121
+ }
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle7
+  xpos -583
+  ypos 147
+ }
+ Blur {
+  channels rgba
+  size 4.2
+  mix 0.03
+  name Blur8
+  xpos -583
+  ypos 173
+ }
+ Transform {
+  scale 2
+  center {128 128}
+  filter Keys
+  clamp true
+  name Transform33
+  xpos -583
+  ypos 199
+ }
+ Grade {
+  multiply 0
+  gamma {1 0.87736 0.690501 1}
+  gamma_panelDropped true
+  name Grade15
+  xpos -496
+  ypos 198
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  name Plus9
+  xpos -312
+  ypos 198
+ }
+ Transform {
+  rotate -9.662081718
+  center {128 128}
+  name Transform34
+  xpos -312
+  ypos 224
+ }
+ LensDistortion {
+  serializeKnob ""
+  serialiseKnob "22 serialization::archive 9 0 0 0 0 0 0 0 0 0 0 0 0"
+  distortion1 0.3
+  cardScale {46.9341011 46.9341011 1}
+  a -104.200531
+  b -6.664929867
+  c 101.0743942
+  name LensDistortion4
+  xpos -312
+  ypos 259
+ }
+ Blur {
+  channels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  size 36.5
+  mix 0.08
+  name Blur9
+  xpos -312
+  ypos 285
+ }
+ Multiply {
+  value {{Multiply5.value}}
+  name Multiply4
+  xpos -312
+  ypos 321
+ }
+ Rectangle {
+  area {127.1000061 127.1600037 128.8999939 128.8399963}
+  name Rectangle4
+  xpos -312
+  ypos 359
+ }
+ Crop {
+  box {0 0 256 256}
+  name Crop7
+  xpos -312
+  ypos 457
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant2
+  xpos -1214
+  ypos -374
+ }
+set N4285e000 [stack 0]
+ Radial {
+  area {120 0 136 256}
+  name Radial4
+  xpos -1214
+  ypos -289
+ }
+ Grade {
+  gamma {0.5384013653 0.6937633753 1 1}
+  name Grade4
+  xpos -1214
+  ypos -263
+ }
+ Reformat {
+  type scale
+  turn true
+  name Reformat3
+  xpos -1214
+  ypos -230
+ }
+set N428af400 [stack 0]
+ Transform {
+  translate {2.400000095 10.20000076}
+  scale {0.48 0.33}
+  center {125 130.5}
+  name Transform10
+  xpos -885
+  ypos -183
+ }
+push $N428af400
+ Transform {
+  translate {1 -12.70000038}
+  scale {0.48 0.33}
+  center {125 130.5}
+  name Transform9
+  xpos -970
+  ypos -184
+ }
+push $N428af400
+ Transform {
+  translate {2 -22.5}
+  scale 0.68
+  center {125 130.5}
+  name Transform6
+  xpos -1071
+  ypos -181
+ }
+push $N428af400
+ Transform {
+  translate {5 20.5}
+  scale 0.68
+  center {125 130.5}
+  name Transform5
+  xpos -1161
+  ypos -178
+ }
+push 0
+push $N428af400
+push $N4285e000
+ Radial {
+  area {64 64 192 192}
+  name Radial3
+  xpos -1322
+  ypos -301
+ }
+ Grade {
+  gamma {0.200000003 0.1447856277 0.1027279422 0.200000003}
+  name Grade3
+  xpos -1322
+  ypos -275
+ }
+ Merge2 {
+  inputs 6+1
+  operation plus
+  name Plus1
+  xpos -1279
+  ypos -106
+ }
+ Blur {
+  channels {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+  size 15.4
+  mix 0.146
+  name Blur2
+  xpos -1279
+  ypos -80
+ }
+ Multiply {
+  name Multiply2
+  xpos -1279
+  ypos -54
+ }
+ Rectangle {
+  area {126.8999939 127 129.1000061 129}
+  name Rectangle2
+  xpos -1279
+  ypos -16
+ }
+ LensDistortion {
+  serializeKnob ""
+  serialiseKnob "22 serialization::archive 9 0 0 0 0 0 0 0 0 0 0 0 0"
+  distortion1 0.3
+  cardScale {46.9341011 46.9341011 1}
+  a -104.200531
+  b -6.664929867
+  c 101.0743942
+  name LensDistortion1
+  xpos -1279
+  ypos 10
+ }
+set N428ee400 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle4
+  xpos -1511
+ }
+ Grade {
+  multiply 0.5
+  name Grade10
+  xpos -1511
+  ypos 26
+ }
+push $N428ee400
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge4
+  xpos -1511
+  ypos 52
+ }
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle5
+  xpos -1511
+  ypos 78
+ }
+ Blur {
+  channels rgba
+  size 4.2
+  mix 0.03
+  name Blur7
+  xpos -1511
+  ypos 104
+ }
+ Transform {
+  scale 2.2
+  center {128 128}
+  filter Keys
+  clamp true
+  name Transform26
+  xpos -1511
+  ypos 130
+ }
+ Grade {
+  multiply 0.98
+  gamma {1 0.87736 0.690501 1}
+  gamma_panelDropped true
+  name Grade13
+  xpos -1424
+  ypos 129
+ }
+push $N428ee400
+ Merge2 {
+  inputs 2
+  operation soft-light
+  name Plus6
+  xpos -1279
+  ypos 129
+ }
+set N4293c400 [stack 0]
+ LensDistortion {
+  serializeKnob ""
+  serialiseKnob "22 serialization::archive 9 0 0 0 0 0 0 0 0 0 0 0 0"
+  distortion1 0.3
+  cardScale {46.9341011 46.9341011 1}
+  a -104.200531
+  b -6.664929867
+  c 101.0743942
+  name LensDistortion2
+  xpos -1279
+  ypos 197
+ }
+ LensDistortion {
+  serializeKnob ""
+  serialiseKnob "22 serialization::archive 9 0 0 0 0 0 0 0 0 0 0 0 0"
+  name LensDistortion3
+  xpos -1279
+  ypos 223
+ }
+push $N4293c400
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus10
+  xpos -1156
+  ypos 249
+ }
+ LensDistortion {
+  serializeKnob ""
+  serialiseKnob "22 serialization::archive 9 0 0 0 0 0 0 0 0 0 0 0 0"
+  distortion1 0.3
+  cardScale {46.9341011 46.9341011 1}
+  a -104.200531
+  b -6.664929867
+  c 101.0743942
+  name LensDistortion5
+  xpos -1156
+  ypos 275
+ }
+ LensDistortion {
+  serializeKnob ""
+  serialiseKnob "22 serialization::archive 9 0 0 0 0 0 0 0 0 0 0 0 0"
+  name LensDistortion6
+  xpos -1156
+  ypos 301
+ }
+ Crop {
+  box {0 0 256 256}
+  name Crop6
+  xpos -1156
+  ypos 327
+ }
+ Multiply {
+  value {{Multiply5.value}}
+  name Multiply6
+  xpos -1156
+  ypos 353
+ }
+ Rectangle {
+  area {127.4400024 127.4799957 128.5599976 128.5200043}
+  name Rectangle6
+  xpos -1156
+  ypos 391
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant3
+  xpos -1917
+  ypos -333
+ }
+set N42998000 [stack 0]
+ Radial {
+  area {125 1 131 255}
+  name Radial5
+  xpos -1917
+  ypos -243
+ }
+ Grade {
+  gamma {0.432501018 0.6625611782 1 1}
+  name Grade5
+  xpos -1917
+  ypos -217
+ }
+set N429ef800 [stack 0]
+ Reformat {
+  type scale
+  turn true
+  name Reformat4
+  xpos -1794
+  ypos -180
+ }
+set N429ef400 [stack 0]
+push $N429ef400
+ Transform {
+  rotate 46.73572159
+  center {127 128}
+  name Transform7
+  xpos -1656
+  ypos -134
+ }
+ Crop {
+  box {0 0 256 256}
+  name Crop3
+  xpos -1656
+  ypos -108
+ }
+push 0
+push $N429ef400
+ Transform {
+  rotate -46.73572159
+  center {127 128}
+  name Transform8
+  xpos -1757
+  ypos -121
+ }
+ Crop {
+  box {0 0 256 256}
+  name Crop4
+  xpos -1757
+  ypos -95
+ }
+push $N429ef800
+ Merge2 {
+  inputs 4+1
+  name Merge2
+  xpos -1900
+  ypos 39
+ }
+push $N42998000
+ Radial {
+  area {64 64 192 192}
+  name Radial6
+  xpos -2022
+  ypos -244
+ }
+ Grade {
+  gamma {0.2300000042 0.1222772822 0.1405461878 0.2300000042}
+  name Grade6
+  xpos -2022
+  ypos -190
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus2
+  xpos -2022
+  ypos 39
+ }
+ Blur {
+  size 9.8
+  mix 0.175
+  name Blur1
+  xpos -2022
+  ypos 65
+ }
+ Multiply {
+  value {{Multiply5.value}}
+  name Multiply1
+  xpos -2022
+  ypos 103
+ }
+ Rectangle {
+  area {127.3500061 127.3999939 128.6499939 128.6000061}
+  name Rectangle1
+  xpos -2022
+  ypos 141
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant1
+  xpos -2398
+  ypos -136
+ }
+set N42a26000 [stack 0]
+ Radial {
+  area {64 64 192 192}
+  name Radial1
+  xpos -2503
+  ypos -47
+ }
+ Grade {
+  gamma {0.2300000042 0.1222772822 0.1405461878 0.2300000042}
+  name Grade1
+  xpos -2503
+  ypos -21
+ }
+push 0
+push $N42a26000
+ Radial {
+  area {125 1 131 255}
+  name Radial2
+  xpos -2398
+  ypos -46
+ }
+ Grade {
+  gamma {0.432501018 0.6625611782 1 1}
+  name Grade2
+  xpos -2398
+  ypos -20
+ }
+set N42a6f000 [stack 0]
+ Reformat {
+  type scale
+  turn true
+  name Reformat1
+  xpos -2294
+  ypos 8
+ }
+push $N42a6f000
+ Merge2 {
+  inputs 3+1
+  operation plus
+  name Plus
+  xpos -2407
+  ypos 45
+ }
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue -rgba.alpha}
+  size 8.2
+  mix 0.266
+  name Blur3
+  xpos -2407
+  ypos 71
+ }
+ Multiply {
+  value {{Multiply5.value}}
+  name Multiply3
+  xpos -2407
+  ypos 97
+ }
+ Rectangle {
+  area {127.6000061 127.6000061 128.3999939 128.3999939}
+  name Rectangle3
+  xpos -2407
+  ypos 135
+ }
+ Switch {
+  inputs 5
+  which {{mode}}
+  name Switch4
+  xpos -1131
+  ypos 931
+ }
+ Dot {
+  name Dot2
+  xpos -1097
+  ypos 1196
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 436
+  ypos 1066
+ }
+ Convolve2 {
+  inputs 2
+  channels rgba
+  use_input_channels true
+  name Convolve1
+  selected true
+  xpos 436
+  ypos 1186
+ }
+ Output {
+  name Output1
+  xpos 436
+  ypos 1425
+ }
+end_group

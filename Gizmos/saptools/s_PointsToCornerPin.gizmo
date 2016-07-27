@@ -1,0 +1,330 @@
+
+Group {
+ name s_PointsToCornerPin
+ inputs 2
+ tile_color 0x9b0000ff
+ note_font "DejaVu Sans"
+ addUserKnob {20 PtsToCrnPin l PointsToCornerPin}
+ addUserKnob {26 getPoints_txt l "Get Points"}
+ addUserKnob {22 getPts l "Get Points" T "import nukescripts\n\n### FUNCTIONS\ndef getInput(node, i, ignoreMe = 'Dot'):\n    check = False\n    while not check:\n        next = node.input(i)\n        if next.Class() == ignoreMe:\n            return getInput(next,0)\n        else:\n            check = True\n            return next\n\ni = 0\nfor vertex in nukescripts.snap3d.selectedPoints():\n    i += 1\n    \n### check if geometry is connected\ngeo = None\ntry:\n    geo = getInput(nuke.thisNode(),0)\['name'].value()\nexcept:\n    nuke.message('Geometry is not connected')\n\n### check if camera is connected\ncam = None\ntry:\n    cam = getInput(nuke.thisNode(),1)\['name'].value()\nexcept:\n    nuke.message('Camera is not connected')\n    \nif cam and geo:\n    if i != 0:\n        gen = None\n        points = None\n        gen = nukescripts.snap3d.selectedPoints()\n        points = \[point for point in gen]\n        if len(points) >= 4:\n            for i in xrange(4):\n                pName = \"xPt%s\" % str(i+1)\n                nuke.toNode(pName)\[\"translate\"].setValue(points\[i])\n\n        nuke.thisNode()\['generateBool'].setValue(1)\n        \n    else:\n        nuke.message('Select some vertices first')" +STARTLINE}
+ addUserKnob {22 getPtsAni l "Get Animated Points" -STARTLINE T "import nukescripts\n\n### FUNCTIONS\ndef getInput(node, i, ignoreMe = 'Dot'):\n    check = False\n    while not check:\n        next = node.input(i)\n        if next.Class() == ignoreMe:\n            return getInput(next,0)\n        else:\n            check = True\n            return next\n\nfirst = int(nuke.thisNode()\['firstFrame'].getValue())\nlast = int(nuke.thisNode()\['lastFrame'].getValue())\n\nif first == 0 and last == 0:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(nuke.thisNode().firstFrame(),nuke.thisNode().lastFrame()))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\nelse:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(first,last))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\n    \nfirstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\nlastKnob = int(nuke.thisNode()\['lastFrame'].getValue())\n\nframes = \[frame for frame in xrange(firstKnob,lastKnob+1)]\n\ni = 0\nfor vertex in nukescripts.snap3d.selectedPoints():\n    i += 1\n    \n### check if geometry is connected\ngeo = None\ntry:\n    geo = getInput(nuke.thisNode(),0)\['name'].value()\nexcept:\n    nuke.message('Geometry is not connected')\n\n### check if camera is connected\ncam = None\ntry:\n    cam = getInput(nuke.thisNode(),1)\['name'].value()\nexcept:\n    nuke.message('Camera is not connected')\n    \nif cam and geo:\n    if i != 0:\n        pB = nuke.ProgressTask('PointsToCornerPin')\n        pB.setMessage(\"Tracing points:\")\n\n        ct = nuke.nodes.CurveTool()\n        for frame in frames:\n            nuke.execute(ct,frame,frame)\n            gen = nukescripts.snap3d.selectedPoints()\n            points = \[point for point in gen]\n            if len(points) >= 4:\n                for i in xrange(4):\n                    pName = \"xPt%s\" % str(i+1)\n                    nuke.toNode(pName)\['translate'].setAnimated()\n                    nuke.toNode(pName)\['translate'].setValueAt(points\[i]\[0], frame,0)\n                    nuke.toNode(pName)\['translate'].setValueAt(points\[i]\[1], frame,1)\n                    nuke.toNode(pName)\['translate'].setValueAt(points\[i]\[2], frame,2)\n                    pB.setProgress(int((frame-firstKnob)*100/len(frames)))\n            if pB.isCancelled():    \n                break\n        del pB\n        nuke.delete(ct)\n\n        nuke.thisNode()\['generateBool'].setValue(1)\n        \n    else:\n        nuke.message('Select some vertices first')"}
+ addUserKnob {3 firstFrame l INVISIBLE +INVISIBLE}
+ addUserKnob {3 lastFrame l INVISIBLE -STARTLINE +INVISIBLE}
+ addUserKnob {26 generate_txt l Generate}
+ addUserKnob {22 generate l GENERATE T "import math\n\n##### FUNCTIONS #####\ndef cameraProjectionMatrix(cameraNode, frame):\n    wm = nuke.math.Matrix4()\n    for i in xrange(16):\n        wm\[i] = cameraNode\['matrix'].getValueAt(frame,i)\n\n    wm.transpose()\n    camTransform = wm.inverse()\n\n\n    roll = float(cameraNode\['winroll'].getValueAt(frame,0))\n    scale_x = float(cameraNode\['win_scale'].getValueAt(frame,0))\n    scale_y = float(cameraNode\['win_scale'].getValueAt(frame,1))\n    translate_x = float(cameraNode\['win_translate'].getValueAt(frame,0))\n    translate_y = float(cameraNode\['win_translate'].getValueAt(frame,1))\n    m = nuke.math.Matrix4()\n    m.makeIdentity()\n    m.rotateZ(math.radians(roll))\n    m.scale(1.0 / scale_x, 1.0 / scale_y, 1.0)\n    m.translate(-translate_x, -translate_y, 0.0)\n    \n    focal_length = float(cameraNode\['focal'].getValueAt(frame))\n    h_aperture = float(cameraNode\['haperture'].getValueAt(frame))\n    near = float(cameraNode\['near'].getValueAt(frame))\n    far = float(cameraNode\['far'].getValueAt(frame))\n    projection_mode = int(cameraNode\['projection_mode'].getValueAt(frame))\n    p = nuke.math.Matrix4()\n    p.projection(focal_length / h_aperture, near, far, projection_mode == 0)\n    \n    format = nuke.root()\['format'].value()\n    imageAspect = float(format.height()) / float(format.width())\n    t = nuke.math.Matrix4()\n    t.makeIdentity()\n    t.translate( 1.0, 1.0 - (1.0 - imageAspect / float(format.pixelAspect())), 0.0 )\n    \n    x_scale = float(format.width()) / 2.0\n    y_scale = x_scale * format.pixelAspect()\n    s = nuke.math.Matrix4()\n    s.makeIdentity()\n    s.scale(x_scale, y_scale, 1.0)\n\n\n    return s * t * p * m * camTransform\n\ndef projectPoints(frame, camera = None, points = None):\n    camNode = camera\n\n    camMatrix = cameraProjectionMatrix(camNode, frame)\n\n    for point in points:\n        pt = nuke.math.Vector3(point\[0],point\[1],point\[2])\n        tPos = camMatrix * nuke.math.Vector4(pt.x, pt.y, pt.z, 1.0)\n        yield nuke.math.Vector2(tPos.x / tPos.w, tPos.y / tPos.w)\n        \ndef getInput(node, i, ignoreMe = 'Dot'):\n    check = False\n    while not check:\n        next = node.input(i)\n        if next.Class() == ignoreMe:\n            return getInput(next,0)\n        else:\n            check = True\n            return next\n\n\n### check if geometry is connected\ngeo = None\ntry:\n    geo = getInput(nuke.thisNode(),0)\['name'].value()\nexcept:\n    nuke.message('Geometry is not connected')\n\n### check if camera is connected\ncam = None\ntry:\n    cam = getInput(nuke.thisNode(),1)\['name'].value()\nexcept:\n    nuke.message('Camera is not connected')\n    \n\nif cam and geo:\n    if nuke.thisNode()\['generateBool'].getValue():\n\n        camera = getInput(nuke.thisNode(),1)\n\n        first = int(nuke.thisNode()\['firstFrame'].getValue())\n        last = int(nuke.thisNode()\['lastFrame'].getValue())\n\n        if first == 0 and last == 0:\n            askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(nuke.thisNode().firstFrame(),nuke.thisNode().lastFrame()))\n            FrameRange = askFrameRange\[0].split('-')\n            nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n            nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\n        else:\n            askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(first,last))\n            FrameRange = askFrameRange\[0].split('-')\n            nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n            nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\n            \n        firstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\n        lastKnob = int(nuke.thisNode()\['lastFrame'].getValue())\n        \n        if first == 0 and last == 0:\n            nuke.thisNode()\['firstFrame'].setValue(nuke.root().firstFrame())\n            nuke.thisNode()\['lastFrame'].setValue(nuke.root().lastFrame())\n            \n        firstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\n        lastKnob = int(nuke.thisNode()\['lastFrame'].getValue()) \n        \n        frames = \[frame for frame in xrange(firstKnob,lastKnob+1)]\n        \n        if frames != None:\n            pB = nuke.ProgressTask('PointsToCornerPin')\n            pB.setMessage(\"Generating projection:\")\n        \n            ct = nuke.nodes.CurveTool()\n            for frame in frames:\n                nuke.execute(ct,frame,frame)\n                gen = None\n                gen = projectPoints(frame,camera,(\[nuke.toNode(\"xPt%s\" % str(n+1))\['translate'].value() for n in range(4)]))\n                if gen:\n                    for p in xrange(4):\n                        point = gen.next()\n                        pName = 'to%s' % str(p+1)\n                        nuke.thisNode()\[pName].setAnimated()\n                        nuke.thisNode()\[pName].setValueAt(point\[0],frame,0)\n                        nuke.thisNode()\[pName].setValueAt(point\[1],frame,1)\n                        pB.setProgress(int((frame-first)*100/len(frames)))\n                if pB.isCancelled():\n                    break\n            del pB\n            nuke.delete(ct)\n            \n        nuke.thisNode()\['exportBool'].setValue(1)\n            \n    else:\n        nuke.message('Get points first')" +STARTLINE}
+ addUserKnob {22 generate_old l INVISIBLE -STARTLINE +INVISIBLE T "### FUNCTIONS\ndef getInput(node, i, ignoreMe = 'Dot'):\n    check = False\n    while not check:\n        next = node.input(i)\n        if next.Class() == ignoreMe:\n            return getInput(next,0)\n        else:\n            check = True\n            return next\n\ncam = None\ntry:\n    cam = getInput(nuke.thisNode(),1)\['name'].value()\nexcept:\n    nuke.message('Camera is not connected')\n\nif cam:\n\tif nuke.thisNode()\['generateBool'].getValue():\n\t\t\n\t\tfirst = int(nuke.thisNode()\['firstFrame'].getValue())\n\t\tlast = int(nuke.thisNode()\['lastFrame'].getValue())\n\t\t\n\t\tif first == 0 and last == 0:\n\t\t\tnuke.thisNode()\['firstFrame'].setValue(nuke.root().firstFrame())\n\t\t\tnuke.thisNode()\['lastFrame'].setValue(nuke.root().lastFrame())\n\t\t\t\n\t\tfirstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\n\t\tlastKnob = int(nuke.thisNode()\['lastFrame'].getValue()) \n\n\t\tfor i in xrange(4):\n\t\t\tpName = 'to%s' % str(i+1)\n\t\t\tnuke.thisNode()\[pName].clearAnimated()\n\n\t\tfor i in xrange(4):\n\t\t\tnName = \"Rec%s\" % str(i+1)\n\t\t\tnode = nuke.toNode(nName)\n\t\t\tnuke.execute (node,firstKnob,lastKnob)\n\t\t\tpName = 'to%s' % str(i+1)\n\t\t\tnuke.thisNode()\[pName].setAnimated()\n\t\t\tnuke.thisNode()\[pName].copyAnimations(node\['output'].animations())\n\t\t\t\n\t\tnuke.thisNode()\['exportBool'].setValue(1)\n\telse:\n\t\tnuke.message('Get points first')"}
+ addUserKnob {6 generateBool l INVISIBLE -STARTLINE +INVISIBLE}
+ addUserKnob {20 input_grp l Input n 1}
+ input_grp 0
+ addUserKnob {41 pt1 l "pt 1" T xPt1.translate}
+ addUserKnob {22 setPt1 l Set -STARTLINE T "gen = None\npoints = None\ngen = nukescripts.snap3d.selectedPoints()\npoints = \[point for point in gen]\nif len(points) > 0:\n    halfLength = int(len(points)/2)\n\n    x = 0\n    y = 0\n    z = 0\n    \n    for i in xrange(halfLength):\n        x += points\[i]\[0]\n        y += points\[i]\[1]\n        z += points\[i]\[2]\n\n    x /= halfLength\n    y /= halfLength\n    z /= halfLength\n\n    nuke.toNode('xPt1')\['translate'].setValue(\[x,y,z])"}
+ addUserKnob {22 setPt1Ani l "Set Animated" -STARTLINE T "import nukescripts\n\nfirst = int(nuke.thisNode()\['firstFrame'].getValue())\nlast = int(nuke.thisNode()\['lastFrame'].getValue())\n\nif first == 0 and last == 0:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(nuke.thisNode().firstFrame(),nuke.thisNode().lastFrame()))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\nelse:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(first,last))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\n    \nfirstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\nlastKnob = int(nuke.thisNode()\['lastFrame'].getValue())\n\nframes = \[frame for frame in xrange(firstKnob,lastKnob+1)]\n\nif frames != None:\n    pB = nuke.ProgressTask('PointsToCornerPin')\n    pB.setMessage(\"Tracing points:\")\n    \n    ct = nuke.nodes.CurveTool()\n    for frame in frames:\n        nuke.execute(ct,frame,frame)\n        gen = nukescripts.snap3d.selectedPoints()\n        points = \[point for point in gen]\n        if len(points) > 0:\n            halfLength = int(len(points)/2)\n\n            x = 0\n            y = 0\n            z = 0\n\n            for i in xrange(halfLength):\n                    x += points\[i]\[0]\n                    y += points\[i]\[1]\n                    z += points\[i]\[2]\n    \n            x /= halfLength\n            y /= halfLength\n            z /= halfLength\n\n            nuke.toNode('xPt1')\['translate'].setAnimated()\n            nuke.toNode('xPt1')\['translate'].setValueAt(x, frame,0)\n            nuke.toNode('xPt1')\['translate'].setValueAt(y, frame,1)\n            nuke.toNode('xPt1')\['translate'].setValueAt(z, frame,2)\n            print int(frame/len(frames))\n            pB.setProgress(int((frame-first)*100/len(frames)))\n        if pB.isCancelled():\n            break\n\n    del pB\n    nuke.delete(ct)\n    \n    nuke.thisNode()\['generateBool'].setValue(1)"}
+ addUserKnob {41 pt2 l "pt 2" T xPt2.translate}
+ addUserKnob {22 setPt2 l Set -STARTLINE T "gen = None\npoints = None\ngen = nukescripts.snap3d.selectedPoints()\npoints = \[point for point in gen]\nif len(points) > 0:\n    halfLength = int(len(points)/2)\n\n    x = 0\n    y = 0\n    z = 0\n    \n    for i in xrange(halfLength):\n        x += points\[i]\[0]\n        y += points\[i]\[1]\n        z += points\[i]\[2]\n\n    x /= halfLength\n    y /= halfLength\n    z /= halfLength\n\n    nuke.toNode('xPt2')\['translate'].setValue(\[x,y,z])"}
+ addUserKnob {22 setPt2Ani l "Set Animated" -STARTLINE T "import nukescripts\n\nfirst = int(nuke.thisNode()\['firstFrame'].getValue())\nlast = int(nuke.thisNode()\['lastFrame'].getValue())\n\nif first == 0 and last == 0:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(nuke.thisNode().firstFrame(),nuke.thisNode().lastFrame()))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\nelse:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(first,last))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\n    \nfirstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\nlastKnob = int(nuke.thisNode()\['lastFrame'].getValue())\n\nframes = \[frame for frame in xrange(firstKnob,lastKnob+1)]\n\nif frames != None:\n    pB = nuke.ProgressTask('PointsToCornerPin')\n    pB.setMessage(\"Tracing points:\")\n    \n    ct = nuke.nodes.CurveTool()\n    for frame in frames:\n        nuke.execute(ct,frame,frame)\n        gen = nukescripts.snap3d.selectedPoints()\n        points = \[point for point in gen]\n        if len(points) > 0:\n            halfLength = int(len(points)/2)\n\n            x = 0\n            y = 0\n            z = 0\n\n            for i in xrange(halfLength):\n                    x += points\[i]\[0]\n                    y += points\[i]\[1]\n                    z += points\[i]\[2]\n    \n            x /= halfLength\n            y /= halfLength\n            z /= halfLength\n\n            nuke.toNode('xPt2')\['translate'].setAnimated()\n            nuke.toNode('xPt2')\['translate'].setValueAt(x, frame,0)\n            nuke.toNode('xPt2')\['translate'].setValueAt(y, frame,1)\n            nuke.toNode('xPt2')\['translate'].setValueAt(z, frame,2)\n            print int(frame/len(frames))\n            pB.setProgress(int((frame-first)*100/len(frames)))\n        if pB.isCancelled():\n            break\n\n    del pB\n    nuke.delete(ct)\n    \n    nuke.thisNode()\['generateBool'].setValue(1)"}
+ addUserKnob {41 pt3 l "pt 3" T xPt3.translate}
+ addUserKnob {22 setPt3 l Set -STARTLINE T "gen = None\npoints = None\ngen = nukescripts.snap3d.selectedPoints()\npoints = \[point for point in gen]\nif len(points) > 0:\n    halfLength = int(len(points)/2)\n\n    x = 0\n    y = 0\n    z = 0\n    \n    for i in xrange(halfLength):\n        x += points\[i]\[0]\n        y += points\[i]\[1]\n        z += points\[i]\[2]\n\n    x /= halfLength\n    y /= halfLength\n    z /= halfLength\n\n    nuke.toNode('xPt3')\['translate'].setValue(\[x,y,z])"}
+ addUserKnob {22 setPt3Ani l "Set Animated" -STARTLINE T "import nukescripts\n\nfirst = int(nuke.thisNode()\['firstFrame'].getValue())\nlast = int(nuke.thisNode()\['lastFrame'].getValue())\n\nif first == 0 and last == 0:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(nuke.thisNode().firstFrame(),nuke.thisNode().lastFrame()))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\nelse:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(first,last))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\n    \nfirstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\nlastKnob = int(nuke.thisNode()\['lastFrame'].getValue())\n\nframes = \[frame for frame in xrange(firstKnob,lastKnob+1)]\n\nif frames != None:\n    pB = nuke.ProgressTask('PointsToCornerPin')\n    pB.setMessage(\"Tracing points:\")\n    \n    ct = nuke.nodes.CurveTool()\n    for frame in frames:\n        nuke.execute(ct,frame,frame)\n        gen = nukescripts.snap3d.selectedPoints()\n        points = \[point for point in gen]\n        if len(points) > 0:\n            halfLength = int(len(points)/2)\n\n            x = 0\n            y = 0\n            z = 0\n\n            for i in xrange(halfLength):\n                    x += points\[i]\[0]\n                    y += points\[i]\[1]\n                    z += points\[i]\[2]\n    \n            x /= halfLength\n            y /= halfLength\n            z /= halfLength\n\n            nuke.toNode('xPt3')\['translate'].setAnimated()\n            nuke.toNode('xPt3')\['translate'].setValueAt(x, frame,0)\n            nuke.toNode('xPt3')\['translate'].setValueAt(y, frame,1)\n            nuke.toNode('xPt3')\['translate'].setValueAt(z, frame,2)\n            print int(frame/len(frames))\n            pB.setProgress(int((frame-first)*100/len(frames)))\n        if pB.isCancelled():\n            break\n\n    del pB\n    nuke.delete(ct)\n    \n    nuke.thisNode()\['generateBool'].setValue(1)"}
+ addUserKnob {41 pt4 l "pt 4" T xPt4.translate}
+ addUserKnob {22 setPt4 l Set -STARTLINE T "gen = None\npoints = None\ngen = nukescripts.snap3d.selectedPoints()\npoints = \[point for point in gen]\nif len(points) > 0:\n    halfLength = int(len(points)/2)\n\n    x = 0\n    y = 0\n    z = 0\n    \n    for i in xrange(halfLength):\n        x += points\[i]\[0]\n        y += points\[i]\[1]\n        z += points\[i]\[2]\n\n    x /= halfLength\n    y /= halfLength\n    z /= halfLength\n\n    nuke.toNode('xPt4')\['translate'].setValue(\[x,y,z])"}
+ addUserKnob {22 setPt4Ani l "Set Animated" -STARTLINE T "import nukescripts\n\nfirst = int(nuke.thisNode()\['firstFrame'].getValue())\nlast = int(nuke.thisNode()\['lastFrame'].getValue())\n\nif first == 0 and last == 0:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(nuke.thisNode().firstFrame(),nuke.thisNode().lastFrame()))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\nelse:\n    askFrameRange = nuke.getFramesAndViews('framerange', '%s-%s' %(first,last))\n    FrameRange = askFrameRange\[0].split('-')\n    nuke.thisNode()\['firstFrame'].setValue(int(FrameRange\[0]))\n    nuke.thisNode()\['lastFrame'].setValue(int(FrameRange\[1]))\n    \nfirstKnob = int(nuke.thisNode()\['firstFrame'].getValue())\nlastKnob = int(nuke.thisNode()\['lastFrame'].getValue())\n\nframes = \[frame for frame in xrange(firstKnob,lastKnob+1)]\n\nif frames != None:\n    pB = nuke.ProgressTask('PointsToCornerPin')\n    pB.setMessage(\"Tracing points:\")\n    \n    ct = nuke.nodes.CurveTool()\n    for frame in frames:\n        nuke.execute(ct,frame,frame)\n        gen = nukescripts.snap3d.selectedPoints()\n        points = \[point for point in gen]\n        if len(points) > 0:\n            halfLength = int(len(points)/2)\n\n            x = 0\n            y = 0\n            z = 0\n\n            for i in xrange(halfLength):\n                    x += points\[i]\[0]\n                    y += points\[i]\[1]\n                    z += points\[i]\[2]\n    \n            x /= halfLength\n            y /= halfLength\n            z /= halfLength\n\n            nuke.toNode('xPt4')\['translate'].setAnimated()\n            nuke.toNode('xPt4')\['translate'].setValueAt(x, frame,0)\n            nuke.toNode('xPt4')\['translate'].setValueAt(y, frame,1)\n            nuke.toNode('xPt4')\['translate'].setValueAt(z, frame,2)\n            print int(frame/len(frames))\n            pB.setProgress(int((frame-first)*100/len(frames)))\n        if pB.isCancelled():\n            break\n\n    del pB\n    nuke.delete(ct)\n    \n    nuke.thisNode()\['generateBool'].setValue(1)"}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 output_grp l Output n 1}
+ addUserKnob {12 to1 l "to 1"}
+ addUserKnob {12 to2 l "to 2"}
+ addUserKnob {12 to3 l "to 3"}
+ addUserKnob {12 to4 l "to 4"}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 export l Export n 1}
+ addUserKnob {22 exportCrnPin l ">> Export CornerPin" T "n = nuke.thisNode()\nfirst = nuke.thisNode().firstFrame()\n\nif nuke.thisNode()\['exportBool'].getValue():\n    if n\['refFrame'].getValue == 0:\n        n\['refFrame'].setValue(first)\n\n    nuke.root().begin()\n    cp = nuke.createNode(\"CornerPin2D\")\n    cp.setInput(0, None)\n\n    nuke.frame(n\['refFrame'].getValue())\n\n    tmpKnob = nuke.XY_Knob('')\n\n    # compare to1 to to2,to3,t04\n    smallest = n\['to1'].getValue()\[1]\n    knob = 1\n    for k in range(2,5):\n        if n\['to'+str(k)].getValue()\[1] < smallest:\n            smallest = n\['to'+str(k)].getValue()\[1]\n            knob = k\n                \n    if knob != 1:\n        tmpKnob.copyAnimations(n\['to1'].animations())   \n        n\['to1'].copyAnimations(n\['to'+str(knob)].animations())\n        n\['to'+str(knob)].copyAnimations(tmpKnob.animations())\n        \n    # compare to2 to to3,to4\n    smallest = n\['to2'].getValue()\[1]\n    knob = 2\n    for k in range(3,5):\n        if n\['to'+str(k)].getValue()\[1] < smallest:\n            smallest = n\['to'+str(k)].getValue()\[1]\n            knob = k\n\n    if knob != 2:        \n        tmpKnob.copyAnimations(n\['to2'].animations())\n        n\['to2'].copyAnimations(n\['to'+str(knob)].animations())\n        n\['to'+str(knob)].copyAnimations(tmpKnob.animations())\n\n    # compare to1 to to2\n    if n\['to1'].getValue()\[0] > n\['to2'].getValue()\[0]:\n        tmpKnob.copyAnimations(n\['to1'].animations())\n        n\['to1'].copyAnimations(n\['to2'].animations())\n        n\['to2'].copyAnimations(tmpKnob.animations())\n\n    # compare to3 to to4\n    if n\['to3'].getValue()\[0] < n\['to4'].getValue()\[0]:\n        tmpKnob.copyAnimations(n\['to3'].animations())\n        n\['to3'].copyAnimations(n\['to4'].animations())\n        n\['to4'].copyAnimations(tmpKnob.animations())\n\n    cp\['to1'].copyAnimations(n\['to1'].animations())\n    cp\['to2'].copyAnimations(n\['to2'].animations())\n    cp\['to3'].copyAnimations(n\['to3'].animations())\n    cp\['to4'].copyAnimations(n\['to4'].animations())\n    \nelse:\n    nuke.message('Generate your cornerpin first')" +STARTLINE}
+ addUserKnob {3 refFrame l "   reference frame   " -STARTLINE}
+ addUserKnob {22 setrefframetothis l "Set to this frame" -STARTLINE T "nuke.thisNode()\['refFrame'].setValue(nuke.frame())"}
+ addUserKnob {6 exportBool l INVISIBLE -STARTLINE +INVISIBLE}
+ addUserKnob {20 adv_export l Advanced n 1}
+ adv_export 0
+ addUserKnob {26 filler_1 l "" +STARTLINE T "1 point track   "}
+ addUserKnob {4 onePtExport l "" -STARTLINE M {to1 to2 to3 to4 "" "" "" ""}}
+ addUserKnob {26 filler_2 l "" -STARTLINE T "\t   "}
+ addUserKnob {22 exportOnePtTracker l ">> Export" -STARTLINE T "n = nuke.thisNode()\n\npoint = n\['onePtExport'].value()\n\nnuke.root().begin()\ntra = nuke.createNode(\"Tracker4\")\ttra\['format'].setValue(n\['format'].getValue())\ntra.setInput(0, None)\n\ntmp = tra\['tracks']\nX = 2\nY = 3\nT = 6\nR = 7\nS = 8\n\ntra\['add_track'].execute()\n\ntmp.setAnimated()\nfor i in range(nuke.root().firstFrame(),nuke.root().lastFrame()+1):\n    tmp.setValueAt(n\[point].valueAt(i)\[0], i, X)\n    tmp.setValueAt(n\[point].valueAt(i)\[1], i, Y) "}
+ addUserKnob {26 filler_3 l "" +STARTLINE T "2 points track "}
+ addUserKnob {4 twoPtExport_1 l "" -STARTLINE M {to1 to2 to3 to4 "" "" "" ""}}
+ addUserKnob {4 twoPtExport_2 l " & " -STARTLINE M {to1 to2 to3 to4}}
+ addUserKnob {22 exportTwoPtTracker l ">> Export" -STARTLINE T "n = nuke.thisNode()\n\npoint1 = n\['twoPtExport_1'].value()\npoint2 = n\['twoPtExport_2'].value()\n\nnuke.root().begin()\ntra = nuke.createNode(\"Tracker4\")\ttra\['format'].setValue(n\['format'].getValue())\ntra.setInput(0, None)\n\ntmp = tra\['tracks']\nsecondTrack = 31\nX = 2\nY = 3\nT = 6\nR = 7\nS = 8\n\nfor i in range(0,2):\n    tra\['add_track'].execute()\n\ntmp.setValue(True, secondTrack + T)\ntmp.setValue(True, secondTrack + R)\ntmp.setValue(True, secondTrack + S)\n\ntmp.setAnimated()\nfor i in range(nuke.root().firstFrame(),nuke.root().lastFrame()+1):\n    tmp.setValueAt(n\[point1].valueAt(i)\[0], i, X)\n    tmp.setValueAt(n\[point1].valueAt(i)\[1], i, Y) \n    tmp.setValueAt(n\[point2].valueAt(i)\[0], i, secondTrack + X)\n    tmp.setValueAt(n\[point2].valueAt(i)\[1], i, secondTrack + Y)"}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 credits l "" +STARTLINE T "v1.25\n\nIf you have any requests and/or problems, \nplease email me at hannes.sap@me.com."}
+}
+ Input {
+  inputs 0
+  name Cam
+  xpos 33
+  ypos 18
+  number 1
+ }
+set N3a63c00 [stack 0]
+ Axis2 {
+  inputs 0
+  name xPt1
+  xpos -246
+  ypos -4
+  addUserKnob {20 ivy_data +INVISIBLE}
+  addUserKnob {1 data +INVISIBLE}
+  data "\{\}"
+  addUserKnob {20 ivytab l Ivy}
+  addUserKnob {26 spiderlabel l "Spider Query"}
+  addUserKnob {1 ivy_job l Job}
+  addUserKnob {1 ivy_shot l Shot -STARTLINE}
+  addUserKnob {22 ivy_selectshot l "Select shot..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectShot']).selectShot()"}
+  addUserKnob {1 ivy_type l Type}
+  addUserKnob {22 ivy_selecttype l "Select type..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectType']).selectType()"}
+  addUserKnob {1 ivy_name l Name}
+  addUserKnob {6 ivy_regex l regex -STARTLINE}
+  addUserKnob {4 ivy_versionquery l Version M {"" latest "latest approved" "latest element in pipe" "latest WIP" "latest pending" specific}}
+  addUserKnob {3 ivy_vnum l vnum -STARTLINE +DISABLED}
+  addUserKnob {22 ivy_autofill l Autofill T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['autofill']).autofill()" +STARTLINE}
+  addUserKnob {22 ivy_clear l Clear -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['clearFields']).clearFields()"}
+  addUserKnob {26 divider3 l "" +STARTLINE}
+  addUserKnob {6 ivy_usemanualuri l "Use manual URI (clears individual fields)" +STARTLINE}
+  addUserKnob {43 spider_uri l "Spider URI" +DISABLED}
+  addUserKnob {22 updateButton l Update T "__import__('dnnuke.core.ivy.template', fromlist=\['updateNode']).updateNode(nuke.thisNode())" +STARTLINE}
+  addUserKnob {22 testButton l Test -STARTLINE T "__import__('dnnuke.core.ivy.template',fromlist=\['test']).test(nuke.thisNode()\[\"spider_uri\"].value())"}
+  addUserKnob {22 resetButton l "Reset non-spider knobs" -STARTLINE T "__import__('dnnuke.core.ivy.template', fromlist=\['resetNode']).resetNode(nuke.thisNode())"}
+  addUserKnob {22 copyButton l "Copy URI" -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['copyUri']).copyUri()"}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+ }
+set N1f403c00 [stack 0]
+ Axis2 {
+  inputs 0
+  name xPt2
+  xpos -253
+  ypos 197
+  addUserKnob {20 ivy_data +INVISIBLE}
+  addUserKnob {1 data +INVISIBLE}
+  data "\{\}"
+  addUserKnob {20 ivytab l Ivy}
+  addUserKnob {26 spiderlabel l "Spider Query"}
+  addUserKnob {1 ivy_job l Job}
+  addUserKnob {1 ivy_shot l Shot -STARTLINE}
+  addUserKnob {22 ivy_selectshot l "Select shot..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectShot']).selectShot()"}
+  addUserKnob {1 ivy_type l Type}
+  addUserKnob {22 ivy_selecttype l "Select type..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectType']).selectType()"}
+  addUserKnob {1 ivy_name l Name}
+  addUserKnob {6 ivy_regex l regex -STARTLINE}
+  addUserKnob {4 ivy_versionquery l Version M {"" latest "latest approved" "latest element in pipe" "latest WIP" "latest pending" specific}}
+  addUserKnob {3 ivy_vnum l vnum -STARTLINE +DISABLED}
+  addUserKnob {22 ivy_autofill l Autofill T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['autofill']).autofill()" +STARTLINE}
+  addUserKnob {22 ivy_clear l Clear -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['clearFields']).clearFields()"}
+  addUserKnob {26 divider3 l "" +STARTLINE}
+  addUserKnob {6 ivy_usemanualuri l "Use manual URI (clears individual fields)" +STARTLINE}
+  addUserKnob {43 spider_uri l "Spider URI" +DISABLED}
+  addUserKnob {22 updateButton l Update T "__import__('dnnuke.core.ivy.template', fromlist=\['updateNode']).updateNode(nuke.thisNode())" +STARTLINE}
+  addUserKnob {22 testButton l Test -STARTLINE T "__import__('dnnuke.core.ivy.template',fromlist=\['test']).test(nuke.thisNode()\[\"spider_uri\"].value())"}
+  addUserKnob {22 resetButton l "Reset non-spider knobs" -STARTLINE T "__import__('dnnuke.core.ivy.template', fromlist=\['resetNode']).resetNode(nuke.thisNode())"}
+  addUserKnob {22 copyButton l "Copy URI" -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['copyUri']).copyUri()"}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+ }
+set N1f403400 [stack 0]
+ Axis2 {
+  inputs 0
+  name xPt3
+  selected true
+  xpos -143
+  ypos 197
+  addUserKnob {20 ivy_data +INVISIBLE}
+  addUserKnob {1 data +INVISIBLE}
+  data "\{\}"
+  addUserKnob {20 ivytab l Ivy}
+  addUserKnob {26 spiderlabel l "Spider Query"}
+  addUserKnob {1 ivy_job l Job}
+  addUserKnob {1 ivy_shot l Shot -STARTLINE}
+  addUserKnob {22 ivy_selectshot l "Select shot..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectShot']).selectShot()"}
+  addUserKnob {1 ivy_type l Type}
+  addUserKnob {22 ivy_selecttype l "Select type..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectType']).selectType()"}
+  addUserKnob {1 ivy_name l Name}
+  addUserKnob {6 ivy_regex l regex -STARTLINE}
+  addUserKnob {4 ivy_versionquery l Version M {"" latest "latest approved" "latest element in pipe" "latest WIP" "latest pending" specific}}
+  addUserKnob {3 ivy_vnum l vnum -STARTLINE +DISABLED}
+  addUserKnob {22 ivy_autofill l Autofill T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['autofill']).autofill()" +STARTLINE}
+  addUserKnob {22 ivy_clear l Clear -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['clearFields']).clearFields()"}
+  addUserKnob {26 divider3 l "" +STARTLINE}
+  addUserKnob {6 ivy_usemanualuri l "Use manual URI (clears individual fields)" +STARTLINE}
+  addUserKnob {43 spider_uri l "Spider URI" +DISABLED}
+  addUserKnob {22 updateButton l Update T "__import__('dnnuke.core.ivy.template', fromlist=\['updateNode']).updateNode(nuke.thisNode())" +STARTLINE}
+  addUserKnob {22 testButton l Test -STARTLINE T "__import__('dnnuke.core.ivy.template',fromlist=\['test']).test(nuke.thisNode()\[\"spider_uri\"].value())"}
+  addUserKnob {22 resetButton l "Reset non-spider knobs" -STARTLINE T "__import__('dnnuke.core.ivy.template', fromlist=\['resetNode']).resetNode(nuke.thisNode())"}
+  addUserKnob {22 copyButton l "Copy URI" -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['copyUri']).copyUri()"}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+ }
+set N1f402c00 [stack 0]
+ Axis2 {
+  inputs 0
+  name xPt4
+  xpos -136
+  ypos -4
+  addUserKnob {20 ivy_data +INVISIBLE}
+  addUserKnob {1 data +INVISIBLE}
+  data "\{\}"
+  addUserKnob {20 ivytab l Ivy}
+  addUserKnob {26 spiderlabel l "Spider Query"}
+  addUserKnob {1 ivy_job l Job}
+  addUserKnob {1 ivy_shot l Shot -STARTLINE}
+  addUserKnob {22 ivy_selectshot l "Select shot..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectShot']).selectShot()"}
+  addUserKnob {1 ivy_type l Type}
+  addUserKnob {22 ivy_selecttype l "Select type..." -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['selectType']).selectType()"}
+  addUserKnob {1 ivy_name l Name}
+  addUserKnob {6 ivy_regex l regex -STARTLINE}
+  addUserKnob {4 ivy_versionquery l Version M {"" latest "latest approved" "latest element in pipe" "latest WIP" "latest pending" specific}}
+  addUserKnob {3 ivy_vnum l vnum -STARTLINE +DISABLED}
+  addUserKnob {22 ivy_autofill l Autofill T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['autofill']).autofill()" +STARTLINE}
+  addUserKnob {22 ivy_clear l Clear -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['clearFields']).clearFields()"}
+  addUserKnob {26 divider3 l "" +STARTLINE}
+  addUserKnob {6 ivy_usemanualuri l "Use manual URI (clears individual fields)" +STARTLINE}
+  addUserKnob {43 spider_uri l "Spider URI" +DISABLED}
+  addUserKnob {22 updateButton l Update T "__import__('dnnuke.core.ivy.template', fromlist=\['updateNode']).updateNode(nuke.thisNode())" +STARTLINE}
+  addUserKnob {22 testButton l Test -STARTLINE T "__import__('dnnuke.core.ivy.template',fromlist=\['test']).test(nuke.thisNode()\[\"spider_uri\"].value())"}
+  addUserKnob {22 resetButton l "Reset non-spider knobs" -STARTLINE T "__import__('dnnuke.core.ivy.template', fromlist=\['resetNode']).resetNode(nuke.thisNode())"}
+  addUserKnob {22 copyButton l "Copy URI" -STARTLINE T "__import__('dnnuke.core.ivy.spider_knobs', fromlist=\['copyUri']).copyUri()"}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+ }
+set N1f402400 [stack 0]
+ Input {
+  inputs 0
+  name Geo
+  xpos 188
+  ypos 19
+ }
+ Scene {
+  inputs 6
+  name Scene1
+  xpos -28
+  ypos 258
+ }
+ Output {
+  name Output1
+  xpos -38
+  ypos 495
+ }
+push $N1f402c00
+push $N3a63c00
+ Dot {
+  name Dot1
+  xpos 67
+  ypos 156
+ }
+set N1f447000 [stack 0]
+ Dot {
+  name Dot6
+  xpos 67
+  ypos 359
+ }
+ Dot {
+  name Dot4
+  xpos -119
+  ypos 359
+ }
+set N1f446800 [stack 0]
+push 0
+ Reconcile3D {
+  inputs 3
+  shutteroffset centred
+  name Rec3
+  xpos -153
+  ypos 290
+ }
+push $N1f403400
+push $N1f446800
+ Dot {
+  name Dot5
+  xpos -229
+  ypos 359
+ }
+push 0
+ Reconcile3D {
+  inputs 3
+  shutteroffset centred
+  name Rec2
+  xpos -263
+  ypos 292
+ }
+push $N1f403c00
+push $N1f447000
+ Dot {
+  name Dot2
+  xpos -112
+  ypos 156
+ }
+set N1f46b800 [stack 0]
+ Dot {
+  name Dot3
+  xpos -222
+  ypos 156
+ }
+push 0
+ Reconcile3D {
+  inputs 3
+  shutteroffset centred
+  name Rec1
+  xpos -256
+  ypos 84
+ }
+push $N1f402400
+push $N1f46b800
+push 0
+ Reconcile3D {
+  inputs 3
+  shutteroffset centred
+  name Rec4
+  xpos -146
+  ypos 84
+ }
+end_group

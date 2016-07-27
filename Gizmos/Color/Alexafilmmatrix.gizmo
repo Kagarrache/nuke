@@ -1,0 +1,55 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ help "AlexaFilmMatrix STAGE1\n\nThis gizmo perform exactly the same thing like it is stated in paper from ARRI - ALEXA LOG C Curve-Usage in VFX\n\nIn and out defines input and output luminance curve and it's RGB primaries. If you use default Nuke AlexaV3LogC LUT only, input and output color space should be set to Linear/AlexaV3LogC if you're using rec709, set rec709 , .. and so on..\n\n\"As of SUP 3.x, the ALEXA offers an optional film style matrix that can be applied to Log C images so that\nthey more closely match the look of scanned negative film. This matrix can be used when the images are\ncolor corrected with a print film emulation LUT as done in the conventional DI workflow.\nAnother white paper by ARRI, “ALEXA Color Processing”, explains the use of this optional matrix in more\ndetail.\nFor VFX work or if the matrix has been applied unintentionally, its effect can be removed by applying the\ninverse matrix.\"\n\n--\ndeveloped by Vit Sedlacek (c)2012\nwww.vitsedlacek.com"
+ tile_color 0x54a35800
+ addUserKnob {20 title l vAlexaFilmMatrix}
+ addUserKnob {41 invert T ColorMatrix1.invert}
+ addUserKnob {41 colorspace_in l in T Colorspace1.colorspace_in}
+ addUserKnob {41 illuminant_in l "" -STARTLINE T Colorspace1.illuminant_in}
+ addUserKnob {41 primary_in l "" -STARTLINE T Colorspace1.primary_in}
+ addUserKnob {41 colorspace_out l out T Colorspace2.colorspace_out}
+ addUserKnob {41 illuminant_out l "" -STARTLINE T Colorspace2.illuminant_out}
+ addUserKnob {41 primary_out l "" -STARTLINE T Colorspace2.primary_out}
+ addUserKnob {26 ""}
+ addUserKnob {26 info l "" +STARTLINE T "developed by Vit Sedlacek (c)2012\nwww.vitsedlacek.com"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -26
+  ypos -130
+ }
+ Colorspace {
+  primary_in AlexaV3LogC
+  colorspace_out AlexaV3LogC
+  primary_out AlexaV3LogC
+  name Colorspace1
+  xpos -26
+  ypos -91
+ }
+ ColorMatrix {
+  matrix {
+      {1.271103 -0.284279 0.013176}
+      {-0.127165 1.436429 -0.309264}
+      {-0.129927 -0.510286 1.640214}
+    }
+  name ColorMatrix1
+  xpos -26
+  ypos -67
+ }
+ Colorspace {
+  colorspace_in AlexaV3LogC
+  primary_in AlexaV3LogC
+  primary_out AlexaV3LogC
+  name Colorspace2
+  selected true
+  xpos -26
+  ypos -43
+ }
+ Output {
+  name Output1
+  xpos -26
+  ypos 38
+ }
+end_group

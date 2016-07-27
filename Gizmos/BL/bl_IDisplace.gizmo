@@ -1,0 +1,142 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+add_layer {rgba rgba.beta}
+Gizmo {
+ inputs 2
+ addUserKnob {20 User l IDisplace}
+ addUserKnob {41 from0 l "mask channel" T Copy1.from0}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 scale n 1}
+ addUserKnob {7 xscale R -100 100}
+ addUserKnob {7 yscale R -100 100}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 preblur l "pre blur" R 0 100}
+ addUserKnob {41 filter T IDistort2.filter}
+ addUserKnob {3 matrixsize l "matrix size" -STARTLINE}
+ matrixsize 16
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Constant {
+  inputs 0
+  channels rgb
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant2
+  xpos -461
+  ypos 87
+  postage_stamp false
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.matrixsize i}}
+  box_height {{box_width i}}
+  box_fixed true
+  resize none
+  filter Impulse
+  name Reformat2
+  xpos -461
+  ypos 113
+ }
+ Expression {
+  expr0 cx
+  expr1 cy
+  channel2 none
+  channel3 none
+  name Expression4
+  xpos -461
+  ypos 139
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos -571
+  ypos 9
+ }
+set N1bc7c460 [stack 0]
+push $N1bc7c460
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -571
+  ypos 35
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -571
+  ypos 73
+ }
+ Convolve {
+  inputs 2
+  channels {rgba.red rgba.green -rgba.blue}
+  name Convolve2
+  xpos -571
+  ypos 133
+ }
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.preblur i}}
+  name Blur3
+  xpos -571
+  ypos 171
+ }
+ Input {
+  inputs 0
+  name source
+  xpos -719
+  ypos 48
+  number 1
+ }
+set N1bc7c710 [stack 0]
+add_layer {displacer displacer.red displacer.green displacer.blue displacer.alpha}
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue black
+  alpha black
+  out displacer
+  name ShuffleCopy3
+  xpos -719
+  ypos 177
+ }
+ IDistort {
+  channels rgba
+  uv displacer
+  uv_scale {{"parent.xscale "} {"parent.yscale "}}
+  name IDistort2
+  xpos -719
+  ypos 203
+ }
+ Remove {
+  channels displacer
+  name Remove1
+  xpos -719
+  ypos 229
+ }
+push $N1bc7c710
+ Dot {
+  name Dot1
+  xpos -795
+  ypos 52
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix i}}
+  name Dissolve1
+  xpos -829
+  ypos 235
+ }
+ Output {
+  name Output
+  xpos -829
+  ypos 261
+ }
+end_group

@@ -1,0 +1,227 @@
+#! C:/Program Files/Nuke7.0v9/Nuke7.0.exe -nx
+version 7.0 v9
+Gizmo {
+ inputs 3
+ addUserKnob {20 User}
+ addUserKnob {41 near l Near T near_cam.near}
+ addUserKnob {41 far l Far T far_cam.far}
+ addUserKnob {41 soft_clip_distance l "Soft Clipping" T camera.soft_clip_distance}
+ addUserKnob {41 size l "Blur Size" T zblur_fade.size}
+}
+ Input {
+  inputs 0
+  name camera
+  xpos -116
+  ypos 5
+  addUserKnob {20 User}
+  addUserKnob {7 soft_clip_distance l "Soft Clipping" R 0 5}
+  soft_clip_distance 0.3
+ }
+ Camera2 {
+  translate {{this.parent.input.translate.x} {this.parent.input.translate.y} {this.parent.input.translate.z}}
+  rotate {{this.parent.input.rotate.x} {this.parent.input.rotate.y} {this.parent.input.rotate.z}}
+  scaling {{this.parent.input.scaling.x} {this.parent.input.scaling.y} {this.parent.input.scaling.z}}
+  uniform_scale {{this.parent.input.uniform_scale}}
+  skew {{this.parent.input.skew.x} {this.parent.input.skew.y} {this.parent.input.skew.z}}
+  pivot {{this.parent.input.pivot.x} {this.parent.input.pivot.y} {this.parent.input.pivot.z}}
+  focal {{this.parent.input.focal}}
+  haperture {{this.parent.input.haperture}}
+  vaperture {{this.parent.input.vaperture}}
+  win_translate {{this.parent.input.win_translate.x} {this.parent.input.win_translate.y}}
+  win_scale {{this.parent.input.win_scale.u} {this.parent.input.win_scale.v}}
+  winroll {{this.parent.input.winroll}}
+  focal_point {{this.parent.input.focal_point}}
+  fstop {{this.parent.input.fstop}}
+  name data_trans_cam
+  xpos -106
+  ypos 106
+ }
+ Camera2 {
+  inputs 0
+  translate {{parent.data_trans_cam.translate x1 0 x100 0} {parent.data_trans_cam.translate x1 0 x100 0} {parent.data_trans_cam.translate x1 4.840000153 x100 -3.359999895}}
+  rotate {{parent.data_trans_cam.rotate} {parent.data_trans_cam.rotate} {parent.data_trans_cam.rotate}}
+  scaling {{parent.data_trans_cam.scaling} {parent.data_trans_cam.scaling} {parent.data_trans_cam.scaling}}
+  uniform_scale {{parent.data_trans_cam.uniform_scale}}
+  skew {{parent.data_trans_cam.skew} {parent.data_trans_cam.skew} {parent.data_trans_cam.skew}}
+  pivot {{parent.data_trans_cam.pivot} {parent.data_trans_cam.pivot} {parent.data_trans_cam.pivot}}
+  focal {{parent.data_trans_cam.focal}}
+  haperture {{parent.data_trans_cam.haperture}}
+  vaperture {{parent.data_trans_cam.vaperture}}
+  near 0.001
+  far {{focal_point}}
+  win_translate {{parent.data_trans_cam.win_translate} {parent.data_trans_cam.win_translate}}
+  win_scale {{parent.data_trans_cam.win_scale} {parent.data_trans_cam.win_scale}}
+  winroll {{parent.data_trans_cam.winroll}}
+  focal_point {{parent.camera.soft_clip_distance}}
+  fstop {{parent.data_trans_cam.fstop}}
+  name near_cam
+  xpos -216
+  ypos 105
+ }
+ Input {
+  inputs 0
+  name scene
+  xpos -556
+  ypos 151
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos -522
+  ypos 273
+ }
+set N19ca4120 [stack 0]
+ Input {
+  inputs 0
+  name bg
+  xpos -315
+  ypos 180
+  number 2
+ }
+set N1a72b420 [stack 0]
+ ScanlineRender {
+  inputs 3
+  transparency {{parent.ScanlineRender1.transparency}}
+  ztest_enabled {{parent.ScanlineRender1.ztest_enabled}}
+  samples {{parent.ScanlineRender1.samples}}
+  shutter {{parent.ScanlineRender1.shutter}}
+  shuttercustomoffset {{parent.ScanlineRender1.shuttercustomoffset}}
+  temporal_jitter {{parent.ScanlineRender1.temporal_jitter}}
+  spatial_jitter {{parent.ScanlineRender1.spatial_jitter}}
+  focal_jitter {{parent.ScanlineRender1.focal_jitter}}
+  stochastic_samples {{parent.ScanlineRender1.stochastic_samples}}
+  uniform_distribution {{parent.ScanlineRender1.uniform_distribution}}
+  motion_vectors_type distance
+  name ScanlineRender2
+  xpos -267
+  ypos 269
+ }
+set N19ca4490 [stack 0]
+push $N19ca4490
+ ZBlur {
+  setup_mode true
+  center {{1/parent.camera.soft_clip_distance}}
+  name zblur_matte
+  xpos -226
+  ypos 335
+ }
+ Shuffle {
+  in2 alpha
+  red blue
+  green blue
+  alpha red2
+  name Shuffle1
+  xpos -226
+  ypos 389
+ }
+ Premult {
+  name Premult1
+  xpos -226
+  ypos 437
+ }
+set N19ca4ee0 [stack 0]
+ Expression {
+  expr0 "r > 0 ? 1 : 0"
+  expr1 "r > 0 ? 1 : 0"
+  expr2 "r > 0 ? 1 : 0"
+  expr3 "r > 0 ? 1 : 0"
+  name Expression1
+  xpos -116
+  ypos 437
+ }
+push $N19ca4ee0
+ Invert {
+  name Invert1
+  xpos -226
+  ypos 479
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -116
+  ypos 479
+ }
+ Premult {
+  name Premult2
+  xpos -116
+  ypos 547
+ }
+push $N19ca4490
+ Dot {
+  name Dot2
+  xpos 138
+  ypos 273
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.alpha
+  name Copy2
+  xpos 104
+  ypos 550
+ }
+ Premult {
+  name Premult3
+  xpos 104
+  ypos 603
+ }
+ ZBlur {
+  center {{parent.zblur_matte.center}}
+  size 10
+  name zblur_fade
+  xpos 104
+  ypos 671
+ }
+ Camera2 {
+  inputs 0
+  translate {{parent.near_cam.translate x1 0 x100 0} {parent.near_cam.translate x1 0 x100 0} {parent.near_cam.translate x1 4.840000153 x100 -3.359999895}}
+  rotate {{parent.near_cam.rotate} {parent.near_cam.rotate} {parent.near_cam.rotate}}
+  scaling {{parent.near_cam.scaling} {parent.near_cam.scaling} {parent.near_cam.scaling}}
+  uniform_scale {{parent.near_cam.uniform_scale}}
+  focal {{parent.near_cam.focal}}
+  haperture {{parent.near_cam.haperture}}
+  vaperture {{parent.near_cam.vaperture}}
+  near {{parent.near_cam.focal_point}}
+  win_translate {{parent.near_cam.win_translate} {parent.near_cam.win_translate}}
+  win_scale {{parent.near_cam.win_scale} {parent.near_cam.win_scale}}
+  winroll {{parent.near_cam.winroll}}
+  focal_point {{parent.near_cam.focal_point}}
+  fstop {{parent.near_cam.fstop}}
+  name far_cam
+  xpos -436
+  ypos 105
+ }
+push $N19ca4120
+push $N1a72b420
+ ScanlineRender {
+  inputs 3
+  motion_vectors_type distance
+  name ScanlineRender1
+  xpos -433
+  ypos 303
+ }
+ Merge2 {
+  inputs 2+1
+  name Merge1
+  selected true
+  xpos -433
+  ypos 677
+ }
+ Output {
+  name Output1
+  xpos -446
+  ypos 777
+ }
+push $N19ca4490
+push $N19ca4490
+ Viewer {
+  inputs 2
+  frame 129
+  input_process false
+  name Viewer1
+  xpos -619
+  ypos 448
+ }
+end_group

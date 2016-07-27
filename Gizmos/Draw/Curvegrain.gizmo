@@ -1,0 +1,274 @@
+#! /Applications/Nuke6.1v2/NukeX6.1v2.app/../Nuke6.1v2.app/Contents/MacOS/Nuke6.1v2 -nx
+version 6.1 v2
+Group {
+ name curveGrain
+ inputs 2
+ addUserKnob {20 User l CurveGrain}
+ addUserKnob {41 seed T Grain_patern.seed}
+ addUserKnob {41 presets -STARTLINE T Grain_patern.presets}
+ addUserKnob {26 "" l "@b;Size"}
+ addUserKnob {41 red_size l red T Grain_patern.red_size}
+ addUserKnob {41 green_size l green T Grain_patern.green_size}
+ addUserKnob {41 blue_size l blue T Grain_patern.blue_size}
+ addUserKnob {26 "" l "@b;Irregularity"}
+ addUserKnob {41 red_i l red T Grain_patern.red_i}
+ addUserKnob {41 green_i l green T Grain_patern.green_i}
+ addUserKnob {41 blue_i l blue T Grain_patern.blue_i}
+ addUserKnob {26 "" l "@b;Intensity"}
+ addUserKnob {41 red_m l red T Grain_patern.red_m}
+ addUserKnob {41 green_m l green T Grain_patern.green_m}
+ addUserKnob {41 blue_m l blue T Grain_patern.blue_m}
+ addUserKnob {26 ""}
+ addUserKnob {41 lut l "" +STARTLINE T Curve.lut}
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelMask l mask T Apply.maskChannelMask}
+ addUserKnob {41 inject -STARTLINE T Apply.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Apply.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Apply.fringe}
+ addUserKnob {6 edgeBoost l "edge boost" -STARTLINE}
+ addUserKnob {6 grainAlpha l "grain alpha" -STARTLINE}
+ addUserKnob {41 mix T Apply.mix}
+ addUserKnob {26 ""}
+ addUserKnob {22 links l " CurveGrain 1.1 - © 2011 - Luc Julien - www.lucjulien.com     " T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.linkedin.com/in/lucjulien')\n" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name sc
+  xpos -11
+  ypos 101
+  number 1
+ }
+ Dot {
+  name Dot4
+  xpos 23
+  ypos 214
+ }
+set N20596930 [stack 0]
+ Dot {
+  name Dot5
+  xpos 248
+  ypos 214
+ }
+set N27a02b30 [stack 0]
+ Expression {
+  expr0 0
+  expr1 0
+  expr2 0
+  expr3 a==0?0:a
+  name Alpha
+  xpos 303
+  ypos 211
+ }
+ Input {
+  inputs 0
+  name m
+  xpos 429
+  ypos 101
+ }
+set N1a02d6f0 [stack 0]
+ Switch {
+  inputs 2
+  which {{parent.error.disable i}}
+  name Switch1
+  xpos 429
+  ypos 211
+ }
+ Dot {
+  name Dot7
+  xpos 463
+  ypos 521
+ }
+set N1c3d41e0 [stack 0]
+ Dot {
+  name Dot3
+  xpos 463
+  ypos 748
+ }
+push $N1c3d41e0
+push $N1c3d41e0
+ Merge2 {
+  inputs 2
+  operation xor
+  Achannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  Bchannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name Edge
+  xpos -11
+  ypos 513
+ }
+ Grade {
+  channels alpha
+  white 2
+  add 1
+  black_clamp false
+  name Grade1
+  xpos -11
+  ypos 547
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos -11
+  ypos 581
+ }
+push $N20596930
+ Colorspace {
+  channels rgba
+  colorspace_out sRGB
+  name Colorspace1
+  xpos -11
+  ypos 271
+ }
+ ColorLookup {
+  name Curve
+  xpos -11
+  ypos 295
+ }
+ Colorspace {
+  channels rgba
+  colorspace_in sRGB
+  name Colorspace2
+  xpos -11
+  ypos 319
+ }
+push $N27a02b30
+ Dot {
+  name Dot2
+  xpos 248
+  ypos 382
+ }
+set N2058ebe0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Minus
+  xpos -11
+  ypos 379
+ }
+ Grade {
+  channels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  multiply 4
+  add 1
+  name Grade_one_b
+  xpos -11
+  ypos 442
+ }
+push $N20596930
+ Dot {
+  name Dot1
+  xpos -108
+  ypos 214
+ }
+ Grade {
+  channels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  white 0
+  add 0.5
+  black_clamp false
+  name Grade_50
+  xpos -142
+  ypos 263
+ }
+ Grain2 {
+  name Grain_patern
+  label other
+  xpos -142
+  ypos 287
+  red_m 0.42
+  black {0 0 0}
+  minimum {0 0 0}
+  maskgrain false
+ }
+ Grade {
+  channels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  add -0.5
+  black_clamp false
+  name Grade_zero
+  xpos -142
+  ypos 321
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Multiplier
+  xpos -142
+  ypos 442
+ }
+ Dot {
+  name Dot6
+  xpos -108
+  ypos 627
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Edgeboost
+  xpos -11
+  ypos 624
+  disable {{parent.edgeBoost*-1+1 i}}
+ }
+set N22ae3f80 [stack 0]
+ Grade {
+  channels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  add 1
+  black_clamp false
+  name Grade_one
+  xpos -11
+  ypos 745
+ }
+push $N22ae3f80
+ Expression {
+  expr3 max(r,g,b)*.5
+  name Expression1
+  xpos 99
+  ypos 624
+ }
+push $N2058ebe0
+ Merge2 {
+  inputs 2
+  operation plus
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  maskChannelInput rgba.alpha
+  fringe true
+  name Merge1
+  xpos 214
+  ypos 619
+  disable {{parent.grainAlpha*-1+1 i}}
+ }
+ Merge2 {
+  inputs 2+1
+  operation multiply
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  maskChannelMask -rgba.alpha
+  name Apply
+  xpos 214
+  ypos 745
+  addUserKnob {20 User}
+ }
+set N20962370 [stack 0]
+ Output {
+  name Output1
+  xpos 214
+  ypos 905
+ }
+push $N1a02d6f0
+push $N1a02d6f0
+ Multiply {
+  inputs 1+1
+  channels rgba
+  name error
+  xpos 543
+  ypos 211
+  disable {{error i}}
+ }
+push $N20962370
+ Viewer {
+  frame 37
+  input_process false
+  name Viewer1
+  selected true
+  xpos 411
+  ypos 856
+ }
+end_group

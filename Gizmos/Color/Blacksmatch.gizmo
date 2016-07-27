@@ -1,0 +1,110 @@
+#! /vol/apps/nuke-6.2v3_64/Nuke6.2 -nx
+version 6.2 v3
+Gizmo {
+ inputs 2
+ help "This is a tool for simulating the shadow response of film and provides an accurate model for matching this in CG renders without affecting the rest of the image.  \n\n'Color' is the base colour of the film, best picked in deepest shadoes with no detail.  \n'Soft' is the softness of the curve, at 0 it will have a sharp transition back to the unaffected tones.\n'aboveBase' is the ratio to whee the image is unaffected.  If the toe colour picked is .01 and the aboveBase value is 1.5, then anything above .015 will remin unaffected.  "
+ addUserKnob {20 User l blacksMatch}
+ addUserKnob {41 color t "Sample colour of the base black of the scan.  " T dMin.color}
+ addUserKnob {41 soft t "Softness of the rolloff.  decreasing will recover some lost detail in the cg from the soft rolloff." T dMin.soft}
+ addUserKnob {41 aboveBase t "ratio of where the curve stops affcting the image above the base colour.  a value of 1 will give a hard clamp. " T dMin.aboveBase}
+ addUserKnob {6 unpremult +STARTLINE}
+ unpremult true
+}
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 0 1}
+  name dMin
+  xpos 653
+  ypos 448
+  addUserKnob {20 User}
+  addUserKnob {7 soft}
+  soft 1
+  addUserKnob {7 aboveBase R 1 2}
+  aboveBase 1.5
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos 712
+  ypos 705
+  number 1
+ }
+ Input {
+  inputs 0
+  name img
+  selected true
+  xpos 395
+  ypos 376
+ }
+ Unpremult {
+  name Unpremult1
+  xpos 395
+  ypos 477
+  disable {{parent.unpremult?0:1 i}}
+ }
+set N8f13fe20 [stack 0]
+push $N8f13fe20
+ Grade {
+  blackpoint {{dMin.color*dMin.aboveBase i} {dMin.color*dMin.aboveBase i} {dMin.color*dMin.aboveBase i} {dMin.color*dMin.aboveBase i}}
+  whitepoint 0
+  gamma {{((1/dMin.aboveBase)*dMin.soft)+(1-dMin.soft) i} {((1/dMin.aboveBase)*dMin.soft)+(1-dMin.soft) i} {((1/dMin.aboveBase)*dMin.soft)+(1-dMin.soft) i} {((1/dMin.aboveBase)*dMin.soft)+(1-dMin.soft) i}}
+  unpremult -rgba.alpha
+  name makeMatte
+  xpos 633
+  ypos 598
+ }
+set Ne9ed5070 [stack 0]
+push $Ne9ed5070
+push $Ne9ed5070
+push $N8f13fe20
+ Grade {
+  inputs 1+1
+  channels {rgba.red -rgba.green -rgba.blue}
+  add {{dMin.color.r i}}
+  maskChannelMask rgba.red
+  unpremult -rgba.alpha
+  name addRed
+  xpos 482
+  ypos 590
+ }
+ Grade {
+  inputs 1+1
+  channels {-rgba.red rgba.green -rgba.blue}
+  add {{dMin.color.g i}}
+  maskChannelMask rgba.green
+  unpremult -rgba.alpha
+  name addGreen
+  xpos 482
+  ypos 656
+ }
+ Grade {
+  inputs 1+1
+  channels {-rgba.red -rgba.green rgba.blue}
+  add {{dMin.color.b}}
+  maskChannelMask rgba.blue
+  unpremult -rgba.alpha
+  name addBlue
+  xpos 482
+  ypos 726
+ }
+ Keymix {
+  inputs 3
+  invertMask true
+  name Keymix1
+  xpos 399
+  ypos 847
+  disable {{"\[exists parent.input1] ? 0 : 1" K x53 1}}
+ }
+ Premult {
+  name Premult1
+  xpos 391
+  ypos 932
+  disable {{parent.unpremult?0:1 i}}
+ }
+ Output {
+  name Output1
+  xpos 374
+  ypos 1027
+ }
+end_group

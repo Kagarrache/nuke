@@ -1,0 +1,131 @@
+#! C:/Program Files/Nuke6.3v2/Nuke6.3.exe -nx
+version 6.3 v2
+Gizmo {
+ addUserKnob {20 settings}
+ addUserKnob {41 color T StickyNote1.color}
+ addUserKnob {41 addcolor l addColor -STARTLINE T StickyNote1.addcolor}
+ addUserKnob {41 opacity T StickyNote1.opacity}
+ addUserKnob {41 size T StickyNote1.size}
+ addUserKnob {41 lacunarity T StickyNote1.lacunarity}
+ addUserKnob {41 gain T StickyNote1.gain}
+ addUserKnob {41 gamma T StickyNote1.gamma}
+ addUserKnob {20 animation n 1}
+ addUserKnob {41 speedmult l speed T StickyNote1.speedmult}
+ addUserKnob {41 seed T StickyNote1.seed}
+ addUserKnob {41 stop l animated T StickyNote1.stop}
+ addUserKnob {20 endGroup n -1}
+}
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label Control
+  xpos 871
+  ypos -187
+  addUserKnob {20 User}
+  addUserKnob {7 color R 0 360}
+  addUserKnob {6 addcolor l addColor -STARTLINE}
+  addcolor true
+  addUserKnob {16 opacity}
+  opacity 1
+  addUserKnob {7 size R 0 100}
+  size 100
+  addUserKnob {7 lacunarity R 1 10}
+  lacunarity 1.12
+  addUserKnob {7 gain R 0.1 1}
+  gain 0.37
+  addUserKnob {7 gamma}
+  gamma 0.275
+  addUserKnob {20 animation n 1}
+  addUserKnob {7 speedmult l speed R 1 100}
+  speedmult 50
+  addUserKnob {7 seed R 1 100}
+  seed 1
+  addUserKnob {6 stop l animated +STARTLINE}
+  stop true
+  addUserKnob {20 endGroup n -1}
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 589
+  ypos -407
+ }
+ Noise {
+  opacity {{parent.StickyNote1.opacity i}}
+  type turbulence
+  size {{parent.StickyNote1.size i}}
+  zoffset {{((frame/parent.StickyNote1.speedmult)*parent.StickyNote1.stop)+parent.StickyNote1.seed i}}
+  lacunarity {{parent.StickyNote1.lacunarity i}}
+  gain {{parent.StickyNote1.gain i}}
+  gamma {{parent.StickyNote1.gamma i}}
+  center {960 540}
+  name Noise4
+  xpos 589
+  ypos -367
+ }
+ Grade {
+  white 5
+  name Grade3
+  xpos 589
+  ypos -343
+ }
+ Constant {
+  inputs 0
+  color 1
+  name Constant2
+  xpos 699
+  ypos -308
+  postage_stamp false
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  name Merge9
+  xpos 589
+  ypos -308
+ }
+set N8711aa0 [stack 0]
+push $N8711aa0
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.alpha
+  name Copy1
+  xpos 589
+  ypos -275
+ }
+ CCrosstalk {
+  crossover {red {}
+    green {}
+    blue {}
+    R->G {curve C -0.01764702797 0}
+    R->B {curve C 0.01470589638 0}
+    G->R {curve C 0 0.1522059441}
+    G->B {curve C -0.03112745285 0}
+    B->R {}
+    B->G {curve C 0 0.3274509907}}
+  name CCrosstalk1
+  xpos 589
+  ypos -239
+ }
+ HueShift {
+  saturation 3.5
+  color_saturation 1.28
+  hue_rotation {{parent.StickyNote1.color-180 i}}
+  mix 0.66
+  name HueShift1
+  xpos 589
+  ypos -215
+ }
+ Saturation {
+  saturation {{(saturation*parent.StickyNote1.addcolor)*1 i}}
+  name Saturation1
+  xpos 589
+  ypos -191
+ }
+ Output {
+  name Output1
+  xpos 589
+  ypos -91
+ }
+end_group

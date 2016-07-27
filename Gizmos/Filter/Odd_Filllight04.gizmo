@@ -1,0 +1,169 @@
+#! C:/Program Files/Nuke6.1v1/Nuke6.1.exe -nx
+version 6.1 v1
+Gizmo {
+ label "odd_FillLight v0.4"
+ addUserKnob {20 Main}
+ addUserKnob {7 compress_lo l "compress blacks" t "Amount of contrast (or lack of) in dark areas of the scene. Default 0."}
+ addUserKnob {7 compress_hi l "compress highlights" t "Amount of contrast (or lack of) in brighter areas of the scene. Default 0."}
+ addUserKnob {7 rel_contrast l "rel. contrast" t "Global contrast. Use values under 1 if the source image has a lot of contrast. Default 1." R 0.6 5}
+ rel_contrast 1
+ addUserKnob {7 exp l "rel. exposure" t "Relative exposure value. Default 1." R 0.01 4}
+ exp 1
+ addUserKnob {7 blend l "blend with original" t "Blend with original source image. Default 0."}
+ addUserKnob {32 Reset T "if \{\[value this.compress_hi] == 0\} \{\nknob this.compress_hi 0\n\} else \{\nknob this.compress_hi 0\n\}\n\nif \{\[value this.compress_lo] == 0\} \{\nknob this.compress_lo 0\n\} else \{\nknob this.compress_lo 0\n\}\n\nif \{\[value this.rel_contrast] == 1\} \{\nknob this.rel_contrast 1\n\} else \{\nknob this.rel_contrast 1\n\}\n\nif \{\[value this.exp] == 1\} \{\nknob this.exp 1\n\} else \{\nknob this.exp 1\n\}\n\nif \{\[value this.blend] == 0\} \{\nknob this.blend 0\n\} else \{\nknob this.blend 0\n\}" +STARTLINE}
+ addUserKnob {20 About}
+ addUserKnob {26 txt l "" +STARTLINE T "odd_FillLight v0.4\nAdrian Costea\ndrop a mail: adrian.costea@oddworks.ro\npage: www.oddworks.ro"}
+}
+ Input {
+  inputs 0
+  name InputSource
+  xpos -26
+  ypos -62
+ }
+set N6e282f0 [stack 0]
+push $N6e282f0
+push $N6e282f0
+ Multiply {
+  value {{parent.exp i}}
+  name relExp
+  xpos -26
+  ypos 28
+ }
+ Expression {
+  temp_name0 Rl
+  temp_expr0 r/4.70366
+  temp_name1 Gl
+  temp_expr1 g/1.39821
+  temp_name2 Bl
+  temp_expr2 b/13.8504
+  channel0 rgb
+  expr0 (Rl+Gl+Bl)
+  channel1 {-rgba.red -rgba.green -rgba.blue}
+  channel2 {-rgba.red -rgba.green -rgba.blue}
+  name Luma_math
+  xpos -26
+  ypos 87
+ }
+set N6e287d0 [stack 0]
+ Blur {
+  channels rgb
+  size {{parent.width/2 i}}
+  name ls2
+  xpos 72
+  ypos 160
+ }
+set N6e28a40 [stack 0]
+push $N6e287d0
+ Blur {
+  channels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  size {{parent.width/100 i}}
+  name ls4
+  xpos 273
+  ypos 160
+ }
+set N6e28f20 [stack 0]
+push $N6e287d0
+ Blur {
+  channels rgb
+  size {{parent.width*2 i}}
+  name ls1
+  xpos -26
+  ypos 161
+ }
+push $N6e28a40
+ Merge2 {
+  inputs 2
+  operation xor
+  name Merge1
+  xpos 15
+  ypos 207
+ }
+push $N6e287d0
+ Blur {
+  channels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  size {{parent.width/10 i}}
+  name ls3
+  xpos 174
+  ypos 159
+ }
+push $N6e28f20
+ Merge2 {
+  inputs 2
+  operation xor
+  name Merge2
+  xpos 215
+  ypos 208
+ }
+ Merge2 {
+  inputs 2
+  operation xor
+  name Merge3
+  xpos 115
+  ypos 268
+ }
+push $N6e287d0
+ Blur {
+  channels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  size {{parent.width/1000 i}}
+  name ls5
+  xpos 366
+  ypos 158
+ }
+ Merge2 {
+  inputs 2
+  operation xor
+  name Merge4
+  xpos 282
+  ypos 268
+ }
+ Gamma {
+  value {{parent.rel_contrast i}}
+  name contrast
+  xpos 115
+  ypos 342
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  mix {{parent.compress_hi i}}
+  name high_comp
+  xpos 115
+  ypos 413
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  mix {{parent.compress_lo i}}
+  name dark_comp
+  xpos 115
+  ypos 456
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Output
+  xpos -160
+  ypos 456
+ }
+set N6e82430 [stack 0]
+ Blend {
+  inputs 2
+  weight0 {{(log(parent.blend))*-1 i}}
+  weight1 {{parent.blend i}}
+  name Blend1
+  xpos -210
+  ypos 353
+ }
+ Output {
+  name Output1
+  xpos -210
+  ypos 542
+ }
+push $N6e82430
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -26
+  ypos 525
+ }
+end_group

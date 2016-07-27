@@ -1,0 +1,605 @@
+#! C:/Program Files/Nuke9.0v6/nuke-9.0.6.dll -nx
+version 9.0 v6
+Gizmo {
+ inputs 3
+ addUserKnob {20 main l Main}
+ addUserKnob {12 format l Format t "Enter the format of the plate"}
+ format {1920 1080}
+ addUserKnob {4 effect l Effect t "Pattern of the chromatic aberration" M {Soft Hard "" "" ""}}
+ addUserKnob {26 noise l "Noise filtering" t "Only available when the Denoised input is not connected"}
+ addUserKnob {4 quality l Quality t "Quality of the noise filtering" M {Low High ""}}
+ addUserKnob {7 size l Size t "Size of the noise filtering" R 1 25}
+ size 1
+ addUserKnob {26 ""}
+ addUserKnob {20 soft l Soft n 1}
+ addUserKnob {7 red_disto l "Red distortion" t "Amount of distortion of the red channel.\nPositive values will push out, negative ones will pull in" R -0.05 0.05}
+ addUserKnob {7 blue_disto l "Blue distortion" t "Amount of distortion of the blue channel.\nPositive values will push out, negative ones will pull in" R -0.05 0.05}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 hard l Hard n 1}
+ addUserKnob {7 red_dist l "Red distortion" t "Amount of distortion of the red channel.\nPositive values will push out, negative ones will pull in" R -0.05 0.05}
+ addUserKnob {7 blue_dist l "Blue distortion" t "Amount of distortion of the blue channel.\nPositive values will push out, negative ones will pull in" R -0.05 0.05}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 credits l "" +STARTLINE T "Florian Matet - v01"}
+ addUserKnob {20 mask l Mask}
+ addUserKnob {26 custom_mask l "Custom mask" t "Only available when input Mask is connected"}
+ addUserKnob {41 from0 l "Copy channel" T Copy7.from0}
+ addUserKnob {26 ""}
+ addUserKnob {6 use_mask l "Use mask" t "Tick if you want to use a mask, based on the detection of edges" +STARTLINE}
+ addUserKnob {41 channels l Channels t "Channels used to detect edges" T EdgeDetect1.channels}
+ addUserKnob {41 threshold l Threshold T EdgeDetect1.threshold}
+ addUserKnob {41 blur l Blur t "Blur amount of the resulted mask" T Blur3.size}
+ addUserKnob {41 blackpoint l Blackpoint T Grade2.blackpoint}
+ addUserKnob {41 whitepoint l Whitepoint T Grade2.whitepoint}
+}
+ Input {
+  inputs 0
+  name InputMask
+  label "\[value number]"
+  xpos -361
+  ypos 942
+  number 2
+ }
+ Dot {
+  name Dot37
+  xpos -327
+  ypos 1026
+ }
+set N3b04800 [stack 0]
+ Input {
+  inputs 0
+  name InputDenoised
+  label "\[value number]"
+  xpos -755
+  ypos 216
+  number 1
+ }
+set N3b04400 [stack 0]
+ Dot {
+  name Dot35
+  xpos -380
+  ypos 226
+ }
+ Input {
+  inputs 0
+  name InputMain
+  label "\[value number]"
+  xpos -493
+  ypos -16
+ }
+ Dot {
+  name Dot14
+  xpos -459
+  ypos 58
+ }
+set N5066d400 [stack 0]
+ Dot {
+  name Dot26
+  xpos -304
+  ypos 58
+ }
+set N5066d000 [stack 0]
+ Dot {
+  name Dot25
+  xpos -174
+  ypos 58
+ }
+set N5066cc00 [stack 0]
+ Median {
+  size {{parent.size}}
+  name Median2
+  xpos -208
+  ypos 121
+ }
+push $N5066d000
+ Blur {
+  size {{parent.size}}
+  name Blur2
+  xpos -338
+  ypos 113
+ }
+ Switch {
+  inputs 2
+  which {{parent.quality}}
+  name Switch4
+  xpos -268
+  ypos 203
+ }
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input1]"}}
+  name Switch5
+  xpos -368
+  ypos 290
+ }
+ Dot {
+  name Dot27
+  xpos -334
+  ypos 357
+ }
+push $N5066cc00
+ Dot {
+  name Dot24
+  xpos -64
+  ypos 58
+ }
+set N4fd19800 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge3
+  xpos -98
+  ypos 353
+ }
+ Dot {
+  name Dot3
+  xpos -64
+  ypos 414
+ }
+set N4fd19000 [stack 0]
+ Dot {
+  name Dot28
+  xpos -64
+  ypos 471
+ }
+set N4fd18c00 [stack 0]
+push $N4fd19800
+ Dot {
+  name Dot23
+  xpos 146
+  ypos 58
+ }
+set N4fd18800 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge5
+  xpos 112
+  ypos 467
+ }
+ Dot {
+  name Dot30
+  xpos 146
+  ypos 530
+ }
+set N4fd18000 [stack 0]
+ Dot {
+  name Dot33
+  xpos 401
+  ypos 530
+ }
+add_layer {MaskAberration MaskAberration.red}
+ EdgeDetectWrapper {
+  output MaskAberration.red
+  name EdgeDetect1
+  xpos 367
+  ypos 652
+ }
+ set C4fd3b800 [stack 0]
+ Blur {
+  channels MaskAberration
+  name Blur3
+  xpos 367
+  ypos 717
+ }
+ set C4fd3b400 [stack 0]
+ Grade {
+  channels MaskAberration
+  name Grade2
+  xpos 367
+  ypos 782
+ }
+ set C4fd3b000 [stack 0]
+ Dot {
+  name Dot31
+  xpos 401
+  ypos 912
+ }
+set N4fd3ac00 [stack 0]
+push $N4fd18c00
+ Dot {
+  name Dot29
+  xpos -64
+  ypos 845
+ }
+push $N4fd18000
+ Dot {
+  name Dot6
+  xpos 146
+  ypos 590
+ }
+set N4fd3a400 [stack 0]
+ Dot {
+  name Dot8
+  xpos 256
+  ypos 590
+ }
+ Shuffle {
+  red black
+  green black
+  name Shuffle3
+  label Blue
+  xpos 222
+  ypos 634
+ }
+ Transform {
+  scale {{"parent.blue_dist + 1"} 1}
+  center {{"parent.format / 2"} {"parent.format / 2"}}
+  name Transform2
+  label Blue
+  xpos 222
+  ypos 698
+ }
+ Dot {
+  name Dot10
+  xpos 256
+  ypos 774
+ }
+push 0
+push $N4fd3a400
+ Dot {
+  name Dot7
+  xpos 36
+  ypos 590
+ }
+ Shuffle {
+  green black
+  blue black
+  name Shuffle2
+  label Red
+  xpos 2
+  ypos 634
+ }
+ Transform {
+  scale {{"parent.red_dist + 1"} 1}
+  center {{"parent.format / 2"} {"parent.format / 2"}}
+  name Transform1
+  label Red
+  xpos 2
+  ypos 694
+ }
+ Dot {
+  name Dot9
+  xpos 36
+  ypos 774
+ }
+push $N4fd3a400
+ Shuffle {
+  red black
+  blue black
+  name Shuffle1
+  label Green
+  xpos 112
+  ypos 634
+ }
+ Merge2 {
+  inputs 3+1
+  operation plus
+  output rgb
+  name Merge1
+  xpos 112
+  ypos 770
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox A
+  name Merge8
+  xpos 112
+  ypos 841
+ }
+ Copy {
+  inputs 2
+  from0 MaskAberration.red
+  to0 rgba.alpha
+  name Copy2
+  xpos 112
+  ypos 902
+  disable {{!parent.use_mask}}
+ }
+ Shuffle {
+  alpha white
+  name Shuffle5
+  xpos 112
+  ypos 961
+  disable {{parent.use_mask}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy7
+  xpos 112
+  ypos 1016
+  disable {{"!\[exists parent.input2]" x179 0}}
+ }
+ set C51417000 [stack 0]
+ Dot {
+  name Dot32
+  xpos 146
+  ypos 1089
+ }
+push $N4fd3ac00
+push $N4fd19000
+push $N4fd18800
+ Dot {
+  name Dot20
+  xpos 545
+  ypos 58
+ }
+add_layer {NoiseCheck NoiseCheck.red NoiseCheck.green NoiseCheck.blue}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 NoiseCheck.red
+  from1 rgba.green
+  to1 NoiseCheck.green
+  from2 rgba.blue
+  to2 NoiseCheck.blue
+  name Copy5
+  xpos 511
+  ypos 391
+  disable {{"\[exists parent.input1]"}}
+ }
+ Copy {
+  inputs 2
+  from0 MaskAberration.red
+  to0 MaskAberration.red
+  name Copy4
+  xpos 511
+  ypos 902
+  disable {{!parent.use_mask}}
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  maskChannelMask rgba.red
+  name Merge11
+  xpos 511
+  ypos 1085
+ }
+ Dot {
+  name Dot34
+  xpos 545
+  ypos 1208
+ }
+push $N3b04800
+push $N3b04400
+ Dot {
+  name Dot36
+  xpos -1079
+  ypos 226
+ }
+push $N5066d400
+ Dot {
+  name Dot2
+  xpos -606
+  ypos 58
+ }
+set N5145ec00 [stack 0]
+ Dot {
+  name Dot1
+  xpos -897
+  ypos 58
+ }
+set N5145e800 [stack 0]
+ Dot {
+  name Dot11
+  xpos -1007
+  ypos 58
+ }
+set N5145e400 [stack 0]
+ Dot {
+  name Dot12
+  xpos -1142
+  ypos 58
+ }
+set N5145e000 [stack 0]
+ Median {
+  size {{parent.size}}
+  name Median1
+  xpos -1176
+  ypos 121
+ }
+push $N5145e000
+ Dot {
+  name Dot21
+  xpos -1272
+  ypos 58
+ }
+ Blur {
+  size {{parent.size}}
+  name Blur1
+  xpos -1306
+  ypos 113
+ }
+ Switch {
+  inputs 2
+  which {{parent.quality}}
+  name Switch2
+  xpos -1241
+  ypos 203
+ }
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input1]"}}
+  name Switch3
+  xpos -1167
+  ypos 290
+ }
+ Dot {
+  name Dot13
+  xpos -1133
+  ypos 357
+ }
+push $N5145e400
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge4
+  xpos -1041
+  ypos 353
+ }
+ Dot {
+  name Dot5
+  xpos -1007
+  ypos 414
+ }
+set N5053e000 [stack 0]
+ Dot {
+  name Dot16
+  xpos -1007
+  ypos 477
+ }
+set N50579c00 [stack 0]
+push $N5145e800
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge6
+  xpos -931
+  ypos 473
+ }
+ Dot {
+  name Dot17
+  xpos -897
+  ypos 533
+ }
+set N50579400 [stack 0]
+ Dot {
+  name Dot18
+  xpos -750
+  ypos 533
+ }
+clone $C4fd3b800 {
+  xpos -784
+  ypos 644
+  selected false
+ }
+clone $C4fd3b400 {
+  xpos -784
+  ypos 709
+  selected false
+ }
+clone $C4fd3b000 {
+  xpos -784
+  ypos 774
+  selected false
+ }
+ Dot {
+  name Dot19
+  xpos -750
+  ypos 883
+ }
+set N50578000 [stack 0]
+push $N50579c00
+ Dot {
+  name Dot15
+  xpos -1007
+  ypos 725
+ }
+push $N50579400
+ GodRays {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  scale {{parent.red_disto+1} 1}
+  center {{"parent.format / 2"} {"parent.format / 2"}}
+  name GodRays1
+  label Red
+  xpos -931
+  ypos 584
+ }
+ GodRays {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  scale {{parent.blue_disto+1} 1}
+  center {{"parent.format / 2"} {"parent.format / 2"}}
+  name GodRays2
+  label Blue
+  xpos -931
+  ypos 648
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox A
+  name Merge7
+  xpos -931
+  ypos 721
+ }
+ Copy {
+  inputs 2
+  from0 MaskAberration.red
+  to0 rgba.alpha
+  name Copy1
+  xpos -931
+  ypos 873
+  disable {{!parent.use_mask}}
+ }
+ Shuffle {
+  alpha white
+  name Shuffle4
+  xpos -931
+  ypos 957
+  disable {{parent.use_mask}}
+ }
+clone $C51417000 {
+  inputs 2
+  xpos -931
+  ypos 1016
+  selected false
+ }
+ Dot {
+  name Dot4
+  xpos -897
+  ypos 1083
+ }
+push $N50578000
+push $N5053e000
+push $N5145ec00
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 NoiseCheck.red
+  from1 rgba.green
+  to1 NoiseCheck.green
+  from2 rgba.blue
+  to2 NoiseCheck.blue
+  name Copy6
+  xpos -640
+  ypos 391
+  disable {{"\[exists parent.input1]"}}
+ }
+ Copy {
+  inputs 2
+  from0 MaskAberration.red
+  to0 MaskAberration.red
+  name Copy3
+  xpos -640
+  ypos 873
+  disable {{!parent.use_mask}}
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  maskChannelMask rgba.red
+  name Merge2
+  xpos -640
+  ypos 1079
+ }
+ Dot {
+  name Dot22
+  xpos -606
+  ypos 1208
+ }
+ Switch {
+  inputs 2
+  which {{parent.effect}}
+  name Switch1
+  xpos -72
+  ypos 1204
+ }
+ Output {
+  name Output1
+  xpos -72
+  ypos 1305
+ }
+end_group

@@ -1,0 +1,951 @@
+Gizmo {
+ name in_3dMirror
+ help "in_3DMirror\nProduce reflections generating a specular copy of the main Nuke Camera respect to one plane(Mirror surface).\nAlso have fresnel control of the reflections.\n\nv1.0\nby Luca Mignardi\n(For any questions, comments or suggestions please email info@lookinvfx.com)"
+ tile_color 0x196654ff
+ selected true
+ addUserKnob {20 in_3dMirror l in-3dMirror}
+ addUserKnob {41 format T ConstantFormat.format}
+ addUserKnob {41 antialiasing T ScanlineReflection.antialiasing}
+ addUserKnob {41 samples T ScanlineReflection.samples}
+ addUserKnob {26 Fresnel_1 l "Fresnel Reflection"}
+ addUserKnob {6 Fresnel_sw l "Fresnel ON/OFF" -STARTLINE}
+ Fresnel_sw true
+ addUserKnob {6 view_fr_map l "View Fresnel map" -STARTLINE}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {19 Fresnel_Falloff l "Falloff effect"}
+ Fresnel_Falloff 1
+ addUserKnob {7 blur l Blur R 0 100}
+ addUserKnob {20 CCGroup l INVISIBLE +INVISIBLE n 1}
+ addUserKnob {20 CC_fr_map l "CC Fresnel map" n 1}
+ CC_fr_map 0
+ addUserKnob {41 blackpoint T CC_Fresnel_Map.blackpoint}
+ addUserKnob {41 whitepoint T CC_Fresnel_Map.whitepoint}
+ addUserKnob {41 black l lift T CC_Fresnel_Map.black}
+ addUserKnob {41 white l gain T CC_Fresnel_Map.white}
+ addUserKnob {41 multiply T CC_Fresnel_Map.multiply}
+ addUserKnob {41 add l offset T CC_Fresnel_Map.add}
+ addUserKnob {41 gamma T CC_Fresnel_Map.gamma}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 divider1 l "" -STARTLINE}
+ addUserKnob {32 Button l Lookin t "Visit www.lookinvfx.com for other Nuke Tools\nor contact me to report bugs" T "start http://www.lookinvfx.com/tools/" +STARTLINE}
+ addUserKnob {26 text l "" -STARTLINE T "   in_3dMirror v1.2 | Luca Mignardi | 2013"}
+}
+ BackdropNode {
+  inputs 0
+  name Mirror
+  tile_color 0x3f3f3fff
+  label "               Reflected GEO"
+  note_font_size 37
+  xpos 769
+  ypos 83
+  bdwidth 598
+  bdheight 621
+ }
+ BackdropNode {
+  inputs 0
+  name HoldOUT
+  tile_color 0x3f3f3fff
+  label HoldOUT
+  note_font_size 37
+  xpos -116
+  ypos 84
+  bdwidth 598
+  bdheight 621
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x885c5cff
+  label "Relative Normals"
+  note_font_size 30
+  xpos -52
+  ypos 739
+  bdwidth 558
+  bdheight 718
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x69634aff
+  label Fresnel
+  note_font_size 42
+  xpos 816
+  ypos 923
+  bdwidth 3213
+  bdheight 543
+ }
+ Input {
+  inputs 0
+  name cam
+  label "input_\[value number]"
+  xpos 92
+  ypos 586
+  number 2
+ }
+ Input {
+  inputs 0
+  name obj2reflect
+  label "input_\[value number]"
+  xpos 840
+  ypos 321
+ }
+set N69591610 [stack 0]
+ Shuffle {
+  inputs 0
+  in2 rgba
+  red white
+  alpha white
+  black red
+  white green
+  red2 blue
+  green2 white
+  out mask
+  out2 rgba
+  name Shuffle3
+  xpos 181
+  ypos 239
+ }
+ Input {
+  inputs 0
+  name CardMirror
+  label "input_\[value number]"
+  xpos 314
+  ypos 153
+  number 1
+ }
+ ApplyMaterial {
+  inputs 2
+  name ApplyMaterial1
+  xpos 314
+  ypos 239
+ }
+ Scene {
+  inputs 2
+  name Scene1
+  xpos 325
+  ypos 306
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name ConstantFormat
+  xpos 590
+  ypos 404
+ }
+ Dot {
+  name Dot2
+  xpos 624
+  ypos 511
+ }
+set N69592ab0 [stack 0]
+add_layer {incidences incidences.red incidences.green incidences.blue incidences.alpha}
+ ScanlineRender {
+  inputs 3
+  output_shader_vectors true
+  N_channel incidences
+  name ScanlineReflection
+  xpos 315
+  ypos 592
+ }
+ set C69592e20 [stack 0]
+ Remove {
+  operation keep
+  channels mask
+  channels2 {incidences.red incidences.green incidences.blue -rgba.alpha}
+  channels3 alpha
+  name Remove1
+  xpos 315
+  ypos 640
+ }
+ Dot {
+  name Dot8
+  xpos 349
+  ypos 842
+ }
+set N69593500 [stack 0]
+ Shuffle {
+  in incidences
+  in2 alpha
+  alpha red2
+  name Shuffle4
+  xpos 134
+  ypos 839
+ }
+ ColorMatrix {
+  matrix {
+      {1 0 0}
+      {0 {"cos( \[value RotData.gamma] )" i} {"-1 * sin( \[value RotData.gamma] )" i}}
+      {0 {"sin( \[value RotData.gamma] )" i} {"cos( \[value RotData.gamma] )" i}}
+    }
+  invert {{"\[value RotData.invertxmatrix]" i}}
+  name ColorMatrix10
+  label "ROLL  X\ngamma"
+  xpos 134
+  ypos 863
+ }
+ ColorMatrix {
+  matrix {
+      {{"cos( \[value RotData.alpha] )" i} 0 {"sin( \[value RotData.alpha] )" i}}
+      {0 1 0}
+      {{"-1 * sin( \[value RotData.alpha] )" i} 0 {"cos( \[value RotData.alpha] )" i}}
+    }
+  invert {{"\[value RotData.invertymatrix]" i}}
+  name ColorMatrix11
+  label "Pitch  Y\nalpha"
+  xpos 134
+  ypos 923
+ }
+ ColorMatrix {
+  matrix {
+      {{"cos( \[value RotData.beta] )" i} {"-1 * sin( \[value RotData.beta] )" i} 0}
+      {{"sin( \[value RotData.beta] )" i} {"cos( \[value RotData.beta] )" i} 0}
+      {0 0 1}
+    }
+  invert {{"\[value RotData.invertzmatrix]" i}}
+  name ColorMatrix12
+  label "Yaw  Z\nbeta"
+  xpos 134
+  ypos 983
+ }
+set N695942c0 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  name Shuffle1
+  xpos 134
+  ypos 1045
+ }
+ Gamma {
+  channels rgb
+  value 3
+  unpremult rgba.alpha
+  name GammaOffset
+  xpos 134
+  ypos 1105
+ }
+ Grade {
+  unpremult rgba.alpha
+  name CC_Fresnel_Map
+  xpos 134
+  ypos 1141
+ }
+ Clamp {
+  channels rgb
+  unpremult rgba.alpha
+  name Clamp1
+  xpos 134
+  ypos 1205
+ }
+ Dot {
+  name Dot3
+  label Link
+  note_font_size 30
+  xpos 168
+  ypos 1277
+ }
+set N695953f0 [stack 0]
+ Invert {
+  channels rgb
+  unpremult rgba.alpha
+  name Invert1
+  xpos 134
+  ypos 1324
+ }
+ Dot {
+  name Dot6
+  label Link
+  note_font_size 30
+  xpos 168
+  ypos 1390
+ }
+set N69595ad0 [stack 0]
+ PostageStamp {
+  name fresnel1
+  xpos 1008
+  ypos 2038
+  hide_input true
+  postage_stamp true
+ }
+push $N695942c0
+push $N69593500
+ ShuffleCopy {
+  inputs 2
+  in rgb
+  alpha alpha2
+  black red
+  white green
+  red2 blue
+  green2 black
+  out2 incidences
+  name ShuffleCopy1
+  xpos 315
+  ypos 995
+ }
+ Dot {
+  name Dot1
+  xpos 349
+  ypos 1950
+ }
+ Shuffle {
+  in mask
+  name Shuffle2
+  xpos 607
+  ypos 1947
+ }
+push $N69595ad0
+push $N69595ad0
+ PostageStamp {
+  name fresnel2
+  xpos 1110
+  ypos 1142
+  hide_input true
+  postage_stamp true
+ }
+push $N695953f0
+ PostageStamp {
+  name fresnel
+  xpos 1108
+  ypos 945
+  hide_input true
+  postage_stamp true
+ }
+ Dot {
+  name Dot23
+  xpos 1537
+  ypos 972
+ }
+set N697d3fc0 [stack 0]
+ Dot {
+  name Dot26
+  xpos 1736
+  ypos 972
+ }
+set N697d4330 [stack 0]
+ Dot {
+  name Dot28
+  xpos 1942
+  ypos 972
+ }
+set N697d46a0 [stack 0]
+ Dot {
+  name Dot30
+  xpos 2141
+  ypos 972
+ }
+set N697d4a10 [stack 0]
+ Dot {
+  name Dot12
+  xpos 2336
+  ypos 972
+ }
+set N697d4d80 [stack 0]
+ Dot {
+  name Dot13
+  xpos 2524
+  ypos 971
+ }
+set N697d50f0 [stack 0]
+ Dot {
+  name Dot14
+  xpos 2729
+  ypos 971
+ }
+set N697d5460 [stack 0]
+ Dot {
+  name Dot15
+  xpos 2925
+  ypos 971
+ }
+set N697d57d0 [stack 0]
+ Dot {
+  name Dot16
+  xpos 3125
+  ypos 971
+ }
+set N697d5b40 [stack 0]
+ Dot {
+  name Dot17
+  xpos 3327
+  ypos 971
+ }
+set N697d5eb0 [stack 0]
+ Dot {
+  name Dot18
+  xpos 3525
+  ypos 971
+ }
+set N697d6220 [stack 0]
+ Dot {
+  name Dot19
+  xpos 3723
+  ypos 970
+ }
+set N697d6590 [stack 0]
+ Dot {
+  name Dot21
+  xpos 3915
+  ypos 970
+ }
+ Grade {
+  channels rgba
+  blackpoint 0.9
+  white_clamp true
+  name Grade8
+  xpos 3881
+  ypos 1097
+ }
+ Axis2 {
+  inputs 0
+  rotate {{parent.info_hub.CardMirror_rotate.x*2*cos(parent.info_hub.CardMirror_rotate.y/(180/pi))} {parent.info_hub.CardMirror_rotate.y*2} {curve}}
+  scaling {1 1 -1}
+  pivot {{parent.info_hub.CardMirror_translate.x} {parent.info_hub.CardMirror_translate.y} {parent.info_hub.CardMirror_translate.z}}
+  name Axis2
+  xpos 979
+  ypos 396
+ }
+ Camera2 {
+  read_from_file {{"\[python \{nuke.thisGroup().input(2)\['read_from_file'].value()\} ] " x1 1}}
+  translate {{parent.info_hub.MainCamera_translate.x} {parent.info_hub.MainCamera_translate.y} {parent.info_hub.MainCamera_translate.z}}
+  rotate {{parent.info_hub.MainCamera_rotate.x} {parent.info_hub.MainCamera_rotate.y} {parent.info_hub.MainCamera_rotate.z}}
+  focal {{parent.info_hub.focal}}
+  haperture {{parent.info_hub.haperture}}
+  vaperture {{parent.info_hub.vaperture}}
+  name Reflected_camera2
+  xpos 979
+  ypos 506
+ }
+push $N69591610
+push $N69592ab0
+clone $C69592e20 {
+  inputs 3
+  xpos 840
+  ypos 592
+  selected false
+ }
+ Dot {
+  name Dot10
+  xpos 874
+  ypos 1039
+ }
+set N697d7a30 [stack 0]
+ Dot {
+  name Dot11
+  xpos 1333
+  ypos 1039
+ }
+set N697d7da0 [stack 0]
+ Dot {
+  name Dot24
+  xpos 1443
+  ypos 1039
+ }
+set N697d8110 [stack 0]
+ Dot {
+  name Dot27
+  xpos 1645
+  ypos 1039
+ }
+set N697d8480 [stack 0]
+ Dot {
+  name Dot29
+  xpos 1848
+  ypos 1039
+ }
+set N697d8b60 [stack 0]
+ Dot {
+  name Dot31
+  xpos 2047
+  ypos 1039
+ }
+set N697d87f0 [stack 0]
+ Dot {
+  name Dot20
+  xpos 2245
+  ypos 1039
+ }
+set N697d8ed0 [stack 0]
+ Dot {
+  name Dot22
+  xpos 2433
+  ypos 1038
+ }
+set N697d9240 [stack 0]
+ Dot {
+  name Dot59
+  xpos 2638
+  ypos 1038
+ }
+set N697d95b0 [stack 0]
+ Dot {
+  name Dot60
+  xpos 2834
+  ypos 1038
+ }
+set N697d9920 [stack 0]
+ Dot {
+  name Dot61
+  xpos 3034
+  ypos 1038
+ }
+set N697d9c90 [stack 0]
+ Dot {
+  name Dot63
+  xpos 3236
+  ypos 1038
+ }
+set N697da000 [stack 0]
+ Dot {
+  name Dot64
+  xpos 3434
+  ypos 1038
+ }
+set N697da370 [stack 0]
+ Dot {
+  name Dot66
+  xpos 3632
+  ypos 1037
+ }
+set N697da6e0 [stack 0]
+ Dot {
+  name Dot68
+  xpos 3824
+  ypos 1037
+ }
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*10 i}}
+  name Blur10
+  xpos 3790
+  ypos 1097
+ }
+push $N697d6590
+ Grade {
+  channels rgba
+  blackpoint 0.8
+  whitepoint 0.9
+  white_clamp true
+  name Grade7
+  xpos 3689
+  ypos 1097
+ }
+push $N697da6e0
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*9 i}}
+  name Blur9
+  xpos 3598
+  ypos 1097
+ }
+push $N697d6220
+ Grade {
+  channels rgba
+  blackpoint 0.7
+  whitepoint 0.8
+  white_clamp true
+  name Grade6
+  xpos 3491
+  ypos 1097
+ }
+push $N697da370
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*8 i}}
+  name Blur8
+  xpos 3400
+  ypos 1097
+ }
+push $N697d5eb0
+ Grade {
+  channels rgba
+  blackpoint 0.6
+  whitepoint 0.7
+  white_clamp true
+  name Grade5
+  xpos 3293
+  ypos 1097
+ }
+push $N697da000
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*7 i}}
+  name Blur7
+  xpos 3202
+  ypos 1096
+ }
+push $N697d5b40
+ Grade {
+  channels rgba
+  blackpoint 0.5
+  whitepoint 0.6
+  white_clamp true
+  name Grade4
+  xpos 3091
+  ypos 1097
+ }
+push $N697d9c90
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*6 i}}
+  name Blur6
+  xpos 3000
+  ypos 1097
+ }
+push $N697d57d0
+ Grade {
+  channels rgba
+  blackpoint 0.4
+  whitepoint 0.5
+  white_clamp true
+  name Grade3
+  xpos 2891
+  ypos 1097
+ }
+push $N697d9920
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*5 i}}
+  name Blur5
+  xpos 2800
+  ypos 1097
+ }
+push $N697d5460
+ Grade {
+  channels rgba
+  blackpoint 0.3
+  whitepoint 0.4
+  white_clamp true
+  name Grade2
+  xpos 2695
+  ypos 1097
+ }
+push $N697d95b0
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*4 i}}
+  name Blur4
+  xpos 2604
+  ypos 1097
+ }
+push $N697d50f0
+ Grade {
+  channels rgba
+  blackpoint 0.2
+  whitepoint 0.3
+  white_clamp true
+  name Grade1
+  xpos 2490
+  ypos 1097
+ }
+push $N697d9240
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*3 i}}
+  name Blur3
+  xpos 2399
+  ypos 1097
+ }
+push $N697d4d80
+ Grade {
+  channels rgba
+  blackpoint 0.1
+  whitepoint 0.2
+  white_clamp true
+  name Grade13
+  xpos 2302
+  ypos 1097
+ }
+push $N697d8ed0
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10*2 i}}
+  name Blur2
+  xpos 2211
+  ypos 1097
+ }
+push $N697d4a10
+ Grade {
+  channels rgba
+  blackpoint 0.075
+  whitepoint 0.1
+  white_clamp true
+  name Grade14
+  xpos 2107
+  ypos 1097
+ }
+push $N697d87f0
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10 i}}
+  name Blur14
+  xpos 2013
+  ypos 1097
+ }
+push $N697d46a0
+ Grade {
+  channels rgba
+  blackpoint 0.05
+  whitepoint 0.075
+  white_clamp true
+  name Grade11
+  xpos 1908
+  ypos 1097
+ }
+push $N697d8b60
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10/4*3 i}}
+  name Blur13
+  xpos 1814
+  ypos 1097
+ }
+push $N697d4330
+ Grade {
+  channels rgba
+  blackpoint 0.025
+  whitepoint 0.05
+  white_clamp true
+  name Grade10
+  xpos 1702
+  ypos 1097
+ }
+push $N697d8480
+ Blur {
+  channels {{{parent.Blur11.channels}}}
+  size {{blur/10/4*2 i}}
+  name Blur12
+  xpos 1611
+  ypos 1097
+ }
+push $N697d3fc0
+ Grade {
+  channels rgba
+  whitepoint 0.025
+  white_clamp true
+  name Grade9
+  xpos 1503
+  ypos 1097
+ }
+push $N697d8110
+ Blur {
+  channels rgba
+  size {{blur/10/4 i}}
+  name Blur11
+  xpos 1409
+  ypos 1095
+ }
+push $N697d7da0
+ Dot {
+  name Dot25
+  xpos 1333
+  ypos 1167
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix11
+  xpos 1409
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix12
+  xpos 1611
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix13
+  xpos 1814
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix14
+  xpos 2013
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix2
+  xpos 2211
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix3
+  xpos 2399
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix4
+  xpos 2604
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix5
+  xpos 2800
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix6
+  xpos 3000
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix7
+  xpos 3202
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix8
+  xpos 3400
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix9
+  xpos 3598
+  ypos 1159
+ }
+ Keymix {
+  inputs 3
+  bbox B
+  name Keymix10
+  xpos 3790
+  ypos 1159
+ }
+ Dot {
+  name Dot32
+  xpos 3824
+  ypos 1329
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  mix {{parent.Fresnel_Falloff}}
+  name Merge1
+  xpos 1110
+  ypos 1326
+ }
+push $N697d7a30
+ Switch {
+  inputs 2
+  which {{parent.Fresnel_sw}}
+  name Switch1
+  xpos 840
+  ypos 1326
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 incidences.red
+  from1 rgba.green
+  to1 incidences.green
+  from2 rgba.blue
+  to2 incidences.blue
+  name Copy1
+  xpos 840
+  ypos 1368
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge2
+  xpos 840
+  ypos 1947
+ }
+ Switch {
+  inputs 2
+  which {{parent.view_fr_map}}
+  name Switch2
+  xpos 840
+  ypos 2061
+ }
+ Output {
+  name Output1
+  xpos 840
+  ypos 2141
+ }
+ NoOp {
+  inputs 0
+  name info_hub
+  xpos 1124
+  ypos 414
+  addUserKnob {20 User}
+  addUserKnob {26 MainCamera l "Main Camera"}
+  addUserKnob {13 MainCamera_translate l translate}
+  MainCamera_translate {{"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['translate'\\].value(0)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['translate'\\].value(1)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['translate'\\].value(2)\\n]"}}
+  addUserKnob {13 MainCamera_rotate l rotate}
+  MainCamera_rotate {{"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['rotate'\\].value(0)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['rotate'\\].value(1)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['rotate'\\].value(2)\\n]"}}
+  addUserKnob {7 focal l focal_length R 5 100}
+  focal {{"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['focal'\\].value()\\n]"}}
+  addUserKnob {7 haperture l horiz_aperture R 0.1 50}
+  haperture {{"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['haperture'\\].value()\\n]"}}
+  addUserKnob {7 vaperture l vert_aperture R 0.1 50}
+  vaperture {{"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(2)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Camera2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['vaperture'\\].value(0)\\n]"}}
+  addUserKnob {26 CardMirror l "Card Mirror"}
+  addUserKnob {13 CardMirror_translate l translate}
+  CardMirror_translate {{"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(1)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Card2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['translate'\\].value(0)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(1)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Card2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['translate'\\].value(1)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(1)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Card2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['translate'\\].value(2)\\n]"}}
+  addUserKnob {13 CardMirror_rotate l rotate}
+  CardMirror_rotate {{"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(1)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Card2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['rotate'\\].value(0)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(1)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Card2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['rotate'\\].value(1)\\n]"} {"\[python -execlocal def\\ cameraSearch():\\n\\ \\ \\ \\ d=nuke.thisGroup().input(1)\\n\\ \\ \\ \\ while\\ d.Class()\\ !=\\ 'Card2':\\n\\ \\ \\ \\ \\ \\ \\ \\ d\\ =\\ d.dependencies()\\\[0\\]\\ \\n\\ \\ \\ \\ return\\ d\\n\\nret\\ =\\ cameraSearch()\\\['rotate'\\].value(2)\\n]"}}
+ }
+ NoOp {
+  inputs 0
+  name RotData
+  xpos -11
+  ypos 873
+  addUserKnob {20 "" l User}
+  addUserKnob {6 invertxmatrix -STARTLINE}
+  addUserKnob {6 invertymatrix -STARTLINE}
+  addUserKnob {6 invertzmatrix -STARTLINE}
+  addUserKnob {26 ""}
+  addUserKnob {6 negx -STARTLINE}
+  negx true
+  addUserKnob {6 negy -STARTLINE}
+  negy true
+  addUserKnob {6 negz -STARTLINE}
+  addUserKnob {13 rotate}
+  rotate {{parent.info_hub.MainCamera_rotate.x} {parent.info_hub.MainCamera_rotate.y} {parent.info_hub.MainCamera_rotate.z}}
+  addUserKnob {26 ""}
+  addUserKnob {1 alphaexpr}
+  alphaexpr (negy?-1:1)*rotate.y/360.0*(2*PI)
+  addUserKnob {1 betaexpr}
+  betaexpr (negz?-1:1)*rotate.z/360.0*(2*PI)
+  addUserKnob {1 gammaexpr}
+  gammaexpr (negx?-1:1)*rotate.x/360.0*(2*PI)
+  addUserKnob {26 ""}
+  addUserKnob {7 alpha}
+  alpha {{"\[knob alphaexpr]"}}
+  addUserKnob {7 beta}
+  beta {{"\[knob betaexpr]"}}
+  addUserKnob {7 gamma}
+  gamma {{"\[knob gammaexpr]"}}
+ }
+push $N69595ad0
+ Viewer {
+  useGPUForViewer true
+  useGPUForInputs true
+  input_process false
+  name Viewer1
+  selected true
+  xpos 302
+  ypos 2115
+ }
+end_group

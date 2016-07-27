@@ -1,0 +1,103 @@
+set cut_paste_input [stack 0]
+version 8.0 v4
+push $cut_paste_input
+Gizmo {
+ name TiltShift_Blur
+ help "So far you should only rotate on positive values\n\n�Copyright:\nJonas Almeida.\n jgadpp.com \n2014"
+ tile_color 0xff8923ff
+ selected true
+ addUserKnob {20 user l TiltShift}
+ addUserKnob {7 position l range R 0 10}
+ addUserKnob {41 size T TopBlur.size}
+ addUserKnob {41 color l intensity T TopRamp.color}
+ addUserKnob {41 translate T Transform1.translate}
+ addUserKnob {41 rotate T Transform1.rotate}
+}
+ Reformat {
+  inputs 0
+  name Reformat1
+  xpos 120
+  ypos -312
+  hide_input true
+ }
+ Dot {
+  name Dot3
+  xpos 154
+  ypos -257
+ }
+set N3baef1d0 [stack 0]
+ Dot {
+  name Dot4
+  xpos 354
+  ypos -257
+ }
+ Ramp {
+  p0 {{TopRamp.p0 x1 998} {root.format.h-TopRamp.p0 x1 542}}
+  p1 {{p0 x1 978} 0}
+  type smooth
+  color {{TopRamp.color}}
+  name BottomRamp
+  xpos 320
+  ypos -162
+ }
+ Dot {
+  name Dot2
+  xpos 354
+  ypos -7
+ }
+ Transform {
+  scale {{(rotate+(rotate/10)-rotate)+1 x1 0}}
+  center {960 540}
+  black_outside false
+  name Transform1
+  xpos 187
+  ypos -11
+ }
+ set C3baeff90 [stack 0]
+push $N3baef1d0
+ Ramp {
+  p0 {966 {position*(position*5.3)+540}}
+  p1 {{p0 x1 946} {root.format.h x1 994}}
+  type smooth
+  name TopRamp
+  xpos 120
+  ypos -162
+ }
+ Dot {
+  name Dot1
+  xpos 154
+  ypos -107
+ }
+clone $C3baeff90 {
+  xpos 42
+  ypos -112
+  selected false
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -80
+  ypos -177
+ }
+ Blur {
+  inputs 1+1
+  channels rgb
+  size 10
+  name TopBlur
+  xpos -80
+  ypos -125
+ }
+ Blur {
+  inputs 1+1
+  channels rgb
+  size {{TopBlur.size}}
+  name BottomBlur
+  xpos -80
+  ypos -25
+ }
+ Output {
+  name Output1
+  xpos -80
+  ypos 189
+ }
+end_group

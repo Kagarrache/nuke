@@ -1,0 +1,84 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Line}
+ addUserKnob {19 Color}
+ Color 1
+ addUserKnob {7 Tickness R 1 20}
+ Tickness 10
+ addUserKnob {12 pt1}
+ pt1 {100 100}
+ addUserKnob {12 pt2}
+ pt2 {100 200}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 121
+  ypos -300
+ }
+set N22a89ed0 [stack 0]
+add_layer {rgba rgba.beta}
+ Fill {
+  color {{parent.Color i} {parent.Color i} {parent.Color i} {parent.Color i}}
+  name Fill1
+  xpos 41
+  ypos -221
+ }
+ Reformat {
+  type "to box"
+  box_width {{"sqrt( pow(parent.pt2.x - parent.pt1.x, 2) + pow(parent.pt2.y - parent.pt1.y, 2) )" i}}
+  box_height {{parent.Tickness*2 i}}
+  box_fixed true
+  resize fill
+  filter Impulse
+  name Reformat3
+  xpos 41
+  ypos -195
+ }
+ Crop {
+  box {0 0 {width i} {height i}}
+  name Crop1
+  xpos 41
+  ypos -169
+ }
+ Transform {
+  translate {{parent.pt1.x i x1 66} {parent.pt1.y-(parent.Tickness) i x1 174}}
+  rotate {{parent.LineValue1.angle i}}
+  center {0 {parent.Tickness i}}
+  filter Parzen
+  name Transform2
+  xpos 41
+  ypos -98
+ }
+push $N22a89ed0
+ Merge2 {
+  inputs 2
+  bbox intersection
+  name Merge3
+  xpos 121
+  ypos -31
+ }
+ Output {
+  name Output
+  xpos 121
+  ypos -5
+ }
+ NoOp {
+  inputs 0
+  name LineValue1
+  xpos 231
+  ypos -132
+  addUserKnob {20 User}
+  addUserKnob {19 Color}
+  Color {{parent.Color}}
+  addUserKnob {12 pt1}
+  pt1 {{parent.pt1.x} {parent.pt1.y}}
+  addUserKnob {12 pt2}
+  pt2 {{parent.pt2.x} {parent.pt2.y}}
+  addUserKnob {7 Radius R 1 15}
+  Radius {{parent.Tickness}}
+  addUserKnob {7 angle}
+  angle {{"(pt1.x<pt2.x)? (int( atan( (pt1.y - pt2.y) / (pt1.x - pt2.x)) * (180/pi) * 1000) / 1000) :  (int( atan( (pt1.y - pt2.y) / (pt1.x - pt2.x)) * (180/pi) * 1000) / 1000)+180"}}
+ }
+end_group

@@ -1,0 +1,94 @@
+#! C:/Program Files/Nuke6.3v4/Nuke6.3.exe -nx
+version 6.3 v4
+Gizmo {
+ help "This gizmo modifies World Position coordinate. Also may be useful in work with Object Position, World Normals and similar data passes. Feed it as input.\nUses with Mask3D_ik and Mask3DSpherical_ik or any another WorldPosition based nodes and gizmos. Strongly recomend to pick pivot point before starting your tweaking!\n------\nv002\nIvan Kokov. Pixomondo Shanghai. 2012\nbutafor@inbox.ru\nivan.kokov@sha.pixomondo.com"
+ addUserKnob {20 User}
+ addUserKnob {41 Pivot T Control.Pivot}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 rot_order l "Rotation order" T Axis4.rot_order}
+ addUserKnob {41 Translate T Control.Translate}
+ addUserKnob {41 Rotate T Control.Rotate}
+ addUserKnob {41 Scale T Control.Scale}
+ addUserKnob {41 UniformScale T Control.UniformScale}
+ addUserKnob {41 Scew T Control.Scew}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 Credits l "" +STARTLINE T "v002 © Ivan Kokov. Pixomondo Shanghai. 2012"}
+}
+ Input {
+  inputs 0
+  name InputWorldPos
+  xpos 137
+  ypos -545
+ }
+ Dot {
+  name Dot461
+  xpos 171
+  ypos -505
+ }
+set N9a6e780 [stack 0]
+ NoOp {
+  name Control
+  xpos 233
+  ypos -508
+  addUserKnob {20 User}
+  addUserKnob {18 Pivot}
+  Pivot {0 0 0}
+  addUserKnob {26 ""}
+  addUserKnob {13 Translate}
+  addUserKnob {13 Rotate}
+  addUserKnob {13 Scale}
+  Scale {1 1 1}
+  addUserKnob {7 UniformScale R 0 10}
+  UniformScale 1
+  addUserKnob {13 Scew}
+ }
+push $N9a6e780
+add_layer {rgba redguard1.glow rgba.beta}
+ Add {
+  value {{-parent.Control.Pivot i} {-parent.Control.Pivot i} {-parent.Control.Pivot i} 0}
+  name Add1
+  label "move center of transformation (pivot) to center of coordinate"
+  xpos 137
+  ypos -453
+ }
+ ColorMatrix {
+  matrix {
+      {{parent.Axis4.world_matrix.0 i} {parent.Axis4.world_matrix.1 i} {parent.Axis4.world_matrix.2 i}}
+      {{parent.Axis4.world_matrix.4 i} {parent.Axis4.world_matrix.5 i} {parent.Axis4.world_matrix.6 i}}
+      {{parent.Axis4.world_matrix.8 i} {parent.Axis4.world_matrix.9 i} {parent.Axis4.world_matrix.10 i}}
+    }
+  name ColorMatrix1
+  label "apply rotation, scale and  scew"
+  xpos 137
+  ypos -390
+ }
+ Add {
+  value {{parent.Control.Pivot i} {parent.Control.Pivot i} {parent.Control.Pivot i} 0}
+  name Add2
+  label "move center of transformation (pivot) back"
+  xpos 137
+  ypos -334
+ }
+ Add {
+  value {{parent.Control.Translate i} {parent.Control.Translate i} {parent.Control.Translate i} {curve i}}
+  name Add3
+  label "aplly translate"
+  xpos 137
+  ypos -274
+ }
+ Output {
+  name Output1
+  xpos 137
+  ypos -172
+ }
+ Axis2 {
+  inputs 0
+  rotate {{parent.Control.Rotate.x i} {parent.Control.Rotate.y i} {parent.Control.Rotate.z i}}
+  scaling {{parent.Control.Scale.x i} {parent.Control.Scale.y i} {parent.Control.Scale.z i}}
+  uniform_scale {{parent.Control.UniformScale i}}
+  skew {{parent.Control.Scew.x i} {parent.Control.Scew.y i} {parent.Control.Scew.z i}}
+  name Axis4
+  xpos 257
+  ypos -409
+ }
+end_group

@@ -1,0 +1,60 @@
+#! C:/Program Files/Nuke6.2v1/Nuke6.2.exe -nx
+version 6.2 v1
+Gizmo {
+ label "Edge detect"
+ postage_stamp true
+ lock_connections true
+ addUserKnob {20 edgecontrols l "Edge Controls"}
+ addUserKnob {41 insize l "Inside size" t "Use positive values" T insideErode.size}
+ addUserKnob {41 filter T insideErode.filter}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 outsize l "Outside size" t "Use negative values" T outsideErode.size}
+ addUserKnob {41 filter_1 l filter T outsideErode.filter}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 404
+  ypos -122
+ }
+ Dot {
+  name Dot1
+  xpos 438
+  ypos -82
+ }
+set Naf05f70 [stack 0]
+ FilterErode {
+  name insideErode
+  xpos 404
+  ypos -38
+ }
+push $Naf05f70
+ FilterErode {
+  size -1
+  name outsideErode
+  xpos 514
+  ypos -92
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  Achannels {rgba.alpha none none rgba.alpha}
+  Bchannels {rgba.alpha none none rgba.alpha}
+  output {rgba.alpha none none rgba.alpha}
+  name Merge1
+  xpos 514
+  ypos -38
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos 514
+ }
+ Output {
+  name Output1
+  xpos 514
+  ypos 68
+ }
+end_group

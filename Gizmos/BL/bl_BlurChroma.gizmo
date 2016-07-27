@@ -1,0 +1,362 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l BlurChroma}
+ addUserKnob {4 ColorSpace l "Color Space" M {HSV HSL YPbPr YCbCr CIE-Yxy}}
+ addUserKnob {7 blur R 0 50}
+ addUserKnob {4 filter M {box triangle quadratic gaussian defocus "" ""}}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 1375
+  ypos 490
+ }
+set N37f79510 [stack 0]
+push $N37f79510
+ Colorspace {
+  colorspace_out CIE-Yxy
+  name Colorspace11
+  xpos 1808
+  ypos 1284
+ }
+set N37f6bb60 [stack 0]
+ Defocus {
+  channels {-rgba.red rgba.green rgba.blue}
+  defocus {{parent.blur i}}
+  name Defocus6
+  xpos 2006
+  ypos 1312
+ }
+push $N37f6bb60
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  name Blur5
+  xpos 1909
+  ypos 1313
+ }
+push $N37f6bb60
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter quadratic
+  name Blur22
+  xpos 1808
+  ypos 1310
+ }
+push $N37f6bb60
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter triangle
+  name Blur23
+  xpos 1709
+  ypos 1313
+ }
+push $N37f6bb60
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter box
+  name Blur24
+  xpos 1605
+  ypos 1311
+ }
+ Switch {
+  inputs 5
+  which {{parent.filter i}}
+  name Switch8
+  xpos 1808
+  ypos 1348
+ }
+ Colorspace {
+  colorspace_in CIE-Yxy
+  name Colorspace12
+  xpos 1808
+  ypos 1374
+ }
+push $N37f79510
+ Colorspace {
+  colorspace_out YCbCr
+  name Colorspace13
+  xpos 1603
+  ypos 1104
+ }
+set N37f6e660 [stack 0]
+ Defocus {
+  channels {-rgba.red rgba.green rgba.blue}
+  defocus {{parent.blur i}}
+  name Defocus7
+  xpos 1801
+  ypos 1130
+ }
+push $N37f6e660
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  name Blur25
+  xpos 1704
+  ypos 1133
+ }
+push $N37f6e660
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter quadratic
+  name Blur26
+  xpos 1603
+  ypos 1130
+ }
+push $N37f6e660
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter triangle
+  name Blur27
+  xpos 1504
+  ypos 1133
+ }
+push $N37f6e660
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter box
+  name Blur28
+  xpos 1400
+  ypos 1129
+ }
+ Switch {
+  inputs 5
+  which {{parent.filter i}}
+  name Switch9
+  xpos 1603
+  ypos 1168
+ }
+ Colorspace {
+  colorspace_in YCbCr
+  name Colorspace14
+  xpos 1603
+  ypos 1194
+ }
+push $N37f79510
+ Colorspace {
+  colorspace_out YPbPr
+  name Colorspace15
+  xpos 1375
+  ypos 918
+ }
+set N37f71160 [stack 0]
+ Defocus {
+  channels {-rgba.red rgba.green rgba.blue}
+  defocus {{parent.blur i}}
+  name Defocus8
+  xpos 1573
+  ypos 944
+ }
+push $N37f71160
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  name Blur29
+  xpos 1476
+  ypos 947
+ }
+push $N37f71160
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter quadratic
+  name Blur30
+  xpos 1375
+  ypos 944
+ }
+push $N37f71160
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter triangle
+  name Blur31
+  xpos 1276
+  ypos 947
+ }
+push $N37f71160
+ Blur {
+  channels {-rgba.red rgba.green rgba.blue}
+  size {{parent.blur i}}
+  filter box
+  name Blur32
+  xpos 1174
+  ypos 943
+ }
+ Switch {
+  inputs 5
+  which {{parent.filter i}}
+  name Switch10
+  xpos 1375
+  ypos 982
+ }
+ Colorspace {
+  colorspace_in YPbPr
+  name Colorspace16
+  xpos 1375
+  ypos 1008
+ }
+push $N37f79510
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace17
+  xpos 1109
+  ypos 766
+ }
+set N37f73c60 [stack 0]
+ Defocus {
+  channels {rgba.red rgba.green -rgba.blue}
+  defocus {{parent.blur i}}
+  name Defocus9
+  xpos 1307
+  ypos 792
+ }
+push $N37f73c60
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  name Blur33
+  xpos 1210
+  ypos 795
+ }
+push $N37f73c60
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  filter quadratic
+  name Blur34
+  xpos 1109
+  ypos 792
+ }
+push $N37f73c60
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  filter triangle
+  name Blur35
+  xpos 1013
+  ypos 795
+ }
+push $N37f73c60
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  filter box
+  name Blur36
+  xpos 906
+  ypos 793
+ }
+ Switch {
+  inputs 5
+  which {{parent.filter i}}
+  name Switch11
+  xpos 1109
+  ypos 830
+ }
+ Colorspace {
+  colorspace_in HSL
+  name Colorspace18
+  xpos 1109
+  ypos 856
+ }
+push $N37f79510
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace19
+  xpos 786
+  ypos 621
+ }
+set N37f76760 [stack 0]
+ Defocus {
+  channels {rgba.red rgba.green -rgba.blue}
+  defocus {{parent.blur i}}
+  name Defocus10
+  xpos 984
+  ypos 647
+ }
+push $N37f76760
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  name Blur37
+  xpos 887
+  ypos 650
+ }
+push $N37f76760
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  filter quadratic
+  name Blur38
+  xpos 786
+  ypos 647
+ }
+push $N37f76760
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  filter triangle
+  name Blur39
+  xpos 687
+  ypos 650
+ }
+push $N37f76760
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue}
+  size {{parent.blur i}}
+  filter box
+  name Blur40
+  xpos 583
+  ypos 648
+ }
+ Switch {
+  inputs 5
+  which {{parent.filter i}}
+  name Switch12
+  xpos 786
+  ypos 685
+ }
+ Colorspace {
+  colorspace_in HSV
+  name Colorspace20
+  xpos 786
+  ypos 711
+ }
+ Switch {
+  inputs 5
+  which {{parent.ColorSpace i}}
+  name Switch13
+  xpos 796
+  ypos 1422
+ }
+push $N37f79510
+ Dissolve {
+  inputs 2
+  channels rgb
+  which {{parent.mix i}}
+  name Dissolve1
+  selected true
+  xpos 796
+  ypos 1448
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 796
+  ypos 1474
+ }
+ Output {
+  name Output1
+  xpos 796
+  ypos 1529
+ }
+end_group

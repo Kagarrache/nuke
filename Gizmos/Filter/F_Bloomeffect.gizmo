@@ -1,0 +1,106 @@
+#! /Applications/Nuke7.0v8/NukeX7.0v8.app/../Nuke7.0v8.app/Contents/MacOS/Nuke7.0v8 -nx
+version 7.0 v8
+Gizmo {
+ inputs 3
+ help "Filippo 1.0\nF_Bloom Effect\n© 2014 Filippo Morelli. All right reserved\nwww.filippomorelli.it"
+ tile_color 0xff721aff
+ addUserKnob {20 BloomEffect l "Bloom Effect"}
+ addUserKnob {26 bloom l BLOOM}
+ addUserKnob {41 intensity T Grade2.multiply}
+ addUserKnob {26 blur l BLUR}
+ addUserKnob {41 size l blur T Blur2.size}
+ addUserKnob {41 filter T Blur2.filter}
+ addUserKnob {41 quality l "" -STARTLINE T Blur2.quality}
+ addUserKnob {26 glow l GLOW}
+ addUserKnob {41 tint T Glow2.tint}
+ addUserKnob {41 tolerance T Glow2.tolerance}
+ addUserKnob {41 brightness T Glow2.brightness}
+ addUserKnob {41 saturation T Glow2.saturation}
+}
+ Input {
+  inputs 0
+  name BG
+  xpos -469
+  ypos -328
+ }
+ Dot {
+  name Dot3
+  xpos -435
+  ypos -162
+ }
+set N24c606a0 [stack 0]
+ Input {
+  inputs 0
+  name Mask
+  xpos -856
+  ypos -208
+  number 2
+ }
+ Input {
+  inputs 0
+  name Bloom
+  xpos -641
+  ypos -323
+  number 1
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge1
+  selected true
+  xpos -641
+  ypos -208
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge4
+  xpos -641
+  ypos -165
+ }
+ Dot {
+  name Dot4
+  xpos -607
+  ypos -99
+ }
+ Blur {
+  name Blur2
+  xpos -641
+  ypos -56
+ }
+ Grade {
+  name Grade2
+  xpos -641
+  ypos 9
+ }
+ Glow2 {
+  tint 0
+  name Glow2
+  xpos -641
+  ypos 65
+ }
+ Premult {
+  name Premult2
+  xpos -641
+  ypos 147
+ }
+push $N24c606a0
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge2
+  xpos -469
+  ypos 147
+ }
+ Grade {
+  white_clamp true
+  name Grade1
+  xpos -469
+  ypos 187
+ }
+ Output {
+  name Output1
+  xpos -469
+  ypos 247
+ }
+end_group

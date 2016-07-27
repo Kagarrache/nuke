@@ -1,0 +1,64 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l Star}
+ addUserKnob {41 position T Flare1.position}
+ addUserKnob {7 radius R 0 500}
+ radius 100
+ addUserKnob {7 feather R 0 200}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 corners T Flare1.corners}
+ addUserKnob {41 flattening l "edge flattening" T Flare1.flattening}
+ addUserKnob {41 sharpness l "corner sharpness" T Flare1.sharpness}
+ addUserKnob {41 corners_angle l angle T Flare1.corners_angle}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 value l color T Multiply1.value}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -480
+  ypos 14
+ }
+ Flare {
+  position {{width/2} {height/2}}
+  radius {{parent.radius} {radius.0} {"parent.radius + parent.feather"}}
+  size_mult 1.5
+  inner_color 1
+  vis_in 0
+  vis_out 0
+  corners 8
+  sharpness 0
+  asym_falloff 0
+  mult_offset 0
+  mult_offset_seed 0
+  mult_size_seed 0
+  mult_color_seed 0
+  mult_brightness_seed 0
+  mult_visibility_seed 0
+  mult_flattening_seed 0
+  mult_rotate_seed 0
+  name Flare1
+  xpos -480
+  ypos 40
+ }
+add_layer {rgba rgba.beta}
+ Shuffle {
+  alpha blue
+  name Shuffle1
+  xpos -480
+  ypos 66
+ }
+ Multiply {
+  channels rgb
+  name Multiply1
+  selected true
+  xpos -480
+  ypos 92
+ }
+ Output {
+  name Output
+  xpos -480
+  ypos 118
+ }
+end_group

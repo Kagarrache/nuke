@@ -1,0 +1,85 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l IBokeh}
+ addUserKnob {41 Zchan l Z T ZBlur2.Zchan}
+ addUserKnob {41 math T ZBlur2.math}
+ addUserKnob {41 occlusion -STARTLINE T ZBlur2.occlusion}
+ addUserKnob {41 setup_mode l "focal-plane setup" -STARTLINE T ZBlur2.setup_mode}
+ addUserKnob {7 intensity}
+ intensity 0.1
+ addUserKnob {41 center l "focus plane (C)" T ZBlur2.center}
+ addUserKnob {41 dof l depth-of-field T ZBlur2.dof}
+ addUserKnob {41 size T ZBlur2.size}
+ addUserKnob {41 max_size l maximum T ZBlur2.max_size}
+ addUserKnob {41 shape l "filter shape" T ZBlur2.shape}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {7 mix}
+ mix 1
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 343
+  ypos 243
+ }
+ Dot {
+  name Dot5
+  xpos 377
+  ypos 306
+ }
+set Nb23c460 [stack 0]
+ Gamma {
+  channels rgba
+  value {{parent.intensity i}}
+  name Gamma3
+  xpos 343
+  ypos 360
+ }
+ ZBlur {
+  channels rgba
+  math linear
+  shape 1
+  name ZBlur2
+  xpos 343
+  ypos 386
+ }
+ Gamma {
+  channels rgba
+  value {{1/parent.Gamma3.value i}}
+  name Gamma4
+  xpos 343
+  ypos 412
+ }
+push $Nb23c460
+ Dot {
+  name Dot6
+  xpos 279
+  ypos 306
+ }
+ Dot {
+  name Dot7
+  xpos 279
+  ypos 489
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix}}
+  name Dissolve2
+  selected true
+  xpos 343
+  ypos 485
+ }
+ Remove {
+  channels depth
+  name Remove2
+  xpos 343
+  ypos 511
+ }
+ Output {
+  name Output1
+  xpos 343
+  ypos 549
+ }
+end_group

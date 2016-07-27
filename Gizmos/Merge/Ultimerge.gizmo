@@ -1,0 +1,676 @@
+#! /ifs/apps/x86_64/nuke/6.3v8/Nuke6.3 -nx
+version 6.3 v8
+add_layer {rgba rgba.beta}
+Gizmo {
+ inputs 3
+ tile_color 0x3535ffff
+ note_font "Bitstream Vera Sans"
+ mapsize {0.15 0.15}
+ addUserKnob {20 Merge}
+ addUserKnob {41 operation l "Merge Operation" T Merge1.operation}
+ addUserKnob {41 sRGB l "Video colorspace" -STARTLINE T Merge1.sRGB}
+ addUserKnob {41 screen_alpha l "alpha masking" -STARTLINE T Merge1.screen_alpha}
+ addUserKnob {41 bbox l "set bbox to " T Merge1.bbox}
+ addUserKnob {41 metainput l "metadata from" -STARTLINE T Merge1.metainput}
+ addUserKnob {26 ""}
+ addUserKnob {41 Achannels l "A channels" T Merge1.Achannels}
+ addUserKnob {41 Bchannels l "B channels" T Merge1.Bchannels}
+ addUserKnob {41 output T Merge1.output}
+ addUserKnob {41 also_merge l "also merge" T Merge1.also_merge}
+ addUserKnob {41 mix_2 l mix T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {20 Integration}
+ addUserKnob {41 EnableLightWrap l "Enable Light Wrap" T Enable_Light_Wrap.EnableLightWrap}
+ addUserKnob {41 ShowLWOnly l "Show Light Wrap Only" -STARTLINE T Show_LW_Only_Switch.ShowLWOnly}
+ addUserKnob {41 size l "Light Wrap Size" T Blur1.size}
+ addUserKnob {41 mix l "Light Wrap Intensity" T Merge2.mix}
+ addUserKnob {41 EnableLightWrapMask l "Enable Mask" T Light_Wrap_Mask_Switch.LightWrapMask}
+ addUserKnob {26 ""}
+ addUserKnob {41 Switch l "Enable Edge Extend" T Edge_Extend_Switch.Switch}
+ addUserKnob {41 DilateSize l "Edge Extend Size" T NoOp1.DilateSize}
+ addUserKnob {41 size_2 l "Edge Extend Blur" T EdgeBlur1.size}
+ addUserKnob {41 Switch_1 l "Enable Mask" T Edge_Extend_Switch1.Switch}
+ addUserKnob {26 ""}
+ addUserKnob {41 EnableBGIntegration l "Enable BG Integration" T NoOp3.EnableBGIntegration}
+ addUserKnob {41 mix_1 l "BG Integration Amount" T Merge5.mix}
+ addUserKnob {41 BGIntegrationDetail l "BG Integration Detail" T NoOp2.BGIntegrationDetail}
+ addUserKnob {26 ""}
+ addUserKnob {20 Grading}
+ addUserKnob {41 blackpoint l "FG Black Point" T Grade1.blackpoint}
+ addUserKnob {41 whitepoint l "FG White Point" T Grade1.whitepoint}
+ addUserKnob {26 ""}
+ addUserKnob {41 black l "BG Black Point" T Grade1.black}
+ addUserKnob {41 white l "BG White Point" T Grade1.white}
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation T ColorCorrect1.saturation}
+ addUserKnob {41 contrast T ColorCorrect1.contrast}
+ addUserKnob {41 black_1 l lift T Grade2.black}
+ addUserKnob {41 white_1 l gain T Grade2.white}
+ addUserKnob {41 multiply T Grade2.multiply}
+ addUserKnob {41 add l offset T Grade2.add}
+ addUserKnob {41 gamma T Grade2.gamma}
+ addUserKnob {26 ""}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x8e8e3800
+  label "Light Wrap mask on/off"
+  note_font_size 42
+  xpos -960
+  ypos 571
+  bdwidth 487
+  bdheight 181
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x3e8e37ff
+  label "BG Integration"
+  note_font_size 42
+  xpos 36
+  ypos -169
+  bdwidth 352
+  bdheight 270
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x7171c600
+  label "Edge Extend\nwith mask"
+  note_font_size 42
+  xpos -1278
+  ypos -90
+  bdwidth 316
+  bdheight 446
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x8e8e3800
+  label "Light Wrap"
+  note_font_size 42
+  xpos 1007
+  ypos 520
+  bdwidth 302
+  bdheight 320
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x8e8e38ff
+  label "Light Wrap on/off"
+  note_font_size 42
+  xpos -718
+  ypos -732
+  bdwidth 353
+  bdheight 195
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x7171c600
+  label "Edge Extend"
+  note_font_size 42
+  xpos -609
+  ypos -85
+  bdwidth 320
+  bdheight 380
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0xc67171ff
+  label Grading
+  note_font_size 42
+  xpos -632
+  ypos -1126
+  bdwidth 230
+  bdheight 209
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0x8e8e38ff
+  label "Show Light Wrap\nOnly"
+  note_font_size 42
+  xpos -1709
+  ypos -715
+  bdwidth 379
+  bdheight 290
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0x3e8e37ff
+  label "BG Integration"
+  note_font_size 42
+  xpos 574
+  ypos 608
+  bdwidth 288
+  bdheight 114
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos 760
+  ypos 422
+ }
+ NoOp {
+  name Edge_Extend_Switch
+  xpos 760
+  ypos 505
+  addUserKnob {20 User}
+  addUserKnob {6 Switch l "Edge Extend On/Off" +STARTLINE}
+ }
+ NoOp {
+  inputs 0
+  name NoOp2
+  xpos 246
+  ypos -61
+  addUserKnob {20 User}
+  addUserKnob {7 BGIntegrationDetail l "BG Integration Detail" R 0 100}
+ }
+ NoOp {
+  inputs 0
+  name Show_LW_Only_Switch
+  xpos 760
+  ypos 1041
+  addUserKnob {20 User}
+  addUserKnob {6 ShowLWOnly l "Show Light Wrap Only" +STARTLINE}
+ }
+ NoOp {
+  inputs 0
+  name Light_Wrap_Mask_Switch
+  xpos -760
+  ypos 676
+  addUserKnob {20 User}
+  addUserKnob {6 LightWrapMask l "Disable Mask?" +STARTLINE}
+ }
+ Input {
+  inputs 0
+  name A
+  xpos -560
+  ypos -1340
+  number 1
+ }
+ Unpremult {
+  name Unpremult1
+  xpos -560
+  ypos -1200
+ }
+set N1c312ad0 [stack 0]
+ Dot {
+  name Dot12
+  xpos -246
+  ypos -1196
+ }
+ Shuffle {
+  name Shuffle1
+  xpos -280
+  ypos -570
+ }
+ Dot {
+  name Dot11
+  xpos -246
+  ypos -506
+ }
+set N1c325bc0 [stack 0]
+ Input {
+  inputs 0
+  name Mask
+  xpos -1428
+  ypos -220
+  number 2
+ }
+ Dot {
+  name Dot4
+  xpos -1394
+  ypos 113
+ }
+set N1c32bff0 [stack 0]
+ Dot {
+  name Dot17
+  xpos -1394
+  ypos 204
+ }
+set N1c32f220 [stack 0]
+ Dot {
+  name Dot22
+  xpos -1394
+  ypos 680
+ }
+ Shuffle {
+  name Shuffle3
+  xpos -1080
+  ypos 676
+ }
+push $N1c325bc0
+ Dot {
+  name Dot2
+  xpos 1129
+  ypos -506
+ }
+ Input {
+  inputs 0
+  name B
+  xpos 600
+  ypos -745
+ }
+ Dot {
+  name Dot28
+  xpos 634
+  ypos -355
+ }
+set N1c346b40 [stack 0]
+ Dot {
+  name Dot7
+  xpos 1274
+  ypos -356
+ }
+ Dot {
+  name Dot6
+  xpos 1274
+  ypos 645
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 1095
+  ypos 635
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos 1095
+  ypos 684
+ }
+ Premult {
+  name Premult3
+  xpos 1095
+  ypos 733
+ }
+ Blur {
+  size 10
+  name Blur1
+  xpos 1095
+  ypos 770
+ }
+ Dot {
+  name Dot10
+  xpos -869
+  ypos 785
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -903
+  ypos 670
+  disable {{1-(parent.Light_Wrap_Mask_Switch.LightWrapMask) i}}
+ }
+ Premult {
+  name Premult5
+  xpos -903
+  ypos 633
+  disable {{1-(parent.Light_Wrap_Mask_Switch.LightWrapMask) i}}
+ }
+ Dot {
+  name Dot9
+  xpos -869
+  ypos -611
+ }
+set N1c37f4a0 [stack 0]
+push $N1c312ad0
+ Grade {
+  name Grade1
+  label "Matching Blacks & Whites"
+  xpos -560
+  ypos -1041
+ }
+ ColorCorrect {
+  name ColorCorrect1
+  xpos -560
+  ypos -992
+ }
+ Grade {
+  name Grade2
+  xpos -560
+  ypos -955
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  mix 0.3
+  name Merge2
+  xpos -560
+  ypos -615
+  disable {{1-(parent.Enable_Light_Wrap.EnableLightWrap)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy4
+  xpos -560
+  ypos -516
+ }
+set N1c3acc60 [stack 0]
+ Dot {
+  name Dot14
+  xpos -683
+  ypos -506
+ }
+set N1c3b5a20 [stack 0]
+ Shuffle {
+  name Shuffle4
+  xpos -1480
+  ypos -510
+ }
+push $N1c37f4a0
+ Dot {
+  name Dot8
+  xpos -1560
+  ypos -611
+ }
+ Remove {
+  name Remove1
+  xpos -1594
+  ypos -582
+  disable {{parent.Enable_Light_Wrap.EnableLightWrap}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy6
+  xpos -1594
+  ypos -516
+ }
+ Premult {
+  name Premult7
+  xpos -1594
+  ypos -465
+ }
+ Dot {
+  name Dot29
+  xpos -1560
+  ypos 1044
+ }
+push $N1c325bc0
+ Dot {
+  name Dot26
+  xpos -246
+  ypos -6
+ }
+push $N1c346b40
+ Dot {
+  name Dot15
+  xpos 474
+  ypos -355
+ }
+set N1c3e04e0 [stack 0]
+ Dot {
+  name Dot23
+  xpos 152
+  ypos -355
+ }
+ Blur {
+  size {{100-(NoOp2.BGIntegrationDetail) i}}
+  name Blur2
+  xpos 118
+  ypos -65
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy5
+  xpos 118
+  ypos -16
+ }
+ Premult {
+  name Premult6
+  xpos 118
+  ypos 34
+ }
+ Dot {
+  name Dot19
+  xpos 152
+  ypos 694
+ }
+push $N1c3b5a20
+ Shuffle {
+  name Shuffle6
+  xpos -717
+  ypos 165
+ }
+ Dot {
+  name Dot13
+  xpos -683
+  ypos 217
+ }
+set N1c400440 [stack 0]
+ Dot {
+  name Dot3
+  xpos -683
+  ypos 282
+ }
+push $N1c32f220
+ Shuffle {
+  name Shuffle5
+  xpos -1314
+  ypos 200
+ }
+push $N1c32bff0
+ Shuffle {
+  name Shuffle2
+  xpos -1314
+  ypos 109
+ }
+push $N1c3acc60
+ Premult {
+  name Premult4
+  xpos -560
+  ypos -465
+ }
+ Dot {
+  name Dot1
+  xpos -526
+  ypos -216
+ }
+set N1c42c900 [stack 0]
+ Dot {
+  name Dot18
+  xpos -1097
+  ypos -216
+ }
+ Unpremult {
+  name Unpremult3
+  xpos -1131
+  ypos 65
+ }
+ set C1c40e5e0 [stack 0]
+ Dilate {
+  inputs 1+1
+  channels alpha
+  size {{(NoOp1.DilateSize)*-1 i}}
+  name Dilate1
+  xpos -1131
+  ypos 102
+ }
+ set C1c4380f0 [stack 0]
+ Premult {
+  name Premult1
+  xpos -1131
+  ypos 152
+ }
+ set C1c4378c0 [stack 0]
+ EdgeBlur {
+  inputs 1+1
+  size 2.5
+  name EdgeBlur1
+  xpos -1131
+  ypos 194
+ }
+ set C1c444120 [stack 0]
+ Unpremult {
+  name Unpremult2
+  xpos -1131
+  ypos 243
+ }
+ set C1c44e200 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -1131
+  ypos 272
+ }
+ set C1c443cd0 [stack 0]
+ Premult {
+  name Premult2
+  xpos -1131
+  ypos 321
+ }
+ set C1c45b8a0 [stack 0]
+ Dot {
+  name Dot16
+  xpos -1097
+  ypos 449
+ }
+push $N1c400440
+push $N1c42c900
+clone $C1c40e5e0 {
+  xpos -560
+  ypos 0
+  selected false
+ }
+clone $C1c4380f0 {
+  xpos -560
+  ypos 37
+  selected true
+ }
+clone $C1c4378c0 {
+  xpos -560
+  ypos 86
+  selected false
+ }
+clone $C1c444120 {
+  xpos -560
+  ypos 128
+  selected false
+ }
+clone $C1c44e200 {
+  xpos -560
+  ypos 177
+  selected false
+ }
+clone $C1c443cd0 {
+  inputs 2
+  xpos -560
+  ypos 206
+  selected false
+ }
+clone $C1c45b8a0 {
+  xpos -560
+  ypos 255
+  selected false
+ }
+ Switch {
+  inputs 2
+  which {{parent.Edge_Extend_Switch1.Switch i}}
+  name Switch2
+  xpos -560
+  ypos 445
+ }
+push $N1c3e04e0
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos 440
+  ypos 446
+ }
+ Dot {
+  name Dot5
+  xpos 474
+  ypos 509
+ }
+push $N1c42c900
+push $N1c346b40
+ Merge2 {
+  inputs 2
+  Achannels rgba
+  Bchannels rgba
+  output rgba
+  name Merge1
+  xpos 600
+  ypos -219
+ }
+ Switch {
+  inputs 2
+  which {{parent.Edge_Extend_Switch.Switch i}}
+  name Switch1
+  xpos 600
+  ypos 505
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  mix 0.02
+  name Merge5
+  xpos 598
+  ypos 690
+  disable {{1-(NoOp3.EnableBGIntegration) i}}
+ }
+ Switch {
+  inputs 2
+  which {{parent.Show_LW_Only_Switch.ShowLWOnly i}}
+  name Switch3
+  xpos 600
+  ypos 1041
+ }
+ Output {
+  name Output1
+  xpos 600
+  ypos 1356
+ }
+ NoOp {
+  inputs 0
+  name Edge_Extend_Switch1
+  xpos -389
+  ypos 235
+  addUserKnob {20 User}
+  addUserKnob {6 Switch l "Edge Extend with Mask On/Off" +STARTLINE}
+ }
+ NoOp {
+  inputs 0
+  name NoOp3
+  xpos 758
+  ypos 690
+  addUserKnob {20 User}
+  addUserKnob {6 EnableBGIntegration l "Enable BG Integration" +STARTLINE}
+ }
+ NoOp {
+  inputs 0
+  name Enable_Light_Wrap
+  xpos -920
+  ypos -710
+  addUserKnob {20 User}
+  addUserKnob {6 EnableLightWrap l "Enable Light Wrap" +STARTLINE}
+ }
+ NoOp {
+  inputs 0
+  name NoOp1
+  xpos -401
+  ypos 60
+  addUserKnob {20 User}
+  addUserKnob {7 DilateSize l "Edge Extend Size" R 0 10}
+  DilateSize 3
+ }
+end_group

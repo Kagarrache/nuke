@@ -1,0 +1,273 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ addUserKnob {20 User l SaturationRGB}
+ addUserKnob {18 Saturation R 0 20}
+ Saturation 1
+ addUserKnob {41 color l Luminance T Fill_Luminance1.color}
+ addUserKnob {7 Gamma R 0.0001 5}
+ Gamma 2
+ addUserKnob {41 alpha l by T Premult.alpha}
+ addUserKnob {41 invert -STARTLINE T Premult.invert}
+ addUserKnob {7 mix}
+ mix 1
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0x8e8e3800
+  label Luminance
+  note_font_size 15
+  xpos -708
+  ypos 253
+  bdwidth 317
+  bdheight 227
+ }
+ Fill {
+  inputs 0
+  output rgb
+  color {0.3 0.6 0.1 0}
+  name Fill_Luminance1
+  xpos -751
+  ypos 101
+ }
+ Merge2 {
+  operation multiply
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  name Merge34
+  xpos -848
+  ypos 160
+ }
+set N7a1e600 [stack 0]
+ Shuffle {
+  in rgb
+  red blue
+  green blue
+  name Shuffle14
+  xpos -753
+  ypos 186
+ }
+push 0
+push $N7a1e600
+ Shuffle {
+  in rgb
+  red green
+  blue green
+  name Shuffle15
+  xpos -848
+  ypos 186
+ }
+push $N7a1e600
+ Shuffle {
+  in rgb
+  green red
+  blue red
+  name Shuffle16
+  xpos -943
+  ypos 186
+ }
+ Merge2 {
+  inputs 3+1
+  operation plus
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  name Merge35
+  xpos -848
+  ypos 212
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -199
+  ypos 75
+ }
+set N17d98af0 [stack 0]
+ Gamma {
+  channels rgba
+  value {{parent.Gamma i}}
+  name Gamma5
+  xpos -199
+  ypos 101
+ }
+ Dot {
+  name Dot3
+  xpos -165
+  ypos 168
+ }
+set N17e5b9e0 [stack 0]
+ Dot {
+  name Dot1
+  xpos 135
+  ypos 168
+ }
+push $N17e5b9e0
+ Dot {
+  name Dot22
+  xpos -165
+  ypos 566
+ }
+set N17e5bf40 [stack 0]
+push $N17e5bf40
+ Dot {
+  name Dot23
+  xpos -289
+  ypos 566
+ }
+ Fill {
+  output rgb
+  color {{parent.Saturation i} {parent.Saturation i} {parent.Saturation i} {parent.Saturation i}}
+  name Fill_Saturation1
+  xpos -321
+  ypos 625
+ }
+set N17e5c4a0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge33
+  xpos -197
+  ypos 625
+ }
+push $N17e5b9e0
+ Dot {
+  name Dot25
+  xpos -471
+  ypos 168
+ }
+ Multiply {
+  channels rgb
+  value {{parent.Fill_Luminance1.color} {parent.Fill_Luminance1.color} {parent.Fill_Luminance1.color} {parent.Fill_Luminance1.color}}
+  name Multiply1
+  selected true
+  xpos -505
+  ypos 333
+ }
+set N17a7a220 [stack 0]
+ Expression {
+  channel0 rgb
+  expr0 r+g+b
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression1
+  xpos -505
+  ypos 359
+ }
+push $N17a7a220
+ Fill {
+  color {{parent.Multiply1.value i} {parent.Multiply1.value i} {parent.Multiply1.value i} {parent.Multiply1.value i}}
+  name Fill1
+  xpos -626
+  ypos 333
+ }
+ Expression {
+  channel0 rgb
+  expr0 r+g+b
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression2
+  xpos -626
+  ypos 359
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge1
+  xpos -505
+  ypos 409
+ }
+ Dot {
+  name Dot26
+  xpos -471
+  ypos 710
+ }
+push $N17e5c4a0
+ Fill {
+  output rgb
+  name Fill_2
+  xpos -441
+  ypos 625
+ }
+push $N17e5c4a0
+ Merge2 {
+  inputs 2
+  operation minus
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  name Merge36
+  xpos -321
+  ypos 651
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge37
+  xpos -321
+  ypos 707
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge38
+  xpos -197
+  ypos 707
+ }
+ Gamma {
+  channels rgba
+  value {{"1 / parent.Gamma5.value"}}
+  name Gamma6
+  xpos -47
+  ypos 707
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 103
+  ypos 707
+ }
+ Premult {
+  alpha none
+  name Premult
+  xpos 103
+  ypos 733
+ }
+ Unpremult {
+  alpha {{{parent.Premult.alpha}}}
+  invert {{Premult.invert i}}
+  name Unpremult
+  xpos 103
+  ypos 759
+ }
+push $N17d98af0
+ Dot {
+  name Dot2
+  xpos 255
+  ypos 79
+ }
+ Dissolve {
+  inputs 2
+  channels rgba
+  which {{parent.mix i}}
+  name Dissolve1
+  xpos 221
+  ypos 759
+ }
+ Output {
+  name Output
+  xpos 221
+  ypos 785
+ }
+push $N17d98af0
+ Viewer {
+  viewerProcess None
+  input_process false
+  name Viewer1
+  xpos -627
+  ypos 522
+ }
+end_group

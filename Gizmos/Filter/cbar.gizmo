@@ -1,0 +1,114 @@
+#! /Applications/Nuke9.0v6.bak/Nuke9.0v6.app/Contents/MacOS//libnuke-9.0.6.dylib -nx
+version 9.0 v6
+Gizmo {
+ inputs 0
+ addUserKnob {20 User}
+ addUserKnob {14 psize l size R 0 100}
+ psize {50 300}
+ addUserKnob {3 pbarnum l "bar number"}
+ pbarnum 20
+ addUserKnob {7 pvdist l "bar gap"}
+ pvdist 0.275
+ addUserKnob {7 pshow l "show %" R 0 100}
+ pshow 100
+}
+ Constant {
+  inputs 0
+  color {1 1 1 1}
+  format "1920 1080 0 0 1920 1080 1 HD_1080"
+  name Constant1
+  label "\[python cget_format_data()]"
+  xpos 126
+  ypos -82
+ }
+ Crop {
+  box {0 0 {psize} {psize.1}}
+  reformat true
+  crop false
+  name Crop2
+  xpos 126
+  ypos 20
+ }
+set N11174390 [stack 0]
+ Transform {
+  scale {1 {1-pvdist}}
+  name Transform1
+  xpos 126
+  ypos 137
+  addUserKnob {20 Re-center}
+  addUserKnob {22 recenter l "re-center to " -STARTLINE T transformcustom_recenter()}
+  addUserKnob {17 format l "" -STARTLINE}
+  addUserKnob {20 exprping l "cycle expr"}
+  addUserKnob {4 chan l channel M {X Y "" ""}}
+  addUserKnob {4 mode l "   mode" -STARTLINE M {Repeat Bounce Random "" "" ""}}
+  addUserKnob {4 direction l "   direction" -STARTLINE M {A B}}
+  addUserKnob {22 inject -STARTLINE T "n=nuke.thisNode()\nchan=0 if n\['chan'].value()=='X' else 1\nmode=n\['mode'].value()\ndirection=n\['direction'].value()\nsticky=n\['stickybounce'].value()\nexprrepeat='(int((((frame-pframestart)%(pmaxtime*(phold+1))))/(phold+1)))' \nexprbounce='(int((((abs(((frame-pframestart-(pmaxtime*(phold+1)))%(2*pmaxtime*(phold+1)))- (((2*pmaxtime*(phold+1))-1)/2))-.5)))/(phold+1)))' if sticky else '(int((abs(((frame-pframestart-((pmaxtime*(phold+1))-(phold+1)))%   ((2*(pmaxtime-1)*(phold+1))) )- (  (((phold+1)*pmaxtime)-1) - (phold/2)) )+(phold/2))    /(phold+1))) '\nexprrandom='(int((random(int(frame/(phold+1))+seed)*100)%(pmaxtime*(phold+1))/(phold+1)))'\n\nexpr=exprrepeat if mode=='Repeat' else exprbounce if mode=='Bounce' else exprrandom\n\nn\['pexpr'].setExpression(expr)\nn\['pdata'].setExpression('abs(pexpr-(pmaxtime-1))' if (direction =='B' and mode!='Random' ) else 'pexpr')\nn\['translate'].setExpression('pdata*pdist',chan)"}
+  addUserKnob {6 stickybounce +STARTLINE}
+  addUserKnob {3 phold}
+  phold 2
+  addUserKnob {7 pdist R 0 200}
+  pdist 50
+  addUserKnob {3 pframestart}
+  pframestart 1
+  addUserKnob {3 pmaxtime l "x time"}
+  pmaxtime 6
+  addUserKnob {7 seed l "random seed" R 1 100}
+  seed 100
+  addUserKnob {26 ""}
+  addUserKnob {3 pexpr l INVISIBLE +INVISIBLE}
+  addUserKnob {3 pdata l data}
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  crop false
+  name Crop1
+  xpos 126
+  ypos 183
+ }
+ Tile {
+  rows {{pbarnum}}
+  filter Impulse
+  name Tile1
+  xpos 126
+  ypos 213
+ }
+ Crop {
+  box {0 0 {psize} {"int(pshow/100*int(pbarnum))==0?.0001 :int(pshow/100*int(pbarnum))*(psize.1/int(pbarnum))"}}
+  name Crop3
+  selected true
+  xpos 126
+  ypos 243
+ }
+set N1118f040 [stack 0]
+ Crop {
+  box {0 0 {psize} {psize.1}}
+  crop false
+  name Crop4
+  xpos 126
+  ypos 273
+ }
+set N11194100 [stack 0]
+ Viewer {
+  frame_range 1-100
+  fps 25
+  name Viewer2
+  xpos 216
+  ypos 155
+ }
+push $N11194100
+ Output {
+  name Output1
+  xpos 126
+  ypos 332
+ }
+push $N11174390
+push $N1118f040
+ Viewer {
+  inputs 2
+  frame_range 1-50
+  fps 25
+  name Viewer1
+  xpos 252
+  ypos 85
+ }
+end_group

@@ -1,0 +1,2337 @@
+#BreakDown_Tool v1.0
+#Contact cameron.a.carson@gmail.com with questions
+Gizmo {
+ help "Finally a simple way to generate a breakdown of a shot! \n\nAny questions contact cameron.a.carson@gmail.com"
+ inputs 20
+ knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nmstrKnobs = \['type', 'framehold', 'trantype', 'wipetype', 'wipelin']\n\nif k.name() in mstrKnobs:\n\n\tn\['holdfr'].setVisible(n\['framehold'].value() == True)\n\t\t\n\ttypeFn()\n\ttrantypeFn()\n\twipetypeFn()\n\twipelinFn()\n\ndef typeFn():\n\tsubKnobs = \{\n\t\t'Layer':\['out'],\n\t\t'Card Stack':\['out', 'cardtext', 'sep'],\n\t\t'Animated':\['anitext', 'holdlen', 'trantype']\n\t\t\}\n\tfor skList in subKnobs.itervalues():\n\t\t\tfor sk in skList:\n\t\t\t\tn\[sk].setVisible(sk in subKnobs\[n\['type'].value()] )\n\n\ndef trantypeFn():\n\tsubKnobs = \{\n\t\t'Pop On':\[],\n\t\t'Dissolve':\['tranlen'],\n\t\t'Wipe':\['tranlen', 'wipetext', 'wipetype', 'wipelin', 'flip', 'flop', 'feather', 'falloff']\n\t\t\}\n\tfor skList in subKnobs.itervalues():\n\t\tfor sk in skList:\n\t\t\tif n\['trantype'].visible():\n\t\t\t\tn\[sk].setVisible(sk in subKnobs\[n\['trantype'].value()] )\n\t\t\telse:\n\t\t\t\tn\[sk].setVisible(False)\n\twipetypeFn()\n\ndef wipetypeFn():\n\tsubKnobs = \{\n        'Linear':\['angle'],\n        'Concentric':\['aspect'],\n        'Clock':\['fields', 'start'],\n        'Angle':\['fields2'],\n        'Spiral':\['slices', 'rotation'],\n        'Blinds':\['align', 'fields3'],\n        'Curtains':\[],\n        'Streaks': \['align2', 'fields_streaks'],\n        'Bulls Eye': \['fields_bull'],\n        'Random': \['fields_rnd', 'seed']\n\t    \}\n\tfor skList in subKnobs.itervalues():\n\t\tfor sk in skList:\n\t\t\tif n\['wipetype'].visible():\n\t\t\t\tn\[sk].setVisible(sk in subKnobs\[n\['wipetype'].value()] )\n\t\t\telse:\n\t\t\t\tn\[sk].setVisible(False)\n\ndef wipelinFn():\n\tif n\['wipelin'].visible():\n\t\tn\['lincolor'].setVisible(n\['wipelin'].value() == True)\n\telse:\n\t\tn\['lincolor'].setVisible(False)\n\t\n\n"
+ addUserKnob {20 main l Main}
+ addUserKnob {26 globtext l Global}
+ addUserKnob {4 type l "Output Type" t "Choose the type of output.\n'Layer' displays one input at a time as defined by the 'Output Layer(s)' knob.\n'Card Stack' displays a stack of 3d cards up to the number of inputs specified in the 'Output Layer(s)' knob. Switch to the Camera tab to control the Camera.\n'Animated' cycles through the inputs over time with different transition styles." M {Layer "Card Stack" Animated}}
+ addUserKnob {3 out l "Output Layer(s)" t "Specifies the layer to output. Or if Card Stack is checked specifies the number of layer to output."}
+ out 10
+ addUserKnob {6 premult l "Premult Inputs" t "Premults the Images as they come in." +STARTLINE}
+ addUserKnob {6 diff l Differencer t "Subtracts each input from the previous sequential input to grab a difference. Makes each layer just show what changed." +STARTLINE}
+ addUserKnob {6 framehold l "Frame Hold" t "Check to lock to one frame" +STARTLINE}
+ addUserKnob {3 holdfr l "Hold Frame" t "The frame to hold on" +HIDDEN}
+ addUserKnob {26 unnamed1 l "" t " " +STARTLINE T " "}
+ addUserKnob {26 ""}
+ addUserKnob {26 cardtext l "Card Stack" +HIDDEN}
+ addUserKnob {16 sep l "Card Seperation" t "Determines the seperation between the cards." +HIDDEN}
+ sep 0.3
+ addUserKnob {26 anitext l Animated +HIDDEN}
+ addUserKnob {3 holdlen l "Hold Length" t "Number of Frames to hold on each layer" +HIDDEN}
+ holdlen 5
+ addUserKnob {4 trantype l "Transition Type" t "The type of transition to use." +HIDDEN M {"Pop On" Dissolve Wipe}}
+ addUserKnob {3 tranlen l "Transition Length" t "Number of frames to do the transition over." -STARTLINE +HIDDEN}
+ tranlen 10
+ addUserKnob {26 wipetext l Wipe +HIDDEN}
+ addUserKnob {4 wipetype l WipeType +HIDDEN M {Linear Concentric Clock Angle Spiral Curtains Blinds Streaks "Bulls Eye" Random ""} t "The shape and motion of the wipe"}
+ addUserKnob {6 flip l Flip -STARTLINE +HIDDEN}
+ addUserKnob {6 flop l Flop -STARTLINE +HIDDEN}
+ addUserKnob {6 wipelin l "Wipe Line" t "Show wipe line indicator." -STARTLINE +HIDDEN}
+ addUserKnob {18 lincolor l "" t "The Color of the Wipe Line" -STARTLINE +HIDDEN}
+ lincolor {1 0 0}
+ addUserKnob {7 feather l Feather +HIDDEN}
+ addUserKnob {7 falloff l Falloff +HIDDEN R 0 2}
+ falloff 1
+ addUserKnob {7 angle l Angle +HIDDEN R 0 360}
+ addUserKnob {7 aspect l Aspect +HIDDEN R 0.5 2}
+ aspect 1
+ addUserKnob {3 fields l Fields +HIDDEN}
+ fields 2
+ addUserKnob {7 start l Start +HIDDEN}
+ addUserKnob {3 fields2 l Fields +HIDDEN}
+ fields2 4
+ addUserKnob {7 slices l Pitch +HIDDEN R 0 10}
+ slices 5
+ addUserKnob {7 rotation l Rotation +HIDDEN}
+ addUserKnob {4 align l Align +HIDDEN M {vertical horizontal}}
+ align horizontal
+ addUserKnob {3 fields3 l Fields +HIDDEN}
+ fields3 4
+ addUserKnob {4 align2 l Align +HIDDEN M {vertical horizontal}}
+ align2 horizontal
+ addUserKnob {3 fields_streaks l Fields +HIDDEN}
+ fields_streaks 7
+ addUserKnob {3 fields_bull l Fields +HIDDEN}
+ fields_bull 7
+ addUserKnob {3 fields_rnd l Fields +HIDDEN}
+ fields_rnd 10
+ addUserKnob {3 seed l Seed +HIDDEN}
+ seed 999999
+ addUserKnob {20 camera l Camera t "Controls the Camera and Target of the Card Stack"}
+ addUserKnob {26 camText l Camera}
+ addUserKnob {41 translate T Camera_wTarget.translate}
+ addUserKnob {41 rotate T Camera_wTarget.rotate}
+ addUserKnob {41 scaling l scale T Camera_wTarget.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T Camera_wTarget.uniform_scale}
+ addUserKnob {41 skew T Camera_wTarget.skew}
+ addUserKnob {41 pivot T Camera_wTarget.pivot}
+ addUserKnob {26 unnamed l "" +STARTLINE}
+ addUserKnob {26 lensText l Lens}
+ addUserKnob {41 ortho l Orthographic T Camera_wTarget.ortho}
+ addUserKnob {41 focal l "focal length" T Camera_wTarget.focal}
+ addUserKnob {41 haperture l "horiz aperture" T Camera_wTarget.haperture}
+ addUserKnob {41 vaperture l "vert aperture" T Camera_wTarget.vaperture}
+ addUserKnob {41 focal_point l "focal distance" T Camera_wTarget.focal_point}
+ addUserKnob {41 fstop T Camera_wTarget.fstop}
+ addUserKnob {26 unnamed2 l "" +STARTLINE}
+ addUserKnob {26 tarText l Target}
+ addUserKnob {41 translate_1 l translate T Camera_wTarget.translate_1}
+}
+ Group {
+  inputs 0
+  name Wipe
+  knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\nif k.name() == 'output':\n    subKnobs = \{\n    'Linear':\['angle'],\n    'Concentric':\['aspect'],\n    'Clock':\['fields', 'start'],\n    'Angle':\['fields2'],\n    'Spiral':\['slices', 'rotation'],\n    'Blinds':\['align', 'fields3'],\n    'Curtains':\[],\n    'Streaks': \['align2', 'fields_streaks'],\n    'Bulls Eye': \['fields_bull'],\n    'Random': \['fields_rnd', 'seed']\n    \}\n\n    for skList in subKnobs.itervalues():\n        for sk in skList:\n            n\[sk].setVisible( sk in subKnobs\[k.value()] )\n                \n\n"
+  xpos 1220
+  ypos 922
+  postage_stamp true
+  addUserKnob {20 User}
+  addUserKnob {41 format T Constant1.format}
+  addUserKnob {26 ""}
+  addUserKnob {7 wipe R 0 2}
+  wipe {{"(frame%(holdlen+tranlen)/(holdlen)) *(holdlen/tranlen) -(holdlen/tranlen) > 0 ? (frame%(holdlen+tranlen)/(holdlen)) *(holdlen/tranlen) -(holdlen/tranlen) : 0"}}
+  addUserKnob {6 flip -STARTLINE}
+  flip {{parent.flip}}
+  addUserKnob {6 flop -STARTLINE}
+  flop {{parent.flop}}
+  addUserKnob {7 feather}
+  feather {{parent.feather}}
+  addUserKnob {7 falloff R 0 2}
+  falloff {{parent.falloff}}
+  addUserKnob {26 ""}
+  addUserKnob {4 output -STARTLINE M {Linear Concentric Clock Angle Spiral Curtains Blinds Streaks "Bulls Eye" Random ""}}
+  output {{parent.wipetype}}
+  addUserKnob {7 angle R 0 360}
+  angle {{parent.angle}}
+  addUserKnob {7 aspect +HIDDEN R 0.5 2}
+  aspect {{parent.aspect}}
+  addUserKnob {3 fields +HIDDEN}
+  fields {{parent.fields}}
+  addUserKnob {7 start +HIDDEN}
+  start {{parent.start}}
+  addUserKnob {3 fields2 l fields +HIDDEN}
+  fields2 {{parent.fields2}}
+  addUserKnob {7 slices l pitch +HIDDEN R 0 10}
+  slices {{parent.slices}}
+  addUserKnob {7 rotation +HIDDEN}
+  rotation {{parent.rotation}}
+  addUserKnob {4 align l "" -STARTLINE +HIDDEN M {vertical horizontal}}
+  align {{parent.align}}
+  addUserKnob {3 fields3 l fileds +HIDDEN}
+  fields3 {{parent.fields3}}
+  addUserKnob {4 align2 l align +HIDDEN M {vertical horizontal}}
+  align2 {{parent.align2}}
+  addUserKnob {3 fields_streaks l fields +HIDDEN}
+  fields_streaks {{parent.fields_streaks}}
+  addUserKnob {3 fields_bull l fields +HIDDEN}
+  fields_bull {{parent.fields_bull}}
+  addUserKnob {3 fields_rnd l fields +HIDDEN}
+  fields_rnd {{parent.fields_rnd}}
+  addUserKnob {3 seed +HIDDEN}
+  seed {{parent.seed}}
+ }
+  Constant {
+   inputs 0
+   channels rgb
+   name Constant1
+   xpos 93
+   ypos -505
+  }
+set N2ca79b10 [stack 0]
+  Expression {
+   temp_name0 xStripes
+   temp_expr0 " random(floor(x/width*parent.fields_rnd)/(parent.fields_rnd-1)*77,parent.seed)"
+   temp_name1 yStripes
+   temp_expr1 " random(floor(y/width*parent.fields_rnd)/(parent.fields_rnd-1)*77,parent.seed)"
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 (xStripes*yStripes)
+   expr1 (xStripes*yStripes)
+   expr2 (xStripes*yStripes)
+   expr3 (xStripes*yStripes)
+   name Random
+   xpos 859
+   ypos -309
+  }
+set N2ca834f0 [stack 0]
+push $N2ca834f0
+push $N2ca834f0
+  Dilate {
+   size {{width}}
+   name Dilate1
+   xpos 992
+   ypos -316
+  }
+  CopyBBox {
+   inputs 2
+   name CopyBBox1
+   xpos 992
+   ypos -238
+  }
+  Merge2 {
+   inputs 2
+   operation divide
+   name Merge1
+   xpos 859
+   ypos -238
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade10
+   xpos 859
+   ypos -200
+  }
+push $N2ca79b10
+  Expression {
+   temp_name1 D
+   temp_expr1 sqrt(pow(2*(x-width/2)/width,2)+pow(2*(y-height/2)/width,2))
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 "D%(1/(parent.fields_bull-1)) * (parent.fields_bull-1)"
+   expr1 "D%(1/(parent.fields_bull-1)) * (parent.fields_bull-1)"
+   expr2 "D%(1/(parent.fields_bull-1)) * (parent.fields_bull-1)"
+   expr3 "D%(1/(parent.fields_bull-1)) * (parent.fields_bull-1)"
+   name BullsEye
+   xpos 732
+   ypos -272
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade9
+   xpos 732
+   ypos -234
+  }
+push $N2ca79b10
+  Expression {
+   temp_name0 fieldH
+   temp_expr0 rint((cos(pi/2+x*pi*parent.fields_streaks/width)+1)/2)
+   temp_name1 fieldW
+   temp_expr1 rint((cos(pi/2+y*pi*parent.fields_streaks/height)+1)/2)
+   temp_name2 field
+   temp_expr2 parent.align2?fieldW:fieldH
+   temp_name3 grad
+   temp_expr3 parent.align2?x/width:y/height
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 abs(grad-field)
+   expr1 abs(grad-field)
+   expr2 abs(grad-field)
+   expr3 abs(grad-field)
+   name Streaks
+   xpos 599
+   ypos -277
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade8
+   xpos 599
+   ypos -239
+  }
+push $N2ca79b10
+  Expression {
+   temp_name0 fieldW
+   temp_expr0 width/parent.fields3
+   temp_name1 fieldH
+   temp_expr1 height/parent.fields3
+   temp_name2 fieldsX
+   temp_expr2 (x%fieldW)/(fieldW-1)
+   temp_name3 fieldsY
+   temp_expr3 (y%fieldH)/(fieldH-1)
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 parent.align?fieldsY:fieldsX
+   expr1 parent.align?fieldsY:fieldsX
+   expr2 parent.align?fieldsY:fieldsX
+   expr3 parent.align?fieldsY:fieldsX
+   name Blinds
+   xpos 405
+   ypos -284
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade7
+   xpos 405
+   ypos -246
+  }
+push $N2ca79b10
+  Expression {
+   temp_name1 Dx
+   temp_expr1 "(x-width/2) / (height/2) "
+   temp_name2 Dy
+   temp_expr2 "(y-height/2) / (height/2) * aspect"
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 parent.wipe==1?1:(abs(Dx)*abs(Dy))
+   expr1 parent.wipe==1?1:(abs(Dx)*abs(Dy))
+   expr2 parent.wipe==1?1:(abs(Dx)*abs(Dy))
+   expr3 parent.wipe==1?1:(abs(Dx)*abs(Dy))
+   name Curtains
+   label "\n"
+   xpos 256
+   ypos -288
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe*1.8}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade6
+   xpos 256
+   ypos -250
+  }
+push $N2ca79b10
+  Expression {
+   temp_name0 dist
+   temp_expr0 sqrt(pow(x-width/2,2)+pow(y-height/2,2))
+   temp_name2 pos
+   temp_expr2 "(((((degrees(atan2((x-width/2),(y-height/2)))+180)/360) + ( dist / width * parent.slices )   )%1) + parent.rotation+1) % 1"
+   temp_name3 neg
+   temp_expr3 "((1-(((degrees(-atan2((x-width/2),(y-height/2)))+180)/360) + ( dist / width * -parent.slices )  )%1) + parent.rotation + 1) %1"
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 parent.slices<0?neg:pos
+   expr1 parent.slices<0?neg:pos
+   expr2 parent.slices<0?neg:pos
+   expr3 parent.slices<0?neg:pos
+   name Spiral
+   xpos 136
+   ypos -281
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade5
+   xpos 136
+   ypos -243
+  }
+push $N2ca79b10
+  Expression {
+   temp_name0 angle
+   temp_expr0 (abs((atan2(x-width/2,y-height/2))))
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 parent.fields2==1?angle/pi:abs(sin(angle*(parent.fields2-1)))
+   expr1 parent.fields2==1?angle/pi:abs(sin(angle*(parent.fields2-1)))
+   expr2 parent.fields2==1?angle/pi:abs(sin(angle*(parent.fields2-1)))
+   expr3 parent.fields2==1?angle/pi:abs(sin(angle*(parent.fields2-1)))
+   name Angle
+   xpos -5
+   ypos -291
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade4
+   xpos -5
+   ypos -242
+  }
+push $N2ca79b10
+  Expression {
+   temp_name0 fields
+   temp_expr0 360/parent.fields
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 "(((degrees(atan2(x-width/2,y-height/2))+180)%fields + parent.start*fields)%fields)"
+   expr1 "(((degrees(atan2(x-width/2,y-height/2))+180)%fields + parent.start*fields)%fields)"
+   expr2 "(((degrees(atan2(x-width/2,y-height/2))+180)%fields + parent.start*fields)%fields)"
+   expr3 "(((degrees(atan2(x-width/2,y-height/2))+180)%fields + parent.start*fields)%fields)"
+   name Clock
+   xpos -153
+   ypos -292
+  }
+set N2be6cb10 [stack 0]
+  Clamp {
+   minimum {{parent.wipe*360/parent.fields}}
+   maximum {{this.minimum.r-.00001-parent.feather*70}}
+   MinClampTo 1
+   MinClampTo_enable true
+   MaxClampTo 0
+   MaxClampTo_enable true
+   name Clamp1
+   xpos -153
+   ypos -225
+  }
+push $N2ca79b10
+  Expression {
+   temp_name1 Dx
+   temp_expr1 "(x-width/2) / (height/2)"
+   temp_name2 Dy
+   temp_expr2 "(y-height/2) / (height/2) * aspect"
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 1-sqrt(pow2(Dx)+pow2(Dy))
+   expr1 1-sqrt(pow2(Dx)+pow2(Dy))
+   expr2 1-sqrt(pow2(Dx)+pow2(Dy))
+   expr3 1-sqrt(pow2(Dx)+pow2(Dy))
+   name Concentric
+   label "\n"
+   xpos -295
+   ypos -294
+  }
+  Grade {
+   channels rgba
+   blackpoint {{1-parent.wipe*2.2*aspect}}
+   whitepoint {{this.blackpoint.r+parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade2
+   xpos -295
+   ypos -235
+  }
+push $N2ca79b10
+  Expression {
+   channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+   expr0 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+   expr1 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+   expr2 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+   expr3 "(((x-(width/2))/width) * cos(radians(parent.angle)) + ((y-height/2)/width) * -sin(radians(parent.angle)))  / ((abs(cos(radians(parent.angle)) * width) + abs(sin(radians(parent.angle)) * height))/width)"
+   name Linear
+   xpos -461
+   ypos -297
+  }
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe-.5}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade1
+   xpos -461
+   ypos -242
+  }
+  Switch {
+   inputs 10
+   which {{parent.output}}
+   name Switch1
+   xpos 91
+   ypos -3
+  }
+  Mirror {
+   Horizontal {{parent.flop}}
+   Vertical {{parent.flip}}
+   name Mirror1
+   xpos 91
+   ypos 54
+  }
+  Output {
+   name Output1
+   xpos 91
+   ypos 92
+  }
+push $N2be6cb10
+  Grade {
+   channels rgba
+   blackpoint {{parent.wipe*360/parent.fields}}
+   whitepoint {{this.blackpoint.r-.00001-parent.feather*70}}
+   gamma {{parent.falloff}}
+   white_clamp true
+   name Grade3
+   label flickers
+   xpos -94
+   ypos -262
+  }
+ end_group
+set N2cab3b00 [stack 0]
+ EdgeDetectWrapper {
+  name EdgeDetect1
+  xpos 1220
+  ypos 1026
+ }
+ Constant {
+  inputs 0
+  color {{lincolor.r} {lincolor.g} {lincolor.b} {curve}}
+  name LineColor
+  xpos 660
+  ypos 1007
+ }
+push $N2cab3b00
+ Input {
+  inputs 0
+  name Input18
+  xpos 4160
+  ypos 311
+  number 17
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold18
+  xpos 4160
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult18
+  xpos 4160
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult18
+  xpos 4160
+  ypos 431
+  disable {{!premult}}
+ }
+set N2ca98e00 [stack 0]
+ Input {
+  inputs 0
+  name Input19
+  xpos 4300
+  ypos 311
+  number 18
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold19
+  xpos 4300
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult19
+  xpos 4300
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult19
+  xpos 4300
+  ypos 431
+  disable {{!premult}}
+ }
+set N2bcf8280 [stack 0]
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression18
+  xpos 4300
+  ypos 511
+  disable {{!diff}}
+ }
+set N2bcd19b0 [stack 0]
+ Input {
+  inputs 0
+  name Input17
+  xpos 4020
+  ypos 311
+  number 16
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold17
+  xpos 4020
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult17
+  xpos 4020
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult17
+  xpos 4020
+  ypos 431
+  disable {{!premult}}
+ }
+set N44419fa0 [stack 0]
+push $N2ca98e00
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression17
+  xpos 4160
+  ypos 511
+  disable {{!diff}}
+ }
+set N4441f600 [stack 0]
+ Input {
+  inputs 0
+  name Input16
+  xpos 3880
+  ypos 311
+  number 15
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold16
+  xpos 3880
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult16
+  xpos 3880
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult16
+  xpos 3880
+  ypos 431
+  disable {{!premult}}
+ }
+set N44437230 [stack 0]
+push $N44419fa0
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression16
+  xpos 4020
+  ypos 511
+  disable {{!diff}}
+ }
+set N4443c890 [stack 0]
+ Input {
+  inputs 0
+  name Input15
+  xpos 3740
+  ypos 311
+  number 14
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold15
+  xpos 3740
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult15
+  xpos 3740
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult15
+  xpos 3740
+  ypos 431
+  disable {{!premult}}
+ }
+set N444544b0 [stack 0]
+push $N44437230
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression15
+  xpos 3880
+  ypos 511
+  disable {{!diff}}
+ }
+set N44459b40 [stack 0]
+ Input {
+  inputs 0
+  name Input14
+  xpos 3600
+  ypos 311
+  number 13
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold14
+  xpos 3600
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult14
+  xpos 3600
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult14
+  xpos 3600
+  ypos 431
+  disable {{!premult}}
+ }
+set N44471b10 [stack 0]
+push $N444544b0
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression14
+  xpos 3740
+  ypos 511
+  disable {{!diff}}
+ }
+set N44477450 [stack 0]
+ Input {
+  inputs 0
+  name Input13
+  xpos 3460
+  ypos 311
+  number 12
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold13
+  xpos 3460
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult13
+  xpos 3460
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult13
+  xpos 3460
+  ypos 431
+  disable {{!premult}}
+ }
+set N4448fd50 [stack 0]
+push $N44471b10
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression13
+  xpos 3600
+  ypos 511
+  disable {{!diff}}
+ }
+set N44495680 [stack 0]
+ Input {
+  inputs 0
+  name Input12
+  xpos 3320
+  ypos 311
+  number 11
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold12
+  xpos 3320
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult12
+  xpos 3320
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult12
+  xpos 3320
+  ypos 431
+  disable {{!premult}}
+ }
+set N444ade50 [stack 0]
+push $N4448fd50
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression12
+  xpos 3460
+  ypos 511
+  disable {{!diff}}
+ }
+set N444b37f0 [stack 0]
+ Input {
+  inputs 0
+  name Input11
+  xpos 3180
+  ypos 311
+  number 10
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold11
+  xpos 3180
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult11
+  xpos 3180
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult11
+  xpos 3180
+  ypos 431
+  disable {{!premult}}
+ }
+set N444cbf60 [stack 0]
+push $N444ade50
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression11
+  xpos 3320
+  ypos 511
+  disable {{!diff}}
+ }
+set N444d1920 [stack 0]
+ Input {
+  inputs 0
+  name Input10
+  xpos 3040
+  ypos 311
+  number 9
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold10
+  xpos 3040
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult10
+  xpos 3040
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult10
+  xpos 3040
+  ypos 431
+  disable {{!premult}}
+ }
+set N444ea790 [stack 0]
+push $N444cbf60
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression10
+  xpos 3180
+  ypos 511
+  disable {{!diff}}
+ }
+set N444ea460 [stack 0]
+ Input {
+  inputs 0
+  name Input9
+  xpos 2900
+  ypos 311
+  number 8
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold9
+  xpos 2900
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult9
+  xpos 2900
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult9
+  xpos 2900
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f1e5130 [stack 0]
+push $N444ea790
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression9
+  xpos 3040
+  ypos 511
+  disable {{!diff}}
+ }
+set N8f1eb410 [stack 0]
+ Input {
+  inputs 0
+  name Input8
+  xpos 2760
+  ypos 311
+  number 7
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold8
+  xpos 2760
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult8
+  xpos 2760
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult8
+  xpos 2760
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f1d6720 [stack 0]
+push $N8f1e5130
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression8
+  xpos 2900
+  ypos 511
+  disable {{!diff}}
+ }
+set N8f1d0d20 [stack 0]
+ Input {
+  inputs 0
+  name Input7
+  xpos 2620
+  ypos 311
+  number 6
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold7
+  xpos 2620
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult7
+  xpos 2620
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult7
+  xpos 2620
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f1cc8a0 [stack 0]
+push $N8f1d6720
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression7
+  xpos 2760
+  ypos 511
+  disable {{!diff}}
+ }
+set N8f197570 [stack 0]
+ Input {
+  inputs 0
+  name Input6
+  xpos 2480
+  ypos 311
+  number 5
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold6
+  xpos 2480
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult6
+  xpos 2480
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult6
+  xpos 2480
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f1b17f0 [stack 0]
+push $N8f1cc8a0
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression6
+  xpos 2620
+  ypos 511
+  disable {{!diff}}
+ }
+set N8f190b90 [stack 0]
+ Input {
+  inputs 0
+  name Input5
+  xpos 2340
+  ypos 311
+  number 4
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold5
+  xpos 2340
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult5
+  xpos 2340
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult5
+  xpos 2340
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f171320 [stack 0]
+push $N8f1b17f0
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression5
+  xpos 2480
+  ypos 511
+  disable {{!diff}}
+ }
+set N8f16ecf0 [stack 0]
+ Input {
+  inputs 0
+  name Input4
+  xpos 2200
+  ypos 311
+  number 3
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold4
+  xpos 2200
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult4
+  xpos 2200
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult4
+  xpos 2200
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f149f10 [stack 0]
+push $N8f171320
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression4
+  xpos 2340
+  ypos 511
+  disable {{!diff}}
+ }
+set N8f144930 [stack 0]
+ Input {
+  inputs 0
+  name Input3
+  xpos 2060
+  ypos 311
+  number 2
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold3
+  xpos 2060
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult3
+  xpos 2060
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult3
+  xpos 2060
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f129cc0 [stack 0]
+push $N8f149f10
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression3
+  xpos 2200
+  ypos 511
+  disable {{!diff}}
+ }
+set N8f1224f0 [stack 0]
+ Input {
+  inputs 0
+  name Input2
+  xpos 1920
+  ypos 311
+  number 1
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold2
+  xpos 1920
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult2
+  xpos 1920
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult2
+  xpos 1920
+  ypos 431
+  disable {{!premult}}
+ }
+set N8f102f10 [stack 0]
+push $N8f129cc0
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression2
+  xpos 2060
+  ypos 511
+  disable {{!diff}}
+ }
+set N9782c710 [stack 0]
+ Input {
+  inputs 0
+  name Input1
+  xpos 1780
+  ypos 311
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold1
+  xpos 1780
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult1
+  xpos 1780
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult1
+  xpos 1780
+  ypos 431
+  disable {{!premult}}
+ }
+set N97845d30 [stack 0]
+push $N8f102f10
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression1
+  xpos 1920
+  ypos 511
+  disable {{!diff}}
+ }
+set N9784bc80 [stack 0]
+push $N97845d30
+ Dot {
+  name Dot1
+  xpos 1814
+  ypos 514
+ }
+set N978562c0 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos 1360
+  ypos 327
+ }
+set N97859db0 [stack 0]
+ Switch {
+  inputs 20
+  which {{"trantype == 0 ? (frame+holdlen)/holdlen : (frame+(holdlen+tranlen))/(holdlen+tranlen)"}}
+  name LayerOutputSwitch2
+  xpos 1080
+  ypos 871
+ }
+set N97860150 [stack 0]
+push $N2bcf8280
+ Input {
+  inputs 0
+  name Input20
+  xpos 4440
+  ypos 311
+  number 19
+ }
+ FrameHold {
+  first_frame {{holdfr}}
+  name FrameHold20
+  xpos 4440
+  ypos 346
+  disable {{!framehold}}
+ }
+ Unpremult {
+  name Unpremult20
+  xpos 4440
+  ypos 391
+  disable {{!premult}}
+ }
+ Premult {
+  name Premult20
+  xpos 4440
+  ypos 431
+  disable {{!premult}}
+ }
+ MergeExpression {
+  inputs 2
+  temp_name0 redDif
+  temp_expr0 Br-Ar
+  temp_name1 greenDif
+  temp_expr1 Bg-Ag
+  temp_name2 blueDif
+  temp_expr2 Bb-Ab
+  expr0 redDif
+  expr1 greenDif
+  expr2 blueDif
+  expr3 redDif+greenDif+blueDif
+  name MergeExpression19
+  xpos 4440
+  ypos 511
+  disable {{!diff}}
+ }
+set N9787bb50 [stack 0]
+push $N2bcd19b0
+push $N4441f600
+push $N4443c890
+push $N44459b40
+push $N44477450
+push $N44495680
+push $N444b37f0
+push $N444d1920
+push $N444ea460
+push $N8f1eb410
+push $N8f1d0d20
+push $N8f197570
+push $N8f190b90
+push $N8f16ecf0
+push $N8f144930
+push $N8f1224f0
+push $N9782c710
+push $N9784bc80
+push $N978562c0
+push $N97859db0
+ Switch {
+  inputs 21
+  which {{"trantype == 0 ? frame/holdlen : frame/(holdlen+tranlen)"}}
+  name LayerOutputSwitch1
+  xpos 940
+  ypos 871
+ }
+set N978861c0 [stack 0]
+ Keymix {
+  inputs 3
+  name WipeMerge
+  xpos 1080
+  ypos 946
+ }
+ Keymix {
+  inputs 3
+  name WipeLineMix
+  xpos 1080
+  ypos 1026
+  disable {{!wipelin}}
+ }
+ Constant {
+  inputs 0
+  color {1 1 1 1}
+  name Constant2
+  xpos 660
+  ypos 927
+ }
+push $N97860150
+push $N978861c0
+ Keymix {
+  inputs 3
+  mix {{"(frame%(holdlen+tranlen)/(holdlen)) *(holdlen/tranlen) -(holdlen/tranlen) > 0 ? (frame%(holdlen+tranlen)/(holdlen)) *(holdlen/tranlen) -(holdlen/tranlen) : 0"}}
+  name LayerDissolve
+  xpos 800
+  ypos 946
+ }
+push $N978861c0
+ Switch {
+  inputs 3
+  which {{trantype}}
+  name TranTypeSwitch1
+  xpos 940
+  ypos 1151
+ }
+ Dot {
+  name Dot3
+  xpos 974
+  ypos 1194
+ }
+ Group {
+  inputs 0
+  name Camera_wTarget
+  xpos 3460
+  ypos 1191
+  addUserKnob {20 main}
+  addUserKnob {26 camText l Camera}
+  addUserKnob {41 translate T TargetCamera.translate}
+  addUserKnob {41 rotate T TargetCamera.rotate}
+  addUserKnob {41 scaling l scale T TargetCamera.scaling}
+  addUserKnob {41 uniform_scale l "uniform scale" T TargetCamera.uniform_scale}
+  addUserKnob {41 skew T TargetCamera.skew}
+  addUserKnob {41 pivot T TargetCamera.pivot}
+  addUserKnob {26 unnamed l "" +STARTLINE T " "}
+  addUserKnob {26 lensText l Lens}
+  addUserKnob {6 ortho l Orthographic +STARTLINE}
+  ortho true
+  addUserKnob {41 focal l "focal length" T TargetCamera.focal}
+  addUserKnob {41 haperture l "horiz aperture" T TargetCamera.haperture}
+  addUserKnob {41 vaperture l "vert aperture" T TargetCamera.vaperture}
+  addUserKnob {41 focal_point l "focal distance" T TargetCamera.focal_point}
+  addUserKnob {41 fstop T TargetCamera.fstop}
+  addUserKnob {26 unnamed2 l "" +STARTLINE T " "}
+  addUserKnob {26 tarText l Target}
+  addUserKnob {41 translate_1 l translate T AimTarget.translate}
+ }
+  Input {
+   inputs 0
+   name Camera
+   xpos -40
+   ypos 111
+  }
+  Camera2 {
+   translate {-3 1 2.5}
+   rotate {{degrees(atan((AimTarget.translate.y-translate.y)/sqrt(pow2(sqrt(pow2(AimTarget.translate.x-translate.x)+pow2(AimTarget.translate.z-translate.z))))))} {"AimTarget.translate.x-translate.x >= 0 ? 270-degrees(atan((AimTarget.translate.z-translate.z)/(AimTarget.translate.x-translate.x))): -degrees(atan((AimTarget.translate.z-translate.z)/(AimTarget.translate.x-translate.x)))-270"} 0}
+   projection_mode {{ortho}}
+   focal 24.5
+   focal_point {{sqrt(pow2(sqrt(pow2(sqrt(pow2(AimTarget.translate.x-translate.x)+pow2(AimTarget.translate.z-translate.z)))))+pow2(AimTarget.translate.y-translate.y))}}
+   name TargetCamera
+   xpos -30
+   ypos 170
+  }
+  Output {
+   name Output1
+   xpos -40
+   ypos 271
+  }
+  Input {
+   inputs 0
+   name Target
+   xpos 100
+   ypos 111
+   number 1
+  }
+  Axis2 {
+   translate {0 0 -0.1}
+   name AimTarget
+   xpos 110
+   ypos 170
+  }
+ end_group
+push $N9787bb50
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card19
+  xpos 4440
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo19
+  xpos 4440
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch19
+  xpos 4440
+  ypos 951
+ }
+push $N2bcd19b0
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card18
+  xpos 4300
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo18
+  xpos 4300
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch18
+  xpos 4300
+  ypos 951
+ }
+push $N4441f600
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card17
+  xpos 4160
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo17
+  xpos 4160
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch17
+  xpos 4160
+  ypos 951
+ }
+push $N4443c890
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card16
+  xpos 4020
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo16
+  xpos 4020
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch16
+  xpos 4020
+  ypos 951
+ }
+push $N44459b40
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card15
+  xpos 3880
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo15
+  xpos 3880
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch15
+  xpos 3880
+  ypos 951
+ }
+push $N44477450
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card14
+  xpos 3740
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo14
+  xpos 3740
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch14
+  xpos 3740
+  ypos 951
+ }
+push $N44495680
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card13
+  xpos 3600
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo13
+  xpos 3600
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch13
+  xpos 3600
+  ypos 951
+ }
+push $N444b37f0
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card12
+  xpos 3460
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo12
+  xpos 3460
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch12
+  xpos 3460
+  ypos 951
+ }
+push $N444d1920
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card11
+  xpos 3320
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo11
+  xpos 3320
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch11
+  xpos 3320
+  ypos 951
+ }
+push $N444ea460
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card10
+  xpos 3180
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo10
+  xpos 3180
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch10
+  xpos 3180
+  ypos 951
+ }
+push $N8f1eb410
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card9
+  xpos 3040
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo9
+  xpos 3040
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch9
+  xpos 3040
+  ypos 951
+ }
+push $N8f1d0d20
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card8
+  xpos 2900
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo8
+  xpos 2900
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch8
+  xpos 2900
+  ypos 951
+ }
+push $N8f197570
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card7
+  xpos 2760
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo7
+  xpos 2760
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch7
+  xpos 2760
+  ypos 951
+ }
+push $N8f190b90
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card6
+  xpos 2620
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo6
+  xpos 2620
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch6
+  xpos 2620
+  ypos 951
+ }
+push $N8f16ecf0
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card5
+  xpos 2480
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo5
+  xpos 2480
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch5
+  xpos 2480
+  ypos 951
+ }
+push $N8f144930
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card4
+  xpos 2340
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo4
+  xpos 2340
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch4
+  xpos 2340
+  ypos 951
+ }
+push $N8f1224f0
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card3
+  xpos 2200
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo3
+  xpos 2200
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch3
+  xpos 2200
+  ypos 951
+ }
+push $N9782c710
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card2
+  xpos 2060
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo2
+  xpos 2060
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch2
+  xpos 2060
+  ypos 951
+ }
+push $N9784bc80
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card1
+  xpos 1920
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo1
+  xpos 1920
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch1
+  xpos 1920
+  ypos 951
+ }
+push $N978562c0
+ Card2 {
+  z {{curve}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card0
+  xpos 1780
+  ypos 871
+ }
+ TransformGeo {
+  translate {0 0 {"-(sep-(sep*((\[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]+1)/\[python nuke.thisGroup().inputs()])))"}}
+  name TransformGeo0
+  xpos 1780
+  ypos 911
+ }
+ Switch {
+  which {{"out <= \[python ''.join((i for i in nuke.thisNode().name() if i.isdigit()))]"}}
+  name Switch0
+  xpos 1780
+  ypos 951
+ }
+ Dot {
+  name Dot2
+  xpos 1814
+  ypos 994
+ }
+set N94591e30 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo1
+  xpos 1920
+  ypos 991
+ }
+set N945959c0 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo2
+  xpos 2060
+  ypos 991
+ }
+set N9459dbc0 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo3
+  xpos 2200
+  ypos 991
+ }
+set N945a5d00 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo4
+  xpos 2340
+  ypos 991
+ }
+set N945ade40 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo5
+  xpos 2480
+  ypos 991
+ }
+set N945b5f80 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo6
+  xpos 2620
+  ypos 991
+ }
+set N945be0c0 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo7
+  xpos 2760
+  ypos 991
+ }
+set N945c6200 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo8
+  xpos 2900
+  ypos 991
+ }
+set N945ce340 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo9
+  xpos 3040
+  ypos 991
+ }
+set N945d6480 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo10
+  xpos 3180
+  ypos 991
+ }
+set N945de5c0 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo11
+  xpos 3320
+  ypos 991
+ }
+set N945e6700 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo12
+  xpos 3460
+  ypos 991
+ }
+set N945ee840 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo13
+  xpos 3600
+  ypos 991
+ }
+set N945f6980 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo14
+  xpos 3740
+  ypos 991
+ }
+set N95302a40 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo15
+  xpos 3880
+  ypos 991
+ }
+set N9530ab80 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo16
+  xpos 4020
+  ypos 991
+ }
+set N95312cc0 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo17
+  xpos 4160
+  ypos 991
+ }
+set N9531ae00 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo18
+  xpos 4300
+  ypos 991
+ }
+set N95322f40 [stack 0]
+ MergeGeo {
+  inputs 2
+  name MergeGeo19
+  xpos 4440
+  ypos 991
+ }
+push $N95322f40
+push $N9531ae00
+push $N95312cc0
+push $N9530ab80
+push $N95302a40
+push $N945f6980
+push $N945ee840
+push $N945e6700
+push $N945de5c0
+push $N945d6480
+push $N945ce340
+push $N945c6200
+push $N945be0c0
+push $N945b5f80
+push $N945ade40
+push $N945a5d00
+push $N9459dbc0
+push $N945959c0
+push $N94591e30
+push $N94591e30
+ Switch {
+  inputs 21
+  which {{"\[python nuke.thisGroup().inputs()]"}}
+  name CardStackSwitch
+  xpos 3040
+  ypos 1151
+ }
+push 0
+ ScanlineRender {
+  inputs 3
+  motion_vectors_type distance
+  name ScanlineRender1
+  xpos 3040
+  ypos 1191
+ }
+push $N9787bb50
+push $N2bcd19b0
+push $N4441f600
+push $N4443c890
+push $N44459b40
+push $N44477450
+push $N44495680
+push $N444b37f0
+push $N444d1920
+push $N444ea460
+push $N8f1eb410
+push $N8f1d0d20
+push $N8f197570
+push $N8f190b90
+push $N8f16ecf0
+push $N8f144930
+push $N8f1224f0
+push $N9782c710
+push $N9784bc80
+push $N978562c0
+push $N97859db0
+ Switch {
+  inputs 21
+  which {{out}}
+  name LayerOutputSwitch
+  xpos 1360
+  ypos 871
+ }
+ Switch {
+  inputs 3
+  which {{type}}
+  name TypeSwitch
+  xpos 1360
+  ypos 1191
+ }
+ Reformat {
+  resize none
+  center false
+  black_outside true
+  name Reformat1
+  selected true
+  xpos 1360
+  ypos 1231
+ }
+ Output {
+  name Output1
+  xpos 1360
+  ypos 1271
+ }
+end_group

@@ -1,0 +1,279 @@
+#CrankIt v1.0
+#Contact cameron.a.carson@gmail.com with questions
+Gizmo {
+ help "A simple way to Pump up the Colors on a plate for easier keying. Based on CrankItUp by Ben Pierre. \n\nAny questions contact cameron.a.carson@gmail.com"
+ tile_color 0x7aa9ffff
+ addUserKnob {20 Main}
+ addUserKnob {4 filter M {Magnitude Power Max "Inverse Min" "Max Range" "Inverse Max Range" "Min Range"}}
+ filter "Magnitude"
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 660
+  ypos -449
+ }
+ Dot {
+  name Dot45
+  xpos 694
+  ypos -406
+ }
+ Dot {
+  name Dot46
+  xpos 554
+  ypos -406
+ }
+ Dot {
+  name Dot47
+  xpos 554
+  ypos -366
+ }
+set Na5e3af60 [stack 0]
+ Dot {
+  name Dot48
+  xpos 554
+  ypos -326
+ }
+set Nbdabbbd0 [stack 0]
+ Dot {
+  name Dot49
+  xpos 554
+  ypos -286
+ }
+set Nbdac4c90 [stack 0]
+ Dot {
+  name Dot53
+  xpos 554
+  ypos -246
+ }
+set Na5e416f0 [stack 0]
+ Dot {
+  name Dot54
+  xpos 554
+  ypos -206
+ }
+set Na5e3b7a0 [stack 0]
+ Dot {
+  name Dot56
+  xpos 554
+  ypos -166
+ }
+set Na5e44cf0 [stack 0]
+ Dot {
+  name Dot69
+  xpos 554
+  ypos -126
+ }
+ Expression {
+  temp_name0 expMax
+  temp_expr0 max(max(r,g),b)
+  temp_name1 expMin
+  temp_expr1 min(min(r,g),b)
+  temp_name2 range
+  temp_expr2 expMax-expMin
+  expr0 (r/expMin)*(range)
+  expr1 (g/expMin)*(range)
+  expr2 (b/expMin)*(range)
+  expr3 (expMin)*(range)
+  name MIN_RANGE
+  xpos 660
+  ypos -129
+ }
+ Dot {
+  name Dot76
+  xpos 834
+  ypos -126
+ }
+ Dot {
+  name Dot77
+  xpos 834
+  ypos -86
+ }
+ Dot {
+  name Dot84
+  xpos 694
+  ypos -86
+ }
+push $Na5e44cf0
+ Expression {
+  temp_name0 expMax
+  temp_expr0 max(max(r,g),b)
+  temp_name1 expMin
+  temp_expr1 min(min(r,g),b)
+  temp_name2 range
+  temp_expr2 expMax-expMin
+  expr0 1-(range/(r/expMax))
+  expr1 1-(range/(g/expMax))
+  expr2 1-(range/(b/expMax))
+  expr3 1-(range/expMax)
+  name INVERSE_MAX_RANGE
+  xpos 660
+  ypos -169
+ }
+ Dot {
+  name Dot74
+  xpos 834
+  ypos -166
+ }
+ Dot {
+  name Dot75
+  xpos 834
+  ypos -86
+ }
+ Dot {
+  name Dot83
+  xpos 694
+  ypos -86
+ }
+push $Na5e3b7a0
+ Expression {
+  temp_name0 expMax
+  temp_expr0 max(max(r,g),b)
+  temp_name1 expMin
+  temp_expr1 min(min(r,g),b)
+  temp_name2 range
+  temp_expr2 expMax-expMin
+  expr0 (r/expMax)*(1-range)
+  expr1 (g/expMax)*(1-range)
+  expr2 (b/expMax)*(1-range)
+  expr3 (expMax)*(1-range)
+  name MAX_RANGE
+  xpos 660
+  ypos -209
+ }
+ Dot {
+  name Dot72
+  xpos 834
+  ypos -206
+ }
+ Dot {
+  name Dot73
+  xpos 834
+  ypos -86
+ }
+ Dot {
+  name Dot82
+  xpos 694
+  ypos -86
+ }
+push $Na5e416f0
+ Expression {
+  temp_name0 expMin
+  temp_expr0 min(min(r,g),b)
+  expr0 1-(1/(r/expMin))
+  expr1 1-(1/(g/expMin))
+  expr2 1-(1/(b/expMin))
+  expr3 expMin
+  name INVERSE_MIN
+  xpos 660
+  ypos -249
+ }
+ Dot {
+  name Dot70
+  xpos 834
+  ypos -246
+ }
+ Dot {
+  name Dot71
+  xpos 834
+  ypos -86
+ }
+ Dot {
+  name Dot81
+  xpos 694
+  ypos -86
+ }
+push $Nbdac4c90
+ Expression {
+  temp_name0 expMax
+  temp_expr0 max(max(r,g),b)
+  expr0 r/expMax
+  expr1 g/expMax
+  expr2 b/expMax
+  expr3 expMax
+  name MAX
+  xpos 660
+  ypos -289
+ }
+ Dot {
+  name Dot43
+  xpos 834
+  ypos -286
+ }
+ Dot {
+  name Dot44
+  xpos 834
+  ypos -86
+ }
+ Dot {
+  name Dot80
+  xpos 694
+  ypos -86
+ }
+push $Nbdabbbd0
+ Expression {
+  temp_name0 expMin
+  temp_expr0 min(min(r,g),b)
+  expr0 pow(1/expMin,r)-1
+  expr1 pow(1/expMin,g)-1
+  expr2 pow(1/expMin,b)-1
+  expr3 pow(1/expMin,0.1)-1
+  name POWER
+  xpos 660
+  ypos -329
+ }
+ Dot {
+  name Dot41
+  xpos 834
+  ypos -326
+ }
+ Dot {
+  name Dot42
+  xpos 834
+  ypos -86
+ }
+ Dot {
+  name Dot79
+  xpos 694
+  ypos -86
+ }
+push $Na5e3af60
+ Expression {
+  temp_name0 expMag
+  temp_expr0 r+g+b
+  expr0 r/expMag
+  expr1 g/expMag
+  expr2 b/expMag
+  expr3 expMag
+  name MAGNITUDE
+  xpos 660
+  ypos -369
+ }
+ Dot {
+  name Dot22
+  xpos 834
+  ypos -366
+ }
+ Dot {
+  name Dot40
+  xpos 834
+  ypos -86
+ }
+ Dot {
+  name Dot78
+  xpos 694
+  ypos -86
+ }
+ Switch {
+  inputs 7
+  which {{filter}}
+  name CRANK
+  xpos 660
+  ypos -49
+ }
+ Output {
+  name Output1
+  xpos 660
+  ypos -9
+ }
+end_group

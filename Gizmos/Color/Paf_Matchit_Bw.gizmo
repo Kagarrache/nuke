@@ -1,0 +1,112 @@
+#! /Applications/Nuke6.2v1/NukeX6.2v1.app/../Nuke6.2v1.app/Contents/MacOS/Nuke6.2v1 -nx
+version 6.2 v1
+Gizmo {
+ inputs 2
+ help "PAF_Matchit_BW v.03\nPedro Flores \nwww.creativerocket.net\n\n- Connect the cg element you want to match the Blackpoint and white point to, to the FG_Target.\n\n- Connect the plate you want to use to match Blackpoint and Whitepoint from, to the BG_Source.\n\n- Use the 2 ROI's to set the area you what to analyze for matching each element.\n\n- When you are done hit Go.\n\n- Use the Adjustments for further refinements.\n\nNote: Image will look incorect until you press the Go! bottons. After the analysis it will match your blackpoint and whitepoint of the FG image based on the blackpoint and whitepoint of the BG image.\n"
+ tile_color 0x49ffffff
+ label "Pedro Flores\nv.03 101111"
+ note_font "Verdana Bold"
+ note_font_size 8
+ addUserKnob {20 User l Match_BW t "Pedro Flores \nwww.creativerocket.net\nPAF_Matchit_BW\n"}
+ addUserKnob {26 FG_Target_Elem l FG_Target}
+ addUserKnob {41 channels T FG.channels}
+ addUserKnob {41 ROI T FG.ROI}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 go l Go! T FG.go}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 BG_Source_Elem l BG_Source}
+ addUserKnob {41 ROI_1 l ROI T BG.ROI}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 go_1 l Go! T BG.go}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 Adjustments}
+ addUserKnob {41 saturation T Saturation1.saturation}
+ addUserKnob {41 multiply_1 l Exposure T Grade1.multiply}
+ addUserKnob {41 black l lift T Grade1.black}
+ addUserKnob {41 white l gain T Grade1.white}
+ addUserKnob {41 add_1 l offset T Grade1.add}
+ addUserKnob {41 gamma_1 l gamma T Grade1.gamma}
+ addUserKnob {26 Alpha_Mask}
+ addUserKnob {6 Activate_Premult l Premult +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 Data}
+ addUserKnob {26 FG_elem l FG_Target}
+ addUserKnob {41 minlumapixvalue l "Blackpoint value" T FG.minlumapixvalue}
+ addUserKnob {41 maxlumapixvalue l "Whitepoint value" T FG.maxlumapixvalue}
+ addUserKnob {26 BG_Source}
+ addUserKnob {41 maxlumapixvalue_1 l "Blackpoint value" T BG.maxlumapixvalue}
+ addUserKnob {41 minlumapixvalue_1 l "Whitepoint value" T BG.minlumapixvalue}
+}
+ Input {
+  inputs 0
+  name FG_Target_
+  xpos 208
+  ypos -235
+  number 1
+ }
+set N3aa6fcf0 [stack 0]
+ Dot {
+  name Dot1
+  xpos 306
+  ypos -232
+ }
+ Saturation {
+  name Saturation1
+  xpos 272
+  ypos -153
+ }
+ Grade {
+  name Grade1
+  xpos 272
+  ypos -129
+ }
+ Grade {
+  blackpoint {{parent.FG.minlumapixvalue.r}}
+  whitepoint {{parent.FG.maxlumapixvalue.r}}
+  black {{parent.BG.minlumapixvalue.r}}
+  white {{parent.BG.maxlumapixvalue.r}}
+  name AutoMachit
+  xpos 272
+  ypos -105
+ }
+ Premult {
+  name Premult1
+  xpos 272
+  ypos -57
+  disable {{(parent.Activate_Premult)-1 i}}
+ }
+ Output {
+  name Output1
+  xpos 272
+  ypos -9
+ }
+ Input {
+  inputs 0
+  name BG_Source_
+  xpos 332
+  ypos -233
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  ROI {480 462 888 810}
+  autocropdata {480 270 1440 810}
+  maxlumapixdata {{curve x1 465} {curve x1 998}}
+  minlumapixdata {{curve x1 111} {curve x1 915}}
+  name BG
+  tile_color 0x4982ffff
+  xpos 332
+  ypos -192
+ }
+push $N3aa6fcf0
+ CurveTool {
+  operation "Max Luma Pixel"
+  ROI {964 462 1344 806}
+  autocropdata {480 270 1440 810}
+  maxlumapixdata {{curve x1 1534} {curve x1 208}}
+  minlumapixdata {{curve x1 0} {curve x1 0}}
+  name FG
+  tile_color 0xff00ff
+  xpos 208
+  ypos -201
+ }
+end_group

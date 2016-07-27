@@ -1,0 +1,141 @@
+#! C:/Program Files/Nuke6.2v4/Nuke6.2.exe -nx
+version 6.2 v4
+Gizmo {
+ tile_color 0x6aff55ff
+ addUserKnob {20 User l Normalizer}
+ addUserKnob {3 frame}
+ frame 1
+ addUserKnob {22 setCurrent l "Set Current" -STARTLINE T nuke.thisNode().knob('frame').setValue(nuke.frame())}
+ addUserKnob {26 ""}
+ addUserKnob {22 SampleFrame l "Sample Frame" T "fr = nuke.thisNode().knob('frame').value()\nnuke.thisNode().__enter__()\n\nct1 = nuke.toNode(\"CurveTool5\")\nct2 = nuke.toNode(\"CurveTool6\")\nct1.knob('maxlumapixvalue').clearAnimated()\nct2.knob('maxlumapixvalue').clearAnimated()\nct1.knob('minlumapixvalue').clearAnimated()\nct2.knob('minlumapixvalue').clearAnimated()\n\n\nnuke.execute(\"CurveTool5\", fr, fr)\nnuke.execute(\"CurveTool6\", fr, fr)\n\n" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 241
+  ypos 452
+ }
+ Group {
+  name checkChannel
+  tile_color 0x6aff55ff
+  xpos 241
+  ypos 478
+  addUserKnob {20 User l CheckChannel}
+  addUserKnob {41 channels T AddChannels2.channels}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos 343
+   ypos -492
+  }
+set N2da46150 [stack 0]
+  AddChannels {
+   channels depth
+   name AddChannels2
+   xpos 398
+   ypos -444
+  }
+push $N2da46150
+  Switch {
+   inputs 2
+   which {{"1-\[python \"len(\\\[n for n in nuke.channels(nuke.thisNode().input(0)) if n.find(nuke.thisNode().input(1).knob('channels').value()) != -1])>0\"]" i}}
+   name Switch1
+   xpos 343
+   ypos -384
+   addUserKnob {20 User}
+   addUserKnob {1 cha}
+   cha "\[parent.channels]"
+  }
+  Output {
+   name Output
+   xpos 343
+   ypos -356
+  }
+ end_group
+ Shuffle {
+  in depth
+  name Shuffle3
+  xpos 241
+  ypos 516
+ }
+ Expression {
+  channel0 rgb
+  expr0 abs(r)
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression6
+  xpos 241
+  ypos 544
+ }
+set N2da591e0 [stack 0]
+ Dot {
+  name Dot2
+  xpos 168
+  ypos 547
+ }
+set N2da8cf00 [stack 0]
+ Dot {
+  name Dot1
+  xpos 58
+  ypos 547
+ }
+ Expression {
+  channel0 alpha
+  expr0 "(r>0 && g>0 && b>0)? 1 : 0"
+  channel1 none
+  channel2 none
+  name Expression1
+  xpos 26
+  ypos 691
+ }
+push $N2da8cf00
+ Grade {
+  blackpoint {{parent.CurveTool5.minlumapixvalue.r i} {parent.CurveTool5.minlumapixvalue.g i} {parent.CurveTool5.minlumapixvalue.g i} {parent.CurveTool5.minlumapixvalue.a i}}
+  whitepoint {{parent.CurveTool6.maxlumapixvalue.r i} {parent.CurveTool6.maxlumapixvalue.g i} {parent.CurveTool6.maxlumapixvalue.b i} {parent.CurveTool6.maxlumapixvalue.a i}}
+  black_clamp false
+  name Grade2
+  xpos 136
+  ypos 663
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 136
+  ypos 691
+ }
+ Output {
+  name Output
+  xpos 136
+  ypos 719
+ }
+push $N2da591e0
+ CurveTool {
+  operation "Max Luma Pixel"
+  ROI {480 270 1440 810}
+  autocropdata {480 270 1440 810}
+  name CurveTool6
+  xpos 241
+  ypos 572
+ }
+push $N2da591e0
+ Expression {
+  channel0 rgb
+  expr0 "(r>0)? r : +inf"
+  channel1 none
+  channel2 none
+  channel3 none
+  name Expression7
+  xpos 351
+  ypos 544
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  ROI {480 270 1440 810}
+  autocropdata {480 270 1440 810}
+  name CurveTool5
+  xpos 351
+  ypos 572
+ }
+end_group

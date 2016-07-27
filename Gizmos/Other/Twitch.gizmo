@@ -1,0 +1,426 @@
+#! C:/Program Files/Nuke6.2v2/Nuke6.2.exe -nx
+version 6.2 v2
+Gizmo {
+ tile_color 0xffffffff
+ note_font Verdana
+ note_font_color 0xff
+ mapsize {0.15 0.15}
+ addUserKnob {20 twitch l Twitch}
+ addUserKnob {26 enable l "" +STARTLINE T "                                                      Enable"}
+ addUserKnob {26 ""}
+ addUserKnob {6 slide_on l Slide +STARTLINE}
+ addUserKnob {6 blur_on l Blur +STARTLINE}
+ addUserKnob {6 color_on l Color +STARTLINE}
+ addUserKnob {6 scale_on l Scale +STARTLINE}
+ addUserKnob {6 light_on l Light +STARTLINE}
+ addUserKnob {20 slide l Slide}
+ addUserKnob {6 rgbsplit l "RGB Split" +STARTLINE}
+ addUserKnob {20 horiz l Horiz n 1}
+ horiz 0
+ addUserKnob {41 speed l Speed T StickyNote2.speed}
+ addUserKnob {41 amount l Amount T StickyNote2.amount}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 vert l Vert n 1}
+ vert 0
+ addUserKnob {41 speed_2 l Speed T StickyNote2.speed_2}
+ addUserKnob {41 amount_2 l Amount T StickyNote2.amount_2}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 motionblur l Motionblur T StickyNote2.motionblur}
+ addUserKnob {20 blur l Blur}
+ addUserKnob {41 speed_3 l Speed T StickyNote4.speed_3}
+ addUserKnob {41 amount_3 l Amount T StickyNote4.amount_3}
+ addUserKnob {20 lensblurg l "Lens Blur" n 1}
+ lensblurg 0
+ addUserKnob {6 lensblur l "Enable Lens Blur" +STARTLINE}
+ addUserKnob {41 ratio l "Aspect Ratio" T Defocus2.ratio}
+ addUserKnob {41 scale l Scaling T Defocus2.scale}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 color l Color}
+ addUserKnob {41 speed_4 l Speed T StickyNote6.speed_4}
+ addUserKnob {20 color_1 l "Color 1" n 1}
+ color_1 0
+ addUserKnob {41 gamma l Color T Grade1.gamma}
+ addUserKnob {41 white l Gain T Grade1.white}
+ addUserKnob {41 multiply l Multiply T Grade1.multiply}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {20 color_2 l "Color 2" n 1}
+ color_2 0
+ addUserKnob {41 gamma_1 l Color T Grade2.gamma}
+ addUserKnob {41 white_1 l Gain T Grade2.white}
+ addUserKnob {41 multiply_1 l Multiply T Grade2.multiply}
+ addUserKnob {20 endGroup_4 l endGroup n -1}
+ addUserKnob {20 scale_1 l Scale}
+ addUserKnob {41 speed_5 l Speed T StickyNote8.speed_5}
+ addUserKnob {41 amount_5 l Multiplayer T StickyNote8.amount_5}
+ addUserKnob {41 rotspeed l "Rotation Speed" T StickyNote8.rotspeed}
+ addUserKnob {41 rot_amount l "Rotation Amount" T StickyNote8.rot_amount}
+ addUserKnob {26 ""}
+ addUserKnob {41 motionblur_1 l Motionblur T StickyNote8.motionblur}
+ addUserKnob {20 light l Light}
+ addUserKnob {41 light_on_1 l ON T StickyNote10.light_on}
+ addUserKnob {41 speed_6 l Speed T StickyNote10.speed_6}
+ addUserKnob {41 amount_6 l Amount T StickyNote10.amount_6}
+ addUserKnob {41 tint l "Light Tint" T Glow1.tint}
+ addUserKnob {41 tolerance l Tolerance T StickyNote10.tolerance}
+}
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  tile_color 0x55ffffff
+  label Slide
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos -492
+  ypos -468
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote3
+  tile_color 0x55ffffff
+  label Blur
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 247
+  ypos -496
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote5
+  tile_color 0x55ffffff
+  label Color
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 504
+  ypos -156
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  tile_color 0xff4c4cff
+  label "Slide Control"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos -398
+  ypos -576
+  addUserKnob {20 slide l Slide}
+  addUserKnob {20 horiz l Horiz n 1}
+  addUserKnob {7 speed l Speed R 1 10}
+  speed 1
+  addUserKnob {7 amount l Amount R 0 100}
+  addUserKnob {20 endGroup n -1}
+  addUserKnob {20 vert l Vert n 1}
+  addUserKnob {7 speed_2 l Speed R 1 10}
+  speed_2 1
+  addUserKnob {7 amount_2 l Amount R 0 100}
+  addUserKnob {20 endGroup_1 l endGroup n -1}
+  addUserKnob {7 motionblur l Motionblur R 0 4}
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote7
+  tile_color 0x55ffffff
+  label Scale
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 1086
+  ypos -399
+ }
+ Input {
+  inputs 0
+  name source
+  xpos -585
+  ypos -423
+ }
+ Dot {
+  name Dot3
+  xpos -551
+  ypos -397
+ }
+set N18665360 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name R
+  xpos -585
+  ypos -286
+  disable {{slide_on+-1 i}}
+ }
+ Transform {
+  translate {{cos(frame+1/(10/parent.StickyNote2.speed))*parent.StickyNote2.amount i} {cos(frame+2/(10/parent.StickyNote2.speed_2))*parent.StickyNote2.amount_2 i}}
+  center {960 540}
+  motionblur {{parent.StickyNote2.motionblur i}}
+  name Transform2
+  xpos -585
+  ypos -260
+  disable {{slide_on+-1 i}}
+ }
+push 0
+push $N18665360
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name G
+  xpos -491
+  ypos -286
+  disable {{slide_on+-1 i}}
+ }
+ Transform {
+  translate {{cos(frame+3/(10/parent.StickyNote2.speed))*parent.StickyNote2.amount i} {cos(frame+4/(10/parent.StickyNote2.speed_2))*parent.StickyNote2.amount_2 i}}
+  center {960 540}
+  motionblur {{parent.StickyNote2.motionblur i}}
+  name Transform3
+  xpos -491
+  ypos -260
+  disable {{slide_on+-1 i}}
+ }
+push $N18665360
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name B
+  xpos -399
+  ypos -287
+  disable {{slide_on+-1 i}}
+ }
+ Transform {
+  translate {{cos(frame+5/(10/parent.StickyNote2.speed))*parent.StickyNote2.amount i} {cos(frame+6/(10/parent.StickyNote2.speed_2))*parent.StickyNote2.amount_2 i}}
+  center {960 540}
+  motionblur {{parent.StickyNote2.motionblur i}}
+  name Transform4
+  xpos -399
+  ypos -261
+  disable {{slide_on+-1 i}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation max
+  name Merge2
+  xpos -399
+  ypos -170
+  disable {{slide_on+-1 i}}
+ }
+push $N18665360
+ Transform {
+  translate {{cos(frame/(10/parent.StickyNote2.speed))*parent.StickyNote2.amount i} {cos(frame+10/(10/parent.StickyNote2.speed_2))*parent.StickyNote2.amount_2 i}}
+  center {960 540}
+  motionblur {{parent.StickyNote2.motionblur i}}
+  name Transform1
+  xpos -294
+  ypos -401
+  disable {{slide_on+-1 i}}
+ }
+ Switch {
+  inputs 2
+  which {{rgbsplit i}}
+  name RGB
+  xpos -294
+  ypos -170
+  disable {{slide_on+-1 i}}
+ }
+ Dot {
+  name Dot1
+  xpos -34
+  ypos -166
+ }
+ Dot {
+  name Dot2
+  xpos -34
+  ypos -431
+ }
+ Dot {
+  name Dot4
+  xpos 136
+  ypos -431
+ }
+set N186924a0 [stack 0]
+ Defocus {
+  defocus {{cos(frame/(10/parent.StickyNote4.speed_3))*parent.StickyNote4.amount_3 i}}
+  name Defocus2
+  xpos 102
+  ypos -310
+  disable {{blur_on+-1 i}}
+ }
+push $N186924a0
+ Blur {
+  size {{cos(frame+5/(10/parent.StickyNote4.speed_3))*parent.StickyNote4.amount_3 i}}
+  name Blur2
+  xpos 246
+  ypos -441
+  disable {{blur_on+-1 i}}
+ }
+ Switch {
+  inputs 2
+  which {{lensblur i}}
+  name Lecns_Blur1
+  xpos 246
+  ypos -304
+  cached true
+  disable {{blur_on+-1 i}}
+ }
+ Dot {
+  name Dot5
+  xpos 440
+  ypos -300
+ }
+ Dot {
+  name Dot6
+  xpos 440
+  ypos -60
+ }
+ Dot {
+  name Dot10
+  xpos 548
+  ypos -60
+ }
+ Grade {
+  mix {{cos(frame/(10/parent.StickyNote6.speed_4)) i}}
+  name Grade1
+  tile_color 0x3f24bf00
+  xpos 514
+  ypos 2
+  disable {{color_on+-1 i}}
+ }
+ Grade {
+  mix {{cos(frame+10/(10/parent.StickyNote6.speed_4)) i}}
+  name Grade2
+  tile_color 0x3f24bf00
+  xpos 514
+  ypos 37
+  disable {{color_on+-1 i}}
+ }
+ Dot {
+  name Dot7
+  xpos 1009
+  ypos 41
+ }
+ Dot {
+  name Dot8
+  xpos 1009
+  ypos -244
+ }
+ Dot {
+  name Dot9
+  xpos 1136
+  ypos -244
+ }
+ Transform {
+  rotate {{(sin(frame/(10/parent.StickyNote8.rotspeed)))*parent.StickyNote8.rot_amount i}}
+  scale {{random(sin(frame/(10/parent.StickyNote8.speed_5)))*parent.StickyNote8.amount_5 i}}
+  center {960 540}
+  motionblur {{parent.StickyNote8.motionblur i}}
+  name Transform5
+  xpos 1102
+  ypos -202
+  disable {{scale_on+-1 i}}
+ }
+ Dot {
+  name Dot11
+  xpos 1136
+  ypos 7
+ }
+ Dot {
+  name Dot12
+  xpos 1536
+  ypos 7
+ }
+ Dot {
+  name Dot13
+  xpos 1536
+  ypos 59
+ }
+ Dot {
+  name Dot14
+  xpos 1643
+  ypos 59
+ }
+ Glow {
+  tolerance {{parent.StickyNote10.tolerance}}
+  brightness {{random(cos(frame/(20/parent.StickyNote10.speed_6))*parent.StickyNote10.amount_6)*parent.StickyNote10.light_on}}
+  name Glow1
+  xpos 1609
+  ypos 138
+  disable {{light_on+-1}}
+ }
+ Output {
+  name Output1
+  xpos 1609
+  ypos 256
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote4
+  tile_color 0xff4c4cff
+  label "Blur Control "
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 353
+  ypos -449
+  addUserKnob {20 blur l Blur}
+  addUserKnob {7 speed_3 l Speed R 1 10}
+  speed_3 1
+  addUserKnob {7 amount_3 l Amount R 0 50}
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote6
+  tile_color 0xff4c4cff
+  label "Color Control"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 687
+  ypos -88
+  addUserKnob {20 color l Color}
+  addUserKnob {7 speed_4 l Speed R 1 10}
+  speed_4 1
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote8
+  tile_color 0xff4c4cff
+  label "Scale Control"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 1229
+  ypos -216
+  addUserKnob {20 scale l Scale}
+  addUserKnob {7 speed_5 l Speed R 1 10}
+  speed_5 1
+  addUserKnob {7 amount_5 l Multiplayer R 2 8}
+  amount_5 2
+  addUserKnob {7 rotspeed l "Rotation Speed" R 1 10}
+  rotspeed 1
+  addUserKnob {7 rot_amount l "Rotation Amount" R 0 10}
+  addUserKnob {26 ""}
+  addUserKnob {7 motionblur l Motionblur R 0 4}
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote10
+  tile_color 0xff4c4cff
+  label "Light Control"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 1774
+  ypos 124
+  addUserKnob {20 light l Light}
+  addUserKnob {7 speed_6 l Speed R 1 20}
+  speed_6 1
+  addUserKnob {7 amount_6 l Amount R 0 20}
+  addUserKnob {7 tolerance l Tolerance}
+  addUserKnob {6 light_on l ON +STARTLINE}
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote9
+  tile_color 0x55ffffff
+  label Light
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 35
+  xpos 1599
+  ypos 92
+ }
+end_group

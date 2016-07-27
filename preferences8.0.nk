@@ -1,0 +1,19 @@
+Preferences {
+ inputs 0
+ name Preferences
+ CacheLimit 75
+ diskCacheGB 15
+ PaintCacheGB 12
+ selectedGPUDeviceName "no GPU available"
+ platformPathRemaps ""
+ FloatingWindowHint "Normal (KDE)"
+ ArrowColorLeft 0xfdff
+ ArrowColorRight 0x7f0000ff
+ ArrowColorUp 0x550055ff
+ ArrowColorDown 0xaa00ff
+ autokillViewer false
+ defaultBufferDepth half-float
+ defaultGPUForViewer true
+ defaultDisableGPUDither true
+ Viewer3DControlEmulation Maya
+}

@@ -1,0 +1,179 @@
+#! /software/nuke/current/Nuke9.0v8/libnuke-9.0.8.so -nx
+version 9.0 v8
+Gizmo {
+ inputs 2
+ addUserKnob {20 tweaks l Tweaks t "General settings for the process."}
+ addUserKnob {4 channelPick l "Alpha generated from" t "Pick witch channel to use to detect the bright pixels." M {Auto Red Green Blue "" ""}}
+ channelPick Green
+ addUserKnob {26 gs l "General Settings"}
+ addUserKnob {7 threshold l Threshold t "Use the slider to set the threshold level for generating the alpha."}
+ threshold 0.05
+ addUserKnob {41 size l "Erode Size" t "Use this slider to set the desired erode size to hide the specs." T Median1.size}
+ addUserKnob {6 restoreAlpha l "Restore input alpha?" t "Check this if you want the original input alpha to be pipped in again. Usefull if you apply the gizmo to a primary (beauty) render pass." +STARTLINE}
+ restoreAlpha true
+ addUserKnob {26 ""}
+ addUserKnob {26 info l "" +STARTLINE T "This gizmo is designed to fix bright spec pixels that are common in the specular render.\n\nMartin Georgiev\n© 2016\nv1b1"}
+}
+ Input {
+  inputs 0
+  name img
+  xpos 464
+  ypos -245
+ }
+ Dot {
+  name Dot7
+  xpos 498
+  ypos 40
+ }
+set N6f9c3c0 [stack 0]
+ Dot {
+  name Dot8
+  xpos 950
+  ypos 40
+ }
+ Dot {
+  name Dot6
+  xpos 950
+  ypos 1248
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos 213
+  ypos -247
+  number 1
+ }
+ Remove {
+  operation keep
+  channels alpha
+  name Remove1
+  xpos 213
+  ypos 161
+ }
+ Invert {
+  channels alpha
+  clamp true
+  name Invert1
+  xpos 213
+  ypos 732
+ }
+ Dot {
+  name Dot1
+  xpos 247
+  ypos 835
+ }
+push $N6f9c3c0
+ Shuffle {
+  alpha black
+  name Shuffle1
+  xpos 464
+  ypos 180
+ }
+ Dot {
+  name Dot5
+  xpos 498
+  ypos 329
+ }
+set N56f4ef0 [stack 0]
+ Dot {
+  name Dot2
+  xpos 599
+  ypos 329
+ }
+set N56f9960 [stack 0]
+ Dot {
+  name Dot3
+  xpos 702
+  ypos 329
+ }
+set N56fe340 [stack 0]
+ Dot {
+  name Dot4
+  xpos 815
+  ypos 329
+ }
+ Shuffle {
+  alpha blue
+  name Blue
+  xpos 781
+  ypos 616
+ }
+push $N56fe340
+ Shuffle {
+  alpha green
+  name Green
+  xpos 668
+  ypos 544
+ }
+push $N56f9960
+ Shuffle {
+  alpha red
+  name Red
+  xpos 565
+  ypos 488
+ }
+push $N56f4ef0
+ Expression {
+  expr3 r>g?r:(g>b?g:b)
+  name Expression1
+  xpos 464
+  ypos 421
+ }
+ Switch {
+  inputs 4
+  which {{channelPick x1016 0}}
+  name Switch1
+  xpos 464
+  ypos 616
+ }
+ Expression {
+  expr3 a>threshold?1:0
+  name Expression3
+  xpos 464
+  ypos 729
+ }
+ ChannelMerge {
+  inputs 2
+  operation stencil
+  name ChannelMerge1
+  xpos 464
+  ypos 819
+ }
+ Median {
+  size 2
+  ignore_top_line false
+  maskChannelInput rgba.alpha
+  name Median1
+  xpos 464
+  ypos 975
+ }
+ Shuffle {
+  alpha black
+  name Shuffle2
+  xpos 464
+  ypos 1114
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  selected true
+  xpos 464
+  ypos 1238
+  disable {{!parent.restoreAlpha x1014 1}}
+ }
+ Output {
+  name Output1
+  xpos 464
+  ypos 1398
+ }
+ Viewer {
+  inputs 0
+  frame_range 1001-1037
+  input_number 1
+  name Viewer1
+  xpos 884
+  ypos 1480
+ }
+end_group
