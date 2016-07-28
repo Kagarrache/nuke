@@ -1,0 +1,204 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ help "V!ctor Tools 2.0v1\nV_TrackingCone\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0x9c0000ff
+ addUserKnob {20 V_TrackingCone}
+ addUserKnob {4 display M {"constant color" "gradient color transparency" stripes ""}}
+ display stripes
+ addUserKnob {20 transform l Transform n 1}
+ addUserKnob {26 tab l "" +STARTLINE T "                        "}
+ addUserKnob {41 file_menu l "" -STARTLINE T TransformGeo1.file_menu}
+ addUserKnob {41 snap_menu l "" -STARTLINE T TransformGeo1.snap_menu}
+ addUserKnob {41 xform_order l "transform order" T TransformGeo1.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T TransformGeo1.rot_order}
+ addUserKnob {41 translate T TransformGeo1.translate}
+ addUserKnob {41 rotate T TransformGeo1.rotate}
+ addUserKnob {7 xzScale l width R 0.1 2}
+ xzScale 1
+ addUserKnob {41 uniform_scale l "uniform scale" T TransformGeo1.uniform_scale}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 constantColor l "Constant Color" n 1}
+ constantColor 0
+ addUserKnob {18 constantcolorpicker l "constant and gradient color"}
+ constantcolorpicker {1 0 0}
+ addUserKnob {6 constantcolorpicker_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {20 Stripes n 1}
+ Stripes 0
+ addUserKnob {3 size}
+ size 10
+ addUserKnob {18 color0 l "color 0"}
+ color0 {0.1 0.1 0.1}
+ addUserKnob {6 color0_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 color1 l "color 1"}
+ color1 {0.5 0.5 0.5}
+ addUserKnob {6 color1_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {20 endGroup n -1}
+}
+ Input {
+  inputs 0
+  name axis
+  xpos 280
+  ypos 279
+ }
+ Constant {
+  inputs 0
+  channels alpha
+  format "512 512 0 0 512 512 1 square_512"
+  name Constant2
+  xpos 438
+  ypos -290
+ }
+set N946f10e0 [stack 0]
+ Ramp {
+  output alpha
+  p0 {0 0}
+  p1 {512 0}
+  name Ramp1
+  xpos 438
+  ypos -194
+ }
+ Posterize {
+  Colors 2
+  name Posterize1
+  xpos 438
+  ypos -158
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.color0 i} {parent.color0 i} {parent.color0 i} 1}
+  format "512 512 0 0 512 512 1 square_512"
+  name Constant3
+  xpos 600
+  ypos -195
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.color1 i} {parent.color1 i} {parent.color1 i} 1}
+  format "512 512 0 0 512 512 1 square_512"
+  name Constant4
+  xpos 600
+  ypos -105
+ }
+ Keymix {
+  inputs 3
+  channels rgb
+  name Keymix1
+  xpos 438
+  ypos -81
+ }
+ ContactSheet {
+  width {{columns*512 i}}
+  height {{rows*512 i}}
+  rows 1
+  columns {{endframe i}}
+  roworder TopBottom
+  splitinputs true
+  startframe 1
+  endframe {{parent.size i}}
+  name ContactSheet1
+  xpos 438
+  ypos 45
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos 440
+  ypos 81
+ }
+push $N946f10e0
+ Dot {
+  name Dot2
+  xpos 794
+  ypos -258
+ }
+ Ramp {
+  output alpha
+  p0 {0 512}
+  p1 {0 0}
+  name Ramp2
+  xpos 760
+  ypos -86
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.constantcolorpicker i} {parent.constantcolorpicker i} {parent.constantcolorpicker i} 1}
+  format "512 512 0 0 512 512 1 square_512"
+  name Constant1
+  xpos 600
+  ypos -15
+ }
+set N956251e0 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 760
+  ypos 4
+ }
+ Premult {
+  name Premult1
+  selected true
+  xpos 760
+  ypos 135
+ }
+push $N956251e0
+ Dot {
+  name Dot1
+  xpos 634
+  ypos 84
+ }
+ Switch {
+  inputs 3
+  which {{parent.display i}}
+  name Switch1
+  xpos 440
+  ypos 135
+ }
+ Cylinder {
+  rows 1
+  columns {{parent.ContactSheet1.endframe*2 i}}
+  close_top true
+  translate {0 1 0}
+  name Cylinder1
+  xpos 438
+  ypos 189
+ }
+ Trilinear {
+  selectable false
+  p0 {0 0 0}
+  p1 {-0.5 1 -0.5}
+  p2 {0.5 1 -0.5}
+  p3 {0 0 0}
+  p4 {0 0 0}
+  p5 {-0.5 1 0.5}
+  p6 {0.5 1 0.5}
+  p7 {0 0 0}
+  name Trilinear1
+  xpos 438
+  ypos 225
+ }
+ TransformGeo {
+  inputs 2
+  scaling {{parent.xzScale i} 1 {parent.xzScale i}}
+  name TransformGeo1
+  xpos 438
+  ypos 279
+ }
+ Output {
+  name Output1
+  xpos 438
+  ypos 333
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 438
+  ypos 442
+ }
+end_group

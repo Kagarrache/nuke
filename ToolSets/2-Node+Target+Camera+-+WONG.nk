@@ -1,0 +1,78 @@
+#! /Applications/Nuke6.1v1/NukeX6.1v1.app/../Nuke6.1v1.app/Contents/MacOS/Nuke6.1v1 -nx
+version 6.1 v1
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="22" w="1920" h="1174" screen="0">
+        <splitter orientation="1">
+            <split size="1214"/>
+            <splitter orientation="1">
+                <split size="46"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                    <page id="Toolbar.1"/>
+                </dock>
+                <split size="1164"/>
+                <splitter orientation="2">
+                    <split size="574"/>
+                    <dock id="" activePageId="Viewer.1">
+                        <page id="Viewer.1"/>
+                    </dock>
+                    <split size="574"/>
+                    <dock id="" activePageId="DAG.1">
+                        <page id="DAG.1"/>
+                        <page id="Curve Editor.1"/>
+                    </dock>
+                </splitter>
+            </splitter>
+            <split size="702"/>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name "/Users/wong/Documents/The Foundry/Tools/2-Node Target Camera - WONG.nk"
+ format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+}
+BackdropNode {
+ inputs 0
+ name TargetCameraRig
+ label "2-Node Camera"
+ note_font_size 38
+ xpos -263
+ ypos -338
+ bdwidth 331
+ bdheight 436
+}
+Axis2 {
+ inputs 0
+ file_menu Axis/File
+ snap_menu Axis/Snap
+ translate {0 0 -3}
+ name Target
+ xpos -205
+ ypos -162
+}
+Camera2 {
+ inputs 0
+ file_menu Axis/File
+ snap_menu Axis/Snap
+ translate {0 0 3}
+ rotate {{degrees(atan((Target.translate.y-translate.y)/sqrt(pow2(sqrt(pow2(Target.translate.x-translate.x)+pow2(Target.translate.z-translate.z)))))) i} {"Target.translate.x-translate.x >= 0 ? 270-degrees(atan((Target.translate.z-translate.z)/(Target.translate.x-translate.x))): -degrees(atan((Target.translate.z-translate.z)/(Target.translate.x-translate.x)))-270" i} 0}
+ focal_point {{sqrt(pow2(sqrt(pow2(sqrt(pow2(Target.translate.x-translate.x)+pow2(Target.translate.z-translate.z)))))+pow2(Target.translate.y-translate.y)) i}}
+ name TargetCamera
+ tile_color 0xff0000ff
+ xpos -112
+ ypos -162
+}
+Viewer {
+ frame 1
+ input_process false
+ name Viewer1
+ xpos -122
+ ypos 152
+}

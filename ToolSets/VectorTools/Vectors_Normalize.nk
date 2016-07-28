@@ -1,0 +1,64 @@
+set cut_paste_input [stack 0]
+version 9.0 v8
+push $cut_paste_input
+Group {
+ name Vectors_Normalize
+ help "Scales the magnitude of all vectors to 1."
+ selected true
+ xpos 631
+ ypos 84
+ addUserKnob {20 User}
+ addUserKnob {41 in l Vector_Layer t "Pick the layer containing your motion vectors." T UV_Channel.in}
+ addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.1 - Part of VectorTools by Erwan Leroy - 2016"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -303
+  ypos 114
+ }
+set N39e6bc00 [stack 0]
+ Shuffle {
+  name UV_Channel
+  xpos -163
+  ypos 114
+ }
+ Expression {
+  temp_name0 mag
+  temp_expr0 sqrt(pow(r,2)+pow(g,2)+pow(b,2))
+  expr0 r/mag
+  expr1 g/mag
+  expr2 b/mag
+  name Expression3
+  xpos -163
+  ypos 228
+ }
+set N37a0f800 [stack 0]
+push $N39e6bc00
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  blue blue
+  alpha black
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  xpos -303
+  ypos 228
+ }
+ Output {
+  name Output1
+  xpos -303
+  ypos 299
+ }
+push $N37a0f800
+ Viewer {
+  frame 55
+  frame_range 7923-7965
+  colour_sample_bbox {0.06406249851 0.245312497 0.06562499702 0.246875003}
+  name Viewer1
+  xpos -30
+  ypos 228
+ }
+end_group

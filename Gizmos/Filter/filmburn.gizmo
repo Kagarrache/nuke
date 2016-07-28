@@ -1,0 +1,323 @@
+#! /usr/local/Nuke10.0v1/libnuke-10.0.1.so -nx
+version 10.0 v1
+Gizmo {
+ addUserKnob {20 NOISE}
+ addUserKnob {41 size l x/ysize T noise_fx.size}
+ addUserKnob {41 zoffset l z T noise_fx.zoffset}
+ addUserKnob {41 lacunarity T noise_fx.lacunarity}
+ addUserKnob {41 gain T noise_fx.gain}
+ addUserKnob {41 gamma T noise_fx.gamma}
+ addUserKnob {41 translate T noise_fx.translate}
+ addUserKnob {41 color T noise_fx.color}
+ addUserKnob {26 elbetoRed l "Based on Digital Tutors" T elbetoRed}
+ addUserKnob {20 Deformer}
+ addUserKnob {41 uv l "UV channels" T DEFORMER.uv}
+ addUserKnob {41 mix T Merge50.mix}
+ addUserKnob {41 filter T DEFORMER.filter}
+ addUserKnob {20 MIX}
+ addUserKnob {41 mix_1 l mix T mix_fxSCAN.mix}
+ addUserKnob {41 operation T mix_fxSCAN.operation}
+ addUserKnob {41 channels T ColorCorrect11.channels}
+ addUserKnob {41 gain_1 l gain T ColorCorrect11.gain}
+ addUserKnob {41 offset T ColorCorrect11.offset}
+}
+ Noise {
+  inputs 0
+  cliptype none
+  size 530
+  zoffset 1.36
+  lacunarity 1
+  gain 0.6
+  center {2048 1080}
+  color {{curve x1001 0 x1067 0.8}}
+  name noise_fx
+  label "noise fx"
+  xpos 1334
+  ypos -494
+ }
+set N1e3f0b0 [stack 0]
+ Dot {
+  name Dot83
+  xpos 1368
+  ypos -136
+ }
+ Ramp {
+  inputs 0
+  p0 {0 0}
+  p1 {4100 0}
+  name U_Ramp
+  xpos 892
+  ypos -876
+ }
+push $N1e3f0b0
+ Ramp {
+  inputs 0
+  p0 {0 0}
+  p1 {0 2156}
+  name V_Ramp1
+  xpos 1193
+  ypos -549
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  name Merge50
+  xpos 1193
+  ypos -488
+ }
+ Dot {
+  name Dot82
+  xpos 1227
+  ypos -423
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy3
+  xpos 892
+  ypos -427
+ }
+ Dot {
+  name Dot80
+  xpos 926
+  ypos -321
+ }
+ Input {
+  inputs 0
+  name SCAN
+  xpos -598
+  ypos -667
+ }
+ Dot {
+  name scan
+  label "CONECTAR SCAN"
+  note_font_size 51
+  xpos -564
+  ypos -567
+ }
+ Dot {
+  name Dot85
+  xpos -564
+  ypos -406
+ }
+set N1e54ba0 [stack 0]
+ Dot {
+  name Dot84
+  xpos -452
+  ypos -406
+ }
+ STMap {
+  inputs 2
+  uv rgb
+  blur rgba.blue
+  filter Impulse
+  name DEFORMER
+  xpos -486
+  ypos -331
+ }
+ Dot {
+  name Dot81
+  xpos -452
+  ypos -196
+ }
+push $N1e54ba0
+ Merge2 {
+  inputs 2
+  name mix_fxSCAN
+  xpos -598
+  ypos -200
+ }
+ ColorCorrect {
+  inputs 1+1
+  offset -0.41
+  name ColorCorrect11
+  label "CC\nnoise burn"
+  xpos -598
+  ypos -141
+ }
+ Dot {
+  name Dot1
+  xpos -564
+  ypos 137
+ }
+ Output {
+  name Output1
+  xpos -598
+  ypos 239
+ }
+ Noise {
+  inputs 0
+  cliptype none
+  size 530
+  zoffset 1.36
+  lacunarity 1
+  center {2048 1080}
+  color {{curve x1001 0 x1067 0.8}}
+  name Noise12
+  xpos 3071
+  ypos -198
+ }
+set N1ec6f020 [stack 0]
+ Dot {
+  name Dot87
+  xpos 3105
+  ypos 154
+ }
+ CheckerBoard2 {
+  inputs 0
+  boxsize 14
+  color1 {0.1000000015 0.1000000015 0.1000000015 1}
+  color2 {0.5 0.5 0.5 1}
+  centerlinecolor {1 0 0 1}
+  centerlinewidth 0
+  name CheckerBoard3
+  xpos 2270
+  ypos -361
+ }
+ Transform {
+  translate {{curve x1005 0} {"-((frame * 2) % parent.CheckerBoard3.boxsize * 2)" x1005 10}}
+  center {2048 1080}
+  name Transform24
+  xpos 2270
+  ypos -289
+ }
+ CheckerBoard2 {
+  inputs 0
+  boxsize 20.5
+  color1 {0.1000000015 0.1000000015 0.1000000015 1}
+  color2 {0.5 0.5 0.5 1}
+  centerlinewidth 0
+  name CheckerBoard4
+  xpos 2427
+  ypos -451
+ }
+ Transform {
+  translate {{"-((frame * 2) % parent.CheckerBoard4.boxsize * 2)"} {curve}}
+  center {2048 1080}
+  name Transform25
+  xpos 2427
+  ypos -379
+ }
+ Merge2 {
+  inputs 2
+  operation overlay
+  name Merge54
+  xpos 2427
+  ypos -289
+ }
+ Reformat {
+  name Reformat23
+  xpos 2427
+  ypos -263
+ }
+ ColorCorrect {
+  contrast 0.12
+  offset 0.32
+  name ColorCorrect13
+  label "intensidad\nde lineas"
+  xpos 2427
+  ypos -216
+ }
+ Ramp {
+  inputs 0
+  p0 {0 0}
+  p1 {4100 0}
+  name U_Ramp1
+  xpos 2629
+  ypos -239
+ }
+ Merge2 {
+  inputs 2
+  operation overlay
+  mix 0.24
+  name Merge55
+  xpos 2629
+  ypos -204
+ }
+push $N1ec6f020
+ Ramp {
+  inputs 0
+  p0 {0 0}
+  p1 {0 2156}
+  name V_Ramp2
+  xpos 2930
+  ypos -259
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  name Merge52
+  xpos 2930
+  ypos -198
+ }
+ Dot {
+  name Dot88
+  xpos 2964
+  ypos -133
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy4
+  xpos 2629
+  ypos -137
+ }
+ Dot {
+  name Dot89
+  xpos 2663
+  ypos -31
+ }
+ Noise {
+  inputs 0
+  center {2048 1080}
+  name Noise13
+  xpos 1813
+  ypos -481
+ }
+ Dot {
+  name Dot90
+  label "CONECTAR SCAN"
+  note_font_size 51
+  xpos 1847
+  ypos -277
+ }
+ Dot {
+  name Dot91
+  xpos 1847
+  ypos -116
+ }
+set N26318910 [stack 0]
+ Dot {
+  name Dot92
+  xpos 1959
+  ypos -116
+ }
+ STMap {
+  inputs 2
+  uv rgb
+  filter Impulse
+  name STMap2
+  xpos 1925
+  ypos -41
+ }
+ Dot {
+  name Dot93
+  xpos 1959
+  ypos 94
+ }
+push $N26318910
+ Merge2 {
+  inputs 2
+  name Merge53
+  xpos 1813
+  ypos 90
+ }
+ ColorCorrect {
+  inputs 1+1
+  offset -0.41
+  name ColorCorrect12
+  label "CC\nnoise burn"
+  xpos 1813
+  ypos 138
+ }
+end_group

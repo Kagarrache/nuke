@@ -1,0 +1,236 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ help "V!ctor Tools 2.0v1\nV_IdFilter\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0x9e3c63ff
+ postage_stamp true
+ addUserKnob {20 V_IdFilter}
+ addUserKnob {4 operation t "channel mix operation" M {max sum ""}}
+ addUserKnob {6 clamp t "clamp values" -STARTLINE}
+ addUserKnob {41 channels l "output matte" T Copy1.channels}
+}
+ Input {
+  inputs 0
+  name id
+  xpos -680
+  ypos -423
+ }
+set N94a602b0 [stack 0]
+ Remove {
+  name Format0
+  xpos -680
+  ypos -374
+ }
+set N94a62710 [stack 0]
+ Dot {
+  name Dot4
+  xpos -646
+  ypos -150
+ }
+ Dot {
+  name Dot10
+  xpos -566
+  ypos -150
+ }
+set N94a68dc0 [stack 0]
+ Dot {
+  name Dot9
+  xpos -406
+  ypos -150
+ }
+set N94a6b340 [stack 0]
+ Dot {
+  name Dot8
+  xpos -246
+  ypos -150
+ }
+set N94a6d8c0 [stack 0]
+push $N94a602b0
+ Dot {
+  name Dot5
+  xpos -486
+  ypos -420
+ }
+push $N94a62710
+ Copy {
+  inputs 2
+  channels {-rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  name Copy1
+  xpos -520
+  ypos -380
+ }
+ LayerContactSheet {
+  width {{"!\[exists parent.input]==1?root.format.w:parent.input.format.w" i}}
+  height {{"!\[exists parent.input]==1?root.format.h:parent.input.format.h" i}}
+  rows 1
+  columns 1
+  autodims false
+  name LayerOnRGBA
+  xpos -520
+  ypos -315
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name KeepRGBA
+  xpos -520
+  ypos -279
+ }
+ Shuffle {
+  name RefreshRGBA
+  xpos -520
+  ypos -243
+ }
+ Dot {
+  name Dot7
+  xpos -486
+  ypos -204
+ }
+set N94a88050 [stack 0]
+ Dot {
+  name Dot3
+  xpos -326
+  ypos -204
+ }
+set N94a8a4f0 [stack 0]
+ Dot {
+  name Dot2
+  xpos -166
+  ypos -204
+ }
+set N94a8ca70 [stack 0]
+ Switch {
+  inputs 2
+  name BLUEbypass
+  xpos -200
+  ypos -117
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name BBBB
+  tile_color 0xffff
+  xpos -200
+  ypos -63
+ }
+set N94a92ee0 [stack 0]
+push $N94a6b340
+push $N94a8a4f0
+ Switch {
+  inputs 2
+  name GREENbypass
+  xpos -360
+  ypos -117
+ }
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name GGGG
+  tile_color 0xff00ff
+  xpos -360
+  ypos -63
+ }
+set N94a9d9a0 [stack 0]
+push 0
+push $N94a68dc0
+push $N94a88050
+ Switch {
+  inputs 2
+  name REDbypass
+  xpos -520
+  ypos -117
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name RRRR
+  tile_color 0xff0000ff
+  xpos -520
+  ypos -63
+ }
+set N94aa8460 [stack 0]
+push $N94a6d8c0
+ Dot {
+  name Dot6
+  xpos -86
+  ypos -150
+ }
+push $N94a8ca70
+ Dot {
+  name Dot1
+  xpos -6
+  ypos -204
+ }
+ Switch {
+  inputs 2
+  name ALPHAbypass
+  xpos -40
+  ypos -117
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name AAAA
+  tile_color 0xffffffff
+  xpos -40
+  ypos -63
+ }
+set N94ab79b0 [stack 0]
+ Merge2 {
+  inputs 4+1
+  operation plus
+  name Merge2
+  xpos -360
+  ypos 9
+ }
+push $N94a92ee0
+push $N94a9d9a0
+push 0
+push $N94aa8460
+push $N94ab79b0
+ Merge2 {
+  inputs 4+1
+  operation max
+  name Merge1
+  xpos -200
+  ypos 9
+ }
+ Switch {
+  inputs 2
+  which {{parent.operation i}}
+  name operationSwitch
+  selected true
+  xpos -280
+  ypos 63
+ }
+ Clamp {
+  name Clamp
+  xpos -280
+  ypos 94
+  disable {{!parent.clamp i}}
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name AAAA1
+  tile_color 0xffffffff
+  xpos -280
+  ypos 135
+ }
+ Output {
+  name Output1
+  xpos -280
+  ypos 171
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos -280
+  ypos 238
+ }
+end_group

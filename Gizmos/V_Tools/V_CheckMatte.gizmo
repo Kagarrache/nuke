@@ -1,0 +1,840 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ inputs 3
+ help "V!ctor Tools 2.0v1\nV_CheckMatte\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0xccccccff
+ addUserKnob {20 General l V_CheckMatte}
+ addUserKnob {41 format l "Output Format" t "General background format output" T Reformat_ALL.format}
+ addUserKnob {6 lut_compensation l "Linearize Matte  " t "Compensate matte LUT displaying matte as linear color space. Use it for viewing pourpouse only" +STARTLINE}
+ addUserKnob {41 viewerProcess_Match l "Current LUT" t "Make sure this matches your current viewerProcess (Viewer LUT)" -STARTLINE T LUT_Correction.colorspace_in}
+ addUserKnob {26 space3 l " " T " "}
+ addUserKnob {26 Souce l Source: T ""}
+ addUserKnob {6 redchannel l Red t "Red Channel" -STARTLINE}
+ addUserKnob {6 greenchannel l Green t "Green Channel" -STARTLINE}
+ addUserKnob {6 bluechannel l Blue t "Blue Channel" -STARTLINE}
+ addUserKnob {6 alphachannel l Alpha t "Alpha Channel" -STARTLINE}
+ alphachannel true
+ addUserKnob {4 channelsolo l "     Solo" t "Display only the selected channel overriding the channel selection boxes ('solo' mode)" -STARTLINE M {Off Red Green Blue Alpha "" "" "" "" ""}}
+ addUserKnob {26 space2 l " " T " "}
+ addUserKnob {4 maskmode l Display t "Evidence the selection over the plate" M {Selection "Quick Mask" Outline "" "" ""}}
+ addUserKnob {4 BGmode l Background t "Check the plate multiplied by the matte over a test background" M {Original "Checker Board" "Solid Color" "Input Background" ""}}
+ BGmode "Solid Color"
+ addUserKnob {6 splitcompare l "Split Compare" t "Check the matte side by side with the plate" +STARTLINE}
+ addUserKnob {4 splitmode l "" t "Split in colomn (Vertical) or row (Horizontal)" -STARTLINE M {Horizontal Vertical "" "" ""}}
+ addUserKnob {26 space4 l " " -STARTLINE T "     "}
+ addUserKnob {6 switchviews l "Switch Views" t "Switchs views of split compare mode" -STARTLINE}
+ addUserKnob {26 space1 l " " T " "}
+ addUserKnob {20 Displaypreferences l "Display Preferences" t "Display preferences" n 1}
+ Displaypreferences 0
+ addUserKnob {26 QuickMaskPref l "Quick Mask" t "Quick Mask preferences"}
+ addUserKnob {18 maskcolor l Color t "Customize the color of the Quick Mask"}
+ maskcolor {1 0 0}
+ addUserKnob {6 maskcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 maskopacity l Opacity t "Customize the opacity of the Quick Mask"}
+ maskopacity 0.25
+ addUserKnob {26 space5 l " " T " "}
+ addUserKnob {26 OutLinePref l Outline t "Outline preferences"}
+ addUserKnob {18 outlinecolor l Color t "Customize the color of the Outline"}
+ outlinecolor {0.75 0.75 0.75}
+ addUserKnob {6 outlinecolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 edgesize l Size t "Customize the edge size of the Outline" R 1 10}
+ edgesize 3
+ addUserKnob {26 space6 l " " T " "}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {20 BackgroundPreferences l "Background Preferences" t "Customize background preferences" n 1}
+ BackgroundPreferences 0
+ addUserKnob {26 CheckBoard l "Check Board" t "Check Board preferences"}
+ addUserKnob {41 format_1 l format T BG_CheckerBoard.format}
+ addUserKnob {41 boxsize l size T BG_CheckerBoard.boxsize}
+ addUserKnob {41 color0 l "color 0" T BG_CheckerBoard.color0}
+ addUserKnob {41 color1 l "color 1" T BG_CheckerBoard.color1}
+ addUserKnob {41 color2 l "color 2" T BG_CheckerBoard.color2}
+ addUserKnob {41 color3 l "color 3" T BG_CheckerBoard.color3}
+ addUserKnob {41 linecolor l "line color" T BG_CheckerBoard.linecolor}
+ addUserKnob {41 linewidth l "line width" T BG_CheckerBoard.linewidth}
+ addUserKnob {41 centerlinecolor l "centerline color" T BG_CheckerBoard.centerlinecolor}
+ addUserKnob {41 centerlinewidth l "centerline width" T BG_CheckerBoard.centerlinewidth}
+ addUserKnob {26 space7 l " " T " "}
+ addUserKnob {26 SolidColor l "Solid Color" t "Solid Color preferences"}
+ addUserKnob {18 solidcolor l color t "Customize the color of the Solid Background"}
+ solidcolor {0.5 0.5 0.5}
+ addUserKnob {6 solidcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {20 endGroup n -1}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode_BG
+  tile_color 0x3f1700ff
+  label "BG Process"
+  note_font_size 42
+  xpos 1160
+  ypos -137
+  bdwidth 320
+  bdheight 1117
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode_MASKEDGE
+  tile_color 0x3f3fff
+  label "Mask & Edge Process"
+  note_font_size 42
+  xpos 610
+  ypos -137
+  bdwidth 430
+  bdheight 949
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode_MATTE
+  tile_color 0x3f3f00ff
+  label "Matte Process"
+  note_font_size 42
+  xpos -160
+  ypos -120
+  bdwidth 762
+  bdheight 810
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode_PLATE
+  tile_color 0x3f002fff
+  label "Plate Process"
+  note_font_size 42
+  xpos -442
+  ypos -92
+  bdwidth 258
+  bdheight 1141
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode_SPLIT
+  tile_color 0x1f003fff
+  label "Split Screen"
+  note_font_size 42
+  xpos 500
+  ypos 1042
+  bdwidth 569
+  bdheight 396
+ }
+ Input {
+  inputs 0
+  name matte
+  xpos -150
+  ypos -27
+ }
+ Dot {
+  name Dot1
+  xpos -116
+  ypos 18
+ }
+set N94813a20 [stack 0]
+ Dot {
+  name Dot2
+  xpos -6
+  ypos 18
+ }
+set N94815fa0 [stack 0]
+ Dot {
+  name Dot3
+  xpos 104
+  ypos 18
+ }
+set N94818520 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name BLUE_Matte
+  tile_color 0xffff
+  xpos 70
+  ypos 62
+ }
+ Dot {
+  name Dot7
+  xpos 104
+  ypos 186
+ }
+set N94821920 [stack 0]
+ Dot {
+  name Dot28
+  xpos 104
+  ypos 234
+ }
+set N94823dc0 [stack 0]
+ Dot {
+  name Dot15
+  xpos 104
+  ypos 522
+ }
+ Dot {
+  name Dot16
+  xpos 434
+  ypos 522
+ }
+push $N94815fa0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name GREEN_Matte
+  tile_color 0xff00ff
+  xpos -40
+  ypos 62
+ }
+ Dot {
+  name Dot8
+  xpos -6
+  ypos 282
+ }
+set N94831cc0 [stack 0]
+ Dot {
+  name Dot29
+  xpos -6
+  ypos 330
+ }
+set N94834160 [stack 0]
+ Dot {
+  name Dot17
+  xpos -6
+  ypos 546
+ }
+ Dot {
+  name Dot18
+  xpos 434
+  ypos 546
+ }
+push $N94813a20
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name RED_Matte
+  tile_color 0xff0000ff
+  xpos -150
+  ypos 62
+ }
+ Dot {
+  name Dot5
+  xpos -116
+  ypos 378
+ }
+set N94842060 [stack 0]
+ Dot {
+  name Dot30
+  xpos -116
+  ypos 426
+ }
+set N94844500 [stack 0]
+ Dot {
+  name Dot19
+  xpos -116
+  ypos 570
+ }
+push $N94818520
+ Dot {
+  name Dot4
+  xpos 214
+  ypos 18
+ }
+ Dot {
+  name Dot12
+  xpos 214
+  ypos 89
+ }
+set N9484b620 [stack 0]
+ Dot {
+  name Dot27
+  xpos 214
+  ypos 138
+ }
+set N9484dc30 [stack 0]
+ Dot {
+  name Dot14
+  xpos 214
+  ypos 498
+ }
+ Dot {
+  name Dot13
+  xpos 434
+  ypos 498
+ }
+push $N9484dc30
+push $N9484b620
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name ALPHA_SwitchOFF
+  tile_color 0xff
+  xpos 290
+  ypos 86
+ }
+ Switch {
+  inputs 2
+  which {{"parent.alphachannel == 0?0:1" i}}
+  name ALPHA_SwitchOFF_BYPASS
+  tile_color 0xffbf00ff
+  xpos 290
+  ypos 134
+ }
+ Dot {
+  name Dot6
+  xpos 434
+  ypos 138
+ }
+push $N94823dc0
+push $N94821920
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name BLUE_SwitchOFF
+  tile_color 0xff
+  xpos 290
+  ypos 182
+ }
+ Switch {
+  inputs 2
+  which {{"parent.bluechannel == 0?0:1" i}}
+  name BLUE_SwitchOFF_BYPASS
+  tile_color 0xffbf00ff
+  xpos 290
+  ypos 230
+ }
+ Dot {
+  name Dot10
+  xpos 434
+  ypos 234
+ }
+push 0
+push $N94844500
+push $N94842060
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name RED_SwitchOFF3
+  tile_color 0xff
+  xpos 290
+  ypos 374
+ }
+ Switch {
+  inputs 2
+  which {{"parent.redchannel == 0?0:1" i}}
+  name RED_SwitchOFF_BYPASS
+  tile_color 0xffbf00ff
+  xpos 290
+  ypos 422
+ }
+ Dot {
+  name Dot11
+  xpos 434
+  ypos 426
+ }
+push $N94834160
+push $N94831cc0
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name GREEN_SwitchOFF
+  tile_color 0xff
+  xpos 290
+  ypos 278
+ }
+ Switch {
+  inputs 2
+  which {{"parent.greenchannel == 0?0:1" i}}
+  name GREEN_SwitchOFF_BYPASS
+  tile_color 0xffbf00ff
+  xpos 290
+  ypos 326
+ }
+ Dot {
+  name Dot9
+  xpos 434
+  ypos 330
+ }
+ Merge2 {
+  inputs 4+1
+  operation max
+  name INDEX_Merge
+  xpos 510
+  ypos 422
+ }
+ Switch {
+  inputs 5
+  which {{"parent.channelsolo == 0?0:(parent.channelsolo == 4?1:(parent.channelsolo == 1?2:(parent.channelsolo == 2?3:(parent.channelsolo == 3?4:0))))" i}}
+  name Matte_Channel_Selector
+  tile_color 0xffbf00ff
+  xpos 510
+  ypos 566
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Matte_onAlpha
+  tile_color 0xffffffff
+  xpos 510
+  ypos 589
+ }
+set N94893db0 [stack 0]
+ Dot {
+  name Dot37
+  xpos 544
+  ypos 738
+ }
+set N9489ab40 [stack 0]
+ Dot {
+  name Dot21
+  xpos 544
+  ypos 786
+ }
+set N9489cfe0 [stack 0]
+ Dot {
+  name Dot47
+  xpos 544
+  ypos 876
+ }
+set N9489f560 [stack 0]
+ Colorspace {
+  colorspace_in sRGB
+  name LUT_Correction
+  xpos 337
+  ypos 873
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name LUT_Correction_On_Alpha
+  tile_color 0xffffffff
+  xpos 337
+  ypos 909
+ }
+ Dot {
+  name Dot48
+  xpos 371
+  ypos 984
+ }
+push $N9489f560
+ Switch {
+  inputs 2
+  which {{parent.lut_compensation i}}
+  name LUT_Compensation_Switch
+  xpos 510
+  ypos 981
+ }
+ Dot {
+  name Dot31
+  xpos 544
+  ypos 1122
+ }
+set N948b6190 [stack 0]
+ Dot {
+  name Dot32
+  xpos 669
+  ypos 1122
+ }
+set N948b8710 [stack 0]
+push $N948b8710
+ Dot {
+  name Dot34
+  xpos 794
+  ypos 1122
+ }
+set N948badd0 [stack 0]
+ Dot {
+  name Dot22
+  xpos 909
+  ypos 1122
+ }
+set N948bd4b0 [stack 0]
+ Constant {
+  inputs 0
+  color {{parent.maskcolor.r i} {parent.maskcolor.g i} {parent.maskcolor.b i} 1}
+  name Mask_Colour
+  tile_color 0xffbf00ff
+  xpos 620
+  ypos -57
+ }
+ Reformat {
+  resize fill
+  name Reformat_ALL
+  xpos 620
+  ypos 38
+ }
+ set C948c3ef0 [stack 0]
+push $N9489cfe0
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Colour_Silhouette
+  xpos 620
+  ypos 782
+ }
+push 0
+ Switch {
+  inputs 2
+  which {{"parent.maskmode == 0? 0 : (parent.maskmode == 1? 1 : (parent.maskmode == 2? 0 : 0))  " i}}
+  name Mask_Switch
+  tile_color 0xffbf00ff
+  xpos 620
+  ypos 854
+ }
+ Dot {
+  name Dot24
+  xpos 654
+  ypos 1026
+ }
+push $N94893db0
+ Dilate {
+  channels alpha
+  size {{parent.edgesize i}}
+  name Dilate_Matte
+  xpos 840
+  ypos 584
+ }
+ Grade {
+  channels alpha
+  whitepoint 0
+  white_clamp true
+  name Solid_Edge
+  xpos 840
+  ypos 632
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Alpha_onAll
+  tile_color 0xffffffff
+  xpos 840
+  ypos 686
+ }
+push $N9489ab40
+ Merge2 {
+  inputs 2
+  operation out
+  name Preserve_Matte
+  xpos 840
+  ypos 734
+ }
+ Dot {
+  name Dot38
+  xpos 874
+  ypos 786
+ }
+ Constant {
+  inputs 0
+  color {{parent.outlinecolor.r i} {parent.outlinecolor.g i} {parent.outlinecolor.b i} 1}
+  name Edge_Colour
+  tile_color 0xffbf00ff
+  xpos 950
+  ypos -57
+ }
+clone $C948c3ef0 {
+  xpos 950
+  ypos 45
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Color_SilhouetteEdge
+  xpos 950
+  ypos 782
+ }
+push 0
+ Switch {
+  inputs 2
+  which {{"parent.maskmode == 0? 0 : (parent.maskmode == 1? 0 : (parent.maskmode == 2? 1 : 0))  " i}}
+  name Outline_Switch
+  tile_color 0xffbf00ff
+  xpos 950
+  ypos 854
+ }
+ Dot {
+  name Dot42
+  xpos 984
+  ypos 1002
+ }
+push $N9489cfe0
+ Input {
+  inputs 0
+  name fg
+  xpos -370
+  ypos -27
+  number 2
+ }
+ Dot {
+  name Dot23
+  xpos -336
+  ypos 18
+ }
+set N9459e260 [stack 0]
+ Shuffle {
+  alpha black
+  name Black_Alpha
+  tile_color 0xff
+  xpos -370
+  ypos 62
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Alpha_onPlate
+  xpos -370
+  ypos 776
+ }
+ Premult {
+  name Premultiply_Plate
+  xpos -370
+  ypos 950
+ }
+ Input {
+  inputs 0
+  name bg
+  xpos 1170
+  ypos -45
+  number 1
+ }
+ Constant {
+  inputs 0
+  color {{parent.solidcolor.r i} {parent.solidcolor.g i} {parent.solidcolor.b i} 1}
+  name BG_SolidColor
+  tile_color 0xffbf00ff
+  xpos 1390
+  ypos -57
+ }
+clone $C948c3ef0 {
+  xpos 1390
+  ypos 38
+  selected false
+ }
+ Dot {
+  name Dot26
+  xpos 1424
+  ypos 90
+ }
+ CheckerBoard2 {
+  inputs 0
+  color0 {0.1000000015 0.1000000015 0.1000000015 1}
+  color2 {0.1000000015 0.1000000015 0.1000000015 1}
+  name BG_CheckerBoard
+  tile_color 0xffbf00ff
+  xpos 1280
+  ypos -51
+ }
+clone $C948c3ef0 {
+  xpos 1280
+  ypos 38
+  selected false
+ }
+push $N9459e260
+ Dot {
+  name Dot43
+  xpos -226
+  ypos 18
+ }
+ Dot {
+  name Dot44
+  xpos -226
+  ypos -168
+ }
+ Dot {
+  name Dot45
+  xpos 1094
+  ypos -174
+ }
+ Dot {
+  name Dot46
+  xpos 1094
+  ypos 90
+ }
+ Switch {
+  inputs 4
+  which {{"parent.BGmode == 0? 0 : (parent.BGmode == 1? 1 : (parent.BGmode == 2? 2 : (parent.BGmode == 3? 3 : 0)))" i}}
+  name BG_Checker
+  tile_color 0xffbf00ff
+  xpos 1170
+  ypos 86
+ }
+ Merge2 {
+  inputs 2
+  name PremultPlate_over_BGChecker
+  xpos 1170
+  ypos 950
+ }
+ Merge2 {
+  inputs 2
+  name Outline_OVER
+  tile_color 0xffbf00ff
+  xpos 1170
+  ypos 998
+ }
+ Merge2 {
+  inputs 2
+  mix {{parent.maskopacity i}}
+  name Mask_OVER
+  tile_color 0xffbf00ff
+  xpos 1170
+  ypos 1022
+ }
+ Shuffle {
+  alpha black
+  name Black_FinalAlpha
+  tile_color 0xff
+  xpos 1170
+  ypos 1070
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Matte_onFinalAlpha
+  xpos 1170
+  ypos 1112
+ }
+ Dot {
+  name Dot39
+  xpos 1204
+  ypos 1170
+ }
+set N945f8030 [stack 0]
+ Dot {
+  name Dot33
+  xpos 989
+  ypos 1170
+ }
+set N945fa4d0 [stack 0]
+ Dot {
+  name Dot36
+  xpos 850
+  ypos 1170
+ }
+set N94900a50 [stack 0]
+ Dot {
+  name Dot20
+  xpos 749
+  ypos 1170
+ }
+set N94902fd0 [stack 0]
+ ContactSheet {
+  inputs 2
+  width {{matte.format.w i}}
+  height {{matte.format.h*2/root.pixel_aspect i}}
+  rows 2
+  columns 1
+  center true
+  name Split_VERTICAL_inverted
+  xpos 635
+  ypos 1215
+ }
+ Dot {
+  name Dot40
+  xpos 669
+  ypos 1290
+ }
+push $N948b6190
+push $N94902fd0
+ Dot {
+  name Dot25
+  xpos 585
+  ypos 1170
+ }
+ ContactSheet {
+  inputs 2
+  width {{matte.format.w i}}
+  height {{matte.format.h*2/root.pixel_aspect i}}
+  rows 2
+  columns 1
+  center true
+  roworder TopBottom
+  name Split_VERTICAL
+  xpos 510
+  ypos 1215
+ }
+ Switch {
+  inputs 2
+  which {{parent.switchviews i}}
+  name INVERTED_vertical
+  xpos 510
+  ypos 1287
+ }
+ Dot {
+  name Dot35
+  xpos 544
+  ypos 1394
+ }
+push $N948bd4b0
+push $N945fa4d0
+ ContactSheet {
+  inputs 2
+  width {{matte.format.w*2 i}}
+  height {{matte.format.h/root.pixel_aspect i}}
+  rows 1
+  columns 2
+  center true
+  colorder RightLeft
+  name Split_HORIZONTAL_inverted
+  xpos 875
+  ypos 1215
+ }
+ Dot {
+  name Dot41
+  xpos 909
+  ypos 1290
+ }
+push $N948badd0
+push $N94900a50
+ ContactSheet {
+  inputs 2
+  width {{matte.format.w*2 i}}
+  height {{matte.format.h/root.pixel_aspect i}}
+  rows 1
+  columns 2
+  center true
+  name Split_HORIZONTAL
+  xpos 760
+  ypos 1215
+ }
+ Switch {
+  inputs 2
+  which {{parent.switchviews i}}
+  name INVERTED_horizontal
+  xpos 760
+  ypos 1287
+ }
+ Switch {
+  inputs 2
+  which {{"parent.splitmode == 0? 0 : 1" i}}
+  name HorV_Split
+  tile_color 0xffbf00ff
+  xpos 760
+  ypos 1390
+ }
+push $N945f8030
+ Switch {
+  inputs 2
+  which {{"parent.splitcompare == 0? 0 : 1" i}}
+  name Split_Mode
+  tile_color 0xffbf00ff
+  xpos 1170
+  ypos 1390
+ }
+ Output {
+  name Output
+  label OUT
+  selected true
+  xpos 1170
+  ypos 1462
+ }
+end_group

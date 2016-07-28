@@ -1,6 +1,6 @@
-
-
-
+### GIZMOs MENU by Luma Pictures (http://www.lumapictures.com/), with some modifications 
+### by Piotr Borowski (http://www.nukepedia.com/python/ui/auto-creation-of-menu-items-for-gizmos-menupy#comment-2636)
+### and me (kagarrache@gmail.com)
 
 # *****************************************************************************
 # NOTE: in order for this to work, you must ALSO install the included init.py;
@@ -61,9 +61,20 @@ if __name__ == '__main__':
       # Don't need it no more...
       del gizManager
 
+## EXTRA PANELS
 
+## TO-DO list
 import ToDoList
 ToDoList.registerNukePanel()
+
+## FOV calculator
+import FovCalculator
+def addFovCalc():
+    fovCalc = FovCalculator.FovCalculator()
+    return fovCalc.addToPane()
+nuke.menu('Pane').addCommand( 'Fov Calculator', addFovCalc )
+nukescripts.registerPanel( 'com.ohufx.FovCalculator', addFovCalc )
+
 
 
 
@@ -71,16 +82,6 @@ ToDoList.registerNukePanel()
 m=nuke.menu('Animation').findItem('Predefined')
 m.addCommand('Reverse curve', 'nuke.load("animation_curve_reverse"), animation_curve_reverse()')
 
-
-
-
-nuke.pluginAddPath('C:\Users\yo\.nuke\Gizmos\3D\Projectionist-Master')
-
-
-
-
-
-toolbar = nuke.toolbar("Nodes")
 
 ##Ym_AlignNode
 import Ym_AlignNode
@@ -99,14 +100,14 @@ YmAlign.addCommand("Interval YY", "Ym_AlignNode.F_Align_intYY()", "Ctrl+F10", ic
 
 
 
+
+
 ### Python Scripts Menus
 
 ## import part
-import Dots
+import projectionist
 import autoComper
 
-
-import fcpxml_to_nuke
 import RotoShapes_to_trackers
 
 import Locometry
@@ -115,7 +116,8 @@ import ztools_exrMerge_v1_1
 import collectScript
 import makeShotDirPick
 import batchrenamer
-import DAGPanel
+import wavePanel
+
 
 ## extra commands
 locoGui = Locometry.LocoWidget()
@@ -123,16 +125,21 @@ locoGui = Locometry.LocoWidget()
 
 ## Menu itself
 PyTools = toolbar.addMenu ("Python Tools", icon = "Jose_Icon.png")
-PyTools.addCommand("FCP XML to Nuke", "fcpxml_to_nuke.process_xml()")
-PyTools.addCommand("Roto Shapes to tracker", "RotoShapes_to_trackers.RotoShape_to_Trackers()")
-PyTools.addCommand('TrackerToRoto', 'nuke.load("C:/Users/Yo/.nuke/pythons/TrackerToRoto.py")')
-PyTools.addCommand('Locometry-GUI', lambda: locoGui.show())
-PyTools.addCommand('Image_Plane', 'imagePlane.imagePlane()')
+
+## Menu items (manually sorted)
+
+## autocomper is incomplete
+PyTools.addCommand('autocomper', 'autoComper.autoComper()', icon='autoComper.png' )
+PyTools.addCommand('Batch Rename', 'import batchrenamer; batchrenamer.main()')
+PyTools.addCommand("collectScript", "collectScript.mainFunction()") 
+
 PyTools.addCommand("ExrMerge","ztools_exrMerge_v1_1.executeScript()", icon="exr_merge.png")
 PyTools.addCommand('Image_Plane', 'imagePlane.imagePlane()')
-PyTools.addCommand('Dots', 'Dots.Dots()','Alt+,')
+
+PyTools.addCommand('Locometry-GUI', lambda: locoGui.show())
 PyTools.addCommand('Make Shot Directories', 'makeShotDirPick.makeShotDir()')
-PyTools.addCommand('autocomper', 'autoComper.autoComper()', icon='autoComper.png' )
-PyTools.addCommand("collectScript", "collectScript.mainFunction()")
-PyTools.addCommand('Batch Rename', 'import batchrenamer; batchrenamer.main()')
-PyTools.addCommand("DAG Panel", 'DAGPanel.check()')
+
+PyTools.addCommand("Roto Shapes to tracker", "RotoShapes_to_trackers.RotoShape_to_Trackers()")
+PyTools.addCommand('TrackerToRoto', 'nuke.load("C:/Users/Yo/.nuke/pythons/TrackerToRoto.py")')
+
+PyTools.addCommand ( "wavePanel v1.4", 'wavePanel.go()', icon="wavePanel.png" )

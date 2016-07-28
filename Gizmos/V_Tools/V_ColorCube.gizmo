@@ -1,0 +1,807 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ inputs 0
+ help "V!ctor Tools 2.0v1\nV_ColorCube\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ addUserKnob {20 V_ColorCube}
+ addUserKnob {18 sample}
+ sample {0.5 0.5 0.5}
+ addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {13 rotateCube l rotate}
+ addUserKnob {7 distanceCube l distance R 0.01 4}
+ distanceCube 2
+ addUserKnob {20 settings l Settings}
+ addUserKnob {41 format T Constant15.format}
+ addUserKnob {4 viewerProcess l "viewer process" -STARTLINE M {Linear sRGB rec709 "" ""}}
+ viewerProcess sRGB
+ addUserKnob {18 bgColor l "background color"}
+ bgColor {0.15 0.15 0.15}
+ addUserKnob {6 bgColor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 sampleDiameter l "sample diameter" R 0.01 0.5}
+ sampleDiameter 0.075
+ addUserKnob {7 edgeCube l "cube edge" R 0.001 0.1}
+ edgeCube 0.005
+ addUserKnob {6 colorCoordinates +STARTLINE}
+ colorCoordinates true
+}
+ Camera2 {
+  inputs 0
+  display off
+  selectable false
+  translate {0 0 {parent.distanceCube i}}
+  rotate {0 {frame i} 0}
+  pivot {0 0 {-translate.z i}}
+  focal 45
+  haperture 45
+  vaperture {{haperture i}}
+  name Camera2
+  xpos -511
+  ypos -397
+  addUserKnob {20 Projector}
+  addUserKnob {22 makeProjectorButton l "Make Projector..." -STARTLINE T projector.makeProjectorNode()}
+ }
+set N23ac0ee0 [stack 0]
+ Axis2 {
+  inputs 0
+  display off
+  translate {{parent.Sphere1.radius*0.6} {parent.Sphere1.radius*0.6} {parent.Sphere1.radius*0.6}}
+  name Axis2
+  xpos 444
+  ypos -612
+  hide_input true
+  disable true
+ }
+ Axis2 {
+  display off
+  translate {{parent.Constant13.color.r>1?1:parent.Constant13.color.r<0?0:parent.Constant13.color.r} {parent.Constant13.color.g>1?1:parent.Constant13.color.g<0?0:parent.Constant13.color.g} {parent.Constant13.color.b>1?1:parent.Constant13.color.b<0?0:parent.Constant13.color.b}}
+  name Axis3
+  xpos 444
+  ypos -518
+  disable true
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green -rgba.blue none}
+  name Constant14
+  xpos 584
+  ypos -621
+  disable true
+ }
+ Reformat {
+  type scale
+  scale {0.25 0.05}
+  pbb true
+  name Reformat1
+  xpos 584
+  ypos -496
+  disable true
+ }
+ Text {
+  message "\[value Axis1.translate.x]  \[value Axis1.translate.y]  \[value Axis1.translate.z]"
+  font "\[knob parent.fontPath]"
+  size 60
+  yjustify center
+  Transform 1
+  box {0 0 {input.format.w i} {input.format.h i}}
+  center {1024 778}
+  name Text1
+  xpos 584
+  ypos -442
+  disable true
+ }
+ Card2 {
+  image_aspect false
+  rows 1
+  columns 1
+  translate {0.5 0.5 0}
+  scaling {{parent.Reformat1.scale.0 i} {parent.Reformat1.scale.1 i} 1}
+  pivot {-0.5 -0.5 0}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card1
+  xpos 584
+  ypos -376
+  disable true
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo2
+  xpos 434
+  ypos -376
+  disable true
+ }
+push $N23ac0ee0
+ Axis2 {
+  inputs 0
+  display off
+  selectable false
+  translate {{parent.Constant19.color.r>1?1:parent.Constant19.color.r<0?0:parent.Constant19.color.r} {parent.Constant19.color.g>1?1:parent.Constant19.color.g<0?0:parent.Constant19.color.g} {parent.Constant19.color.b>1?1:parent.Constant19.color.b<0?0:parent.Constant19.color.b}}
+  name Axis7
+  xpos -396
+  ypos -1646
+  hide_input true
+  disable true
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.5 0.5 0.5 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant19
+  xpos -516
+  ypos -1768
+  disable true
+ }
+ Sphere {
+  rows 10
+  columns 10
+  radius {{parent.sampleDiameter i}}
+  name Sphere5
+  xpos -516
+  ypos -1667
+  disable true
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo8
+  xpos -516
+  ypos -1625
+  disable true
+ }
+ Axis2 {
+  inputs 0
+  display off
+  selectable false
+  translate {{parent.Constant18.color.r>1?1:parent.Constant18.color.r<0?0:parent.Constant18.color.r} {parent.Constant18.color.g>1?1:parent.Constant18.color.g<0?0:parent.Constant18.color.g} {parent.Constant18.color.b>1?1:parent.Constant18.color.b<0?0:parent.Constant18.color.b}}
+  name Axis6
+  xpos -1057
+  ypos -1646
+  hide_input true
+  disable true
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{(parent.Constant13.color.r+parent.Constant16.color.r+parent.Constant17.color.r+parent.Constant19.color.r)/4 i} {(parent.Constant13.color.g+parent.Constant16.color.g+parent.Constant17.color.g+parent.Constant19.color.g)/4.0000000 i} {(parent.Constant13.color.b+parent.Constant16.color.b+parent.Constant17.color.b+parent.Constant19.color.b)/4.0000000 i} 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant18
+  xpos -1176
+  ypos -1762
+  disable true
+ }
+ Sphere {
+  rows 10
+  columns 10
+  radius {{parent.Sphere3.radius*2 i}}
+  name Sphere4
+  xpos -1176
+  ypos -1667
+  disable true
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo7
+  xpos -1176
+  ypos -1625
+  disable true
+ }
+ Dot {
+  name Dot1
+  xpos -1145
+  ypos -1432
+ }
+ Axis2 {
+  inputs 0
+  display off
+  selectable false
+  translate {{parent.Constant13.color.r>1?1:parent.Constant13.color.r<0?0:parent.Constant13.color.r} {parent.Constant13.color.g>1?1:parent.Constant13.color.g<0?0:parent.Constant13.color.g} {parent.Constant13.color.b>1?1:parent.Constant13.color.b<0?0:parent.Constant13.color.b}}
+  name Axis1
+  xpos -140
+  ypos -1662
+  hide_input true
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.sample.r i} {parent.sample.g i} {parent.sample.b i} 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant13
+  xpos -268
+  ypos -1762
+ }
+ Sphere {
+  rows 10
+  columns 10
+  radius {{parent.sampleDiameter i}}
+  name Sphere1
+  xpos -268
+  ypos -1667
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo1
+  xpos -268
+  ypos -1625
+ }
+ Dot {
+  name Dot3
+  xpos -237
+  ypos -1432
+ }
+set N2d0f00 [stack 0]
+ Axis2 {
+  inputs 0
+  display off
+  selectable false
+  translate {{parent.Constant16.color.r>1?1:parent.Constant16.color.r<0?0:parent.Constant16.color.r} {parent.Constant16.color.g>1?1:parent.Constant16.color.g<0?0:parent.Constant16.color.g} {parent.Constant16.color.b>1?1:parent.Constant16.color.b<0?0:parent.Constant16.color.b}}
+  name Axis4
+  xpos -615
+  ypos -1646
+  hide_input true
+  disable true
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.5 0.5 0.5 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant16
+  xpos -736
+  ypos -1768
+  disable true
+ }
+ Sphere {
+  rows 10
+  columns 10
+  radius {{parent.Sphere1.radius i}}
+  name Sphere2
+  xpos -736
+  ypos -1667
+  disable true
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo5
+  xpos -736
+  ypos -1625
+  disable true
+ }
+ Axis2 {
+  inputs 0
+  display off
+  selectable false
+  translate {{parent.Constant17.color.r>1?1:parent.Constant17.color.r<0?0:parent.Constant17.color.r} {parent.Constant17.color.g>1?1:parent.Constant17.color.g<0?0:parent.Constant17.color.g} {parent.Constant17.color.b>1?1:parent.Constant17.color.b<0?0:parent.Constant17.color.b}}
+  name Axis5
+  xpos -835
+  ypos -1646
+  hide_input true
+  disable true
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.5 0.5 0.5 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant17
+  xpos -956
+  ypos -1762
+  disable true
+ }
+ Sphere {
+  rows 10
+  columns 10
+  radius {{parent.Sphere1.radius i}}
+  name Sphere3
+  xpos -956
+  ypos -1667
+  disable true
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo6
+  xpos -956
+  ypos -1625
+  disable true
+ }
+ Scene {
+  inputs 5
+  name Scene2
+  xpos -726
+  ypos -1453
+  disable true
+ }
+push $N2d0f00
+ Dot {
+  name Dot2
+  xpos -237
+  ypos -1288
+ }
+ Switch {
+  inputs 2
+  name Switch1
+  xpos -736
+  ypos -1289
+ }
+ Constant {
+  inputs 0
+  channels {rgba.red rgba.green -rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant9
+  xpos 34
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red -rgba.green rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp8
+  xpos 34
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {1 {1-wire i} {-wire i}}
+  rotate {90 0 0}
+  name Cube8
+  xpos 34
+  ypos -785
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube5.wire i}}
+ }
+ Constant {
+  inputs 0
+  channels {rgba.red -rgba.green rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant10
+  xpos -76
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red rgba.green -rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp5
+  xpos -76
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {1 0 1}
+  name Cube5
+  xpos -76
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.edgeCube i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red rgba.green rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant8
+  xpos -186
+  ypos -1030
+ }
+ Ramp {
+  output rgb
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp7
+  xpos -186
+  ypos -904
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {{-wire i} {1-wire i} 1}
+  rotate {0 0 -90}
+  name Cube7
+  xpos -186
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube5.wire i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant2
+  xpos -406
+  ypos -1030
+ }
+ Ramp {
+  output {rgba.red -rgba.green -rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp4
+  xpos -406
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {{-wire i} {wire i} 1}
+  rotate {0 0 -90}
+  name Cube4
+  xpos -406
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube5.wire i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant4
+  xpos -516
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red rgba.green -rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp12
+  xpos -516
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {0 0 1}
+  name Cube12
+  xpos -516
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.edgeCube i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green -rgba.blue none}
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant12
+  xpos -626
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red -rgba.green rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp3
+  xpos -626
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {0 {wire i} {-wire i}}
+  rotate {90 0 0}
+  name Cube3
+  xpos -626
+  ypos -785
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube1.wire i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red rgba.green -rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant7
+  xpos -846
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red -rgba.green rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp10
+  xpos -846
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {0 {1-wire i} {-wire i}}
+  rotate {90 0 0}
+  name Cube10
+  xpos -846
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube1.wire i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red rgba.green -rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant6
+  xpos -956
+  ypos -1030
+ }
+ Ramp {
+  output {rgba.red -rgba.green -rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp9
+  xpos -956
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {{-wire i} {1-wire i} 0}
+  rotate {0 0 -90}
+  name Cube9
+  xpos -956
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube1.wire i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green -rgba.blue none}
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant1
+  xpos -1066
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red rgba.green -rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp1
+  xpos -1066
+  ypos -904
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  name Cube1
+  xpos -1066
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.edgeCube i}}
+ }
+ Constant {
+  inputs 0
+  channels {rgba.red -rgba.green -rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant5
+  xpos -1286
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red rgba.green -rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp11
+  xpos -1286
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {1 0 0}
+  name Cube11
+  xpos -1286
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.edgeCube i}}
+ }
+ Constant {
+  inputs 0
+  channels {rgba.red -rgba.green -rgba.blue none}
+  color 1
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant3
+  xpos -1396
+  ypos -1030
+ }
+ Ramp {
+  output {-rgba.red -rgba.green rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp6
+  xpos -1396
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {1 {wire i} {-wire i}}
+  rotate {90 0 0}
+  name Cube6
+  xpos -1396
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube5.wire i}}
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green -rgba.blue none}
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant11
+  xpos -1506
+  ypos -1030
+ }
+ Ramp {
+  output {rgba.red -rgba.green -rgba.blue none}
+  p0 {0 0}
+  p1 {0 {input.format.h i}}
+  name Ramp2
+  xpos -1506
+  ypos -910
+  postage_stamp true
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-wire i} 0 {-wire i} {wire i} 1 {wire i}}
+  translate {{-wire i} {wire i} 0}
+  rotate {0 0 -90}
+  name Cube2
+  xpos -1506
+  ypos -779
+  addUserKnob {20 User}
+  addUserKnob {7 wire R 0.01 0.1}
+  wire {{parent.Cube1.wire i}}
+ }
+ Scene {
+  inputs 13
+  name Scene1
+  xpos -726
+  ypos -613
+ }
+ TransformGeo {
+  translate {-0.5 -0.5 -0.5}
+  name TransformGeo3
+  xpos -736
+  ypos -515
+ }
+ TransformGeo {
+  rot_order YXZ
+  rotate {{parent.rotateCube.x i} {parent.rotateCube.y i} {parent.rotateCube.z i}}
+  name TransformGeo4
+  xpos -736
+  ypos -443
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.bgColor.r i} {parent.bgColor.g i} {parent.bgColor.b i} 0}
+  format "1024 1024 0 0 1024 1024 1 square_1K"
+  name Constant15
+  xpos -958
+  ypos -400
+ }
+ ScanlineRender {
+  inputs 3
+  transparency false
+  motion_vectors_type off
+  MB_channel none
+  name ScanlineRender1
+  xpos -736
+  ypos -377
+ }
+ Text2 {
+  font_size_toolbar 75
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value Axis1.translate.x]  \[value Axis1.translate.y]  \[value Axis1.translate.z]"
+  old_message {{48 46 53 32 32 48 46 53 32 32 48 46 53}
+    }
+  old_expression_markers {{0 2 5 7 10 12}
+    }
+  box {0 0 {input.format.w} {input.format.h}}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 75 1 75 2 75 3 75 4 75 5 75 6 75 7 75 8 75 9 75 10 75 11 75 12 75 0 90 1 90 2 90 3 90 4 90 5 90 6 90 7 90 8 90 9 90 10 90 11 90 12 90}
+    }
+  cursor_position 79
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 75
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1024}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 512 512 0 0 1 1 0 0 0 0}
+    }
+  name Text3
+  xpos -736
+  ypos -305
+  disable {{!parent.colorCoordinates}}
+ }
+set N94a0d110 [stack 0]
+ Colorspace {
+  colorspace_in rec709
+  name Colorspace2
+  xpos -831
+  ypos -257
+ }
+push $N94a0d110
+ Colorspace {
+  colorspace_in sRGB
+  name Colorspace1
+  selected true
+  xpos -955
+  ypos -257
+ }
+push $N94a0d110
+ Switch {
+  inputs 3
+  which {{parent.viewerProcess i}}
+  name Switch2
+  xpos -736
+  ypos -178
+ }
+ Output {
+  name Output1
+  xpos -736
+  ypos -84
+ }
+end_group

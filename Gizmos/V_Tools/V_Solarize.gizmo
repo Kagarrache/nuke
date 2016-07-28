@@ -1,0 +1,72 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ help "V!ctor Tools 2.0v1\nV_Solarize\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0x7aa9ffff
+ addUserKnob {20 V_Solarize}
+ addUserKnob {7 center t "solarization center"}
+ center 0.5
+ addUserKnob {6 limiter t "crop out values below and equal to 0 and above and equal to 1" +STARTLINE}
+ limiter true
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+  ypos 9
+ }
+ Clamp {
+  name Clamp1
+  xpos 0
+  ypos 58
+ }
+set N94a18fb0 [stack 0]
+ ColorLookup {
+  lut {master {x<=0?0:x>=1?0:1 L 0}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup2
+  xpos 120
+  ypos 63
+ }
+push $N94a18fb0
+ ColorLookup {
+  lut {master {x<0?0:x>1?0:(parent.center==0?1-x:(x<=parent.center?x/parent.center:1-x+(parent.center/((1-parent.center)/(1-x))))) C 0 1}
+    red {}
+    green {}
+    blue {}
+    alpha {}}
+  name ColorLookup1
+  xpos 0
+  ypos 99
+ }
+set N94947090 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  also_merge all
+  name Merge1
+  xpos 120
+  ypos 99
+ }
+ Dot {
+  name Dot1
+  xpos 154
+  ypos 138
+ }
+push $N94947090
+ Switch {
+  inputs 2
+  which {{parent.limiter i}}
+  name Switch1
+  xpos 0
+  ypos 135
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 189
+ }
+end_group

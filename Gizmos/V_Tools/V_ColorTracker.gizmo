@@ -1,0 +1,330 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ inputs 2
+ help "V!ctor Tools 2.0v1\nV_ColorTracker\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0x7aa9ffff
+ addUserKnob {20 V_ColorTracker}
+ addUserKnob {4 viewout l View M {"Final Result" Target "Target Selection" "" ""}}
+ addUserKnob {26 space20 l " " T " "}
+ addUserKnob {12 trackData l "Track Point"}
+ trackData {100 100}
+ addUserKnob {14 searchAreaSize l "Interest Area Size" t "Interest area for analisys" R 0 100}
+ searchAreaSize 50
+ addUserKnob {26 space02 l " " T " "}
+ addUserKnob {12 trackerOffset l Offset}
+ addUserKnob {41 preBlur l PreBlur T Blur1.size}
+ addUserKnob {6 luma l "Luma Analisys" +STARTLINE}
+ addUserKnob {20 ROIgroup l ROI n 1}
+ ROIgroup 0
+ addUserKnob {41 ROI T CurveTool2.ROI}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 space07 l " " T " "}
+ addUserKnob {26 AvrTitle l "Average Intensities"}
+ addUserKnob {3 blendAVR l "# frames for base average"}
+ blendAVR 1
+ addUserKnob {41 go_1 l "Average Intensities Analysis" T CurveTool2.go}
+ addUserKnob {26 space06 l " " T " "}
+ addUserKnob {41 intensitydata T CurveTool2.intensitydata}
+ addUserKnob {26 space01 l " " T " "}
+ addUserKnob {26 maxminluninancetitle l "Max/Min Luminance"}
+ addUserKnob {41 go l "Max/Min Luma Analysis" T CurveTool1.go}
+ addUserKnob {26 space04 l " " T " "}
+ addUserKnob {41 maxlumapixvalue l "Maximum Luminence Pixel value" T CurveTool1.maxlumapixvalue}
+ addUserKnob {41 minlumapixvalue l "Minimum Luminence Pixel value" T CurveTool1.minlumapixvalue}
+ addUserKnob {20 Grade}
+ addUserKnob {4 outputMode l grade M {none stabilize match-grade constant "" "" ""}}
+ addUserKnob {41 refFrame l "reference frame" T Values.refFrame}
+ addUserKnob {41 setFrame l "set to this frame" -STARTLINE T Values.setFrame}
+ addUserKnob {26 space10 l " " T " "}
+ addUserKnob {26 applyto l apply}
+ addUserKnob {26 apply l "" +STARTLINE T "based on max/min luma target analisys"}
+ addUserKnob {26 blackpointHD l blackpoint T ""}
+ addUserKnob {6 blackpoint l "" -STARTLINE}
+ addUserKnob {7 factorBlackpoint l x -STARTLINE R 0 25}
+ factorBlackpoint 1
+ addUserKnob {26 whitepointHD l whitepoint T ""}
+ addUserKnob {6 whitepoint l "" -STARTLINE}
+ addUserKnob {7 factorWhitepoint l x -STARTLINE R 0 25}
+ factorWhitepoint 1
+ addUserKnob {26 space15 l " " T " "}
+ addUserKnob {26 apply2 l "" +STARTLINE T "based on average intensities target analisys"}
+ addUserKnob {26 liftHD l lift T ""}
+ addUserKnob {6 lift l "" -STARTLINE}
+ addUserKnob {7 factorLift l x -STARTLINE R 0 25}
+ factorLift 1
+ addUserKnob {26 gainHD l gain T ""}
+ addUserKnob {6 gain l "" -STARTLINE}
+ addUserKnob {7 factorGain l x -STARTLINE R 0 25}
+ factorGain 1
+ addUserKnob {26 multiplyHD l multiply T ""}
+ addUserKnob {6 multiply l "" -STARTLINE}
+ addUserKnob {7 factorMultiply l x -STARTLINE R 0 25}
+ factorMultiply 1
+ addUserKnob {26 offsetHD l offset T ""}
+ addUserKnob {6 offset l "" -STARTLINE}
+ addUserKnob {7 factorOffset l x -STARTLINE R 0 25}
+ factorOffset 1
+ addUserKnob {26 gammaHD l gamma T ""}
+ addUserKnob {6 gamma l "" -STARTLINE}
+ addUserKnob {7 factorGamma l x -STARTLINE R 0 25}
+ factorGamma 1
+ addUserKnob {26 space14 l " " T " "}
+ addUserKnob {41 channels T Grade1.channels}
+ addUserKnob {41 black_clamp l "black clamp" T Grade1.black_clamp}
+ addUserKnob {41 white_clamp l "white clamp" -STARTLINE T Grade1.white_clamp}
+ addUserKnob {41 unpremult l "(un)premult by" T Grade1.unpremult}
+ addUserKnob {41 invert_unpremult l invert -STARTLINE T Grade1.invert_unpremult}
+ addUserKnob {41 mix T Grade1.mix}
+ addUserKnob {20 ValuesTab l Values}
+ addUserKnob {41 blackpoint_1 l blackpoint T Grade1.blackpoint}
+ addUserKnob {41 whitepoint_1 l whitepoint T Grade1.whitepoint}
+ addUserKnob {41 black l lift T Grade1.black}
+ addUserKnob {41 white l gain T Grade1.white}
+ addUserKnob {41 multiply_1 l multiply T Grade1.multiply}
+ addUserKnob {41 add l offset T Grade1.add}
+ addUserKnob {41 gamma_1 l gamma T Grade1.gamma}
+}
+ Input {
+  inputs 0
+  name ApplyTo
+  xpos 818
+  ypos 337
+ }
+set N94a34a00 [stack 0]
+ Dot {
+  name Dot5
+  xpos 852
+  ypos 690
+ }
+set N94a369d0 [stack 0]
+ Dot {
+  name Dot8
+  xpos 852
+  ypos 834
+ }
+ Input {
+  inputs 0
+  name Target
+  xpos 455
+  ypos 337
+  number 1
+ }
+ Blur {
+  name Blur1
+  xpos 455
+  ypos 426
+ }
+set N94a3dba0 [stack 0]
+ Saturation {
+  saturation 0
+  mode Average
+  name Saturation1
+  xpos 455
+  ypos 519
+  disable {{!parent.luma i}}
+ }
+set N9494ddc0 [stack 0]
+ Dot {
+  name Dot10
+  xpos 709
+  ypos 522
+ }
+ Dot {
+  name Dot9
+  xpos 709
+  ypos 738
+ }
+set N94955450 [stack 0]
+ Crop {
+  box {{parent.CurveTool2.ROI.x i} {parent.CurveTool2.ROI.y i} {parent.CurveTool2.ROI.r i} {parent.CurveTool2.ROI.t i}}
+  reformat true
+  crop false
+  name Crop1
+  xpos 675
+  ypos 769
+ }
+push $N94955450
+ Dot {
+  name Dot11
+  xpos 1094
+  ypos 738
+ }
+push $N94a34a00
+ Dot {
+  name Dot1
+  xpos 1039
+  ypos 342
+ }
+ Dot {
+  name Dot2
+  xpos 1039
+  ypos 474
+ }
+set N94a4cea0 [stack 0]
+ Shuffle {
+  name Shuffle2
+  xpos 1005
+  ypos 517
+ }
+ Dot {
+  name Dot3
+  xpos 1039
+  ypos 570
+ }
+set N94a562a0 [stack 0]
+ Dot {
+  name Dot6
+  xpos 1039
+  ypos 630
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.Values.avg.r i} {parent.Values.avg.g i} {parent.Values.avg.b i} 0}
+  name Constant1
+  xpos 1335
+  ypos 458
+ }
+ Reformat {
+  type "to box"
+  box_width {{ApplyTo.format.w i}}
+  box_height {{ApplyTo.format.h i}}
+  box_fixed true
+  resize fill
+  name Reformat1
+  xpos 1335
+  ypos 565
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 1335
+  ypos 618
+ }
+ Dot {
+  name Dot7
+  xpos 1369
+  ypos 690
+ }
+push $N94a562a0
+push $N94a4cea0
+ Grade {
+  blackpoint {{0+(parent.blackpoint==true?parent.Values.minDifference.r*parent.factorBlackpoint:0)} {0+(parent.blackpoint==true?parent.Values.minDifference.g*parent.factorBlackpoint:0)} {0+(parent.blackpoint==true?parent.Values.minDifference.b*parent.factorBlackpoint:0)} 0}
+  whitepoint {{1+(parent.whitepoint==true?parent.Values.maxDifference.r*parent.factorWhitepoint:0)} {1+(parent.whitepoint==true?parent.Values.maxDifference.g*parent.factorWhitepoint:0)} {1+(parent.whitepoint==true?parent.Values.maxDifference.b*parent.factorWhitepoint:0)} 1}
+  black {{0+(parent.lift==true?parent.Values.colorDifference.r*parent.factorLift:0)} {0+(parent.lift==true?parent.Values.colorDifference.g*parent.factorLift:0)} {0+(parent.lift==true?parent.Values.colorDifference.b*parent.factorLift:0)} 0}
+  white {{1+(parent.gain==true?parent.Values.colorDifference.r*parent.factorGain:0)} {1+(parent.gain==true?parent.Values.colorDifference.g*parent.factorGain:0)} {1+(parent.gain==true?parent.Values.colorDifference.b*parent.factorGain:0)} 1}
+  multiply {{1+(parent.multiply==true?parent.Values.colorDifference.r*parent.factorMultiply:0)} {1+(parent.multiply==true?parent.Values.colorDifference.g*parent.factorMultiply:0)} {1+(parent.multiply==true?parent.Values.colorDifference.b*parent.factorMultiply:0)} 1}
+  add {{0+(parent.offset==true?parent.Values.colorDifference.r*parent.factorOffset:0)} {0+(parent.offset==true?parent.Values.colorDifference.g*parent.factorOffset:0)} {0+(parent.offset==true?parent.Values.colorDifference.b*parent.factorOffset:0)} 0}
+  gamma {{1+(parent.gamma==true?parent.Values.colorDifference.r*parent.factorGamma:0)} {1+(parent.gamma==true?parent.Values.colorDifference.g*parent.factorGamma:0)} {1+(parent.gamma==true?parent.Values.colorDifference.b*parent.factorGamma:0)} 1}
+  reverse {{parent.outputMode==1?1:0 i}}
+  black_clamp false
+  maskChannelMask -rgba.alpha
+  name Grade1
+  xpos 1115
+  ypos 469
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 1115
+  ypos 558
+ }
+set N9202a420 [stack 0]
+push $N9202a420
+push $N94a369d0
+ Switch {
+  inputs 4
+  which {{parent.outputMode i}}
+  name Switch1
+  xpos 1115
+  ypos 685
+ }
+ Switch {
+  inputs 3
+  which {{parent.viewout i}}
+  name Switch_preview
+  xpos 1115
+  ypos 769
+ }
+ Switch {
+  inputs 2
+  which {{parent.disable i}}
+  name Switch2
+  xpos 1115
+  ypos 829
+ }
+ Output {
+  name Output1
+  xpos 1115
+  ypos 889
+ }
+ NoOp {
+  inputs 0
+  name Values
+  xpos 1115
+  ypos 337
+  hide_input true
+  addUserKnob {20 Values}
+  addUserKnob {18 avg l "Average Reference"}
+  avg {{parent.CurveTool2.intensitydata.r(refFrame) i} {parent.CurveTool2.intensitydata.g(refFrame) i} {parent.CurveTool2.intensitydata.b(refFrame) i}}
+  addUserKnob {6 avg_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {18 maxReference l "Max Reference"}
+  maxReference {{parent.CurveTool1.maxlumapixvalue.r(refFrame) i} {parent.CurveTool1.maxlumapixvalue.g(refFrame) i} {parent.CurveTool1.maxlumapixvalue.b(refFrame) i}}
+  addUserKnob {6 maxReference_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {18 minReference l "Min Reference"}
+  minReference {{parent.CurveTool1.minlumapixvalue.r(refFrame) i} {parent.CurveTool1.minlumapixvalue.g(refFrame) i} {parent.CurveTool1.minlumapixvalue.b(refFrame) i}}
+  addUserKnob {6 minReference_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {3 refFrame l "reference frame"}
+  refFrame 1
+  addUserKnob {22 setFrame l "set to this frame" -STARTLINE T nuke.thisNode().knob('refFrame').setValue(nuke.frame())}
+  addUserKnob {26 ""}
+  addUserKnob {18 colorDifference l Compensation}
+  colorDifference {{parent.CurveTool2.intensitydata.r-avg.r i} {parent.CurveTool2.intensitydata.g-avg.g i} {parent.CurveTool2.intensitydata.b-avg.b i}}
+  addUserKnob {6 colorDifference_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {18 maxDifference l "Max Difference"}
+  maxDifference {{parent.CurveTool1.maxlumapixvalue.r-maxReference.r i} {parent.CurveTool1.maxlumapixvalue.g-maxReference.g i} {parent.CurveTool1.maxlumapixvalue.b-maxReference.b i}}
+  addUserKnob {6 maxDifference_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {18 minDifference l "Min Difference"}
+  minDifference {{parent.CurveTool1.minlumapixvalue.r-minReference.r i} {parent.CurveTool1.minlumapixvalue.g-minReference.g i} {parent.CurveTool1.minlumapixvalue.b-minReference.b i}}
+  addUserKnob {6 minDifference_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+push $N94a3dba0
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 125
+  ypos 531
+ }
+push $N9494ddc0
+ Crop {
+  box {{parent.CurveTool2.ROI.x i} {parent.CurveTool2.ROI.y i} {parent.CurveTool2.ROI.r i} {parent.CurveTool2.ROI.t i}}
+  crop false
+  name Crop2
+  xpos 275
+  ypos 519
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes {{parent.CurveTool2.avgframes i}}
+  ROI {{parent.trackData.x+trackerOffset.x-parent.searchAreaSize.w i} {parent.trackData.y+trackerOffset.y-parent.searchAreaSize.h i} {parent.trackData.x+trackerOffset.x+parent.searchAreaSize.w i} {parent.trackData.y+trackerOffset.y+parent.searchAreaSize.h i}}
+  intensitydata {0 0 0 0}
+  maxlumapixdata {{curve i} {curve i}}
+  minlumapixdata {{curve i} {curve i}}
+  name CurveTool1
+  xpos 275
+  ypos 579
+ }
+push $N9494ddc0
+ CurveTool {
+  avgframes {{parent.blendAVR i}}
+  ROI {{parent.trackData.x+trackerOffset.x-parent.searchAreaSize.w} {parent.trackData.y+trackerOffset.y-parent.searchAreaSize.h} {parent.trackData.x+trackerOffset.x+parent.searchAreaSize.w} {parent.trackData.y+trackerOffset.y+parent.searchAreaSize.h}}
+  name CurveTool2
+  xpos 455
+  ypos 579
+ }
+end_group

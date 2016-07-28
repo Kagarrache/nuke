@@ -1,0 +1,313 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+#write_info WriteEXR file:"" format:"2048 1556 1" chans:":" framerange:"1 100" fps:"0" colorspace:"default (linear)" datatype:"16 bit half" transfer:"unknown" views:"main"
+version 9.0 v8
+Gizmo {
+ inputs 4
+ help "V!ctor Tools 2.0v1\nV_IdPackage\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0xbfbf00ff
+ addUserKnob {20 V_IdPackage}
+ addUserKnob {6 preview l "Preview Mode" t "Displays all layers on screen" -STARTLINE}
+ preview true
+ addUserKnob {26 Export l "Export EXR"}
+ addUserKnob {41 file T WriteEXR.file}
+ addUserKnob {41 proxy T WriteEXR.proxy}
+ addUserKnob {41 frame_mode l frame T WriteEXR.frame_mode}
+ addUserKnob {41 frame l "" -STARTLINE T WriteEXR.frame}
+ addUserKnob {41 colorspace T WriteEXR.colorspace}
+ addUserKnob {41 views T WriteEXR.views}
+ addUserKnob {41 autocrop T WriteEXR.autocrop}
+ addUserKnob {41 datatype T WriteEXR.datatype}
+ addUserKnob {41 compression T WriteEXR.compression}
+ addUserKnob {41 heroview T WriteEXR.heroview}
+ addUserKnob {41 metadata T WriteEXR.metadata}
+ addUserKnob {41 Render T WriteEXR.Render}
+ addUserKnob {41 on_error l "missing frames" T WriteEXR.on_error}
+}
+ Input {
+  inputs 0
+  name id4
+  xpos 69
+  ypos -333
+ }
+ Shuffle {
+  name RGBA4
+  xpos 69
+  ypos -236
+ }
+ Input {
+  inputs 0
+  name id3
+  xpos -91
+  ypos -333
+  number 1
+ }
+ Shuffle {
+  name RGBA3
+  xpos -91
+  ypos -236
+ }
+ Input {
+  inputs 0
+  name id2
+  xpos -251
+  ypos -333
+  number 2
+ }
+ Shuffle {
+  name RGBA2
+  xpos -251
+  ypos -236
+ }
+ Input {
+  inputs 0
+  name id1
+  xpos -411
+  ypos -333
+  number 3
+ }
+ Shuffle {
+  name RGBA1
+  xpos -411
+  ypos -236
+ }
+ Constant {
+  inputs 0
+  channels none
+  color 1
+  name Constant1
+  xpos -1211
+  ypos -319
+ }
+ Dot {
+  name Dot2
+  xpos -1097
+  ypos -287
+ }
+set N94c198b0 [stack 0]
+add_layer {IndexSet_1 IndexSet_1.red IndexSet_1.green IndexSet_1.blue IndexSet_1.alpha}
+ AddChannels {
+  channels IndexSet_1
+  name IndexSet_1_channels
+  xpos -1051
+  ypos -295
+ }
+push $N94c198b0
+ Dot {
+  name Dot1
+  xpos -1097
+  ypos -215
+ }
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input3]==1?1:0" i}}
+  name Bypass_IndexSet1
+  xpos -1051
+  ypos -218
+ }
+ set C94c220b0 [stack 0]
+set N94c220b0 [stack 0]
+add_layer {IndexSet_2 IndexSet_2.red IndexSet_2.green IndexSet_2.blue IndexSet_2.alpha}
+ AddChannels {
+  channels IndexSet_2
+  name IndexSet_2_channels
+  xpos -891
+  ypos -295
+ }
+push $N94c220b0
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input2]==1?1:0" i}}
+  name Bypass_IndexSet2
+  xpos -891
+  ypos -218
+ }
+ set C94c29e60 [stack 0]
+set N94c29e60 [stack 0]
+add_layer {IndexSet_3 IndexSet_3.red IndexSet_3.green IndexSet_3.blue IndexSet_3.alpha}
+ AddChannels {
+  channels IndexSet_3
+  name IndexSet_3_channels
+  xpos -731
+  ypos -295
+ }
+push $N94c29e60
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input1]==1?1:0" i}}
+  name Bypass_IndexSet3
+  xpos -731
+  ypos -218
+ }
+ set C94c31ad0 [stack 0]
+set N94c31ad0 [stack 0]
+add_layer {IndexSet_4 IndexSet_4.red IndexSet_4.green IndexSet_4.blue IndexSet_4.alpha}
+ AddChannels {
+  channels IndexSet_4
+  name IndexSet_4_channels
+  xpos -571
+  ypos -295
+ }
+push $N94c31ad0
+ Switch {
+  inputs 2
+  which {{"\[exists parent.input]==1?1:0" i}}
+  name Bypass_IndexSet4
+  xpos -571
+  ypos -218
+ }
+ set C94c39940 [stack 0]
+ Remove {
+  channels rgba
+  name Remove_RGBA
+  xpos -571
+  ypos -164
+ }
+ Dot {
+  name Dot4
+  xpos -457
+  ypos -161
+ }
+set N94c41820 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 IndexSet_1.red
+  from1 rgba.green
+  to1 IndexSet_1.green
+  from2 rgba.blue
+  to2 IndexSet_1.blue
+  from3 rgba.alpha
+  to3 IndexSet_1.alpha
+  name Copy_Set1
+  xpos -411
+  ypos -186
+ }
+push $N94c41820
+ Dot {
+  name Dot3
+  xpos -457
+  ypos -89
+ }
+clone $C94c220b0 {
+  inputs 2
+  xpos -411
+  ypos -92
+  selected false
+ }
+set N94c4b9f0 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 IndexSet_2.red
+  from1 rgba.green
+  to1 IndexSet_2.green
+  from2 rgba.blue
+  to2 IndexSet_2.blue
+  from3 rgba.alpha
+  to3 IndexSet_2.alpha
+  name Copy_Set2
+  xpos -251
+  ypos -186
+ }
+push $N94c4b9f0
+clone $C94c29e60 {
+  inputs 2
+  xpos -251
+  ypos -92
+  selected false
+ }
+set N94c54ea0 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 IndexSet_3.red
+  from1 rgba.green
+  to1 IndexSet_3.green
+  from2 rgba.blue
+  to2 IndexSet_3.blue
+  from3 rgba.alpha
+  to3 IndexSet_3.alpha
+  name Copy_Set3
+  xpos -91
+  ypos -186
+ }
+push $N94c54ea0
+clone $C94c31ad0 {
+  inputs 2
+  xpos -91
+  ypos -92
+  selected false
+ }
+set N94c5e4a0 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 IndexSet_4.red
+  from1 rgba.green
+  to1 IndexSet_4.green
+  from2 rgba.blue
+  to2 IndexSet_4.blue
+  from3 rgba.alpha
+  to3 IndexSet_4.alpha
+  name Copy_Set4
+  xpos 69
+  ypos -186
+ }
+push $N94c5e4a0
+clone $C94c39940 {
+  inputs 2
+  xpos 69
+  ypos -92
+  selected false
+ }
+set N94c678e0 [stack 0]
+ Write {
+  channels all
+  file_type exr
+  name WriteEXR
+  xpos 391
+  ypos -97
+ }
+push $N94c678e0
+ Dot {
+  name Dot5
+  xpos 103
+  ypos -35
+ }
+set N948d8f30 [stack 0]
+ LayerContactSheet {
+  width {{root.format.w i}}
+  height {{root.format.h i}}
+  rows 2
+  columns 2
+  center true
+  showLayerNames true
+  name LayersDisplay
+  xpos 69
+  ypos 16
+ }
+push $N948d8f30
+ Dot {
+  name Dot6
+  xpos 263
+  ypos -35
+ }
+ Switch {
+  inputs 2
+  which {{parent.preview i}}
+  name LayersPreview
+  xpos 229
+  ypos 16
+ }
+ Output {
+  name Output1
+  xpos 229
+  ypos 81
+ }
+ Viewer {
+  input_process false
+  name Viewer1
+  xpos 229
+  ypos 135
+ }
+end_group

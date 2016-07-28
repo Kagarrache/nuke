@@ -1,0 +1,284 @@
+Gizmo {
+ help "V!ctor 2.0v1\nV_3DAxis\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0x9c0000ff
+ addUserKnob {20 V_3DAxis}
+ addUserKnob {26 tab l " " T ""}
+ addUserKnob {41 file_menu l "" -STARTLINE T TransformGeo6.file_menu}
+ addUserKnob {41 snap_menu l "" -STARTLINE T TransformGeo6.snap_menu}
+ addUserKnob {41 xform_order l "transform order" T TransformGeo6.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T TransformGeo6.rot_order}
+ addUserKnob {41 translate T TransformGeo6.translate}
+ addUserKnob {41 rotate T TransformGeo6.rotate}
+ addUserKnob {41 scaling l scale T TransformGeo6.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T TransformGeo6.uniform_scale}
+ addUserKnob {41 skew T TransformGeo6.skew}
+ addUserKnob {41 pivot T TransformGeo6.pivot}
+ addUserKnob {20 "" l "Local matrix" n 2}
+ addUserKnob {41 useMatrix l "specify matrix" T TransformGeo6.useMatrix}
+ addUserKnob {41 matrix l "" -STARTLINE T TransformGeo6.matrix}
+ addUserKnob {41 geo_select T TransformGeo6.geo_select}
+}
+ Input {
+  inputs 0
+  name axis
+  xpos -1153
+  ypos -34
+ }
+ Axis2 {
+  name Center
+  selected true
+  xpos -1143
+  ypos 18
+ }
+ Constant {
+  inputs 0
+  channels {rgba.red rgba.green rgba.blue rgba.alpha}
+  color {0.5 0.5 0.5 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant4
+  xpos -516
+  ypos -399
+ }
+ Cube {
+  rows 1
+  columns 1
+  separate_faces false
+  cube {{-parent.Trilinear3.arrowSize i} {-parent.Trilinear3.arrowSize i} {-parent.Trilinear3.arrowSize i} {parent.Trilinear3.arrowSize i} {parent.Trilinear3.arrowSize i} {parent.Trilinear3.arrowSize i}}
+  name Cube1
+  xpos -516
+  ypos -64
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  color 1
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant2
+  xpos -924
+  ypos -405
+ }
+set N855cc6c0 [stack 0]
+ Dot {
+  name Dot2
+  xpos -705
+  ypos -375
+ }
+ Cylinder {
+  rows {{parent.Cylinder6.rows i}}
+  columns {{parent.Cylinder6.columns i}}
+  radius {{parent.Cylinder6.radius i}}
+  close_bottom true
+  translate {0 1 0}
+  name Cylinder11
+  xpos -736
+  ypos -280
+ }
+ Trilinear {
+  p0 {{-arrowSize i} {-arrowSize i} {-arrowSize i}}
+  p1 {0 {arrowSize i} 0}
+  p2 {0 {arrowSize i} 0}
+  p3 {{arrowSize i} {-arrowSize i} {-arrowSize i}}
+  p4 {{-arrowSize i} {-arrowSize i} {arrowSize i}}
+  p5 {0 {arrowSize i} 0}
+  p6 {0 {arrowSize i} 0}
+  p7 {{arrowSize i} {-arrowSize i} {arrowSize i}}
+  name Trilinear2
+  xpos -736
+  ypos -226
+  addUserKnob {20 User}
+  addUserKnob {7 arrowSize l size}
+  arrowSize 0.18
+ }
+ TransformGeo {
+  translate {0 2 0}
+  name TransformGeo2
+  xpos -736
+  ypos -182
+ }
+push $N855cc6c0
+ Cylinder {
+  rows {{parent.Cylinder6.rows i}}
+  columns {{parent.Cylinder6.columns i}}
+  radius {{parent.Cylinder6.radius i}}
+  translate {0 1 0}
+  name Cylinder10
+  xpos -924
+  ypos -280
+ }
+ MergeGeo {
+  inputs 2
+  name MergeGeo2
+  xpos -924
+  ypos -182
+ }
+ TransformGeo {
+  rotate {90 0 0}
+  name TransformGeo3
+  xpos -924
+  ypos -136
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  color 1
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant1
+  xpos -1366
+  ypos -405
+ }
+set N8a4c6940 [stack 0]
+ Dot {
+  name Dot1
+  xpos -1145
+  ypos -375
+ }
+ Cylinder {
+  rows {{parent.Cylinder6.rows i}}
+  columns {{parent.Cylinder6.columns i}}
+  radius {{parent.Cylinder6.radius i}}
+  close_bottom true
+  translate {0 1 0}
+  name Cylinder8
+  xpos -1176
+  ypos -280
+ }
+ Trilinear {
+  p0 {{-arrowSize i} {-arrowSize i} {-arrowSize i}}
+  p1 {0 {arrowSize i} 0}
+  p2 {0 {arrowSize i} 0}
+  p3 {{arrowSize i} {-arrowSize i} {-arrowSize i}}
+  p4 {{-arrowSize i} {-arrowSize i} {arrowSize i}}
+  p5 {0 {arrowSize i} 0}
+  p6 {0 {arrowSize i} 0}
+  p7 {{arrowSize i} {-arrowSize i} {arrowSize i}}
+  name Trilinear1
+  xpos -1176
+  ypos -232
+  addUserKnob {20 User}
+  addUserKnob {7 arrowSize l size}
+  arrowSize 0.18
+ }
+ TransformGeo {
+  translate {0 2 0}
+  name TransformGeo1
+  xpos -1176
+  ypos -182
+ }
+push $N8a4c6940
+ Cylinder {
+  rows {{parent.Cylinder6.rows i}}
+  columns {{parent.Cylinder6.columns i}}
+  radius {{parent.Cylinder6.radius i}}
+  translate {0 1 0}
+  name Cylinder9
+  xpos -1366
+  ypos -280
+ }
+ MergeGeo {
+  inputs 2
+  name MergeGeo1
+  xpos -1364
+  ypos -182
+ }
+ Constant {
+  inputs 0
+  channels {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  color 1
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant3
+  xpos -1726
+  ypos -405
+ }
+set N8a482d60 [stack 0]
+ Dot {
+  name Dot3
+  xpos -1507
+  ypos -375
+ }
+ Cylinder {
+  rows {{parent.Cylinder6.rows i}}
+  columns {{parent.Cylinder6.columns i}}
+  radius {{parent.Cylinder6.radius i}}
+  close_bottom true
+  translate {0 1 0}
+  name Cylinder7
+  xpos -1538
+  ypos -280
+ }
+ Trilinear {
+  p0 {{-arrowSize i} {-arrowSize i} {-arrowSize i}}
+  p1 {0 {arrowSize i} 0}
+  p2 {0 {arrowSize i} 0}
+  p3 {{arrowSize i} {-arrowSize i} {-arrowSize i}}
+  p4 {{-arrowSize i} {-arrowSize i} {arrowSize i}}
+  p5 {0 {arrowSize i} 0}
+  p6 {0 {arrowSize i} 0}
+  p7 {{arrowSize i} {-arrowSize i} {arrowSize i}}
+  name Trilinear3
+  xpos -1538
+  ypos -226
+  addUserKnob {20 User}
+  addUserKnob {7 arrowSize l size}
+  arrowSize 0.18
+ }
+ TransformGeo {
+  translate {0 2 0}
+  name TransformGeo4
+  xpos -1538
+  ypos -184
+ }
+push $N8a482d60
+ Cylinder {
+  rows 1
+  columns 20
+  radius 0.06
+  translate {0 1 0}
+  name Cylinder6
+  label Master
+  xpos -1726
+  ypos -286
+ }
+ MergeGeo {
+  inputs 2
+  name MergeGeo3
+  xpos -1726
+  ypos -184
+ }
+ TransformGeo {
+  rotate {0 0 -90}
+  name TransformGeo5
+  xpos -1726
+  ypos -136
+ }
+ MergeGeo {
+  inputs 3
+  name MergeGeo4
+  xpos -1364
+  ypos -136
+ }
+ MergeGeo {
+  inputs 2
+  name MergeGeo5
+  xpos -1364
+  ypos -64
+ }
+ TransformGeo {
+  uniform_scale 0.4588
+  name TransformGeo7
+  xpos -1364
+  ypos -10
+ }
+ TransformGeo {
+  inputs 2
+  display textured
+  render_mode textured
+  name TransformGeo6
+  xpos -1364
+  ypos 38
+ }
+ Output {
+  name Output1
+  xpos -1364
+  ypos 110
+ }
+end_group

@@ -1,0 +1,631 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ inputs 2
+ help "V!ctor Tools 2.0v1\nV_CompareView\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0xccccccff
+ addUserKnob {20 V_CompareView}
+ addUserKnob {4 orientation l Mode t "Compare both images in portrait or landscape mode" M {Horizontal Vertical Wipe ""}}
+ addUserKnob {6 reverse l Reverse t "Swap A and B position" -STARTLINE}
+ addUserKnob {6 fitToFormat l "Fit To Input Format" t "Fits the compare view images to input format" -STARTLINE}
+ addUserKnob {6 evidenceInputs l Evidence t "Evidence inputs" -STARTLINE}
+ addUserKnob {26 blankSpace2 l " " T " "}
+ addUserKnob {20 wipeControls l "Wipe Controls" n 1}
+ addUserKnob {7 wipeAmount l X t "Horizontal position"}
+ wipeAmount 0.5
+ addUserKnob {7 wipeVertical l Y t "Vertical position" -STARTLINE}
+ wipeVertical 0.5
+ addUserKnob {7 wipeRotate l Angle t "Wipe angle" R -180 180}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 blankSpace l " " T " "}
+ addUserKnob {6 overlays l Overlays t "Display overlays to indentify A and B" +STARTLINE}
+ addUserKnob {1 labelA l "Label A" t "A label that Indentifies A"}
+ labelA "Input A"
+ addUserKnob {1 labelB l "   Label B" t "A label that Indentifies B" -STARTLINE}
+ labelB "Input B"
+ addUserKnob {20 settings l Settings}
+ addUserKnob {20 overlaysSettings l Overlays t "Overlays settings" n 1}
+ addUserKnob {7 fontSize l "Font Scale" t "Overlays font size" R 0.2 10}
+ fontSize 1
+ addUserKnob {18 overlaysColor l "Font Color" t "Overlays font color"}
+ overlaysColor 1
+ addUserKnob {6 overlaysColor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 overlaysOpacity l Opacity t "Overlays opacity"}
+ overlaysOpacity 1
+ addUserKnob {12 overlaysOffset l Offset t "Overlays offset"}
+ overlaysOffset {0 20}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 evidenceSettings l Evidence t "Evidence settings" n 1}
+ addUserKnob {18 colorA l "Color A" t "Color evidence for image B"}
+ colorA {0 1 0}
+ addUserKnob {6 colorA_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 colorB l "Color B" t "Color evidence for image A"}
+ colorB {1 0 0}
+ addUserKnob {6 colorB_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 opacityA l Opacity t "Evidence opacity"}
+ opacityA 0.05
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name InputB
+  xpos -38
+  ypos -238
+ }
+set N946171c0 [stack 0]
+ Dot {
+  name Dot34
+  xpos 434
+  ypos -234
+ }
+ Dot {
+  name Dot33
+  xpos 455
+  ypos 714
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.colorA.r} {parent.colorA.g} {parent.colorA.b} 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant2
+  xpos 620
+  ypos -334
+ }
+ Reformat {
+  type "to box"
+  box_width {{InputA.format.w i}}
+  box_height {{InputA.format.h i}}
+  box_fixed true
+  resize fill
+  filter Impulse
+  name Reformat2
+  xpos 620
+  ypos -239
+ }
+ Input {
+  inputs 0
+  name InputA
+  xpos 828
+  ypos -239
+  number 1
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos 828
+  ypos -191
+ }
+ set C9462ba60 [stack 0]
+set N9462ba60 [stack 0]
+ Dissolve {
+  inputs 2
+  which {{parent.opacityA}}
+  name Dissolve1
+  xpos 620
+  ypos -195
+ }
+ set C9462f450 [stack 0]
+push $N9462ba60
+ Dot {
+  name Dot27
+  xpos 862
+  ypos -102
+ }
+ Switch {
+  inputs 2
+  which {{parent.evidenceInputs}}
+  name Switch_Evidence
+  xpos 620
+  ypos -105
+ }
+ set C94636a40 [stack 0]
+ Dot {
+  name Dot28
+  xpos 654
+  ypos -66
+ }
+set N9463a930 [stack 0]
+ Dot {
+  name Dot22
+  xpos 654
+  ypos -30
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  opacity {{parent.overlaysOpacity}}
+  message "\[knob parent.labelA]"
+  old_message {{73 110 112 117 116 32 65}
+    }
+  old_expression_markers {{0 6}
+    }
+  box {0 0 {InputB.format.w} {InputB.format.h}}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 0 40 1 40 2 40 3 40 4 40 5 40}
+    }
+  cursor_position 19
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  translate {{parent.overlaysOffset} {parent.overlaysOffset}}
+  scale {{parent.fontSize} {parent.fontSize}}
+  center {{box.r/2} 0}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1556}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 {box.r/2} 0 {parent.overlaysOffset} {parent.overlaysOffset} {parent.fontSize} {parent.fontSize} 0 0 0 0}
+    }
+  color {{parent.overlaysColor}}
+  name Text_A
+  xpos 840
+  ypos -33
+ }
+push $N9463a930
+ Dot {
+  name Dot7
+  xpos 984
+  ypos -66
+ }
+ Switch {
+  inputs 2
+  which {{parent.overlays}}
+  name Switch_Fonts
+  xpos 950
+  ypos -33
+ }
+ set C9464e800 [stack 0]
+ Dot {
+  name Dot5
+  xpos 984
+  ypos 30
+ }
+set N946526f0 [stack 0]
+ Dot {
+  name Dot19
+  xpos 1094
+  ypos 30
+ }
+ Dot {
+  name Dot18
+  xpos 1094
+  ypos 546
+ }
+ Dot {
+  name Dot31
+  xpos 379
+  ypos 546
+ }
+set N94659770 [stack 0]
+ Dot {
+  name Dot32
+  xpos 379
+  ypos 366
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.colorB.r} {parent.colorB.g} {parent.colorB.b} 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant1
+  xpos -368
+  ypos -321
+ }
+ Reformat {
+  type "to box"
+  box_width {{InputB.format.w i}}
+  box_height {{InputB.format.h i}}
+  box_fixed true
+  resize fill
+  filter Impulse
+  name Reformat1
+  xpos -368
+  ypos -238
+ }
+push $N946171c0
+clone $C9462ba60 {
+  xpos -38
+  ypos -190
+  selected true
+ }
+set N946696f0 [stack 0]
+clone $C9462f450 {
+  inputs 2
+  xpos -368
+  ypos -194
+  selected false
+ }
+push $N946696f0
+ Dot {
+  name Dot25
+  xpos -4
+  ypos -101
+ }
+clone $C94636a40 {
+  inputs 2
+  xpos -368
+  ypos -105
+  selected false
+ }
+ Dot {
+  name Dot24
+  xpos -334
+  ypos -65
+ }
+set N946785d0 [stack 0]
+ Dot {
+  name Dot23
+  xpos -334
+  ypos -29
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  opacity {{parent.overlaysOpacity}}
+  message "\[knob parent.labelB]"
+  old_message {{73 110 112 117 116 32 66}
+    }
+  old_expression_markers {{0 6}
+    }
+  box {0 0 {InputB.format.w} {InputB.format.h}}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 0 40 1 40 2 40 3 40 4 40 5 40 6 40}
+    }
+  cursor_position 20
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  translate {{parent.overlaysOffset} {parent.overlaysOffset}}
+  scale {{parent.fontSize} {parent.fontSize}}
+  center {{box.r/2} 0}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1556}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 {box.r/2} 0 {parent.overlaysOffset} {parent.overlaysOffset} {parent.fontSize} {parent.fontSize} 0 0 0 0}
+    }
+  color {{parent.overlaysColor}}
+  name Text_B
+  xpos -40
+  ypos -35
+ }
+push $N946785d0
+ Dot {
+  name Dot8
+  xpos 102
+  ypos -66
+ }
+clone $C9464e800 {
+  inputs 2
+  xpos 68
+  ypos -35
+  selected false
+ }
+ Dot {
+  name Dot4
+  xpos 102
+  ypos 54
+ }
+set N94690220 [stack 0]
+ Dot {
+  name Dot17
+  xpos -171
+  ypos 54
+ }
+ Dot {
+  name Dot29
+  xpos -171
+  ypos 318
+ }
+set N94695060 [stack 0]
+ Switch {
+  inputs 2
+  which {{!parent.reverse}}
+  name ReverseSwitch
+  xpos -205
+  ypos 363
+ }
+ set C946975e0 [stack 0]
+ Dot {
+  name Dot21
+  xpos -171
+  ypos 414
+ }
+set N9469b510 [stack 0]
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name AlphaA
+  xpos -370
+  ypos 409
+ }
+ Transform {
+  translate {{-InputB.format.w*parent.wipeAmount x26 0} {(InputB.format.h*parent.wipeVertical)-(InputB.format.h/2) x26 0}}
+  rotate {{parent.wipeRotate}}
+  scale {{InputB.format.w/InputB.format.h*2 x26 0}}
+  center {{InputB.format.w x26 0} {InputB.format.h/2 x26 0}}
+  name Transform1
+  xpos -370
+  ypos 445
+ }
+ Crop {
+  box {0 0 {InputB.format.w} {InputB.format.h}}
+  name Crop1
+  xpos -370
+  ypos 481
+ }
+push $N9469b510
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -205
+  ypos 477
+ }
+ Premult {
+  name Premult1
+  xpos -205
+  ypos 541
+ }
+push $N94695060
+ Dot {
+  name Dot30
+  xpos 269
+  ypos 318
+ }
+push $N94659770
+clone $C946975e0 {
+  inputs 2
+  xpos 235
+  ypos 541
+  selected false
+ }
+ Shuffle {
+  alpha white
+  name AlphaB
+  xpos 70
+  ypos 541
+ }
+set N9397f550 [stack 0]
+ Reformat {
+  type "to box"
+  box_width {{InputB.format.w}}
+  box_height {{InputB.format.h}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat3
+  xpos -40
+  ypos 541
+ }
+push $N9397f550
+ Dot {
+  name Dot20
+  xpos 104
+  ypos 618
+ }
+ Switch {
+  inputs 2
+  which {{InputB.format.w==InputA.format.w?0:1}}
+  name Switch_FormatWipe
+  xpos -40
+  ypos 613
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -205
+  ypos 613
+ }
+ Dot {
+  name Dot26
+  xpos -171
+  ypos 678
+ }
+push $N946526f0
+ Dot {
+  name Dot3
+  xpos 984
+  ypos 90
+ }
+set N9399bfb0 [stack 0]
+ Dot {
+  name Dot16
+  xpos 984
+  ypos 126
+ }
+push $N94690220
+ Dot {
+  name Dot15
+  xpos 764
+  ypos 54
+ }
+set N939a0be0 [stack 0]
+ ContactSheet {
+  inputs 2
+  width {{InputB.format.w==InputA.format.w?InputB.format.w:(InputB.format.w>>InputA.format.w?InputB.format.w:InputA.format.w)}}
+  height {{InputB.format.h+InputA.format.h}}
+  rows 2
+  columns 1
+  center true
+  colorder RightLeft
+  name ContactSheet_V1
+  xpos 730
+  ypos 123
+ }
+push $N9399bfb0
+push $N939a0be0
+ Dot {
+  name Dot2
+  xpos 862
+  ypos 54
+ }
+ ContactSheet {
+  inputs 2
+  width {{InputB.format.w==InputA.format.w?InputB.format.w:(InputB.format.w>>InputA.format.w?InputB.format.w:InputA.format.w)}}
+  height {{InputB.format.h+InputA.format.h}}
+  rows 2
+  columns 1
+  center true
+  roworder TopBottom
+  name ContactSheet_V
+  xpos 828
+  ypos 87
+ }
+ Switch {
+  inputs 2
+  which {{!parent.reverse}}
+  name Switch_Reverse
+  xpos 828
+  ypos 183
+ }
+ set C939b09d0 [stack 0]
+set N939b09d0 [stack 0]
+ Reformat {
+  resize height
+  black_outside true
+  pbb true
+  name Reformat_V
+  xpos 828
+  ypos 241
+ }
+push $N939b09d0
+ Dot {
+  name Dot12
+  xpos 764
+  ypos 186
+ }
+ Switch {
+  inputs 2
+  which {{parent.fitToFormat}}
+  name Switch_Reformat
+  xpos 730
+  ypos 241
+ }
+ set C939bd780 [stack 0]
+ Dot {
+  name Dot10
+  xpos 764
+  ypos 342
+ }
+push $N946526f0
+ Dot {
+  name Dot13
+  xpos 324
+  ypos 30
+ }
+set N939c3bf0 [stack 0]
+push $N94690220
+ Dot {
+  name Dot1
+  xpos 102
+  ypos 90
+ }
+set N939c6170 [stack 0]
+ Dot {
+  name Dot14
+  xpos 104
+  ypos 126
+ }
+ ContactSheet {
+  inputs 2
+  width {{InputB.format.w+InputA.format.w}}
+  height {{InputB.format.h==InputA.format.h?InputB.format.h:(InputB.format.h>>InputA.format.h?InputB.format.h:InputA.format.h)}}
+  rows 1
+  columns 2
+  center true
+  colorder RightLeft
+  name ContactSheet_H1
+  xpos 290
+  ypos 123
+ }
+push $N939c3bf0
+ Dot {
+  name Dot6
+  xpos 214
+  ypos 30
+ }
+push $N939c6170
+ ContactSheet {
+  inputs 2
+  width {{InputB.format.w+InputA.format.w}}
+  height {{InputB.format.h==InputA.format.h?InputB.format.h:(InputB.format.h>>InputA.format.h?InputB.format.h:InputA.format.h)}}
+  rows 1
+  columns 2
+  center true
+  roworder TopBottom
+  name ContactSheet_H
+  xpos 180
+  ypos 87
+ }
+clone $C939b09d0 {
+  inputs 2
+  xpos 180
+  ypos 183
+  selected false
+ }
+set N939d8370 [stack 0]
+ Reformat {
+  type "to box"
+  box_width {{InputB.format.w==InputA.format.w?InputB.format.w:(InputB.format.w>>InputA.format.w?InputB.format.w:InputA.format.w)}}
+  box_height {{InputB.format.h==InputA.format.h?InputB.format.h:(InputB.format.h>>InputA.format.h?InputB.format.h:InputA.format.h)}}
+  box_fixed true
+  black_outside true
+  pbb true
+  name Reformat_H
+  xpos 180
+  ypos 241
+ }
+push $N939d8370
+ Dot {
+  name Dot11
+  xpos 324
+  ypos 186
+ }
+clone $C939bd780 {
+  inputs 2
+  xpos 290
+  ypos 241
+  selected false
+ }
+ Dot {
+  name Dot9
+  xpos 324
+  ypos 342
+ }
+ Switch {
+  inputs 2
+  which {{parent.orientation}}
+  name Switch_HV
+  xpos 510
+  ypos 339
+ }
+ Switch {
+  inputs 2
+  which {{orientation==2}}
+  name Switch_Mode
+  xpos 510
+  ypos 673
+ }
+ Switch {
+  inputs 2
+  which {{parent.disable}}
+  name Switch1
+  xpos 510
+  ypos 711
+ }
+ Output {
+  name Output1
+  xpos 510
+  ypos 745
+ }
+end_group

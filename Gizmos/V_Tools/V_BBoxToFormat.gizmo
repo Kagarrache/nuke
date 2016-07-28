@@ -1,0 +1,49 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ help "V!ctor Tools 2.0v1\nV_BBoxToFormat\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0xa57aaaff
+ addUserKnob {20 V_FormatToBBox}
+ addUserKnob {15 BBoxFormatKnob l INVISIBLE +DISABLED +INVISIBLE}
+ BBoxFormatKnob {{BBoxFormat.box} {BBoxFormat.box} {BBoxFormat.box} {BBoxFormat.box}}
+ addUserKnob {14 originalFormatKnob l INVISIBLE +DISABLED +INVISIBLE R 0 100}
+ originalFormatKnob {{BBoxFormat.originalFormat.w} {BBoxFormat.originalFormat.h}}
+ addUserKnob {7 originalPixelAspect l INVISIBLE -STARTLINE +DISABLED +INVISIBLE R 1 3}
+ originalPixelAspect {{BBoxFormat.ar}}
+ addUserKnob {12 positionOffset l INVISIBLE +DISABLED +INVISIBLE}
+ positionOffset {{BBoxFormat.differenceValues.x} {BBoxFormat.differenceValues.y}}
+ addUserKnob {15 revertFormat l INVISIBLE +INVISIBLE}
+ revertFormat {{BBoxFormat.restoreFormat} {BBoxFormat.restoreFormat} {BBoxFormat.restoreFormat} {BBoxFormat.restoreFormat}}
+ addUserKnob {22 createReformat l "Create Reformat-Back Node" t "generates a Transform and a Reformat nodes to return to the original format (above this node) preserving the BBox" T "parentName = nuke.thisNode().knob('name').value()\noW = int(nuke.thisNode().knob('originalFormatKnob').value(0))\noH = int(nuke.thisNode().knob('originalFormatKnob').value(1))\noPA = nuke.thisNode().knob('originalPixelAspect').value()\noPos = nuke.thisNode().knob('positionOffset').value()\n\nnuke.root().begin()\n\n#generate Transform\nt = nuke.createNode('Transform', inpanel = False)\nt.knob('label').setValue('from '+parentName)\nt.knob('translate').setValue(oPos)\nt.knob('rotate').setValue(0)\nt.knob('scale').setValue(1)\nt.knob('skew').setValue(0)\nt.knob('center').setValue(0)\nt.knob('invert_matrix').setValue(False)\nt.knob('clamp').setValue(False)\nt.knob('black_outside').setValue(False)\n\nt.knob('translate').setEnabled(False)\nt.knob('rotate').setEnabled(False)\nt.knob('scale').setEnabled(False)\nt.knob('skew').setEnabled(False)\nt.knob('center').setEnabled(False)\nt.knob('invert_matrix').setEnabled(False)\nt.knob('clamp').setEnabled(False)\nt.knob('black_outside').setEnabled(False)\n\n\n#generate Reformat\nr = nuke.createNode('Reformat', inpanel = False)\nr.knob('type').setValue('to box')\nr.knob('box_fixed').setValue(True)\nr.knob('box_width').setValue(oW)\nr.knob('box_height').setValue(oH)\nr.knob('box_pixel_aspect').setValue(oPA)\nr.knob('resize').setValue('none')\nr.knob('center').setValue(False)\nr.knob('flip').setValue(False)\nr.knob('flop').setValue(False)\nr.knob('turn').setValue(False)\nr.knob('clamp').setValue(False)\nr.knob('black_outside').setValue(False)\nr.knob('pbb').setValue(True)\nr.knob('label').setValue('from '+parentName)\n\nr.knob('type').setEnabled(False)\nr.knob('box_fixed').setEnabled(False)\nr.knob('box_width').setEnabled(False)\nr.knob('box_height').setEnabled(False)\nr.knob('box_pixel_aspect').setEnabled(False)\nr.knob('resize').setEnabled(False)\nr.knob('center').setEnabled(False)\nr.knob('flip').setEnabled(False)\nr.knob('flop').setEnabled(False)\nr.knob('turn').setEnabled(False)\nr.knob('clamp').setEnabled(False)\nr.knob('black_outside').setEnabled(False)\nr.knob('pbb').setEnabled(False)\n\nr.knob('selected').setValue(True)\nt.knob('selected').setValue(True)" +STARTLINE}
+ addUserKnob {22 createCropBack l "Create Crop-Back Node" t "generates a Crop node to return to the original format (above this node) without preserving the BBox" -STARTLINE T "parentName = nuke.thisNode().knob('name').value()\nrevertCrop = nuke.thisNode().knob('revertFormat').value()\nnuke.root().begin()\nc = nuke.createNode('Crop', inpanel = False)\nc.knob('box').setValue(revertCrop)\nc.knob('box').setEnabled(False)\nc.knob('softness').setEnabled(False)\nc.knob('reformat').setValue(True)\nc.knob('reformat').setEnabled(False)\nc.knob('intersect').setEnabled(False)\nc.knob('crop').setValue(False)\nc.knob('crop').setEnabled(False)\nc.knob('label').setValue('from '+parentName)"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -24
+  ypos -81
+ }
+ Crop {
+  box {{input.bbox.x i} {input.bbox.y i} {input.bbox.r i} {input.bbox.t i}}
+  reformat true
+  crop false
+  name BBoxFormat
+  selected true
+  xpos -24
+  ypos -9
+  addUserKnob {20 Maths}
+  addUserKnob {14 originalFormat l "original format" R 0 100}
+  originalFormat {{input.format.w i} {input.format.h i}}
+  addUserKnob {15 differenceValues}
+  differenceValues {{input.bbox.x-input.format.x i} {input.bbox.y-input.format.y i} {input.bbox.r-input.format.r i} {input.bbox.t-input.format.t i}}
+  addUserKnob {15 restoreFormat}
+  restoreFormat {{-BBoxFormatKnob.x i} {-BBoxFormatKnob.y i} {-BBoxFormatKnob.x+input.format.w i} {-BBoxFormatKnob.y+input.format.h i}}
+  addUserKnob {7 ar R 1 3}
+  ar {{input.format.pixel_aspect i}}
+ }
+ Output {
+  name Output1
+  xpos -24
+  ypos 64
+ }
+end_group

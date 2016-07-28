@@ -1,0 +1,52 @@
+set cut_paste_input [stack 0]
+version 9.0 v5
+push $cut_paste_input
+Group {
+ name Vectors_to_UV
+ selected true
+ xpos 245
+ ypos -104
+ addUserKnob {20 User}
+ addUserKnob {41 in l Vector_Layer t "Pick the layer containing your motion vectors." T UV_Channel.in}
+ addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.0 - Part of VectorTools by Erwan Leroy - 2016"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -303
+  ypos 114
+ }
+set N645d800 [stack 0]
+ Shuffle {
+  name UV_Channel
+  xpos -163
+  ypos 114
+ }
+ Expression {
+  expr0 (r+x+0.5)/width
+  expr1 (g+y+0.5)/height
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name Vectors_to_UV
+  xpos -163
+  ypos 228
+ }
+push $N645d800
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  alpha black
+  out {{{parent.UV_Channel.in}}}
+  name ShuffleCopy1
+  selected true
+  xpos -303
+  ypos 228
+ }
+ Output {
+  name Output1
+  xpos -303
+  ypos 299
+ }
+end_group

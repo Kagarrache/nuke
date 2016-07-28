@@ -1,0 +1,513 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+#write_info Write_TIF file:"" format:"2048 1556 1" chans:":" framerange:"1 100" fps:"0" colorspace:"default (sRGB)" datatype:"8 bit" transfer:"unknown" views:"main"
+version 9.0 v8
+Gizmo {
+ inputs 4
+ help "V!ctor Tools 2.0v1\nV_IdBuilder\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0x9e3c63ff
+ addUserKnob {20 V_IdBuilder}
+ addUserKnob {41 format T OutputFormatPlate.format}
+ addUserKnob {41 file l "tif file" T Write_TIF.file}
+ addUserKnob {41 frame_mode l frame T Write_TIF.frame_mode}
+ addUserKnob {41 frame l "" -STARTLINE T Write_TIF.frame}
+ addUserKnob {41 colorspace T Write_TIF.colorspace}
+ addUserKnob {41 views T Write_TIF.views}
+ addUserKnob {26 "" l "tiff Options"}
+ addUserKnob {41 datatype l "data type" T Write_TIF.datatype}
+ addUserKnob {41 compression T Write_TIF.compression}
+ addUserKnob {26 ""}
+ addUserKnob {41 on_error l "missing frames" T Write_TIF.on_error}
+ addUserKnob {41 Render T Write_TIF.Render}
+}
+ Input {
+  inputs 0
+  name B
+  xpos 1000
+  ypos -171
+  number 1
+ }
+set N9493afb0 [stack 0]
+ Dot {
+  name Dot11
+  xpos 1114
+  ypos -168
+ }
+set N9493d450 [stack 0]
+ Dot {
+  name Dot12
+  xpos 1194
+  ypos -168
+ }
+set N9493fb20 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name BBBB2
+  tile_color 0xffff
+  xpos 1160
+  ypos -117
+ }
+push $N9493d450
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name GGGG2
+  tile_color 0xff00ff
+  xpos 1080
+  ypos -117
+ }
+ Dot {
+  name Dot13
+  xpos 1114
+  ypos -78
+ }
+push 0
+push $N9493afb0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name RRRR2
+  tile_color 0xff0000ff
+  xpos 1000
+  ypos -117
+ }
+ Dot {
+  name Dot14
+  xpos 1034
+  ypos -42
+ }
+push $N9493fb20
+ Dot {
+  name Dot15
+  xpos 1274
+  ypos -168
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name AAAA2
+  tile_color 0xffffffff
+  xpos 1240
+  ypos -117
+ }
+ Merge2 {
+  inputs 4+1
+  operation max
+  name Merge3
+  xpos 1240
+  ypos -45
+ }
+ Shuffle {
+  red black
+  green black
+  alpha black
+  name B_channel
+  xpos 1240
+  ypos -9
+ }
+ Input {
+  inputs 0
+  name G
+  xpos 600
+  ypos -171
+  number 2
+ }
+set N949718d0 [stack 0]
+ Dot {
+  name Dot6
+  xpos 714
+  ypos -168
+ }
+set N94973d70 [stack 0]
+ Dot {
+  name Dot7
+  xpos 794
+  ypos -168
+ }
+set N949762f0 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name BBBB1
+  tile_color 0xffff
+  xpos 760
+  ypos -117
+ }
+push $N94973d70
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name GGGG1
+  tile_color 0xff00ff
+  xpos 680
+  ypos -117
+ }
+ Dot {
+  name Dot8
+  xpos 714
+  ypos -78
+ }
+push 0
+push $N949718d0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name RRRR1
+  tile_color 0xff0000ff
+  xpos 600
+  ypos -117
+ }
+ Dot {
+  name Dot9
+  xpos 634
+  ypos -42
+ }
+push $N949762f0
+ Dot {
+  name Dot10
+  xpos 874
+  ypos -168
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name AAAA1
+  tile_color 0xffffffff
+  xpos 840
+  ypos -117
+ }
+ Merge2 {
+  inputs 4+1
+  operation max
+  name Merge2
+  xpos 840
+  ypos -45
+ }
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name G_channel
+  xpos 840
+  ypos -9
+ }
+push 0
+ Input {
+  inputs 0
+  name R
+  selected true
+  xpos 200
+  ypos -171
+  number 3
+ }
+set N949a80f0 [stack 0]
+ Dot {
+  name Dot3
+  selected true
+  xpos 314
+  ypos -168
+ }
+set N949aa540 [stack 0]
+ Dot {
+  name Dot2
+  selected true
+  xpos 394
+  ypos -168
+ }
+set N949acac0 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name BBBB
+  tile_color 0xffff
+  selected true
+  xpos 360
+  ypos -117
+ }
+push $N949aa540
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name GGGG
+  tile_color 0xff00ff
+  selected true
+  xpos 280
+  ypos -117
+ }
+ Dot {
+  name Dot5
+  selected true
+  xpos 314
+  ypos -78
+ }
+push 0
+push $N949a80f0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name RRRR
+  tile_color 0xff0000ff
+  selected true
+  xpos 200
+  ypos -117
+ }
+ Dot {
+  name Dot4
+  selected true
+  xpos 234
+  ypos -42
+ }
+push $N949acac0
+ Dot {
+  name Dot1
+  selected true
+  xpos 474
+  ypos -168
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name AAAA
+  tile_color 0xffffffff
+  selected true
+  xpos 440
+  ypos -117
+ }
+ Merge2 {
+  inputs 4+1
+  operation max
+  name Merge1
+  selected true
+  xpos 440
+  ypos -45
+ }
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name R_channel
+  xpos 440
+  ypos -9
+ }
+ Dot {
+  name Dot21
+  xpos 474
+  ypos 30
+ }
+ Input {
+  inputs 0
+  name A
+  xpos 1400
+  ypos -171
+ }
+set N949e0fa0 [stack 0]
+ Dot {
+  name Dot16
+  xpos 1514
+  ypos -168
+ }
+set N949e36c0 [stack 0]
+ Dot {
+  name Dot17
+  xpos 1594
+  ypos -168
+ }
+set N949e5c40 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name BBBB3
+  tile_color 0xffff
+  xpos 1560
+  ypos -117
+ }
+push $N949e36c0
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name GGGG3
+  tile_color 0xff00ff
+  xpos 1480
+  ypos -117
+ }
+ Dot {
+  name Dot18
+  xpos 1514
+  ypos -78
+ }
+push 0
+push $N949e0fa0
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name RRRR3
+  tile_color 0xff0000ff
+  xpos 1400
+  ypos -117
+ }
+ Dot {
+  name Dot19
+  xpos 1434
+  ypos -42
+ }
+push $N949e5c40
+ Dot {
+  name Dot20
+  xpos 1674
+  ypos -168
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name AAAA3
+  tile_color 0xffffffff
+  xpos 1640
+  ypos -117
+ }
+ Merge2 {
+  inputs 4+1
+  operation max
+  name Merge4
+  xpos 1640
+  ypos -45
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  name A_channel
+  xpos 1640
+  ypos -9
+ }
+ Merge2 {
+  inputs 4+1
+  operation max
+  name Merge5
+  xpos 1640
+  ypos 27
+ }
+set N94a1bac0 [stack 0]
+ Dot {
+  name Dot24
+  xpos 1834
+  ypos 30
+ }
+set N94a21e80 [stack 0]
+ Dot {
+  name Dot23
+  xpos 1994
+  ypos 30
+ }
+set N94a24320 [stack 0]
+ Dot {
+  name Dot22
+  xpos 2154
+  ypos 30
+ }
+ Remove {
+  operation keep
+  channels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name Remove4
+  xpos 2120
+  ypos 58
+ }
+push $N94a24320
+ Remove {
+  operation keep
+  channels {-rgba.red -rgba.green rgba.blue none}
+  name Remove3
+  xpos 1960
+  ypos 58
+ }
+push $N94a21e80
+ Remove {
+  operation keep
+  channels {-rgba.red rgba.green -rgba.blue none}
+  name Remove2
+  xpos 1800
+  ypos 58
+ }
+push $N94a1bac0
+ Remove {
+  operation keep
+  channels {rgba.red -rgba.green -rgba.blue none}
+  name Remove1
+  xpos 1640
+  ypos 58
+ }
+ Constant {
+  inputs 0
+  channels {-rgba.red -rgba.green -rgba.blue none}
+  name OutputFormatPlate
+  xpos 1480
+  ypos 88
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  name REDactive
+  xpos 1640
+  ypos 112
+  disable {{"\[exists parent.input3]==1?0:(\[exists parent.input2]==1?0:(\[exists parent.input1]==1?0:(\[exists parent.input1]==1?0:(\[exists parent.input]==1?0:1))))" i}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.green
+  to0 rgba.green
+  name GREENactive
+  xpos 1800
+  ypos 112
+  disable {{"\[exists parent.input2]==1?0:(\[exists parent.input1]==1?0:(\[exists parent.input1]==1?0:(\[exists parent.input]==1?0:1)))" i}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.blue
+  name BLUEactive
+  xpos 1960
+  ypos 112
+  disable {{"\[exists parent.input1]==1?0:(\[exists parent.input1]==1?0:(\[exists parent.input]==1?0:1))" i}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name ALPHAactive
+  xpos 2120
+  ypos 112
+  disable {{"\[exists parent.input]==1?0:1" i}}
+ }
+set N94a4d530 [stack 0]
+ Output {
+  name Output1
+  xpos 2280
+  ypos 117
+ }
+push $N94a4d530
+ Write {
+  channels all
+  file_type tiff
+  checkHashOnRead false
+  version 7
+  name Write_TIF
+  xpos 2120
+  ypos 178
+ }
+end_group

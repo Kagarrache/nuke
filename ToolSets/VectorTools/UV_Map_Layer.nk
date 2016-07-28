@@ -1,0 +1,46 @@
+set cut_paste_input [stack 0]
+version 9.0 v5
+push $cut_paste_input
+Group {
+ name UV_Map_Layer
+ selected true
+ xpos -126
+ ypos -110
+ addUserKnob {20 UVMap l "UV Map"}
+ addUserKnob {41 out l UV_Layer T ShuffleCopy1.out}
+ addUserKnob {26 copyright l "" t www.erwanleroy.com +STARTLINE T "v1.0 - Part of VectorTools by Erwan Leroy - 2016"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 555
+  ypos 346
+ }
+set N6407c00 [stack 0]
+ Expression {
+  expr0 (x+0.5)/width
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 (y+.5)/height
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name Expression1
+  xpos 672
+  ypos 424
+ }
+push $N6407c00
+ ShuffleCopy {
+  inputs 2
+  in2 none
+  red red
+  green green
+  alpha black
+  out motion
+  name ShuffleCopy1
+  xpos 555
+  ypos 427
+ }
+ Output {
+  name Output1
+  xpos 555
+  ypos 511
+ }
+end_group

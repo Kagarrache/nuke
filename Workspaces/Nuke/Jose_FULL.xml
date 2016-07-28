@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="1.0">
-    <window x="0" y="0" w="3604" h="1080" screen="1">
+    <window x="0" y="0" w="1920" h="1080" screen="1">
         <splitter orientation="1">
-            <split size="1912" stretch="1"/>
+            <split size="228" stretch="1"/>
             <splitter orientation="2">
                 <split size="1018"/>
                 <dock id="" activePageId="Viewer.1">
@@ -24,6 +24,7 @@
                         <page id="DopeSheet.1"/>
                         <page id="uk.co.thefoundry.scripteditor.1"/>
                         <page id="com.ohufx.ToDoList"/>
+                        <page id="com.ohufx.FovCalculator"/>
                     </dock>
                     <split size="583"/>
                     <splitter orientation="2">

@@ -1,0 +1,2067 @@
+#! /Applications/Nuke9.0v8/Nuke9.0v8.app/Contents/MacOS//libnuke-9.0.8.dylib -nx
+version 9.0 v8
+Gizmo {
+ inputs 0
+ help "V!ctor Tools 2.0v1\nV_ColorRenditionChart\n©2016 Victor Perez. All rights reserved\nwww.victorperez.co.uk"
+ tile_color 0xccccccff
+ postage_stamp true
+ addUserKnob {20 V_ColorRenditionChart}
+ addUserKnob {41 format l "output format" T OutputFormat.format}
+ addUserKnob {41 colorspace_in l colorspace T ColorRenditionChart_ColorSpace.colorspace_in}
+ addUserKnob {41 illuminant_out l illuminant T ColorRenditionChart_ColorSpace.illuminant_out}
+ addUserKnob {41 primary_out l primary T ColorRenditionChart_ColorSpace.primary_out}
+ addUserKnob {6 overlays l "Overlays     " t "Toggle number and description overlays" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name CheckerBoard
+  tile_color 0x222222ff
+  label CheckerBoard
+  note_font_size 42
+  xpos -1843
+  ypos -752
+  bdwidth 1300
+  bdheight 1143
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.03033 0.03114 0.03275 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant24
+  xpos -920
+  ypos -285
+ }
+set N1971f0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 24
+  old_message {{50 52}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_24
+  xpos -841
+  ypos -266
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "black (1.50*)"
+  old_message {{98 108 97 99 107 32 40 49 46 53 48 42 41}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 12 27 0 27}
+    }
+  cursor_position 13
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_24
+  xpos -841
+  ypos -242
+ }
+push $N1971f0
+ Switch {
+  inputs 2
+  which {{parent.overlays i}}
+  name Overlays
+  xpos -920
+  ypos -207
+ }
+ set C9160ce20 [stack 0]
+ Shuffle {
+  alpha white
+  name NewAlphaToColors
+  xpos -920
+  ypos -189
+ }
+ set C91610b80 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.08532 0.08888 0.09258 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant23
+  xpos -1080
+  ypos -284
+ }
+set N91617a00 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 23
+  old_message {{50 51}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_23
+  xpos -1001
+  ypos -266
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "neutral 3.5 (1.05*)"
+  old_message {{110 101 117 116 114 97 108 32 51 46 53 32 40 49 46 48 53 42 41}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 12 27 13 27 14 27 15 27 16 27 17 27 18 27 0 27}
+    }
+  cursor_position 19
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_23
+  xpos -1001
+  ypos -242
+ }
+push $N91617a00
+clone $C9160ce20 {
+  inputs 2
+  xpos -1080
+  ypos -207
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1080
+  ypos -189
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.19011 0.19185 0.1931 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant22
+  xpos -1240
+  ypos -284
+ }
+set N24110f80 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 22
+  old_message {{50 50}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_22
+  xpos -1161
+  ypos -266
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "neutral 5 (.70*)"
+  old_message {{110 101 117 116 114 97 108 32 53 32 40 46 55 48 42 41}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 12 27 13 27 14 27 15 27 0 27}
+    }
+  cursor_position 16
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_22
+  xpos -1161
+  ypos -242
+ }
+push $N24110f80
+clone $C9160ce20 {
+  inputs 2
+  xpos -1240
+  ypos -207
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1240
+  ypos -189
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.35496 0.36541 0.36753 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant21
+  xpos -1400
+  ypos -284
+ }
+set N24135180 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 21
+  old_message {{50 49}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_21
+  xpos -1321
+  ypos -266
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "neutral 6.5 (.44*)"
+  old_message {{110 101 117 116 114 97 108 32 54 46 53 32 40 46 52 52 42 41}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 12 27 13 27 14 27 15 27 16 27 17 27 0 27}
+    }
+  cursor_position 18
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_21
+  xpos -1321
+  ypos -242
+ }
+push $N24135180
+clone $C9160ce20 {
+  inputs 2
+  xpos -1400
+  ypos -207
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1400
+  ypos -189
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.57988 0.59193 0.59331 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant20
+  xpos -1560
+  ypos -285
+ }
+set N5bc32c0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 20
+  old_message {{50 48}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  color {0 0 0 1}
+  name Chip_Number_20
+  xpos -1481
+  ypos -267
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "neutral 8 (.23*)"
+  old_message {{110 101 117 116 114 97 108 32 56 32 40 46 50 51 42 41}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 12 27 13 27 14 27 15 27 0 27}
+    }
+  cursor_position 16
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  color {0 0 0 1}
+  name Chip_Name_20
+  xpos -1481
+  ypos -243
+ }
+push $N5bc32c0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1560
+  ypos -207
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1560
+  ypos -189
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.9127 0.91481 0.89367 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant19
+  xpos -1720
+  ypos -285
+ }
+set N5be8df0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 19
+  old_message {{49 57}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  color {0 0 0 1}
+  name Chip_Number_19
+  xpos -1641
+  ypos -267
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "white (.05*)"
+  old_message {{119 104 105 116 101 32 40 46 48 53 42 41}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 0 27}
+    }
+  cursor_position 12
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  color {0 0 0 1}
+  name Chip_Name_19
+  xpos -1641
+  ypos -243
+ }
+push $N5be8df0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1720
+  ypos -207
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1720
+  ypos -189
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0.24696 0.40041 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant18
+  xpos -920
+  ypos -411
+ }
+set N24188150 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 18
+  old_message {{49 56}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_18
+  xpos -841
+  ypos -393
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message cyan
+  old_message {{99 121 97 110}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 0 27}
+    }
+  cursor_position 4
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_18
+  xpos -841
+  ypos -369
+ }
+push $N24188150
+clone $C9160ce20 {
+  inputs 2
+  xpos -920
+  ypos -333
+  selected false
+ }
+clone $C91610b80 {
+  xpos -920
+  ypos -315
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.53352 0.08859 0.30752 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant17
+  xpos -1080
+  ypos -411
+ }
+set N241adde0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 17
+  old_message {{49 55}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_17
+  xpos -1001
+  ypos -393
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message magenta
+  old_message {{109 97 103 101 110 116 97}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 0 27}
+    }
+  cursor_position 7
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_17
+  xpos -1001
+  ypos -369
+ }
+push $N241adde0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1080
+  ypos -333
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1080
+  ypos -315
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.85744 0.56748 0.00686 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant16
+  xpos -1240
+  ypos -411
+ }
+set N241d3410 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 16
+  old_message {{49 54}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_16
+  xpos -1161
+  ypos -393
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message yellow
+  old_message {{121 101 108 108 111 119}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 0 27}
+    }
+  cursor_position 6
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_16
+  xpos -1161
+  ypos -369
+ }
+push $N241d3410
+clone $C9160ce20 {
+  inputs 2
+  xpos -1240
+  ypos -333
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1240
+  ypos -315
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.45586 0.03032 0.04086 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant15
+  xpos -1400
+  ypos -411
+ }
+set N241f8b60 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 15
+  old_message {{49 53}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_15
+  xpos -1321
+  ypos -393
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message red
+  old_message {{114 101 100}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 0 27}
+    }
+  cursor_position 3
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_15
+  xpos -1321
+  ypos -369
+ }
+push $N241f8b60
+clone $C9160ce20 {
+  inputs 2
+  xpos -1400
+  ypos -333
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1400
+  ypos -315
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.05601 0.30017 0.06873 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant14
+  xpos -1560
+  ypos -411
+ }
+set N937224e0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 14
+  old_message {{49 52}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_14
+  xpos -1481
+  ypos -393
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message green
+  old_message {{103 114 101 101 110}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 0 27}
+    }
+  cursor_position 5
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_14
+  xpos -1481
+  ypos -369
+ }
+push $N937224e0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1560
+  ypos -333
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1560
+  ypos -315
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.01712 0.05022 0.29221 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant13
+  xpos -1720
+  ypos -411
+ }
+set N93747800 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 13
+  old_message {{49 51}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_13
+  xpos -1641
+  ypos -393
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message blue
+  old_message {{98 108 117 101}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 0 27}
+    }
+  cursor_position 4
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_13
+  xpos -1641
+  ypos -369
+ }
+push $N93747800
+clone $C9160ce20 {
+  inputs 2
+  xpos -1720
+  ypos -333
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1720
+  ypos -315
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.79467 0.35938 0.02053 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant12
+  xpos -920
+  ypos -537
+ }
+set N9376cb30 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 12
+  old_message {{49 50}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_12
+  xpos -841
+  ypos -519
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "orange yellow"
+  old_message {{111 114 97 110 103 101 32 121 101 108 108 111 119}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 12 27 0 27}
+    }
+  cursor_position 13
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_12
+  xpos -841
+  ypos -495
+ }
+push $N9376cb30
+clone $C9160ce20 {
+  inputs 2
+  xpos -920
+  ypos -459
+  selected false
+ }
+clone $C91610b80 {
+  xpos -920
+  ypos -441
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.34551 0.50865 0.04945 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant11
+  xpos -1080
+  ypos -537
+ }
+set N93792070 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 11
+  old_message {{49 49}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_11
+  xpos -1001
+  ypos -519
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "yellow green"
+  old_message {{121 101 108 108 111 119 32 103 114 101 101 110}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 0 27}
+    }
+  cursor_position 12
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_11
+  xpos -1001
+  ypos -495
+ }
+push $N93792070
+clone $C9160ce20 {
+  inputs 2
+  xpos -1080
+  ypos -459
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1080
+  ypos -441
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.11101 0.0423 0.14292 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant10
+  xpos -1240
+  ypos -537
+ }
+set N937b77b0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 10
+  old_message {{49 48}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 2
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_10
+  xpos -1162
+  ypos -519
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message purple
+  old_message {{112 117 114 112 108 101}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 0 27}
+    }
+  cursor_position 6
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_10
+  xpos -1162
+  ypos -495
+ }
+push $N937b77b0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1240
+  ypos -459
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1240
+  ypos -441
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.56678 0.08423 0.11971 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant9
+  xpos -1400
+  ypos -537
+ }
+set N937dcef0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 9
+  old_message {{57}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_9
+  xpos -1321
+  ypos -519
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "moderate red"
+  old_message {{109 111 100 101 114 97 116 101 32 114 101 100}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 0 27}
+    }
+  cursor_position 12
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_9
+  xpos -1321
+  ypos -495
+ }
+push $N937dcef0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1400
+  ypos -459
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1400
+  ypos -441
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.0576 0.10517 0.40294 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant8
+  xpos -1560
+  ypos -537
+ }
+set N93806520 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 8
+  old_message {{56}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_8
+  xpos -1481
+  ypos -519
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "purplish blue"
+  old_message {{112 117 114 112 108 105 115 104 32 98 108 117 101}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 12 27 0 27}
+    }
+  cursor_position 13
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_8
+  xpos -1481
+  ypos -495
+ }
+push $N93806520
+clone $C9160ce20 {
+  inputs 2
+  xpos -1560
+  ypos -459
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1560
+  ypos -441
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.74743 0.20061 0.02809 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant7
+  xpos -1720
+  ypos -537
+ }
+set N9382bc60 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 7
+  old_message {{55}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_7
+  xpos -1641
+  ypos -519
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message orange
+  old_message {{111 114 97 110 103 101}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 0 27}
+    }
+  cursor_position 6
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_7
+  xpos -1641
+  ypos -495
+ }
+push $N9382bc60
+clone $C9160ce20 {
+  inputs 2
+  xpos -1720
+  ypos -459
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1720
+  ypos -441
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.10812 0.51433 0.41265 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant6
+  xpos -920
+  ypos -663
+ }
+set N938513a0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 6
+  old_message {{54}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_6
+  xpos -841
+  ypos -645
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "bluish green"
+  old_message {{98 108 117 105 115 104 32 103 114 101 101 110}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 11 27 0 27}
+    }
+  cursor_position 12
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_6
+  xpos -841
+  ypos -621
+ }
+push $N938513a0
+clone $C9160ce20 {
+  inputs 2
+  xpos -920
+  ypos -585
+  selected false
+ }
+clone $C91610b80 {
+  xpos -920
+  ypos -567
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.22163 0.21582 0.4346 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant5
+  xpos -1080
+  ypos -662
+ }
+set N93876ae0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 5
+  old_message {{53}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_5
+  xpos -1001
+  ypos -644
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "blue flower"
+  old_message {{98 108 117 101 32 102 108 111 119 101 114}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 10 27 0 27}
+    }
+  cursor_position 11
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_5
+  xpos -1001
+  ypos -620
+ }
+push $N93876ae0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1080
+  ypos -585
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1080
+  ypos -567
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.10162 0.14891 0.05189 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant4
+  xpos -1240
+  ypos -663
+ }
+set N9389c220 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 4
+  old_message {{52}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_4
+  xpos -1161
+  ypos -645
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message foliage
+  old_message {{102 111 108 105 97 103 101}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 0 27}
+    }
+  cursor_position 7
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_4
+  xpos -1161
+  ypos -621
+ }
+push $N9389c220
+clone $C9160ce20 {
+  inputs 2
+  xpos -1240
+  ypos -585
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1240
+  ypos -567
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.10368 0.19588 0.33141 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant3
+  xpos -1400
+  ypos -662
+ }
+set N938c1960 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 3
+  old_message {{51}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_3
+  xpos -1321
+  ypos -643
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "blue sky"
+  old_message {{98 108 117 101 32 115 107 121}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 0 27}
+    }
+  cursor_position 8
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_3
+  xpos -1321
+  ypos -619
+ }
+push $N938c1960
+clone $C9160ce20 {
+  inputs 2
+  xpos -1400
+  ypos -585
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1400
+  ypos -567
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.56838 0.29265 0.21836 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant2
+  xpos -1560
+  ypos -662
+ }
+set N938e70a0 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 2
+  old_message {{50}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_2
+  xpos -1481
+  ypos -642
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "light skin"
+  old_message {{108 105 103 104 116 32 115 107 105 110}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 9 27 0 27 5 27 6 27 7 27 8 27 9 27}
+    }
+  cursor_position 5
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_2
+  xpos -1481
+  ypos -618
+ }
+push $N938e70a0
+clone $C9160ce20 {
+  inputs 2
+  xpos -1560
+  ypos -585
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1560
+  ypos -567
+  selected false
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.17305 0.0821 0.05674 0}
+  format "256 256 0 0 256 256 1 square_256"
+  name Constant1
+  xpos -1720
+  ypos -663
+ }
+set N93910810 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message 1
+  old_message {{49}
+    }
+  box {64 64 192 192}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 1
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Number_1
+  xpos -1641
+  ypos -646
+ }
+ Text2 {
+  font_size_toolbar 27
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "dark skin"
+  old_message {{100 97 114 107 32 115 107 105 110}
+    }
+  box {0 20 256 256}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27 0 27 1 27 2 27 3 27 4 27 5 27 6 27 7 27 8 27}
+    }
+  font {{ Helvetica : Regular : Helvetica.dfont : 4 }}
+  font_size 27
+  scale {1 1}
+  center {1024 778}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 256}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 778 0 0 1 1 0 0 0 0}
+    }
+  name Chip_Name_1
+  xpos -1641
+  ypos -622
+ }
+push $N93910810
+clone $C9160ce20 {
+  inputs 2
+  xpos -1720
+  ypos -585
+  selected false
+ }
+clone $C91610b80 {
+  xpos -1720
+  ypos -567
+  selected false
+ }
+ ContactSheet {
+  inputs 24
+  width {{1536+gap*7 i}}
+  height {{1024+gap*5 i}}
+  rows 4
+  columns 6
+  gap 37
+  center true
+  roworder TopBottom
+  name ColorSamples
+  xpos -840
+  ypos -63
+ }
+ Mirror {
+  Vertical true
+  name Flip
+  xpos -840
+  ypos -27
+ }
+ set C9393b910 [stack 0]
+ Position {
+  translate {{root.proxy==0?ColorSamples.gap*0.5:(ColorSamples.gap*0.5)/root.proxy_scale i} {translate.x i}}
+  name PositionCenter
+  xpos -840
+  ypos 9
+ }
+ AdjBBox {
+  numpixels -5
+  name AdjBBox1
+  xpos -840
+  ypos 45
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos -840
+  ypos 81
+ }
+ Constant {
+  inputs 0
+  color {0.0138916038 0.01426259521 0.01499999966 1}
+  format "256 256 0 0 256 256 1 square_256"
+  name ColorRenditionChart_BG
+  xpos -680
+  ypos 3
+ }
+ Reformat {
+  type "to box"
+  box_width {{root.proxy==0?ColorSamples.width+ColorSamples.gap:ColorSamples.width+(ColorSamples.gap/root.proxy_scale) i}}
+  box_height {{root.proxy==0?ColorSamples.height+ColorSamples.gap*1.75:ColorSamples.height+((ColorSamples.gap*1.75)/root.proxy_scale) i}}
+  resize distort
+  filter Impulse
+  name BGFormat
+  xpos -680
+  ypos 117
+ }
+ Merge2 {
+  inputs 2
+  name ChipsOverBg
+  xpos -840
+  ypos 117
+ }
+clone $C9393b910 {
+  xpos -840
+  ypos 153
+  selected false
+ }
+ NoOp {
+  name GetFormat
+  xpos -840
+  ypos 190
+ }
+ Text2 {
+  font_size_toolbar 30.53333282
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Color Rendition Chart   •   Color Space: \[value ColorRenditionChart_ColorSpace.colorspace_in]   Illuminant: \[value ColorRenditionChart_ColorSpace.illuminant_out]   Primary: \[value ColorRenditionChart_ColorSpace.primary_out]"
+  old_message {{67 111 108 111 114 32 82 101 110 100 105 116 105 111 110 32 67 104 97 114 116 32 32 32 8226 32 32 32 67 111 108 111 114 32 83 112 97 99 101 58 32 115 82 71 66 32 32 32 73 108 108 117 109 105 110 97 110 116 58 32 68 54 53 32 32 32 80 114 105 109 97 114 121 58 32 115 82 71 66}
+    }
+  old_expression_markers {{41 44 60 62 75 78}
+    }
+  box {0 {root.proxy==0?ColorSamples.gap/2:ColorSamples.gap/2/root.proxy_scale} {root.proxy==0?GetFormat.format.w:GetFormat.format.w/root.proxy_scale} {root.proxy==0?GetFormat.format.h:GetFormat.format.h/root.proxy_scale}}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 30.53333333 1 30.53333333 2 30.53333333 3 30.53333333 4 30.53333333 5 30.53333333 6 30.53333333 7 30.53333333 8 30.53333333 9 30.53333333 10 30.53333333 11 30.53333333 12 30.53333333 13 30.53333333 14 30.53333333 15 30.53333333 16 30.53333333 17 30.53333333 18 30.53333333 19 30.53333333 20 30.53333333 21 30.53333333 22 30.53333333 23 30.53333333 24 30.53333333 25 30.53333333 26 30.53333333 27 30.53333333 28 30.53333333 29 30.53333333 30 30.53333333 31 30.53333333 32 30.53333333 33 30.53333333 34 30.53333333 35 30.53333333 36 30.53333333 37 30.53333333 38 30.53333333 39 30.53333333 40 30.53333282 41 30.53333333 42 30.53333333 43 30.53333333 44 30.53333333 45 30.53333282 46 30.53333333 47 30.53333333 48 30.53333333 49 30.53333333 50 30.53333333 51 30.53333333 52 30.53333333 53 30.53333333 54 30.53333333 55 30.53333333 56 30.53333333 57 30.53333333 58 30.53333333 59 30.53333333 60 30.53333333 61 30.53333333 62 30.53333333 63 30.53333333 64 30.53333333 65 30.53333333 66 30.53333333 67 30.53333333 68 30.53333333 69 30.53333333 70 30.53333333 71 30.53333333 72 30.53333333 73 30.53333333 74 30.53333333 75 30.53333333 76 30.53333333 77 30.53333333 78 30.53333333 0 {curve x1 30.53333333} 1 {curve x1 30.53333333} 2 {curve x1 30.53333333} 3 {curve x1 30.53333333} 4 {curve x1 30.53333333} 5 {curve x1 30.53333333} 6 {curve x1 30.53333333} 7 {curve x1 30.53333333} 8 {curve x1 30.53333333} 9 {curve x1 30.53333333} 10 {curve x1 30.53333333} 11 {curve x1 30.53333333} 12 {curve x1 30.53333333} 13 {curve x1 30.53333333} 14 {curve x1 30.53333333} 15 {curve x1 30.53333333} 16 {curve x1 30.53333333} 17 {curve x1 30.53333333} 18 {curve x1 30.53333333} 19 {curve x1 30.53333333} 20 {curve x1 30.53333333} 21 {curve x1 30.53333333} 22 {curve x1 30.53333333} 23 {curve x1 30.53333333} 24 {curve x1 30.53333333} 25 {curve x1 30.53333333} 26 {curve x1 30.53333333} 27 {curve x1 30.53333333} 28 {curve x1 30.53333333} 29 {curve x1 30.53333333} 30 {curve x1 30.53333333} 31 {curve x1 30.53333333} 32 {curve x1 30.53333333} 33 {curve x1 30.53333333} 34 {curve x1 30.53333333} 35 {curve x1 30.53333333} 36 {curve x1 30.53333333} 37 {curve x1 30.53333333} 38 {curve x1 30.53333333} 39 {curve x1 30.53333333} 41 {curve x1 30.53333333} 42 {curve x1 30.53333333} 43 {curve x1 30.53333333} 46 {curve x1 30.53333333} 47 {curve x1 30.53333333} 48 {curve x1 30.53333333} 49 {curve x1 30.53333333} 50 {curve x1 30.53333333} 51 {curve x1 30.53333333} 52 {curve x1 30.53333333} 53 {curve x1 30.53333333} 54 {curve x1 30.53333333} 55 {curve x1 30.53333333} 56 {curve x1 30.53333333} 57 {curve x1 30.53333333} 58 {curve x1 30.53333333} 59 {curve x1 30.53333333} 60 {curve x1 30.53333333} 61 {curve x1 30.53333333} 62 {curve x1 30.53333333} 63 {curve x1 30.53333333} 64 {curve x1 30.53333333} 65 {curve x1 30.53333333} 66 {curve x1 30.53333333} 67 {curve x1 30.53333333} 68 {curve x1 30.53333333} 69 {curve x1 30.53333333} 70 {curve x1 30.53333333} 71 {curve x1 30.53333333} 72 {curve x1 30.53333333} 73 {curve x1 30.53333333} 74 {curve x1 30.53333333} 75 {curve x1 30.53333333} 76 {curve x1 30.53333333} 77 {curve x1 30.53333333} 78 {curve x1 30.53333333}}
+    }
+  cursor_position 94
+  font {{ Helvetica : Bold : Helvetica.dfont : 5 }}
+  font_size 30.53333282
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1273}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 916 636.5 0 0 1 1 0 0 0 0}
+    }
+  name ColorRenditionChart_Text
+  selected true
+  xpos -840
+  ypos 231
+ }
+ Reformat {
+  resize fit
+  name OutputFormat
+  xpos -840
+  ypos 261
+ }
+ Crop {
+  box {{OutputFormat.bbox.x i} {OutputFormat.bbox.y i} {OutputFormat.bbox.r i} {OutputFormat.bbox.t i}}
+  reformat true
+  intersect true
+  name FormatCrop
+  xpos -840
+  ypos 297
+ }
+ Colorspace {
+  colorspace_in sRGB
+  colorspace_out sRGB
+  name ColorRenditionChart_ColorSpace
+  xpos -840
+  ypos 335
+ }
+set N9293f660 [stack 0]
+ Output {
+  name Output1
+  xpos -840
+  ypos 567
+ }
+push $N9293f660
+ Viewer {
+  frame_range 1-100
+  input_process false
+  name Viewer1
+  xpos -840
+  ypos 603
+ }
+end_group
