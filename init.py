@@ -9,6 +9,7 @@ import nuke
 nuke.pluginAddPath("./Gizmos")
 nuke.pluginAddPath("./icons")
 nuke.pluginAddPath("./pythons")
+nuke.pluginAddPath("./plugins")
 
 
 ### CREATE PATH IN RENDER TIME (if it does not exists)
@@ -204,3 +205,5 @@ if __name__ == '__main__':
         del gizManager
 
 
+## PLUGINS
+nuke.load("aton")

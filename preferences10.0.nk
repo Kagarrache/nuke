@@ -4,6 +4,7 @@ Preferences {
  localCachePath D:/Documentos/caches/Nuke/localize/
  LocalizationSizeLimit 15
  DiskCachePath D:/Documentos/caches/Nuke/temp/
+ diskCacheGB 15
  selectedGPUDeviceName "GeForce GTX 550 Ti"
  trialOFXPlugins true
  platformPathRemaps ""

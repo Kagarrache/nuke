@@ -1,0 +1,233 @@
+#! C:/Program Files/Nuke9.0v6/nuke-9.0.6.dll -nx
+version 9.0 v6
+Gizmo {
+ inputs 9
+ tile_color 0x41a8c9ff
+ gl_color 0xffc328ff
+ label "Comp\n"
+ note_font "Gill Sans Ultra Bold"
+ note_font_size 10
+ note_font_color 0xf9f9f9ff
+ lock_connections true
+ addUserKnob {20 User}
+ addUserKnob {6 a_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {41 mix l AO T m.mix}
+ addUserKnob {41 mix_1 l Reflection T Refl.mix}
+ addUserKnob {41 mix_5 l Refraction T Merge1.mix}
+ addUserKnob {41 mix_2 l Speculer T Merge3.mix}
+ addUserKnob {41 mix_3 l Transculance T Merge4.mix}
+ addUserKnob {41 mix_4 l Shadow T Merge5.mix}
+ addUserKnob {41 channels l Depth_Channel T Copy1.channels}
+ addUserKnob {41 in l Character_Matt T Shuffle8.in}
+ addUserKnob {41 red T Shuffle8.red}
+ addUserKnob {41 green T Shuffle8.green}
+ addUserKnob {41 blue T Shuffle8.blue}
+ addUserKnob {41 alpha T Shuffle8.alpha}
+ addUserKnob {41 disable_1 l Character_Matt_Enable T Copy2.disable}
+ addUserKnob {41 disable_3 l Depth_Enable T Shuffle7.disable}
+ addUserKnob {41 disable_2 l "Shuffle Off" T Shuffle8.disable}
+}
+ Input {
+  inputs 0
+  name Matt
+  xpos 371
+  ypos -217
+  number 7
+ }
+set N36f1c00 [stack 0]
+ Viewer {
+  frame_range 3-98
+  channels rgb
+  input_process false
+  name Viewer1
+  xpos 451
+  ypos 52
+ }
+push $N36f1c00
+ Shuffle {
+  in rgb
+  red off
+  green off
+  blue off
+  alpha off
+  name Shuffle8
+  xpos 371
+  ypos -173
+  disable true
+ }
+ Input {
+  inputs 0
+  name z_Depth
+  xpos 242
+  ypos -216
+  number 6
+ }
+ Shuffle {
+  out depth
+  name Shuffle7
+  selected true
+  xpos 242
+  ypos -176
+ }
+ Input {
+  inputs 0
+  name Shadow
+  xpos 125
+  ypos -214
+  number 5
+ }
+ Shuffle {
+  name Shuffle6
+  xpos 125
+  ypos -174
+ }
+ Input {
+  inputs 0
+  name Refraction
+  xpos -10
+  ypos -214
+  number 8
+ }
+ Shuffle {
+  name Shuffle9
+  xpos -10
+  ypos -174
+ }
+ Input {
+  inputs 0
+  name Transulance
+  xpos -128
+  ypos -220
+  number 4
+ }
+ Shuffle {
+  name Shuffle5
+  xpos -128
+  ypos -180
+ }
+ Input {
+  inputs 0
+  name Speculer
+  xpos -232
+  ypos -212
+  number 3
+ }
+ Shuffle {
+  name Shuffle4
+  xpos -232
+  ypos -172
+ }
+ Input {
+  inputs 0
+  name Reflection
+  xpos -356
+  ypos -208
+  number 2
+ }
+ Shuffle {
+  name Shuffle3
+  xpos -356
+  ypos -160
+ }
+ Input {
+  inputs 0
+  name Amb_Occ
+  xpos -608
+  ypos -199
+ }
+ Shuffle {
+  name Shuffle1
+  xpos -608
+  ypos -117
+ }
+ Input {
+  inputs 0
+  name Beauty
+  xpos -474
+  ypos -205
+  number 1
+ }
+ Shuffle {
+  name Shuffle2
+  xpos -474
+  ypos -163
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name m
+  xpos -474
+  ypos -117
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Refl
+  xpos -356
+  ypos -117
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge3
+  xpos -246
+  ypos -117
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge4
+  xpos -144
+  ypos -117
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge1
+  xpos -26
+  ypos -117
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  mix 0
+  name Merge5
+  xpos 109
+  ypos -117
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 242
+  ypos -123
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 371
+  ypos -123
+  disable true
+ }
+ Premult {
+  name Premult1
+  xpos 371
+  ypos -60
+ }
+set N28ec8000 [stack 0]
+push $N28ec8000
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 371
+  ypos -16
+ }
+ Output {
+  name Comp
+  xpos 371
+  ypos 73
+ }
+end_group

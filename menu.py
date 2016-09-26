@@ -117,6 +117,7 @@ import collectScript
 import makeShotDirPick
 import batchrenamer
 import wavePanel
+import A_Autocomper
 
 
 ## extra commands
@@ -129,6 +130,10 @@ PyTools = toolbar.addMenu ("Python Tools", icon = "Jose_Icon.png")
 ## Menu items (manually sorted)
 
 ## autocomper is incomplete
+PyTools.addCommand('A_Autocomper', 'A_Autocomper.start()', 'ctrl+a', icon='AP.png')
+PyTools.addCommand("Aton", "nuke.createNode(\"Aton\")", icon="aton.png")
+
+
 PyTools.addCommand('autocomper', 'autoComper.autoComper()', icon='autoComper.png' )
 PyTools.addCommand('Batch Rename', 'import batchrenamer; batchrenamer.main()')
 PyTools.addCommand("collectScript", "collectScript.mainFunction()") 
