@@ -1,0 +1,190 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name despillToColor
+ selected true
+ xpos -377
+ ypos 20
+ addUserKnob {20 User l main}
+ addUserKnob {4 bluegreen l "screen type" M {blue green ""}}
+ bluegreen green
+ addUserKnob {6 despillColor_add_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 NoOp1_screencolor l screencolor t "Pick screen color for best results."}
+ NoOp1_screencolor {0.051 0.05 0.05}
+ addUserKnob {6 NoOp1_screencolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 NoOp1_targetcolor l targetcolor t "Pick a color from the fg object or set your target color manually."}
+ NoOp1_targetcolor {0.051 0.05 0.05}
+ addUserKnob {6 NoOp1_targetcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 despillBalance_white l balance t "For blue despill: Lower values stronger affect red tones. Higher values affect greens more.\n\nFor green despill: red = lower, blue = higher" R 0 4}
+ despillBalance_white 1
+ addUserKnob {6 despillBalance_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 despillGain_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 despillGain_white l gain t "Increasing gain will affect a wider range of colors." R 0 4}
+ despillGain_white 1
+ addUserKnob {6 despillGain_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {80 despillGamma_disable l enable -STARTLINE}
+ addUserKnob {19 despillGamma_gamma l falloff t "- controls the falloff in semi transparent areas." R 0.2 5}
+ despillGamma_gamma 1
+ addUserKnob {6 despillGamma_gamma_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {80 erodePlus_disable l enable -STARTLINE}
+ addUserKnob {14 despillGaussian_size l "gauss erode" t "Instead of increasing the gain (for example to ged rid of spill in very defocussed edges) you can also erode the despill mask inward to get rid of that edge." R -100 100}
+ addUserKnob {19 erodeFalloff_gamma l falloff R 0.2 5}
+ erodeFalloff_gamma 1
+ addUserKnob {6 erodeFalloff_gamma_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {8 erodePlus_mix l mix}
+ erodePlus_mix 1
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelMask l mask -STARTLINE T Merge1.maskChannelMask}
+ addUserKnob {41 inject -STARTLINE T Merge1.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge1.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge1.fringe}
+ addUserKnob {41 unpremult l "(un)premult by" T despillGrade.unpremult}
+ addUserKnob {41 mix T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {20 info n 1}
+ info 0
+ addUserKnob {26 jm l "" +STARTLINE T "Despill to Color by Johannes Masanz\nVersion: 3.2"}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name source
+  xpos -84
+  ypos 12
+ }
+set N7d771400 [stack 0]
+ NoOp {
+  name NoOp1
+  xpos 69
+  ypos 44
+  addUserKnob {20 User}
+  addUserKnob {7 alphavalueGreen}
+  alphavalueGreen {{(screencolor.g*parent.despillGain_white)-((screencolor.b*(1-(parent.despillBalance_white-1))+screencolor.r*parent.despillBalance_white)/2)}}
+  addUserKnob {7 alphavalue l alphavalueBlue}
+  alphavalue {{(screencolor.b*parent.despillGain_white)-((screencolor.g*(1-(parent.despillBalance_white-1))+screencolor.r*parent.despillBalance_white)/2)}}
+  addUserKnob {18 screencolor}
+  screencolor {{parent.NoOp1_screencolor.r} {parent.NoOp1_screencolor.g} {parent.NoOp1_screencolor.b}}
+  addUserKnob {6 screencolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  screencolor_panelDropped {{parent.NoOp1_screencolor_panelDropped}}
+  addUserKnob {6 targetcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  targetcolor_panelDropped {{parent.NoOp1_targetcolor_panelDropped}}
+  addUserKnob {18 targetcolor}
+  targetcolor {{parent.NoOp1_targetcolor.r} {parent.NoOp1_targetcolor.g} {parent.NoOp1_targetcolor.b}}
+  addUserKnob {6 targetcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos -234
+  ypos 155
+  number 1
+ }
+push $N7d771400
+ Expression {
+  expr0 r
+  expr1 g
+  expr2 b
+  channel3 alpha
+  expr3 parent.bluegreen==0?(b*parent.despillGain_white-(r*parent.despillBalance_white+g*(1-(parent.despillBalance_white-1)))/2):(g*parent.despillGain_white-(r*parent.despillBalance_white+b*(1-(parent.despillBalance_white-1)))/2)
+  name Expression1
+  xpos 456
+  ypos 12
+ }
+ Grade {
+  channels alpha
+  whitepoint {{(parent.NoOp1.alphavalue*1.1)*(1-parent.bluegreen)+(parent.NoOp1.alphavalueGreen*1.1)*(parent.bluegreen)}}
+  name despillWhite
+  xpos 456
+  ypos 38
+ }
+set N7d770800 [stack 0]
+ Clamp {
+  name Clamp1
+  xpos 356
+  ypos 38
+ }
+ Dot {
+  name Dot1
+  xpos 330
+  ypos 48
+ }
+set N7d770000 [stack 0]
+ FilterErode {
+  size {{-parent.despillGaussian_size.w} {-parent.despillGaussian_size.h}}
+  filter gaussian
+  name despillGaussian
+  xpos 220
+  ypos 38
+ }
+ Grade {
+  channels alpha
+  gamma {{parent.erodeFalloff_gamma.r} {parent.erodeFalloff_gamma.g} {parent.erodeFalloff_gamma.b} {parent.erodeFalloff_gamma.a}}
+  black_clamp false
+  name erodeFalloff
+  xpos 220
+  ypos 76
+ }
+push $N7d770000
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos 220
+  ypos 123
+ }
+push $N7d770800
+ Grade {
+  channels alpha
+  gamma {{parent.despillGamma_gamma.r} {parent.despillGamma_gamma.g} {parent.despillGamma_gamma.b} {parent.despillGamma_gamma.a}}
+  name despillGamma
+  xpos 456
+  ypos 76
+  disable {{1-parent.despillGamma_disable}}
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  mix {{parent.erodePlus_mix}}
+  name erodePlus
+  xpos 456
+  ypos 123
+  disable {{1-parent.erodePlus_disable}}
+ }
+ Grade {
+  channels alpha
+  whitepoint {{parent.despillWhite.whitepoint}}
+  reverse true
+  name Grade4
+  xpos 456
+  ypos 149
+ }
+push $N7d771400
+ Grade {
+  inputs 1+1
+  channels rgba
+  add {{parent.bluegreen==0?(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,100))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,1000000))):(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,10000))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,1000000)))} {parent.bluegreen==0?(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,100))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,1000000))):(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,10000))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,1000000)))} {parent.bluegreen==0?(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,100))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,1000000))):(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,10000))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,1000000)))} {parent.bluegreen==0?(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,100))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalue),0,1000000))):(parent.NoOp1.targetcolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,10000))-parent.NoOp1.screencolor*(clamp(1/clamp(parent.NoOp1.alphavalueGreen),0,1000000)))}}
+  black_clamp false
+  unpremult -rgba.alpha
+  name despillGrade
+  xpos 69
+  ypos 155
+ }
+push $N7d771400
+ Merge2 {
+  inputs 2+1
+  operation copy
+  maskChannelInput -rgba.alpha
+  name Merge1
+  xpos -84
+  ypos 155
+ }
+ Output {
+  name Output1
+  xpos -84
+  ypos 181
+ }
+end_group

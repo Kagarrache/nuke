@@ -206,4 +206,8 @@ if __name__ == '__main__':
 
 
 ## PLUGINS
-nuke.load("aton")
+if nuke.NUKE_VERSION_STRING == '9.0v8':
+    ##nuke.load("aton")
+    nuke.load("superpose")
+
+

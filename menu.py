@@ -50,6 +50,8 @@
 # be a new top-level menu, 'MyCustomMenu', which would have a 'SubMenu', which
 # would have an entry to create a 'MakeAwesome' node.
 
+toolbar = nuke.menu('Nodes')
+
 
 if __name__ == '__main__':
   # Just in case they didn't use the supplied init.py
@@ -60,6 +62,8 @@ if __name__ == '__main__':
       gizManager.addGizmoMenuItems()
       # Don't need it no more...
       del gizManager
+
+
 
 ## EXTRA PANELS
 
@@ -75,8 +79,8 @@ def addFovCalc():
 nuke.menu('Pane').addCommand( 'Fov Calculator', addFovCalc )
 nukescripts.registerPanel( 'com.ohufx.FovCalculator', addFovCalc )
 
-
-
+## Superpose
+nuke.menu("Nodes").addMenu("Superpose").addCommand("Superpose","nuke.createNode('Superpose')")
 
 # ANIMATION ITEMS----------------------------------------#
 m=nuke.menu('Animation').findItem('Predefined')
@@ -85,7 +89,8 @@ m.addCommand('Reverse curve', 'nuke.load("animation_curve_reverse"), animation_c
 
 ##Ym_AlignNode
 import Ym_AlignNode
-YmAlign = toolbar.addMenu("Ym AlignNode", icon = "AlignNode.png")
+
+YmAlign = toolbar.addMenu('Ym_AlignNode', icon = 'AlignNode.png')
 YmAlign.addCommand("Left X", "Ym_AlignNode.F_AlignLX()", "Ctrl+F1", icon = "leftX.png")
 YmAlign.addCommand("Center X", "Ym_AlignNode.F_AlignCX()", "Ctrl+F2", icon = "centerX.png")
 YmAlign.addCommand("Right X", "Ym_AlignNode.F_AlignRX()", "Ctrl+F3", icon = "rightX.png")

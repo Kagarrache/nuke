@@ -1,0 +1,207 @@
+#! /Applications/Nuke6.2v1b1/NukeX6.2v1b1.app/../Nuke6.2v1b1.app/Contents/MacOS/Nuke6.2v1b1 -nx
+version 6.2 v1b1
+Gizmo {
+ inputs 2
+ addUserKnob {20 CornerPin}
+ addUserKnob {41 to1 T CornerPin2D1.to1}
+ addUserKnob {41 enable1 -STARTLINE T CornerPin2D1.enable1}
+ addUserKnob {41 to2 T CornerPin2D1.to2}
+ addUserKnob {41 enable2 -STARTLINE T CornerPin2D1.enable2}
+ addUserKnob {41 to3 T CornerPin2D1.to3}
+ addUserKnob {41 enable3 -STARTLINE T CornerPin2D1.enable3}
+ addUserKnob {41 to4 T CornerPin2D1.to4}
+ addUserKnob {41 enable4 -STARTLINE T CornerPin2D1.enable4}
+ addUserKnob {41 filter T CornerPin2D1.filter}
+ addUserKnob {41 clamp -STARTLINE T CornerPin2D1.clamp}
+ addUserKnob {41 black_outside l "black outside" -STARTLINE T CornerPin2D1.black_outside}
+ addUserKnob {41 motionblur T CornerPin2D1.motionblur}
+ addUserKnob {41 shutter T CornerPin2D1.shutter}
+ addUserKnob {41 shutteroffset l "shutter offset" T CornerPin2D1.shutteroffset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T CornerPin2D1.shuttercustomoffset}
+ addUserKnob {14 AdjBBox1_numpixels l "Add Pixels" R 0 100}
+ AdjBBox1_numpixels 1024
+ addUserKnob {20 "" l From}
+ addUserKnob {41 from1 T CornerPin2D1.from1}
+ addUserKnob {41 from2 T CornerPin2D1.from2}
+ addUserKnob {41 from3 T CornerPin2D1.from3}
+ addUserKnob {41 from4 T CornerPin2D1.from4}
+}
+ Input {
+  inputs 0
+  name ctrlMask
+  xpos -40
+  ypos -51
+  number 1
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  alpha black
+  name Shuffle1
+  xpos -40
+  ypos -24
+ }
+ Input {
+  inputs 0
+  name img
+  xpos -385
+  ypos -227
+ }
+set N204e4800 [stack 0]
+ Remove {
+  name Remove1
+  xpos -210
+  ypos -232
+ }
+ AdjBBox {
+  numpixels {{parent.AdjBBox1_numpixels.w i} {parent.AdjBBox1_numpixels.h i}}
+  name AdjBBox1
+  xpos -210
+  ypos -192
+ }
+ Expression {
+  expr0 x
+  expr1 y
+  name Expression1
+  xpos -210
+  ypos -140
+ }
+set N204ef010 [stack 0]
+ Dot {
+  name Dot2
+  xpos -286
+  ypos -136
+ }
+ CornerPin2D {
+  to1 {{parent.CornerPin2D1.to1 i} {parent.CornerPin2D1.to1 i}}
+  enable1 {{parent.CornerPin2D1.enable1 i}}
+  to2 {{parent.CornerPin2D1.to2 i} {parent.CornerPin2D1.to2 i}}
+  enable2 {{parent.CornerPin2D1.enable2 i}}
+  to3 {{parent.CornerPin2D1.to3 i} {parent.CornerPin2D1.to3 i}}
+  enable3 {{parent.CornerPin2D1.enable3 i}}
+  to4 {{parent.CornerPin2D1.to4 i} {parent.CornerPin2D1.to4 i}}
+  enable4 {{parent.CornerPin2D1.enable4 i}}
+  filter {{CornerPin2D1.filter i}}
+  clamp {{parent.CornerPin2D1.clamp i}}
+  black_outside {{parent.CornerPin2D1.black_outside i}}
+  motionblur {{parent.CornerPin2D1.motionblur i}}
+  shutter {{parent.CornerPin2D1.shutter i}}
+  shutteroffset {{CornerPin2D1.shutteroffset i}}
+  shuttercustomoffset {{parent.CornerPin2D1.shuttercustomoffset i}}
+  from1 {{parent.CornerPin2D1.from1 i} {parent.CornerPin2D1.from1 i}}
+  from2 {{parent.CornerPin2D1.from2 i} {parent.CornerPin2D1.from2 i}}
+  from3 {{parent.CornerPin2D1.from3 i} {parent.CornerPin2D1.from3 i}}
+  from4 {{parent.CornerPin2D1.from4 i} {parent.CornerPin2D1.from4 i}}
+  name CornerPin2D2
+  xpos -320
+  ypos -72
+ }
+push $N204ef010
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos -210
+  ypos -72
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  xpos -210
+  ypos -24
+ }
+set N2630bd10 [stack 0]
+ Dot {
+  name Dot1
+  xpos -270
+  ypos -21
+ }
+ Dot {
+  name Dot3
+  xpos -270
+  ypos 162
+ }
+push $N204e4800
+ Dot {
+  name Dot4
+  xpos -351
+  ypos 48
+ }
+set N26319330 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  from1 rgba.green
+  to1 rgba.green
+  name Copy2
+  xpos -385
+  ypos 144
+ }
+ IDistort {
+  channels none
+  name IDistort1
+  xpos -385
+  ypos 182
+ }
+push $N2630bd10
+push $N26319330
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.u
+  from1 rgba.green
+  to1 forward.v
+  name Copy1
+  xpos -210
+  ypos 30
+ }
+ IDistort {
+  uv forward
+  name IDistort2
+  xpos -210
+  ypos 86
+ }
+ Remove {
+  channels none
+  name Remove2
+  xpos -210
+  ypos 124
+ }
+ Copy {
+  inputs 2
+  from0 -rgba.alpha
+  to0 -rgba.alpha
+  name Copy3
+  xpos -210
+  ypos 182
+ }
+ Crop {
+  box {0 0 {input.width i} {input.height i}}
+  name Crop1
+  xpos -210
+  ypos 245
+ }
+ Output {
+  name Output1
+  xpos -210
+  ypos 299
+ }
+ CornerPin2D {
+  inputs 0
+  to1 {0 0}
+  to2 {2048 0}
+  to3 {2048 1556}
+  to4 {0 1556}
+  from1 {0 0}
+  from2 {2048 0}
+  from3 {2048 1556}
+  from4 {0 1556}
+  name CornerPin2D1
+  selected true
+  xpos -459
+  ypos -66
+ }
+end_group

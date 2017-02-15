@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="0" w="1920" h="1080" screen="0">
+        <splitter orientation="2">
+            <split size="63"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="951"/>
+            <splitter orientation="1">
+                <split size="1378"/>
+                <splitter orientation="2">
+                    <split size="608"/>
+                    <splitter orientation="1">
+                        <split size="886"/>
+                        <dock id="" activePageId="Viewer.1">
+                            <page id="Viewer.1"/>
+                        </dock>
+                        <split size="488"/>
+                        <dock id="" activePageId="uk.co.thefoundry.timeline.2">
+                            <page id="uk.co.thefoundry.timeline.2" layout="splitter(244,240)"/>
+                        </dock>
+                    </splitter>
+                    <split size="339"/>
+                    <dock id="" activePageId="DAG.1" focus="true">
+                        <page id="DAG.1"/>
+                        <page id="Curve Editor.1"/>
+                        <page id="DopeSheet.1"/>
+                        <page id="uk.co.thefoundry.backgroundrenderview.1"/>
+                    </dock>
+                </splitter>
+                <split size="522"/>
+                <splitter orientation="2">
+                    <split size="776"/>
+                    <dock id="" activePageId="Properties.1">
+                        <page id="Properties.1"/>
+                    </dock>
+                    <split size="171"/>
+                    <dock id="" activePageId="Progress.1">
+                        <page id="Progress.1"/>
+                    </dock>
+                </splitter>
+            </splitter>
+        </splitter>
+    </window>
+</layout>

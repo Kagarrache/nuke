@@ -1,0 +1,358 @@
+#! /usr/local/Nuke10.5v1/libnuke-10.5.1.so -nx
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2012-2017, Ryan P. Wilson
+#
+#      Authority FX, Inc.
+#      www.authorityfx.com
+
+# Algorithms from https://github.com/AuthorityFX/afx-nuke-plugins/blob/master/src/afx_despill.cpp
+
+version 10.5 v1
+Gizmo {
+ inputs 2
+ addUserKnob {20 AFXDeSpill}
+ addUserKnob {41 screen_color l "Screen Color" T Ctrls.screen_color}
+ addUserKnob {26 settings_div l Settings}
+ addUserKnob {41 amount l "Spill Amount" T Ctrls.amount}
+ addUserKnob {41 lightness_adj l "Lightness Adjustment" T Ctrls.lightness_adj}
+ addUserKnob {41 algorithm l Algorithm T Ctrls.algorithm}
+ addUserKnob {26 output_div l Output}
+ addUserKnob {41 spill_matte l "Spill Matte" T Ctrls.spill_matte}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -588
+  ypos -210
+ }
+ Dot {
+  name Dot20
+  xpos -555
+  ypos -77
+ }
+set Nb6eac60 [stack 0]
+ NoOp {
+  name ref_suppression
+  xpos -95
+  ypos -18
+  addUserKnob {20 User}
+  addUserKnob {7 ref_suppression}
+  ref_suppression {{"\[python -execlocal import\\ math\\n\\nn\\ =\\ nuke.toNode(\\\"Ctrls\\\")\\nalgorithm\\ =\\ n.knob(\\\"algorithm\\\").value()\\nrgb\\ =\\ n.knob(\\\"screen_color\\\").value()\\n\\na\\ =\\ 0.5\\ *\\ (2.0\\ *\\ rgb\\\[0\\]\\ -\\ rgb\\\[1\\]\\ -\\ rgb\\\[2\\])\\nb\\ =\\ (math.sqrt(3.0)\\ /\\ 2.0)\\ *\\ (rgb\\\[1\\]\\ -\\ rgb\\\[2\\])\\n\\nhue\\ =\\ math.atan2(b,\\ a)\\ /\\ (2.0\\ *\\ math.pi)\\nhue\\ =\\ math.fmod(hue,\\ 1.0)\\nif\\ hue\\ <\\ 0:\\n\\ \\ \\ \\ hue\\ +=\\ 1.0\\n\\nif\\ rgb\\\[1\\]\\ >\\ rgb\\\[2\\]:\\n\\ \\ \\ \\ center\\ =\\ 1/3\\nelse:\\n\\ \\ \\ \\ center\\ =\\ \\ 2/3\\n\\nangle\\ =\\ \\ 2\\ *\\ math.pi\\ *\\ (center\\ -\\ hue)\\n\\ncosA\\ =\\ math.cos(angle)\\nsinA\\ =\\ math.sin(angle)\\nx\\ =\\ 1\\ /\\ math.sqrt(3)\\nxx\\ =\\ 1\\ /\\ 3\\n\\nm\\ =\\ \\\[\\ \\\[\\ cosA\\ +\\ xx\\ *\\ (1\\ -\\ cosA),\\ \\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ xx\\ *\\ (1\\ -\\ cosA)\\ -\\ x\\ *\\ sinA,\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ xx\\ *\\ (1\\ -\\ cosA)\\ +\\ x\\ *\\ sinA\\ \\],\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\\[\\ xx\\ *\\ (1\\ -\\ cosA)\\ +\\ x\\ *\\ sinA,\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ cosA\\ +\\ xx\\ *\\ (1\\ -\\ cosA),\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -x\\ *\\ sinA\\ +\\ xx\\ *\\ (1\\ -\\ cosA)\\ \\],\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\\[\\ xx\\ *\\ (1\\ -\\ cosA)\\ -\\ x\\ *\\ sinA,\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ xx\\ *\\ (1\\ -\\ cosA)\\ +\\ x\\ *\\ sinA,\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ cosA\\ +\\ xx\\ *\\ (1\\ -\\ cosA)\\ \\]\\ \\]\\n\\ntemp\\ =\\ \\\[0.0,\\ 0.0,\\ 0.0\\]\\nfor\\ r\\ in\\ range(3):\\n\\ \\ \\ \\ for\\ c\\ in\\ range(3):\\n\\ \\ \\ \\ \\ \\ \\ \\ temp\\\[r\\]\\ +=\\ m\\\[r\\]\\\[c\\]\\ *\\ rgb\\\[c\\]\\n\\ \\ \\ \\ rgb\\\[r\\]\\ =\\ temp\\\[r\\]\\n\\ntemp\\ =\\ 0\\nsuppression\\ =\\ 0\\n\\ns\\ =\\ rgb\\\[1\\]\\nother\\ =\\ rgb\\\[2\\]\\nif\\ rgb\\\[2\\]\\ >\\ rgb\\\[1\\]:\\n\\ \\ \\ \\ s\\ =\\ rgb\\\[2\\]\\n\\ \\ \\ \\ other\\ =\\ rgb\\\[1\\]\\n\\nif\\ algorithm\\ ==\\ \\\"Light\\\":\\n\\ \\ \\ \\ temp\\ =\\ s\\ -\\ max(rgb\\\[0\\],\\ other)\\n\\ \\ \\ \\ if\\ temp\\ >\\ 0:\\n\\ \\ \\ \\ \\ \\ \\ \\ suppression\\ =\\ temp\\nelif\\ algorithm\\ ==\\ \\\"Medium\\\":\\n\\ \\ \\ \\ temp\\ =\\ 2\\ *\\ s\\ -\\ max(rgb\\\[0\\],\\ other)\\ -\\ (rgb\\\[0\\]\\ +\\ other\\ )\\ /\\ 2.0\\n\\ \\ \\ \\ if\\ temp\\ >\\ 0:\\n\\ \\ \\ \\ \\ \\ \\ \\ suppression\\ =\\ temp\\ /\\ 2.0\\nelif\\ algorithm\\ ==\\ \\\"Hard\\\":\\n\\ \\ \\ \\ temp\\ =\\ s\\ -\\ (rgb\\\[0\\]\\ +\\ other)\\ /\\ 2.0\\n\\ \\ \\ \\ if\\ temp\\ >\\ 0:\\n\\ \\ \\ \\ \\ \\ \\ \\ suppression\\ =\\ temp\\nelif\\ algorithm\\ ==\\ \\\"Harder\\\":\\n\\ \\ \\ \\ temp\\ =\\ 3\\ *\\ s\\ -\\ (rgb\\\[0\\]\\ +\\ other)\\ -\\ min(rgb\\\[0\\],\\ other\\ )\\n\\ \\ \\ \\ if\\ temp\\ >\\ 0:\\n\\ \\ \\ \\ \\ \\ \\ \\ suppression\\ =\\ temp\\ /\\ 3.0\\nelif\\ algorithm\\ ==\\ \\\"Even\\ Harder\\\":\\n\\ \\ \\ \\ temp\\ =\\ 2\\ *\\ s\\ -\\ (rgb\\\[0\\]\\ +\\ other)\\ /\\ 2.0\\ -\\ min(rgb\\\[0\\],\\ other\\ )\\n\\ \\ \\ \\ if\\ temp\\ >\\ 0:\\n\\ \\ \\ \\ \\ \\ \\ \\ suppression\\ =\\ temp\\ /\\ 2.0\\nelif\\ algorithm\\ ==\\ \\\"Extreme\\\":\\n\\ \\ \\ \\ temp\\ =\\ 3\\ *\\ s\\ -\\ (rgb\\\[0\\]\\ +\\ other)\\ /\\ 2.0\\ -\\ 2\\ *\\ min(rgb\\\[0\\],\\ other\\ )\\n\\ \\ \\ \\ if\\ temp\\ >\\ 0:\\n\\ \\ \\ \\ \\ \\ \\ \\ suppression\\ =\\ temp\\ /\\ 3.0\\nelif\\ algorithm\\ ==\\ \\\"Uber\\\":\\n\\ \\ \\ \\ temp\\ =\\ 4\\ *\\ s\\ -\\ (rgb\\\[0\\]\\ +\\ other)\\ /\\ 2.0\\ -\\ 2\\ *\\ min(rgb\\\[0\\],\\ other\\ )\\n\\ \\ \\ \\ if\\ temp\\ >\\ 0:\\n\\ \\ \\ \\ \\ \\ \\ \\ suppression\\ =\\ temp\\ /\\ 4.0\\n\\nret\\ =\\ suppression\\n]"}}
+ }
+push $Nb6eac60
+ Dot {
+  name Dot29
+  xpos -555
+  ypos 428
+ }
+set Nb6f6680 [stack 0]
+ Expression {
+  channel0 none
+  channel1 none
+  channel2 none
+  channel3 alpha
+  expr3 "pow(0.2126 * r + 0.7152 * g + 0.0722 * b, 1.0 / 3.0)"
+  name lightness_before
+  xpos -588
+  ypos 552
+ }
+ Input {
+  inputs 0
+  name spill_holdout
+  xpos 97
+  ypos 453
+  number 1
+ }
+push $Nb6f6680
+ Dot {
+  name Dot30
+  xpos -422
+  ypos 428
+ }
+push $Nb6eac60
+ ColorMatrix {
+  matrix {
+      {{"cosA + (1/sqrt(3)) * (1 - cosA)"} {"(1/3) * (1 - cosA) - ((1/sqrt(3)) * sinA)"} {"(1/3) * (1 - cosA) + ((1/sqrt(3)) * sinA)"}}
+      {{"(1/3) * (1 - cosA) + ((1/sqrt(3)) * sinA)"} {"cosA + (1/sqrt(3)) * (1 - cosA)"} {"-(1/sqrt(3)) * sinA + (1/3) * (1 - cosA)"}}
+      {{"(1/3) * (1 - cosA) - ((1/sqrt(3)) * sinA)"} {"(1/3) * (1 - cosA) + ((1/sqrt(3)) * sinA)"} {"cosA + (1/sqrt(3)) * (1 - cosA)"}}
+    }
+  name hue_shift_matrix
+  xpos -311
+  ypos 22
+  addUserKnob {20 User}
+  addUserKnob {7 angle}
+  angle {{"\[python -execlocal import\\ math\\n\\nn\\ =\\ nuke.toNode(\\\"Ctrls\\\")\\nrgb\\ =\\ n.knob(\\\"screen_color\\\").value()\\n\\na\\ =\\ 0.5\\ *\\ (2.0\\ *\\ rgb\\\[0\\]\\ -\\ rgb\\\[1\\]\\ -\\ rgb\\\[2\\])\\nb\\ =\\ (math.sqrt(3.0)\\ /\\ 2.0)\\ *\\ (rgb\\\[1\\]\\ -\\ rgb\\\[2\\])\\n\\nhue\\ =\\ math.atan2(b,\\ a)\\ /\\ (2.0\\ *\\ math.pi)\\nhue\\ =\\ math.fmod(hue,\\ 1.0)\\nif\\ hue\\ <\\ 0:\\n\\ \\ \\ \\ hue\\ +=\\ 1.0\\n\\nif\\ rgb\\\[1\\]\\ >\\ rgb\\\[2\\]:\\n\\ \\ \\ \\ center\\ =\\ 1/3\\nelse:\\n\\ \\ \\ \\ center\\ =\\ \\ 2/3\\n\\nangle\\ =\\ \\ 2\\ *\\ math.pi\\ *\\ (center\\ -\\ hue)\\n\\n\\nangle\\ =\\ \\ 360\\ *\\ (center\\ -\\ hue\\ )\\n\\nret\\ =\\ angle\\ *\\ math.pi\\ /\\ 180.0]"}}
+  addUserKnob {7 cosA}
+  cosA {{cos(angle)}}
+  addUserKnob {7 sinA}
+  sinA {{sin(angle)}}
+ }
+ Dot {
+  name Dot31
+  xpos -278
+  ypos 125
+ }
+set Nb6ee1f0 [stack 0]
+ Expression {
+  temp_name0 s
+  temp_expr0 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g : b"
+  temp_name1 other
+  temp_expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? b : g"
+  temp_name2 temp
+  temp_expr2 "4 * s - (r + other) / 2.0 - 2 * min(r, other)"
+  temp_name3 suppression
+  temp_expr3 "temp > 0 ? Ctrls.amount * temp / 4.0 : 0"
+  channel0 none
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g - suppression : g"
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 "Ctrls.screen_color.b > Ctrls.screen_color.g ? b - suppression : b"
+  channel3 {{{Ctrls.spill_matte}}}
+  expr3 "suppression / max(ref_suppression.ref_suppression, 0.008)"
+  name uber
+  xpos 287
+  ypos 233
+ }
+push $Nb6ee1f0
+ Expression {
+  temp_name0 s
+  temp_expr0 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g : b"
+  temp_name1 other
+  temp_expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? b : g"
+  temp_name2 temp
+  temp_expr2 "3 * s - (r + other) / 2.0 - 2 * min(r, other)"
+  temp_name3 suppression
+  temp_expr3 "temp > 0 ? Ctrls.amount * temp / 3.0 : 0"
+  channel0 none
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g - suppression : g"
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 "Ctrls.screen_color.b > Ctrls.screen_color.g ? b - suppression : b"
+  channel3 {{{Ctrls.spill_matte}}}
+  expr3 "suppression / max(ref_suppression.ref_suppression, 0.008)"
+  name extreme
+  xpos 180
+  ypos 233
+ }
+push $Nb6ee1f0
+ Expression {
+  temp_name0 s
+  temp_expr0 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g : b"
+  temp_name1 other
+  temp_expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? b : g"
+  temp_name2 temp
+  temp_expr2 "2 * s - (r + other) / 2.0 - min(r, other)"
+  temp_name3 suppression
+  temp_expr3 "temp > 0 ? Ctrls.amount * temp / 2.0 : 0"
+  channel0 none
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g - suppression : g"
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 "Ctrls.screen_color.b > Ctrls.screen_color.g ? b - suppression : b"
+  channel3 {{{Ctrls.spill_matte}}}
+  expr3 "suppression / max(ref_suppression.ref_suppression, 0.008)"
+  name even_harder
+  xpos 65
+  ypos 232
+ }
+push $Nb6ee1f0
+ Expression {
+  temp_name0 s
+  temp_expr0 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g : b"
+  temp_name1 other
+  temp_expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? b : g"
+  temp_name2 temp
+  temp_expr2 "3 * s - (r + other) - min(r, other)"
+  temp_name3 suppression
+  temp_expr3 "temp > 0 ? Ctrls.amount * temp / 3.0 : 0"
+  channel0 none
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g - suppression : g"
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 "Ctrls.screen_color.b > Ctrls.screen_color.g ? b - suppression : b"
+  channel3 {{{Ctrls.spill_matte}}}
+  expr3 "suppression / max(ref_suppression.ref_suppression, 0.008)"
+  name harder
+  xpos -57
+  ypos 232
+ }
+push $Nb6ee1f0
+ Expression {
+  temp_name0 s
+  temp_expr0 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g : b"
+  temp_name1 other
+  temp_expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? b : g"
+  temp_name2 temp
+  temp_expr2 "s - (r + other) / 2.0"
+  temp_name3 suppression
+  temp_expr3 "temp > 0 ? Ctrls.amount * temp : 0"
+  channel0 none
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g - suppression : g"
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 "Ctrls.screen_color.b > Ctrls.screen_color.g ? b - suppression : b"
+  channel3 {{{Ctrls.spill_matte}}}
+  expr3 "suppression / max(ref_suppression.ref_suppression, 0.008)"
+  name hard
+  xpos -187
+  ypos 235
+ }
+push $Nb6ee1f0
+ Expression {
+  temp_name0 s
+  temp_expr0 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g : b"
+  temp_name1 other
+  temp_expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? b : g"
+  temp_name2 temp
+  temp_expr2 "2.0 * s - max(r, other) - (r + other) / 2.0"
+  temp_name3 suppression
+  temp_expr3 "temp > 0 ? Ctrls.amount * temp / 2.0 : 0"
+  channel0 none
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g - suppression : g"
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 "Ctrls.screen_color.b > Ctrls.screen_color.g ? b - suppression : b"
+  channel3 {{{Ctrls.spill_matte}}}
+  expr3 "suppression / max(ref_suppression.ref_suppression, 0.008)"
+  name medium
+  xpos -311
+  ypos 236
+ }
+push $Nb6ee1f0
+ Expression {
+  temp_name0 s
+  temp_expr0 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g : b"
+  temp_name1 other
+  temp_expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? b : g"
+  temp_name2 temp
+  temp_expr2 "s - max(r, other)"
+  temp_name3 suppression
+  temp_expr3 "temp > 0 ? Ctrls.amount * temp : 0"
+  channel0 none
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 "Ctrls.screen_color.g > Ctrls.screen_color.b ? g - suppression : g"
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 "Ctrls.screen_color.b > Ctrls.screen_color.g ? b - suppression : b"
+  channel3 {{{Ctrls.spill_matte}}}
+  expr3 "suppression / max(ref_suppression.ref_suppression, 0.008)"
+  name light
+  xpos -429
+  ypos 237
+ }
+ Switch {
+  inputs 7
+  which {{"\[python -execlocal n\\ =\\ nuke.toNode(\\\"Ctrls\\\")\\nalgorithm\\ =\\ n.knob(\\\"algorithm\\\").value()\\n\\ndef\\ f(x):\\n\\ \\ \\ \\ return\\ \\\{\\n\\ \\ \\ \\ \\ \\ \\ \\ 'Light'\\ :\\ 0,\\n\\ \\ \\ \\ \\ \\ \\ \\ 'Medium'\\ :\\ 1,\\n\\ \\ \\ \\ \\ \\ \\ \\ 'Hard'\\ :\\ 2,\\n\\ \\ \\ \\ \\ \\ \\ \\ 'Harder'\\ :\\ 3,\\n\\ \\ \\ \\ \\ \\ \\ \\ 'Even\\ Harder'\\ :\\ 4,\\n\\ \\ \\ \\ \\ \\ \\ \\ 'Extreme'\\ :\\ 5,\\n\\ \\ \\ \\ \\ \\ \\ \\ 'Uber'\\ :\\ 6,\\n\\ \\ \\ \\ \\\}\\\[x\\]\\n\\nret\\ =\\ f(algorithm)\\n\\n]"}}
+  name spill_algo_switch
+  xpos -187
+  ypos 360
+ }
+ ColorMatrix {
+  matrix {
+      {{parent.hue_shift_matrix.matrix} {parent.hue_shift_matrix.matrix} {parent.hue_shift_matrix.matrix}}
+      {{parent.hue_shift_matrix.matrix} {parent.hue_shift_matrix.matrix} {parent.hue_shift_matrix.matrix}}
+      {{parent.hue_shift_matrix.matrix} {parent.hue_shift_matrix.matrix} {parent.hue_shift_matrix.matrix}}
+    }
+  invert true
+  name inverse_hue_shift
+  xpos -187
+  ypos 470
+ }
+ Keymix {
+  inputs 3
+  channels rgba
+  bbox B
+  name spill_matte_mask
+  xpos -187
+  ypos 560
+ }
+ Dot {
+  name Dot39
+  xpos -154
+  ypos 647
+ }
+set Nc026c80 [stack 0]
+ Expression {
+  channel0 none
+  channel1 none
+  channel2 none
+  channel3 alpha
+  expr3 "pow(0.2126 * r + 0.7152 * g + 0.0722 * b, 1.0 / 3.0)"
+  name lightness_after
+  xpos -449
+  ypos 643
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  bbox A
+  Achannels {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  Bchannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name cal_lightness_adjust
+  xpos -588
+  ypos 637
+ }
+ Shuffle {
+  in alpha
+  red alpha
+  green alpha
+  blue alpha
+  out rgb
+  name Shuffle1
+  xpos -588
+  ypos 704
+ }
+ Dot {
+  name Dot41
+  xpos -555
+  ypos 829
+ }
+push $Nc026c80
+ Merge2 {
+  inputs 2
+  operation multiply
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  mix {{Ctrls.lightness_adj}}
+  name lightness_adjust
+  xpos -187
+  ypos 825
+ }
+ Clamp {
+  channels rgb
+  maximum_enable false
+  name clamp_negative_colors
+  xpos -187
+  ypos 902
+ }
+ Output {
+  name Output1
+  xpos -187
+  ypos 986
+ }
+push $Nb6eac60
+ NoOp {
+  name Ctrls
+  selected true
+  xpos -310
+  ypos -81
+  addUserKnob {20 AFXDespill}
+  addUserKnob {18 screen_color l "Screen Color" t "Color of Chroma Screen"}
+  screen_color {0 1 0}
+  addUserKnob {26 settings_div l Settings}
+  addUserKnob {7 amount l "Spill Amount" t "Amount of spill to remove"}
+  amount 1
+  addUserKnob {7 lightness_adj l "Lightness Adjustment" t "Adjust perceived lightness"}
+  lightness_adj 1
+  addUserKnob {4 algorithm l Algorithm t "Spill algorithm" M {Light Medium Hard Harder "Even Harder" Extreme Uber ""}}
+  algorithm Harder
+  addUserKnob {26 output_div l Output}
+  addUserKnob {10 spill_matte l "Spill Matte" t "Spill matte output"}
+  spill_matte none
+ }
+end_group

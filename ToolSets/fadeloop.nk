@@ -1,0 +1,90 @@
+# fadeloop
+#Creates endlessly loop of clip with cross fade
+Group {
+ name FadeLoop
+ tile_color 0xffffffff
+ label "\[value loopin] - \[value loopout]"
+ note_font "DejaVu Sans"
+ selected true
+ xpos -169
+ ypos -208
+ addUserKnob {20 User}
+ addUserKnob {3 start l "Input frame range"}
+ start 1001
+ addUserKnob {3 end l "" -STARTLINE}
+ end 1701
+ addUserKnob {22 inputrange l "Input Range" -STARTLINE T "n = nuke.thisNode()\nf = n.input(0).firstFrame()\nl = n.input(0).lastFrame() \n\nn\['start'].setValue(f)\nn\['end'].setValue(l)"}
+ addUserKnob {3 fadeframes l "Fade Frames"}
+ fadeframes 50
+ addUserKnob {3 offset l Offset}
+ addUserKnob {26 ""}
+ addUserKnob {3 loopin l INVISIBLE +INVISIBLE}
+ loopin {{start+offset}}
+ addUserKnob {3 loopout l INVISIBLE -STARTLINE +INVISIBLE}
+ loopout {{end-(fadeframes)+offset}}
+ addUserKnob {26 text l "" +STARTLINE T "Fade loop v1.3 by Richard Frazer\nRebuild of version by Sebastian Hesselsjo"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 515
+  ypos 86
+ }
+ Dot {
+  name Dot4
+  selected true
+  xpos 549
+  ypos 235
+ }
+set N73f8fc0 [stack 0]
+push $N73f8fc0
+ TimeOffset {
+  time_offset {{-(loopframes-parent.fadeframes)}}
+  time ""
+  name TimeOffset2
+  xpos 410
+  ypos 285
+  addUserKnob {20 User}
+  addUserKnob {3 loopframes l "loop frames"}
+  loopframes {{((parent.end+1)-parent.start)}}
+ }
+set N73fd100 [stack 0]
+ Dissolve {
+  inputs 2
+  which {{clamp((frame-parent.start)/parent.fadeframes)}}
+  name Dissolve3
+  xpos 515
+  ypos 339
+  addUserKnob {20 User}
+  addUserKnob {3 loopframes l "loop frames"}
+  loopframes {{((parent.end+1)-parent.start)}}
+  addUserKnob {7 fadepc}
+  fadepc {{parent.fadeframes/loopframes}}
+  addUserKnob {3 fadeframes}
+  fadeframes {{parent.fadeframes}}
+ }
+ TimeWarp {
+  lookup {{(parent.start+((frame-parent.start)%loopframes))+parent.offset C x1001 1001 x1062 1062}}
+  time ""
+  name TimeWarp1
+  xpos 515
+  ypos 463
+  addUserKnob {20 User}
+  addUserKnob {3 loopframes}
+  loopframes {{((parent.end+1)-parent.start)-parent.fadeframes}}
+ }
+ Output {
+  name Output1
+  xpos 518
+  ypos 590
+ }
+push $N73fd100
+ Viewer {
+  frame_range 1009-1978
+  fps 25
+  viewerProcess "Film (workstation)"
+  name Viewer1
+  xpos 240
+  ypos 489
+ }
+end_group

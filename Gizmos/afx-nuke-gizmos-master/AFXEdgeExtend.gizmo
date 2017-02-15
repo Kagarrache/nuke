@@ -1,0 +1,308 @@
+#! /usr/local/Nuke10.5v1/libnuke-10.5.1.so -nx
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2017, Ryan P. Wilson
+#
+#      Authority FX, Inc.
+#      www.authorityfx.com
+
+version 10.5 v1
+Gizmo {
+ inputs 3
+ addUserKnob {20 AFXEdgeExtend}
+ addUserKnob {41 erode l Erode T Ctrls.erode}
+ addUserKnob {41 distance l Distance T Ctrls.distance}
+ addUserKnob {41 vector_blur l "Vector Blur" T Ctrls.vector_blur}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -812
+  ypos -452
+ }
+ Dot {
+  name Dot2
+  xpos -779
+  ypos -337
+ }
+set N1019ff70 [stack 0]
+ NoOp {
+  name Ctrls
+  xpos -945
+  ypos -341
+  addUserKnob {20 AFXEdgeExtend}
+  addUserKnob {7 erode l Erode R 0 10}
+  erode 3
+  addUserKnob {7 distance l Distance R 0 20}
+  distance 10
+  addUserKnob {7 vector_blur l "Vector Blur" R 0 20}
+  vector_blur {{"distance / 2"}}
+ }
+ Input {
+  inputs 0
+  name matte
+  xpos -587
+  ypos -457
+  number 1
+ }
+ Dot {
+  name Dot3
+  xpos -554
+  ypos -346
+ }
+push $N1019ff70
+ Switch {
+  inputs 2
+  which {{"\[exists input1.parent.input]"}}
+  name alpha_switch
+  xpos -705
+  ypos -294
+ }
+ Dot {
+  name Dot34
+  xpos -554
+  ypos -202
+ }
+ FilterErode {
+  size {{Ctrls.erode}}
+  filter gaussian
+  name FilterErode3
+  xpos -587
+  ypos -114
+ }
+ Dot {
+  name Dot32
+  xpos -554
+  ypos -28
+ }
+set N102b3530 [stack 0]
+ Dot {
+  name Dot33
+  xpos -357
+  ypos -28
+ }
+set N102b7ee0 [stack 0]
+ Dot {
+  name Dot35
+  xpos -170
+  ypos -28
+ }
+ Dot {
+  name Dot5
+  xpos -170
+  ypos 240
+ }
+set N10051420 [stack 0]
+ Dot {
+  name Dot46
+  xpos -170
+  ypos 422
+ }
+set N102c1440 [stack 0]
+ Dot {
+  name Dot40
+  xpos -170
+  ypos 509
+ }
+ FilterErode {
+  size {{Ctrls.vector_blur}}
+  filter gaussian
+  name FilterErode1
+  xpos -329
+  ypos 499
+ }
+set N1ff94300 [stack 0]
+ Input {
+  inputs 0
+  name mask
+  xpos -931
+  ypos 341
+  number 2
+ }
+ Dot {
+  name Dot1
+  xpos -898
+  ypos 511
+ }
+push $N102c1440
+push $N10051420
+ Invert {
+  name Invert1
+  xpos -340
+  ypos 230
+ }
+push $N102b7ee0
+ Position {
+  translate {0 1}
+  name shift_up
+  xpos -265
+  ypos 42
+ }
+push $N102b7ee0
+ Merge2 {
+  inputs 2
+  operation minus
+  bbox B
+  Achannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  Bchannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name b_vec
+  xpos -390
+  ypos 36
+ }
+ Shuffle {
+  in alpha
+  red black
+  green red
+  out forward
+  name Shuffle2
+  xpos -390
+  ypos 101
+ }
+push $N102b3530
+ Position {
+  translate {1 0}
+  name shift_right
+  xpos -492
+  ypos 43
+ }
+push $N102b3530
+ Merge2 {
+  inputs 2
+  operation minus
+  bbox B
+  Achannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  Bchannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name u_vec
+  xpos -587
+  ypos 37
+ }
+ Shuffle {
+  in alpha
+  green black
+  out forward
+  out2 alpha
+  name Shuffle3
+  xpos -587
+  ypos 108
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 forward.v
+  name Copy2
+  xpos -587
+  ypos 165
+ }
+ Blur {
+  inputs 1+1
+  channels forward
+  size {{Ctrls.vector_blur}}
+  quality 5
+  name blur_vectors
+  xpos -587
+  ypos 230
+ }
+ Expression {
+  temp_name2 scale
+  temp_expr2 "max(sqrt((u*u)+(v*v)), 0.0008)"
+  channel0 {forward.u -forward.v}
+  expr0 "u / scale"
+  channel1 {-forward.u forward.v}
+  expr1 "v / scale"
+  channel2 none
+  channel3 none
+  name normalize_vectors
+  xpos -587
+  ypos 292
+ }
+push $N1019ff70
+ Dot {
+  name Dot38
+  xpos -779
+  ypos 353
+ }
+ Copy {
+  inputs 2
+  channels motion
+  bbox B
+  name Copy5
+  xpos -587
+  ypos 337
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  bbox B
+  name Copy6
+  xpos -587
+  ypos 412
+  disable {{"\[python -execlocal disable\\ =\\ True\\n\\nif\\ \\\"rgba.alpha\\\"\\ in\\ nuke.toNode(\\\"alpha_switch\\\").channels():\\n\\ \\ \\ \\ disable\\ =\\ False\\n\\nret\\ =\\ disable]"}}
+ }
+set Nc3fc350 [stack 0]
+ VectorBlur2 {
+  inputs 1+1
+  channels rgba
+  uv forward
+  blur_uv linear
+  scale {{Ctrls.distance}}
+  motion_falloff 1
+  offset -1
+  soft_lines true
+  name VectorBlur2_2
+  xpos -729
+  ypos 501
+ }
+set N10001020 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge2
+  xpos -329
+  ypos 592
+ }
+ Grade {
+  channels alpha
+  white 3
+  white_clamp true
+  name Grade1
+  xpos -329
+  ypos 642
+ }
+push $N1ff94300
+ Invert {
+  name Invert2
+  xpos -451
+  ypos 499
+ }
+push $N10001020
+push $Nc3fc350
+ Keymix {
+  inputs 3
+  bbox A
+  name Keymix1
+  xpos -587
+  ypos 599
+  disable {{"\[python -execlocal disable\\ =\\ True\\n\\nif\\ \\\"rgba.alpha\\\"\\ in\\ nuke.toNode(\\\"alpha_switch\\\").channels():\\n\\ \\ \\ \\ disable\\ =\\ False\\n\\nret\\ =\\ disable]" x2 1}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  bbox B
+  name Copy1
+  xpos -587
+  ypos 696
+  disable {{"\[python -execlocal disable\\ =\\ True\\n\\nif\\ \\\"rgba.alpha\\\"\\ in\\ nuke.toNode(\\\"alpha_switch\\\").channels():\\n\\ \\ \\ \\ disable\\ =\\ False\\n\\nret\\ =\\ disable]" x2 1}}
+ }
+ Output {
+  name Output1
+  xpos -587
+  ypos 793
+ }
+end_group

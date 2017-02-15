@@ -1,0 +1,86 @@
+#! /usr/local/Nuke10.5v1/libnuke-10.5.1.so -nx
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2012-2017, Ryan P. Wilson
+#
+#      Authority FX, Inc.
+#      www.authorityfx.com
+
+version 10.5 v1
+Gizmo {
+ addUserKnob {20 AFXMatteAdjust}
+ addUserKnob {41 threshold l Threshold T Ctrls.threshold}
+ addUserKnob {26 thresh_controls l "" +STARTLINE}
+ addUserKnob {41 falloff l Falloff T Ctrls.falloff}
+ addUserKnob {41 darks l Darks T Ctrls.darks}
+ addUserKnob {26 contrast_ctrls l "" +STARTLINE}
+ addUserKnob {41 contrast l Contrast T Ctrls.contrast}
+ addUserKnob {41 amount l Amount T Ctrls.amount}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 509
+  ypos -333
+ }
+ Dot {
+  name Dot1
+  xpos 542
+  ypos -254
+ }
+set N1bb0ee70 [stack 0]
+ Expression {
+  expr3 "clamp((Ctrls.contrast + 1) * (a - Ctrls.threshold) + Ctrls.threshold, 0, 1)"
+  name contrast
+  xpos 652
+  ypos -154
+ }
+push $N1bb0ee70
+ Expression {
+  channel0 none
+  channel1 none
+  channel2 none
+  expr3 "pow(a < Ctrls.threshold && a > 0 ? pow(a / Ctrls.threshold, pow(10, Ctrls.falloff))  * a : a, clamp(1.0 / Ctrls.darks, 0.0008, 125))"
+  name matte_threshold
+  xpos 509
+  ypos -148
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  Achannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  Bchannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  mix {{Ctrls.amount}}
+  name Merge1
+  xpos 509
+  ypos -62
+ }
+ Output {
+  name Output1
+  xpos 509
+  ypos 48
+ }
+push $N1bb0ee70
+ NoOp {
+  name Ctrls
+  xpos 652
+  ypos -258
+  addUserKnob {20 AFXMatteAdjust}
+  addUserKnob {7 threshold l Threshold}
+  threshold 0.2
+  addUserKnob {26 thresh_controls l "" +STARTLINE}
+  addUserKnob {7 falloff l Falloff}
+  falloff 0.5
+  addUserKnob {7 darks l Darks R 0.5 1.5}
+  darks 1
+  addUserKnob {26 contrast_ctrls l "" +STARTLINE}
+  addUserKnob {7 contrast l Contrast R 0 2}
+  contrast 1
+  addUserKnob {7 amount l Amount}
+  amount 0.5
+ }
+end_group

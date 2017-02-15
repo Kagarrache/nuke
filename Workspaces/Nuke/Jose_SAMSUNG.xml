@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="-8" y="-8" w="1936" h="1096" maximized="1" screen="0">
+        <splitter orientation="2">
+            <split size="64"/>
+            <splitter orientation="1">
+                <split size="330"/>
+                <dock id="" hideTitles="1"/>
+                <split size="1586"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                    <page id="Toolbar.1"/>
+                </dock>
+            </splitter>
+            <split size="966"/>
+            <splitter orientation="1">
+                <split size="1363"/>
+                <splitter orientation="2">
+                    <split size="618"/>
+                    <dock id="" activePageId="Viewer.1">
+                        <page id="Viewer.1"/>
+                    </dock>
+                    <split size="344"/>
+                    <dock id="" activePageId="DAG.1" focus="true">
+                        <page id="DAG.1"/>
+                        <page id="Curve Editor.1"/>
+                        <page id="DopeSheet.1"/>
+                        <page id="com.ohufx.ToDoList"/>
+                        <page id="uk.co.thefoundry.scripteditor.1"/>
+                    </dock>
+                </splitter>
+                <split size="553"/>
+                <splitter orientation="2">
+                    <split size="751"/>
+                    <dock id="" activePageId="Properties.1">
+                        <page id="Properties.1"/>
+                    </dock>
+                    <split size="211"/>
+                    <dock id="" activePageId="Progress.1">
+                        <page id="Progress.1"/>
+                    </dock>
+                </splitter>
+            </splitter>
+        </splitter>
+    </window>
+</layout>

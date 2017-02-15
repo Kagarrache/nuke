@@ -1,0 +1,57 @@
+<root presetname="Transcode Shots DPX" tasktype="hiero.exporters.FnShotProcessor.ShotProcessor">
+    <exportTemplate valuetype="tuple">
+        <SequenceItem valuetype="tuple">
+            <SequenceItem valuetype="str">{shot}/{shot}.####.{ext}</SequenceItem>
+            <SequenceItem valuetype="hiero.exporters.FnTranscodeExporter.TranscodePreset">
+                <root presetname="" tasktype="hiero.exporters.FnTranscodeExporter.TranscodeExporter">
+                    <colourspace valuetype="str">default</colourspace>
+                    <includeEffects valuetype="bool">True</includeEffects>
+                    <file_type valuetype="str">dpx</file_type>
+                    <channels valuetype="str">rgb</channels>
+                    <includeAudio valuetype="bool">False</includeAudio>
+                    <burninDataEnabled valuetype="bool">False</burninDataEnabled>
+                    <useSingleSocket valuetype="bool">False</useSingleSocket>
+                    <additionalNodesEnabled valuetype="bool">False</additionalNodesEnabled>
+                    <deleteAudio valuetype="bool">True</deleteAudio>
+                    <additionalNodesData valuetype="list" />
+                    <dpx valuetype="dict">
+                        <datatype valuetype="str">10 bit</datatype>
+                    </dpx>
+                    <readAllLinesForExport valuetype="bool">False</readAllLinesForExport>
+                    <burninData valuetype="dict">
+                        <burnIn_bottomRight valuetype="NoneType">None</burnIn_bottomRight>
+                        <burnIn_topLeft valuetype="NoneType">None</burnIn_topLeft>
+                        <burnIn_topMiddle valuetype="NoneType">None</burnIn_topMiddle>
+                        <burnIn_padding valuetype="NoneType">None</burnIn_padding>
+                        <burnIn_topRight valuetype="NoneType">None</burnIn_topRight>
+                        <burnIn_bottomMiddle valuetype="NoneType">None</burnIn_bottomMiddle>
+                        <burnIn_bottomLeft valuetype="NoneType">None</burnIn_bottomLeft>
+                        <burnIn_textSize valuetype="NoneType">None</burnIn_textSize>
+                        <burnIn_font valuetype="NoneType">None</burnIn_font>
+                    </burninData>
+                    <writeNodeName valuetype="str">Write_{ext}</writeNodeName>
+                    <reformat valuetype="dict">
+                        <filter valuetype="str">Cubic</filter>
+                        <to_type valuetype="str">None</to_type>
+                        <scale valuetype="float">1.0</scale>
+                        <center valuetype="bool">True</center>
+                        <resize valuetype="str">width</resize>
+                    </reformat>
+                    <keepNukeScript valuetype="bool">False</keepNukeScript>
+                    <method valuetype="str">Blend</method>
+                </root>
+            </SequenceItem>
+        </SequenceItem>
+    </exportTemplate>
+    <startFrameIndex valuetype="int">1001</startFrameIndex>
+    <excludeTags valuetype="list" />
+    <exportRoot valuetype="str">{projectroot}</exportRoot>
+    <cutLength valuetype="bool">True</cutLength>
+    <versionIndex valuetype="int">1</versionIndex>
+    <includeRetimes valuetype="bool">False</includeRetimes>
+    <includeTags valuetype="list" />
+    <cutUseHandles valuetype="bool">False</cutUseHandles>
+    <startFrameSource valuetype="str">Source</startFrameSource>
+    <versionPadding valuetype="int">2</versionPadding>
+    <cutHandles valuetype="int">12</cutHandles>
+</root>

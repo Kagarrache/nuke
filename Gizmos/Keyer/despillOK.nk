@@ -1,0 +1,325 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push 0
+push 0
+push $cut_paste_input
+Group {
+ inputs 3
+ name despillOK
+ selected true
+ xpos -29
+ ypos 40
+ addUserKnob {20 User l main}
+ addUserKnob {4 bluegreen l "screen type" M {blue green ""}}
+ bluegreen green
+ addUserKnob {6 despillColor_add_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 NoOp1_screencolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 NoOp1_targetcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 targetColor_color l "target color"}
+ targetColor_color {0.05 0.05 0.05 0.05}
+ addUserKnob {6 targetColor_color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 despillBalance_white l balance t "For blue despill: Lower values stronger affect red tones. Higher values affect greens more.\n\nFor green despill: red = lower, blue = higher" R 0 4}
+ despillBalance_white 1
+ addUserKnob {6 despillBalance_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 despillGain_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {19 despillGain_white l gain t "Increasing gain will affect a wider range of colors." R 0 4}
+ despillGain_white 1
+ addUserKnob {6 despillGain_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {80 despillGamma_disable l enable -STARTLINE}
+ addUserKnob {19 despillGamma_gamma l falloff t "- controls the falloff in semi transparent areas." R 0.2 5}
+ despillGamma_gamma 1
+ addUserKnob {6 despillGamma_gamma_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {80 erodePlus_disable l enable -STARTLINE}
+ addUserKnob {14 despillGaussian_size l "gauss erode" t "Instead of increasing the gain (for example to ged rid of spill in very defocussed edges) you can also erode the despill mask inward to get rid of that edge." R -100 100}
+ addUserKnob {19 erodeFalloff_gamma l falloff R 0.2 5}
+ erodeFalloff_gamma 1
+ addUserKnob {6 erodeFalloff_gamma_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {8 erodePlus_mix l mix}
+ erodePlus_mix 1
+ addUserKnob {26 ""}
+ addUserKnob {80 edgePlus_disable l "enable edgePlus" -STARTLINE}
+ addUserKnob {19 tweakValue_white l threshold t "It is recommended to tweak the other values below before tweaking the threshold." R 0 4}
+ tweakValue_white 0.99
+ addUserKnob {6 tweakValue_white_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {14 blurEdgePlus_size l blur R 0 100}
+ addUserKnob {41 blackpoint l cutoff T cutoff.blackpoint}
+ addUserKnob {6 cutoff_blackpoint_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {14 rollback_size l rollback R -100 100}
+ addUserKnob {8 edgePlus_mix l mix}
+ edgePlus_mix 1
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelMask l mask -STARTLINE T Merge1.maskChannelMask}
+ addUserKnob {41 inject -STARTLINE T Merge1.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge1.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge1.fringe}
+ addUserKnob {41 mix T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {20 info n 1}
+ info 0
+ addUserKnob {26 jm l "" +STARTLINE T "Despill Overkill by Johannes Masanz\nVersion: 1.1"}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -234
+  ypos 566
+  number 1
+ }
+ Input {
+  inputs 0
+  name source
+  xpos -84
+  ypos -236
+ }
+set Nc3d6400 [stack 0]
+ Expression {
+  channel3 alpha
+  expr3 parent.bluegreen==0?(b*parent.despillGain_white-(r*parent.despillBalance_white+g*(1-(parent.despillBalance_white-1)))/2):(g*parent.despillGain_white-(r*parent.despillBalance_white+b*(1-(parent.despillBalance_white-1)))/2)
+  name Expression
+  selected true
+  xpos 286
+  ypos -236
+ }
+ Input {
+  inputs 0
+  name ibkColor
+  xpos 456
+  ypos -236
+  number 2
+ }
+set N7ef61800 [stack 0]
+ Expression {
+  channel3 alpha
+  expr3 parent.bluegreen==0?(b*parent.despillGain_white-(r*parent.despillBalance_white+g*(1-(parent.despillBalance_white-1)))/2):(g*parent.despillGain_white-(r*parent.despillBalance_white+b*(1-(parent.despillBalance_white-1)))/2)
+  name Expression2
+  xpos 456
+  ypos -162
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels alpha
+  Bchannels alpha
+  output alpha
+  name Merge5
+  xpos 456
+  ypos -136
+ }
+push $Nc3d6400
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 456
+  ypos -98
+ }
+ Grade {
+  channels alpha
+  gamma {{parent.despillGamma_gamma.r} {parent.despillGamma_gamma.g} {parent.despillGamma_gamma.b} {parent.despillGamma_gamma.a}}
+  name despillGamma
+  xpos 456
+  ypos -46
+  disable {{1-parent.despillGamma_disable}}
+ }
+set N7ef60400 [stack 0]
+ Clamp {
+  name Clamp1
+  xpos 346
+  ypos -46
+ }
+set N7ef60000 [stack 0]
+ FilterErode {
+  size {{-parent.despillGaussian_size.w} {-parent.despillGaussian_size.h}}
+  filter gaussian
+  name despillGaussian
+  xpos 236
+  ypos -46
+ }
+ Grade {
+  channels alpha
+  gamma {{parent.erodeFalloff_gamma.r} {parent.erodeFalloff_gamma.g} {parent.erodeFalloff_gamma.b} {parent.erodeFalloff_gamma.a}}
+  black_clamp false
+  name erodeFalloff
+  xpos 236
+  ypos 8
+ }
+push $N7ef60000
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos 236
+  ypos 67
+ }
+push $N7ef60400
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels alpha
+  Bchannels alpha
+  output alpha
+  mix {{parent.erodePlus_mix}}
+  name erodePlus
+  xpos 456
+  ypos 61
+  disable {{1-parent.erodePlus_disable}}
+ }
+set N98c70c00 [stack 0]
+ Grade {
+  channels alpha
+  white {{parent.tweakValue_white.r} {parent.tweakValue_white.g} {parent.tweakValue_white.b} {parent.tweakValue_white.a}}
+  name tweakValue
+  xpos 356
+  ypos 205
+ }
+ Invert {
+  name Invert1
+  xpos 356
+  ypos 241
+ }
+push $N98c70c00
+push $N7ef61800
+push $Nc3d6400
+ Merge2 {
+  inputs 2+1
+  operation from
+  name Merge6
+  xpos 60
+  ypos 123
+ }
+set N98c70000 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 220
+  ypos 241
+ }
+ Blur {
+  size {{-parent.blurEdgePlus_size.w}}
+  name blurEdgePlus
+  xpos 220
+  ypos 279
+ }
+ set C94cc1800 [stack 0]
+set N94cc1800 [stack 0]
+push $N98c70c00
+ Invert {
+  name Invert4
+  xpos 456
+  ypos 177
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  xpos 456
+  ypos 215
+ }
+clone $C94cc1800 {
+  xpos 456
+  ypos 241
+  selected false
+ }
+ Grade {
+  white_clamp true
+  name cutoff
+  xpos 456
+  ypos 296
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy4
+  xpos 456
+  ypos 328
+ }
+ Unpremult {
+  name Unpremult2
+  xpos 456
+  ypos 366
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle3
+  xpos 456
+  ypos 409
+ }
+ FilterErode {
+  size {{parent.rollback_size.w}}
+  filter gaussian
+  name rollback
+  xpos 456
+  ypos 456
+ }
+push $N94cc1800
+ Unpremult {
+  name Unpremult1
+  xpos 220
+  ypos 350
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.targetColor_color.r} {parent.targetColor_color.g} {parent.targetColor_color.b} {parent.targetColor_color.a}}
+  name targetColor
+  xpos 134
+  ypos 364
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  mix {{parent.edgePlus_mix}}
+  name edgePlus
+  xpos 220
+  ypos 474
+  disable {{1-parent.edgePlus_disable}}
+ }
+push $N98c70c00
+ Invert {
+  name Invert2
+  xpos 274
+  ypos 160
+ }
+push $N98c70000
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 60
+  ypos 160
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge7
+  xpos 60
+  ypos 566
+ }
+push $Nc3d6400
+ Merge2 {
+  inputs 2+1
+  operation copy
+  output rgb
+  maskChannelInput -rgba.alpha
+  name Merge1
+  xpos -84
+  ypos 566
+ }
+ Output {
+  name Output1
+  xpos -84
+  ypos 704
+ }
+end_group

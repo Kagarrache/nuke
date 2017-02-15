@@ -1,0 +1,119 @@
+#! /Applications/Nuke9.0v5/Nuke9.0v5.app/Contents/MacOS//libnuke-9.0.5.dylib -nx
+version 9.0 v5
+Gizmo {
+ inputs 2
+ addUserKnob {20 User}
+ addUserKnob {41 preblur l "pre blur" T footageblur.size}
+ addUserKnob {41 filter_1 l filter T footageblur.filter}
+ addUserKnob {41 postblur l "post blur" T Blur3.size}
+ addUserKnob {41 filter T Blur3.filter}
+ addUserKnob {41 range T Keyer1.range}
+ addUserKnob {41 erode T FilterErode1.size}
+}
+ Input {
+  inputs 0
+  name footage
+  xpos -475
+  ypos -335
+ }
+ Dot {
+  name Dot1
+  xpos -441
+  ypos -295
+ }
+set N2ed5a2f0 [stack 0]
+ Dot {
+  name Dot3
+  xpos -441
+  ypos 133
+ }
+ Input {
+  inputs 0
+  name plate
+  xpos -245
+  ypos -343
+  number 1
+ }
+ Blur {
+  size {{parent.footageblur.size}}
+  name plateblur
+  xpos -245
+  ypos -303
+ }
+ Expression {
+  expr3 r+b+g
+  name Expression2
+  xpos -245
+  ypos -247
+ }
+push $N2ed5a2f0
+ Blur {
+  name footageblur
+  xpos -374
+  ypos -302
+ }
+ Expression {
+  expr3 r+b+g
+  name Expression1
+  xpos -374
+  ypos -246
+ }
+ Dot {
+  name Dot2
+  xpos -340
+  ypos -167
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos -245
+  ypos -170
+ }
+ Expression {
+  expr3 abs(a)*.3333333333
+  name Expression3
+  xpos -245
+  ypos -137
+ }
+ Blur {
+  name Blur3
+  xpos -245
+  ypos -96
+ }
+ Keyer {
+  input alpha
+  operation "luminance key"
+  name Keyer1
+  selected true
+  xpos -245
+  ypos -37
+ }
+ FilterErode {
+  size 0.02
+  filter gaussian
+  name FilterErode1
+  xpos -245
+  ypos -5
+ }
+ Merge2 {
+  inputs 2
+  operation in
+  name Merge3
+  xpos -245
+  ypos 130
+ }
+set N2edc8c60 [stack 0]
+ Output {
+  name Output1
+  xpos -245
+  ypos 230
+ }
+push $N2edc8c60
+ Viewer {
+  frame_range 0-40
+  name Viewer1
+  xpos -84
+  ypos 130
+ }
+end_group

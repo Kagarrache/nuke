@@ -1,0 +1,241 @@
+#! /usr/local/Nuke10.5v1/libnuke-10.5.1.so -nx
+version 10.5 v1
+Gizmo {
+ inputs 3
+ addUserKnob {20 AFXSpillReplace}
+ addUserKnob {41 erode l Erode T Ctrls.erode}
+ addUserKnob {41 edge_blur l "Edge Blur" T Ctrls.edge_blur}
+ addUserKnob {41 main_blur l "Main Blur" T Ctrls.main_blur}
+ addUserKnob {41 saturation l Saturation T Ctrls.saturation}
+ addUserKnob {41 spill_matt l "Spill Matte" T spill_matte_shuffle.in}
+ addUserKnob {41 matte_gain l "Matte Gain" T Ctrls.matte_gain}
+ addUserKnob {41 matte_gamma l "Matte Gamma" T Ctrls.matte_gamma}
+ addUserKnob {41 normalize l "Normalize Spill Matte for Grain Application" T normalize_matte.go}
+}
+ Input {
+  inputs 0
+  name spill_matte
+  xpos 730
+  ypos -183
+  number 1
+ }
+ Shuffle {
+  in alpha
+  out alpha
+  name spill_matte_shuffle
+  xpos 730
+  ypos -116
+ }
+ Grade {
+  channels alpha
+  white {{Ctrls.matte_gain}}
+  gamma {{Ctrls.matte_gamma}}
+  name matt_adjust
+  xpos 730
+  ypos -71
+ }
+ Shuffle {
+  in alpha
+  name Shuffle2
+  xpos 730
+  ypos -11
+ }
+ Dot {
+  name Dot7
+  xpos 764
+  ypos 66
+ }
+ Input {
+  inputs 0
+  name matte
+  xpos 510
+  ypos -631
+  number 2
+ }
+ Dot {
+  name Dot9
+  xpos 543
+  ypos -415
+ }
+set N8b8c370 [stack 0]
+ FilterErode {
+  size {{Ctrls.erode}}
+  filter gaussian
+  name matte_erode
+  xpos 510
+  ypos -353
+ }
+set N8b90de0 [stack 0]
+ Invert {
+  name Invert2
+  xpos 620
+  ypos -233
+ }
+push $N8b90de0
+ Input {
+  inputs 0
+  name Input
+  xpos 245
+  ypos -629
+ }
+ Dot {
+  name Dot2
+  xpos 278
+  ypos -518
+ }
+set N8bacca0 [stack 0]
+ Dot {
+  name Dot10
+  xpos 278
+  ypos -374
+ }
+set N8bb1710 [stack 0]
+ Saturation {
+  saturation {{Ctrls.saturation}}
+  name bg_saturation
+  xpos 245
+  ypos -306
+ }
+ Blur {
+  channels rgb
+  size {{Ctrls.main_blur}}
+  name main_blur
+  xpos 245
+  ypos -272
+ }
+ Dot {
+  name Dot6
+  xpos 278
+  ypos -223
+ }
+set N8bd00c0 [stack 0]
+push $N8bb1710
+ Blur {
+  channels rgb
+  size {{Ctrls.edge_blur}}
+  name edge_blur
+  xpos 364
+  ypos -272
+ }
+ Blend {
+  inputs 2+1
+  weight0 0
+  name Blend2
+  xpos 510
+  ypos -233
+ }
+ Grade {
+  inputs 1+1
+  white 0.5
+  name Grade2
+  xpos 510
+  ypos -156
+ }
+push $N8bd00c0
+ Dot {
+  name Dot1
+  xpos 278
+  ypos -55
+ }
+ Switch {
+  inputs 2
+  which {{"\[exists matte.parent.input2]"}}
+  name Switch1
+  xpos 544
+  ypos -59
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 544
+  ypos 56
+  disable {{"!\[exists spill_matte.parent.input1]"}}
+ }
+ Premult {
+  name Premult1
+  xpos 544
+  ypos 141
+ }
+set N8c1c2b0 [stack 0]
+ Expression {
+  channel0 {-rgba.red -rgba.green -rgba.blue none}
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  expr3 "min(2 * a / max(normalize_matte.maxlumapixvalue.r, 0.0008), 1)"
+  name normalize
+  xpos 544
+  ypos 306
+ }
+ Output {
+  name Output1
+  xpos 544
+  ypos 430
+ }
+push $N8bacca0
+ NoOp {
+  name Ctrls
+  xpos 376
+  ypos -522
+  addUserKnob {20 AFXSpillReplace}
+  addUserKnob {7 erode l Erode R 0 10}
+  erode 3
+  addUserKnob {7 edge_blur l "Edge Blur" R 0 10}
+  edge_blur 5
+  addUserKnob {7 main_blur l "Main Blur" R 0 300}
+  main_blur 150
+  addUserKnob {7 saturation l Saturation R 0 2}
+  saturation 1.0
+  addUserKnob {7 matte_gain l "Matte Gain" R 0 2}
+  matte_gain 1.0
+  addUserKnob {7 matte_gamma l "Matte Gamma" R 0 2}
+  matte_gamma 1.0
+ }
+push $N8b8c370
+ Dot {
+  name Dot4
+  xpos 910
+  ypos -415
+ }
+ Dot {
+  name Dot5
+  xpos 910
+  ypos 118
+ }
+push $N8c1c2b0
+ Dot {
+  name Dot3
+  xpos 798
+  ypos 145
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  bbox B
+  name Merge1
+  xpos 765
+  ypos 209
+ }
+ Median {
+  channels alpha
+  size 5
+  ignore_top_line false
+  name Median1
+  xpos 765
+  ypos 249
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  channels alpha
+  ROI {{input.bbox.x} {input.bbox.y} {input.bbox.r} {input.bbox.t}}
+  autocropdata {{input.bbox.x} {input.bbox.y} {input.bbox.r} {input.bbox.t}}
+  maxlumapixdata {0 0}
+  maxlumapixvalue {0 0 0}
+  minlumapixvalue {0 0 0}
+  name normalize_matte
+  xpos 765
+  ypos 299
+ }
+end_group

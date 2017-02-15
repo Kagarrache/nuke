@@ -1,0 +1,18 @@
+<root presetname="Final Cut Pro 7 XML" tasktype="hiero.exporters.FnTimelineProcessor.TimelineProcessor">
+    <exportTemplate valuetype="tuple">
+        <SequenceItem valuetype="tuple">
+            <SequenceItem valuetype="str">{sequence}/{sequence}.xml</SequenceItem>
+            <SequenceItem valuetype="hiero.exporters.FnXMLExportTask.XMLExportPreset">
+                <root presetname="" tasktype="hiero.exporters.FnXMLExportTask.XMLExportTask">
+                    <includeMarkers valuetype="bool">False</includeMarkers>
+                </root>
+            </SequenceItem>
+        </SequenceItem>
+    </exportTemplate>
+    <startFrameIndex valuetype="int">1</startFrameIndex>
+    <exportRoot valuetype="str">{projectroot}</exportRoot>
+    <versionIndex valuetype="int">1</versionIndex>
+    <startFrameSource valuetype="str">Sequence</startFrameSource>
+    <versionPadding valuetype="int">2</versionPadding>
+    <inOutTrim valuetype="bool">False</inOutTrim>
+</root>

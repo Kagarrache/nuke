@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="1.0">
-    <window x="0" y="0" w="1920" h="1080" screen="1">
-        <splitter orientation="1">
-            <split size="228" stretch="1"/>
-            <splitter orientation="2">
-                <split size="1018"/>
-                <dock id="" activePageId="Viewer.1">
-                    <page id="Viewer.1"/>
-                </dock>
-            </splitter>
-            <split size="1672"/>
-            <splitter orientation="2">
-                <split size="68"/>
+    <window x="0" y="0" w="3604" h="1080" screen="0">
+        <splitter orientation="2">
+            <split size="63"/>
+            <splitter orientation="1">
+                <split size="618"/>
+                <dock id="" hideTitles="1"/>
+                <split size="2966"/>
                 <dock id="" hideTitles="1" activePageId="Toolbar.1">
                     <page id="Toolbar.1"/>
                 </dock>
-                <split size="946"/>
-                <splitter orientation="1">
-                    <split size="1085"/>
-                    <dock id="" activePageId="DAG.1" focus="true">
-                        <page id="DAG.1"/>
-                        <page id="Curve Editor.1"/>
-                        <page id="DopeSheet.1"/>
-                        <page id="uk.co.thefoundry.scripteditor.1"/>
-                        <page id="com.ohufx.ToDoList"/>
-                        <page id="com.ohufx.FovCalculator"/>
+            </splitter>
+            <split size="951"/>
+            <splitter orientation="1">
+                <split size="1915"/>
+                <splitter orientation="2">
+                    <split size="951"/>
+                    <dock id="" activePageId="Viewer.1" focus="true">
+                        <page id="Viewer.1"/>
                     </dock>
-                    <split size="583"/>
-                    <splitter orientation="2">
-                        <split size="770"/>
-                        <dock id="" activePageId="Properties.1">
-                            <page id="Properties.1"/>
-                        </dock>
-                        <split size="172"/>
-                        <dock id="" activePageId="Progress.1">
-                            <page id="Progress.1"/>
-                        </dock>
-                    </splitter>
+                </splitter>
+                <split size="1149"/>
+                <dock id="" activePageId="DAG.1">
+                    <page id="DAG.1"/>
+                </dock>
+                <split size="516"/>
+                <splitter orientation="2">
+                    <split size="761"/>
+                    <dock id="" activePageId="Properties.1">
+                        <page id="Properties.1"/>
+                    </dock>
+                    <split size="186"/>
+                    <dock id="" activePageId="Progress.1">
+                        <page id="Progress.1"/>
+                    </dock>
                 </splitter>
             </splitter>
         </splitter>

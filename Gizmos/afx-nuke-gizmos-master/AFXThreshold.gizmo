@@ -1,0 +1,88 @@
+#! /usr/local/Nuke10.5v1/libnuke-10.5.1.so -nx
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (C) 2012-2017, Ryan P. Wilson
+#
+#      Authority FX, Inc.
+#      www.authorityfx.com
+
+version 10.5 v1
+Gizmo {
+ inputs 2
+ addUserKnob {20 AFXThreshold}
+ addUserKnob {41 threshold l Threshold T Ctrls.threshold}
+ addUserKnob {41 threshold_falloff l "Threshold Falloff" T Ctrls.threshold_falloff}
+ addUserKnob {41 red l Red T Ctrls.red}
+ addUserKnob {41 green l Green -STARTLINE T Ctrls.green}
+ addUserKnob {41 blue l Blue -STARTLINE T Ctrls.blue}
+ addUserKnob {41 alpha l Alpha -STARTLINE T Ctrls.alpha}
+}
+ Input {
+  inputs 0
+  name mask
+  selected true
+  xpos 299
+  ypos -295
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos 332
+  ypos -124
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 50
+  ypos -291
+ }
+ Dot {
+  name Dot2
+  xpos 83
+  ypos -205
+ }
+set N73753c0 [stack 0]
+ Expression {
+  inputs 1+1
+  temp_name1 luma
+  temp_expr1 "0.3 * r + 0.59 * g + 0.11 * b"
+  temp_name2 falloff
+  temp_expr2 "min(max(10 * (Ctrls.threshold_falloff), 1.0), 125.0)"
+  temp_name3 scale
+  temp_expr3 "Ctrls.threshold * pow((luma / Ctrls.threshold), falloff)"
+  expr0 "Ctrls.red && luma < Ctrls.threshold ? r * scale : r"
+  expr1 "Ctrls.green && luma < Ctrls.threshold ? g * scale : g"
+  expr2 "Ctrls.blue && luma < Ctrls.threshold ? b * scale : b"
+  channel3 alpha
+  expr3 "Ctrls.alpha && a < Ctrls.threshold ? Ctrls.threshold * pow((a / Ctrls.threshold), falloff) : a"
+  name threshold
+  xpos 50
+  ypos -128
+ }
+ Output {
+  name Output1
+  xpos 50
+  ypos -23
+ }
+push $N73753c0
+ NoOp {
+  name Ctrls
+  xpos 185
+  ypos -209
+  addUserKnob {20 User}
+  addUserKnob {7 threshold l Threshold}
+  threshold 1
+  addUserKnob {7 threshold_falloff l "Threshold Falloff"}
+  threshold_falloff 0.25
+  addUserKnob {6 red l Red +STARTLINE}
+  red true
+  addUserKnob {6 green l Green -STARTLINE}
+  green true
+  addUserKnob {6 blue l Blue -STARTLINE}
+  blue true
+  addUserKnob {6 alpha l Alpha -STARTLINE}
+ }
+end_group

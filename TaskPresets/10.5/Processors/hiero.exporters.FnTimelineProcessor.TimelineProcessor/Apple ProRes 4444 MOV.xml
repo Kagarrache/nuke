@@ -1,0 +1,59 @@
+<root presetname="Apple ProRes 4444 MOV" tasktype="hiero.exporters.FnTimelineProcessor.TimelineProcessor">
+    <exportTemplate valuetype="tuple">
+        <SequenceItem valuetype="tuple">
+            <SequenceItem valuetype="str">{sequence}_{version}/{sequence}_{version}.{ext}</SequenceItem>
+            <SequenceItem valuetype="hiero.exporters.FnTranscodeExporter.TranscodePreset">
+                <root presetname="" tasktype="hiero.exporters.FnTranscodeExporter.TranscodeExporter">
+                    <burninDataEnabled valuetype="bool">False</burninDataEnabled>
+                    <readAllLinesForExport valuetype="bool">True</readAllLinesForExport>
+                    <additionalNodesEnabled valuetype="bool">False</additionalNodesEnabled>
+                    <colourspace valuetype="str">default</colourspace>
+                    <includeEffects valuetype="bool">True</includeEffects>
+                    <includeAudio valuetype="bool">True</includeAudio>
+                    <file_type valuetype="str">mov</file_type>
+                    <mov valuetype="dict">
+                        <b_frames valuetype="int">0</b_frames>
+                        <bitrate_tolerance valuetype="int">40000000</bitrate_tolerance>
+                        <gop_size valuetype="int">12</gop_size>
+                        <encoder valuetype="str">mov64</encoder>
+                        <quality_min valuetype="int">2</quality_min>
+                        <codec valuetype="str">ap4h&#x09;Apple ProRes 4444</codec>
+                        <quality_max valuetype="int">31</quality_max>
+                        <bitrate valuetype="int">20000</bitrate>
+                    </mov>
+                    <method valuetype="str">Blend</method>
+                    <channels valuetype="str">rgb</channels>
+                    <burninData valuetype="dict">
+                        <burnIn_bottomRight valuetype="NoneType">None</burnIn_bottomRight>
+                        <burnIn_topLeft valuetype="NoneType">None</burnIn_topLeft>
+                        <burnIn_topMiddle valuetype="NoneType">None</burnIn_topMiddle>
+                        <burnIn_padding valuetype="NoneType">None</burnIn_padding>
+                        <burnIn_topRight valuetype="NoneType">None</burnIn_topRight>
+                        <burnIn_bottomMiddle valuetype="NoneType">None</burnIn_bottomMiddle>
+                        <burnIn_bottomLeft valuetype="NoneType">None</burnIn_bottomLeft>
+                        <burnIn_textSize valuetype="NoneType">None</burnIn_textSize>
+                        <burnIn_font valuetype="NoneType">None</burnIn_font>
+                    </burninData>
+                    <deleteAudio valuetype="bool">True</deleteAudio>
+                    <writeNodeName valuetype="str">Write_{ext}</writeNodeName>
+                    <reformat valuetype="dict">
+                        <filter valuetype="str">Cubic</filter>
+                        <to_type valuetype="str">None</to_type>
+                        <scale valuetype="float">1.0</scale>
+                        <center valuetype="bool">True</center>
+                        <resize valuetype="str">width</resize>
+                    </reformat>
+                    <keepNukeScript valuetype="bool">False</keepNukeScript>
+                    <useSingleSocket valuetype="bool">False</useSingleSocket>
+                    <additionalNodesData valuetype="list" />
+                </root>
+            </SequenceItem>
+        </SequenceItem>
+    </exportTemplate>
+    <startFrameIndex valuetype="int">1</startFrameIndex>
+    <exportRoot valuetype="str">{projectroot}</exportRoot>
+    <versionIndex valuetype="int">1</versionIndex>
+    <startFrameSource valuetype="str">Sequence</startFrameSource>
+    <versionPadding valuetype="int">2</versionPadding>
+    <inOutTrim valuetype="bool">False</inOutTrim>
+</root>

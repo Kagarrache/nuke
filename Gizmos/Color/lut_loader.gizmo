@@ -1,0 +1,16 @@
+#! C:/Program Files/Nuke9.0v8/nuke-9.0.8.dll -nx
+version 9.0 v8
+Gizmo {
+ inputs 0
+ addUserKnob {20 User}
+ addUserKnob {2 dir l set_dir_with_luts}
+ dir E:/work/LUTs/LUTs/
+ addUserKnob {22 load l Load_Luts T "loader = nuke.thisNode()\npath = loader.knob('dir').value()\n#print path\n\nnuke.root().begin()\nmypath = path\n\nfrom os import walk\n\nf = \[]\nfor (dirpath, dirnames, filenames) in walk(mypath):\n    f.extend(filenames)\n    break\n\ng = nuke.createNode('Group')\ng.knob('label').setValue(mypath)\nknob = nuke.Int_Knob('ch', 'num_Lut')\nb = nuke.Boolean_Knob('all','View_All')\ndt = nuke.Boolean_Knob('dt','DisableText')\nsl = nuke.Double_Knob('mix', 'Mix') \ng.addKnob(b)\ng.addKnob(knob)\ng.addKnob(dt)\ng.addKnob(sl)\ng.knob('mix').setValue(1)\ng.begin()\ni = nuke.createNode('Input')\ns = nuke.createNode('Switch')\nc = nuke.createNode('ContactSheet')\nc.knob(\"rows\").setValue(1)\nc.knob(\"columns\").setValue(0)\nsw = nuke.createNode('Switch')\ns.knob('which').setExpression('parent.ch')\nsw.knob('which').setExpression('parent.all')\nout = nuke.createNode('Output')\nsw.setInput(0,s)\nsw.setInput(1,c)\n\n\nnum = 0\nfor fileLut in f:\n    n = nuke.nodes.OCIOFileTransform(name=str(fileLut))\n#    n = nuke.createNode('OCIOFileTransform')\n#    new_n = str(n.name())\n    n.knob(\"working_space\").setValue('sRGB')\n    n.knob(\"file\").setValue(mypath + fileLut)\n    n.knob('mix').setExpression('parent.mix')\n    n.setInput(0,i)\n    t = nuke.nodes.Text2()\n    t.knob('message').setValue(str(fileLut))\n    t.knob('box').setExpression(str(0))\n    t.knob('box').setExpression('input.width',2)\n    t.knob('box').setExpression('input.height',3)\n    t.knob('xjustify').setValue('center')\n    t.knob('yjustify').setValue('center')\n    t.knob('opacity').setValue(0.3)\n    t.knob('disable').setExpression('parent.dt')\n    t.setInput(0,n)\n    s.setInput(num,t)\n    c.setInput(num,t)\n\n    num += 1\n\nc.knob(\"rows\").setValue(num)\nc.knob(\"columns\").setValue(1)\nc.knob(\"width\").setValue(640)\nc.knob(\"height\").setValue(480*(num-1))\ng.end() \n" +STARTLINE}
+}
+ Output {
+  inputs 0
+  name Output1
+  xpos 0
+  ypos 300
+ }
+end_group
